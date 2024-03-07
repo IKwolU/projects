@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Gilroy';
+  src: local('Gilroy'),
+    url('assets/fonts/Gilroy-Regular.ttf') format('ttf'),
+    url('assets/fonts/Gilroy-Regular.woff') format('woff'),
+    url('assets/fonts/Gilroy-Regular.woff2') format('woff2'),
+    url('assets/fonts/Gilroy-Regular.svg') format('svg'),
+    url('assets/fonts/Gilroy-Regular.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: local('Gilroy'),
+    url('assets/fonts/Gilroy-Bold.ttf') format('ttf'),
+    url('assets/fonts/Gilroy-Bold.woff') format('woff'),
+    url('assets/fonts/Gilroy-Bold.woff2') format('woff2'),
+    url('assets/fonts/Gilroy-Bold.svg') format('svg'),
+    url('assets/fonts/Gilroy-Bold.eot') format('embedded-opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroyx';
+  src: local('Gilroy'),
+  url('assets/fonts/Gilroy-Black.ttf') format('ttf'),
+  url('assets/fonts/Gilroy-Black.woff') format('woff'),
+  url('assets/fonts/Gilroy-Black.woff2') format('woff2'),
+  url('assets/fonts/Gilroy-Black.eot') format('embedded-opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@layer base {
+  h1 {
+    @apply mb-1 mb-4 text-xl font-bold text-black;
+  }
+
+  h2 {
+    @apply mb-3 text-base font-semibold text-gray;
+  }
+
+  h3 {
+    @apply mb-1 text-lg font-bold;
+  }
+
+  p {
+    @apply text-sm font-medium;
+  }
+
+  a {
+    @apply text-sm font-medium;
+  }
+}
+.font-black {
+    font-family: 'Gilroyx', sans-serif;
+}
+
+:root {
+  font-family: 'Gilroy', sans-serif;
+
+  color-scheme: light;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background-color: #f5f4f2;
+  margin: 0;
+}
+
+.scrollbar-hide {
+  /* IE and Edge */
+  -ms-overflow-style: none;
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* Safari and Chrome */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

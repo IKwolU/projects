@@ -56,7 +56,7 @@ type CarFilter = {
   fuelType: FuelType | null;
   transmissionType: TransmissionType | null;
   selfEmployed: boolean;
-  buyoutPossible: boolean;
+  buyoutPossible: boolean | undefined;
   schema: Schemas2 | null;
   sorting: "asc" | "desc";
   car_vin: string | null;
@@ -291,6 +291,16 @@ export const Finder = () => {
                       />
                     </div>
                     <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
+                      <Button
+                        onClick={() => {
+                          setFilters({
+                            ...filters,
+                            brands: [],
+                          });
+                        }}
+                      >
+                        Все марки
+                      </Button>
                       {filteredBrands.map((x: string) => {
                         const title = x;
                         const isActive = filters.brands.some(
@@ -299,8 +309,8 @@ export const Finder = () => {
 
                         return (
                           <span
-                            className={`cursor-pointer text-xl font-bold w-full py-2 ${
-                              isActive ? "text-black" : "text-zinc-500"
+                            className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
+                              isActive ? "" : ""
                             }`}
                             key={title}
                             onClick={() =>
@@ -312,7 +322,15 @@ export const Finder = () => {
                               })
                             }
                           >
-                            {title} <Separator className="mt-1" />
+                            <span
+                              className={`w-full block p-1 rounded-xl ${
+                                isActive ? "bg-green-500" : ""
+                              }`}
+                            >
+                              {" "}
+                              {title}
+                            </span>{" "}
+                            <Separator className="mt-1" />
                           </span>
                         );
                       })}

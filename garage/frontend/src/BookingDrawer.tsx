@@ -1,4 +1,4 @@
-import { BookingStatus, DayOfWeek } from "./api-client";
+import { Body17, BookingStatus, Bookings, DayOfWeek, User } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { useRecoilState } from "recoil";
@@ -11,10 +11,15 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { client } from "./backend";
+import { Button } from "@/components/ui/button";
+import Confirmation from "@/components/ui/confirmation";
 
 export const BookingDrawer = () => {
-  const [user] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
+
+  const [isPhoneClicked, setIsPhoneClicked] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,12 +28,38 @@ export const BookingDrawer = () => {
   if (!user) {
     return <></>;
   }
+  const activeBooking = user!.bookings!.find(
+    (x) => x.status === BookingStatus.Booked
+  );
 
   const bookings = user!.bookings!;
 
   if (!bookings.length) {
     return <>У вас пока нет бронирований</>;
   }
+
+  const divisionPhone = activeBooking?.car?.division!.phone;
+
+  const cancelBooking = async () => {
+    await client.cancelBooking(
+      new Body17({
+        id: activeBooking!.id,
+      })
+    );
+    setUser(
+      new User({
+        ...user,
+        bookings: [
+          ...user.bookings!.filter((x) => x !== activeBooking),
+          new Bookings({
+            ...activeBooking,
+            status: BookingStatus.UnBooked,
+            end_date: new Date().toISOString(),
+          }),
+        ],
+      })
+    );
+  };
 
   const sortedBookings = [...bookings]
     .filter((x) =>
@@ -231,6 +262,37 @@ export const BookingDrawer = () => {
               </>
             )}
           </div>
+          {booking.status === BookingStatus.Booked && (
+            <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3">
+              <Button
+                className="w-1/2"
+                onClick={() => {
+                  setIsPhoneClicked(true);
+                }}
+              >
+                {isPhoneClicked ? (
+                  <div
+                    onClick={() =>
+                      (window.location.href = `tel:${divisionPhone}`)
+                    }
+                  >
+                    {divisionPhone}
+                  </div>
+                ) : (
+                  <span>Позвонить в парк</span>
+                )}
+              </Button>
+              <div className="w-1/2">
+                <Confirmation
+                  title="Отмена бронирования. Хотите продолжить?"
+                  type="red"
+                  accept={cancelBooking}
+                  cancel={() => {}}
+                  trigger={<Button variant="reject">Отменить</Button>}
+                />
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </>

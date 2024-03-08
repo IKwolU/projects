@@ -66,7 +66,7 @@ const FullScreenImages = ({
               {images.map((x, i) => (
                 <div
                   key={`image_${i}`}
-                  className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${
+                  className={`w-full flex items-center bg-white rounded-xl transition-all h-24 ${
                     i === activeIndex
                       ? "shadow border-2 border-yellow"
                       : "scale-90"

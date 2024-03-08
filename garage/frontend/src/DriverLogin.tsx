@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Body8, Body9 } from "./api-client";
 import React, { ChangeEvent } from "react";
-import { useLocation } from "react-router-dom";
 import { useTimer } from "react-timer-hook";
 export const DriverLogin = () => {
   const CODE_LENGTH = 4;
@@ -17,9 +16,7 @@ export const DriverLogin = () => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState(0);
 
-  const inputRef = useRef(null);
-
-  const location = useLocation();
+  const inputRef = useRef<any>(null);
 
   const getCode = async () => {
     const time = new Date();
@@ -83,8 +80,8 @@ export const DriverLogin = () => {
   const handleFocus = () => {
     if (inputRef.current) {
       setTimeout(() => {
-        inputRef.current.setSelectionRange(0, 0);
-        inputRef.current.click();
+        inputRef!.current!.setSelectionRange(0, 0);
+        inputRef!.current!.click();
       }, 300);
     }
   };

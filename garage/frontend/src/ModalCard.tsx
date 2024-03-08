@@ -20,7 +20,6 @@ import {
   Cars2,
   DayOfWeek,
   User,
-  Variants,
 } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -38,7 +37,6 @@ import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
 import CustomModal from "@/components/ui/custom-modal";
 import { useState } from "react";
-import { Dialog, DialogTrigger, DialogContent } from "@radix-ui/react-dialog";
 
 export const ModalCard = ({ car }: { car: Cars2 }) => {
   const [user, setUser] = useRecoilState(userAtom);

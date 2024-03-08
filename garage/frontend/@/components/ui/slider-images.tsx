@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Button } from "./button";
 import FullScreenImages from "@/components/ui/fullscreen-images";
 
 interface SliderImagesProps {
@@ -30,11 +29,11 @@ const SliderImages = ({
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    beforeChange: (current, next) => {
+    beforeChange: (next: any) => {
       setActiveIndex(next);
       isTransitioning.current = true;
     },
-    afterChange: (current) => {
+    afterChange: (current: any) => {
       setFullscreenIndex(current);
       isTransitioning.current = false;
     },

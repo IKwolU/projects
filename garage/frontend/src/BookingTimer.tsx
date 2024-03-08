@@ -3,7 +3,7 @@ import { BookingStatus } from "./api-client";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Lottie from "react-lottie";
 import dataAnimation from "./assets/hourglass.json";
 
@@ -23,7 +23,7 @@ const Animation = () => {
 export default Animation;
 
 export const BookingTimer = () => {
-  const [user, setUser] = useRecoilState(userAtom);
+  const [user] = useRecoilState(userAtom);
 
   const activeBooking = user?.bookings!.find(
     (x) => x.status === BookingStatus.Booked

@@ -146,7 +146,7 @@ export const Finder = () => {
       brands: [],
       transmissionType: null,
       selfEmployed: false,
-      buyoutPossible: false,
+      buyoutPossible: undefined,
       sorting: "asc",
       schema: null,
       car_vin: null,

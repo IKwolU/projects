@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
+    <div className="max-w-sm p-4 mx-auto sm:max-w-[800px]">
       <div className="flex justify-between my-0 space-x-2">
         <Menu user={user} />
         {/* <span className="font-bold text-md text-gray"></span> */}
@@ -67,7 +67,7 @@ export default App;
 // };
 
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] lg:max-w-[1104px] sm:justify-between">
+  <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between">
     <Link to="/">
       <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
         МОЙ ГАРАЖ

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,7 +28,7 @@ const FullScreenImages = ({
     slidesToScroll: 1,
     arrows: false,
     initialSlide: fullscreenIndex,
-    beforeChange: (current, next) => {
+    beforeChange: (next: any) => {
       setActiveIndex(next);
       isTransitioning.current = true;
     },

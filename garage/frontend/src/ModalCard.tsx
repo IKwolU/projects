@@ -162,19 +162,19 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
               <p className="text-base md:text-lg font-regular text-gray">
                 Парк: {car.park_name}
               </p>
-              <Separator />
+              <Separator className="my-1" />
               <p className="text-base md:text-lg font-regular text-gray">
                 Адрес: {car.division?.address}
               </p>
-              <Separator />
+              <Separator className="my-1" />
               <p className="text-base md:text-lg font-regular text-gray">
                 Телефон: {car.division?.phone}
               </p>
-              <Separator />
+              <Separator className="my-1" />
               <p className="text-base md:text-lg font-regular text-gray">
                 Минимум дней аренды: {car.rent_term?.minimum_period_days}
               </p>
-              <Separator />
+              <Separator className="my-1" />
             </div>
             <div className="min-h-28 md:w-1/2 ">
               {Object.keys(DayOfWeek).map((x) => {

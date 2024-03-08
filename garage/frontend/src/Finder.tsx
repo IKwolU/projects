@@ -67,6 +67,7 @@ enum ActiveFilter {
   TransmissionType = 2,
   RentTerm = 3,
   Sorting = 4,
+  Buyout = 5,
 }
 
 const staticSchemas = [
@@ -168,7 +169,7 @@ export const Finder = () => {
     <>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
       <div className="">
-        <div className="flex justify-between mx-auto my-2 h-fit sm:justify-start">
+        <div className="flex justify-between mx-auto my-2 sm:justify-start h-[75px]">
           {[
             [CarClass.Economy, econom, "Эконом"],
             [CarClass.Comfort, comfort, "Комфорт"],
@@ -214,6 +215,16 @@ export const Finder = () => {
               ),
               filter: ActiveFilter.Sorting,
               isEngaged: filters.sorting === "desc",
+            },
+            {
+              title:
+                filters.buyoutPossible !== undefined
+                  ? filters.buyoutPossible
+                    ? "Выкуп"
+                    : "Аренда"
+                  : "Тип аренды",
+              filter: ActiveFilter.Buyout,
+              isEngaged: filters.buyoutPossible !== undefined,
             },
             {
               title: filters.schema
@@ -439,6 +450,25 @@ export const Finder = () => {
                 </Badge>
               )
             )}
+          {activeFilter === ActiveFilter.Buyout &&
+            [false, true, undefined].map((buyoutPossible, i) => (
+              <Badge
+                key={`Buyout${i}`}
+                className={`${
+                  filters.buyoutPossible !== undefined ? "bg-white" : ""
+                } cursor-pointer`}
+                onClick={() => {
+                  return setFilters({
+                    ...filters,
+                    buyoutPossible,
+                  });
+                }}
+              >
+                {buyoutPossible && "Выкуп"}
+                {buyoutPossible === false && "Аренда"}
+                {buyoutPossible === undefined && "Любой тип аренды"}
+              </Badge>
+            ))}
           {activeFilter === ActiveFilter.FuelType &&
             [FuelType.Gasoline, FuelType.Gas, null].map((fuelType, i) => (
               <Badge

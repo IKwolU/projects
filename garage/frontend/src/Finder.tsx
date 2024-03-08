@@ -299,7 +299,7 @@ export const Finder = () => {
                           });
                         }}
                       >
-                        Все марки
+                        Показать все марки
                       </Button>
                       {filteredBrands.map((x: string) => {
                         const title = x;

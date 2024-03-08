@@ -61,6 +61,18 @@ export const BookingDrawer = () => {
     );
   };
 
+  // const activeBookinbCheckWorkingHours = () => {
+  //   const working_hours = activeBooking!.car!.division!.working_hours;
+  //   const monday = {`${working_hours![0].start?.hours}:${working_hours![0].start?.minutes}:${working_hours![0].end?.hours}:${working_hours![0].end?.minutes}`};
+  //   const tusday = `${working_hours![1].start?.hours}:${working_hours![1].start?.minutes}:${working_hours![1].end?.hours}:${working_hours![1].end?.minutes}`;
+  //   const wednesday = `${working_hours![2].start?.hours}:${working_hours![2].start?.minutes}:${working_hours![2].end?.hours}:${working_hours![2].end?.minutes}`;
+  //   const thursday = `${working_hours![3].start?.hours}:${working_hours![3].start?.minutes}:${working_hours![3].end?.hours}:${working_hours![3].end?.minutes}`;
+  //   const friday = `${working_hours![4].start?.hours}:${working_hours![4].start?.minutes}:${working_hours![4].end?.hours}:${working_hours![4].end?.minutes}`;
+  //   if () {
+
+  //   }
+  // }
+
   const sortedBookings = [...bookings]
     .filter((x) =>
       [

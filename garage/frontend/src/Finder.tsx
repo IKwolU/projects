@@ -84,7 +84,7 @@ export const Finder = () => {
     brands: [],
     transmissionType: null,
     selfEmployed: false,
-    buyoutPossible: false,
+    buyoutPossible: undefined,
     sorting: "asc",
     schema: null,
     car_vin: null,
@@ -324,7 +324,7 @@ export const Finder = () => {
                           >
                             <span
                               className={`w-full block p-1 rounded-xl ${
-                                isActive ? "bg-green-500" : ""
+                                isActive ? "text-green-700" : ""
                               }`}
                             >
                               {" "}

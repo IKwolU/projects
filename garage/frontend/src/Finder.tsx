@@ -178,9 +178,9 @@ export const Finder = () => {
     () =>
       setFilters({
         ...filters,
-        car_vin: searchTerm,
+        car_vin: searchParkTerm,
       }),
-    [searchTerm]
+    [searchParkTerm]
   );
 
   return (
@@ -458,7 +458,10 @@ export const Finder = () => {
           </Dialog> */}
           <Dialog>
             <DialogTrigger asChild>
-              <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+                {!!filters.parksName.length && (
+                  <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
+                )}
                 {filters.parksName.length > 3 &&
                   `${filters.parksName.slice(0, 3).join(", ")} и еще ${
                     filters.parksName.length - 3

@@ -101,6 +101,7 @@ export const Finder = () => {
   const [brands, setBrands] = useState<IBrands>({ name: "", models: [] });
   const [parksName, setParksName] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchParkTerm, setSearchParkTerm] = useState("");
 
   const city = useRecoilValue(cityAtom);
 
@@ -168,6 +169,11 @@ export const Finder = () => {
     (brand: Brands) =>
       brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const filteredParks = parksName.filter(
+    (name: string) =>
+      name && name.toLowerCase().includes(searchParkTerm.toLowerCase())
+  );
+
   useEffect(
     () =>
       setFilters({
@@ -310,6 +316,7 @@ export const Finder = () => {
                             ...filters,
                             brands: [],
                           });
+                          setSearchTerm("");
                         }}
                       >
                         Показать все марки
@@ -436,8 +443,8 @@ export const Finder = () => {
                   className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
                   type="text"
                   placeholder="Поиск"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchParkTerm}
+                  onChange={(e) => setSearchParkTerm(e.target.value)}
                 />
               </div>
               <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
@@ -448,12 +455,13 @@ export const Finder = () => {
                       ...filters,
                       parksName: [],
                     });
+                    setSearchParkTerm("");
                   }}
                 >
                   Показать все парки
                 </div>
                 <Separator className="mt-1" />
-                {parksName
+                {filteredParks
                   .filter((x) => x)
                   .map((x) => {
                     const title = x!;

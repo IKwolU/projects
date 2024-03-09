@@ -79,6 +79,7 @@ export const BookingDrawer = () => {
         BookingStatus.RentStart,
         BookingStatus.Booked,
         BookingStatus.BookingTimeOver,
+        BookingStatus.UnBooked,
       ].includes(x!.status!)
     )
     .sort((a, b) => {
@@ -122,13 +123,13 @@ export const BookingDrawer = () => {
               alt=""
             />
             <div className=" md:space-y-1">
-              <p className="text-base font-semibold">{`${booking.car?.brand} ${booking.car?.model}`}</p>
+              <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
               <Separator />
-              <p className="text-base font-semibold">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
+              <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
               <Separator />
-              <p className="text-base font-semibold">{`Адрес: ${booking.car?.division?.address}`}</p>
+              <p className="text-base">{`Адрес: ${booking.car?.division?.address}`}</p>
               <Separator />
-              <p className="text-base font-semibold">{`Тел.: ${booking.car?.division?.phone}`}</p>
+              <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
               <div className="hidden space-y-1 md:block">
                 <Separator />
                 <div className="flex items-center">
@@ -251,9 +252,7 @@ export const BookingDrawer = () => {
               <p className="w-1/2 font-semibold">Дата начала бронирования:</p>
               {format(booking.start_date!, "dd.MM.yyyy HH:mm")}
             </div>
-            {![BookingStatus.RentOver, BookingStatus.RentStart].includes(
-              booking.status!
-            ) && (
+            {![BookingStatus.RentStart].includes(booking.status!) && (
               <>
                 <Separator />
                 <div className="flex items-center">
@@ -277,7 +276,7 @@ export const BookingDrawer = () => {
           {booking.status === BookingStatus.Booked && (
             <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3">
               <Button
-                className="w-1/2"
+                className="w-1/2 font-normal text-white bg-green-500"
                 onClick={() => {
                   setIsPhoneClicked(true);
                 }}

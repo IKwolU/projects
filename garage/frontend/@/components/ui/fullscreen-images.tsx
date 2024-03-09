@@ -28,12 +28,12 @@ const FullScreenImages = ({
     slidesToScroll: 1,
     arrows: false,
     initialSlide: fullscreenIndex,
-    beforeChange: (next: any) => {
-      setActiveIndex(next);
+    beforeChange: () => {
       isTransitioning.current = true;
     },
-    afterChange: () => {
+    afterChange: (current: any) => {
       isTransitioning.current = false;
+      setActiveIndex(current);
     },
   };
 

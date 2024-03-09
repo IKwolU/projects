@@ -29,7 +29,7 @@ const SliderImages = ({
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    beforeChange: (next: any) => {
+    beforeChange: () => {
       isTransitioning.current = true;
     },
     afterChange: (current: any) => {
@@ -40,7 +40,7 @@ const SliderImages = ({
   };
 
   const handlePaginationMouseEnterOrClick = (index: number) => {
-    if (sliderRef.current) {
+    if (sliderRef.current && index !== activeIndex) {
       sliderRef.current.slickGoTo(index);
       setActiveIndex(index);
       isTransitioning.current = true;

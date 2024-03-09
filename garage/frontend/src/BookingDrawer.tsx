@@ -18,7 +18,6 @@ import Confirmation from "@/components/ui/confirmation";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
-
   const [isPhoneClicked, setIsPhoneClicked] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({
     latitude: null,
@@ -145,7 +144,11 @@ export const BookingDrawer = () => {
               <p className="text-base">
                 Адрес:{" "}
                 <a
-                  href={`yandexnavi://map_search?text=${booking.car?.division?.address}`}
+                  href={
+                    window.innerWidth < 800
+                      ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
+                      : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`
+                  }
                   className="text-base text-black"
                   target="_blank"
                 >

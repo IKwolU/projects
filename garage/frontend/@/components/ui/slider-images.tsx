@@ -30,19 +30,19 @@ const SliderImages = ({
     slidesToScroll: 1,
     arrows: false,
     beforeChange: (next: any) => {
-      setActiveIndex(next);
       isTransitioning.current = true;
     },
     afterChange: (current: any) => {
       setFullscreenIndex(current);
+      setActiveIndex(current);
       isTransitioning.current = false;
     },
   };
 
-  const handlePaginationClick = (index: number) => {
-    setActiveIndex(index);
+  const handlePaginationMouseEnterOrClick = (index: number) => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(index);
+      setActiveIndex(index);
       isTransitioning.current = true;
     }
   };
@@ -93,8 +93,8 @@ const SliderImages = ({
               className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${
                 i === activeIndex ? "shadow border-2 border-yellow" : "scale-90"
               } `}
-              onClick={() => handlePaginationClick(i)}
-              onMouseEnter={() => handlePaginationClick(i)}
+              onClick={() => handlePaginationMouseEnterOrClick(i)}
+              onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
               style={{
                 cursor: isTransitioning.current ? "default" : "default",
               }}

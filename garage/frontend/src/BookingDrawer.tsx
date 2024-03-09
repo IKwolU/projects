@@ -20,7 +20,21 @@ export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
 
   const [isPhoneClicked, setIsPhoneClicked] = useState(false);
+  const [userCoordinates, setUserCoordinates] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        setUserCoordinates({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      });
+    }
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -131,7 +145,7 @@ export const BookingDrawer = () => {
               <p className="text-base">
                 Адрес:{" "}
                 <a
-                  href={`https://yandex.ru/maps/?rtext=${navigator.geolocation.getCurrentPosition}~${booking.car?.division?.address}`}
+                  href={`https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`}
                   className="text-base text-black"
                   target="_blank"
                 >

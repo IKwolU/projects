@@ -38,9 +38,9 @@ const FullScreenImages = ({
   };
 
   const handlePaginationClick = (index: number) => {
-    setActiveIndex(index);
-    if (sliderRef.current) {
+    if (sliderRef.current && index !== activeIndex) {
       sliderRef.current.slickGoTo(index);
+      setActiveIndex(index);
       isTransitioning.current = true;
     }
   };

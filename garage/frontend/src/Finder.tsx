@@ -315,6 +315,7 @@ export const Finder = () => {
                           setFilters({
                             ...filters,
                             brands: [],
+                            models: [],
                           });
                           setSearchTerm("");
                         }}
@@ -333,16 +334,16 @@ export const Finder = () => {
                               isActive ? "" : ""
                             }`}
                             key={title}
-                            onClick={() =>
-                              setFilters({
-                                ...filters,
-                                brands: isActive
-                                  ? filters.brands.filter((b) => b != title)
-                                  : [...filters.brands, title],
-                              })
-                            }
                           >
                             <span
+                              onClick={() =>
+                                setFilters({
+                                  ...filters,
+                                  brands: isActive
+                                    ? filters.brands.filter((b) => b !== title)
+                                    : [...filters.brands, title],
+                                })
+                              }
                               className={`w-full block p-1 rounded-xl ${
                                 isActive ? "text-green-700" : ""
                               }`}
@@ -350,6 +351,40 @@ export const Finder = () => {
                               {" "}
                               {title}
                             </span>{" "}
+                            {isActive &&
+                              x.models!.map((model) => {
+                                const isActiveModel = filters.models.some(
+                                  (b) => b === model
+                                );
+                                return (
+                                  <span
+                                    className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
+                                      isActiveModel ? "" : ""
+                                    }`}
+                                    key={model}
+                                    onClick={() =>
+                                      setFilters({
+                                        ...filters,
+                                        models: isActiveModel
+                                          ? filters.models.filter(
+                                              (b) => b != model
+                                            )
+                                          : [...filters.models, model],
+                                      })
+                                    }
+                                  >
+                                    <Separator className="mt-1" />
+                                    <span
+                                      className={` ml-20 w-full block p-1 rounded-xl ${
+                                        isActiveModel ? "text-green-700" : ""
+                                      }`}
+                                    >
+                                      {" "}
+                                      {model}
+                                    </span>
+                                  </span>
+                                );
+                              })}
                             <Separator className="mt-1" />
                           </span>
                         );

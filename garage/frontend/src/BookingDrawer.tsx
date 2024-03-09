@@ -145,7 +145,7 @@ export const BookingDrawer = () => {
               <p className="text-base">
                 Адрес:{" "}
                 <a
-                  href={`https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`}
+                  href={`yandexnavi://map_search?text=${booking.car?.division?.address}`}
                   className="text-base text-black"
                   target="_blank"
                 >

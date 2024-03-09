@@ -34,13 +34,13 @@ const Confirmation = ({
           <div className="flex flex-col items-center justify-center max-w-xs px-8 py-4 text-xl bg-white min-w-80 rounded-xl">
             {title}
             <div className="flex w-full mt-2 space-x-2 ">
+              <Button onClick={handleCancel}>Нет</Button>
               <Button
                 variant={type === "red" ? "reject" : "default"}
                 onClick={handleAccept}
               >
                 Да
               </Button>
-              <Button onClick={handleCancel}>Нет</Button>
             </div>
           </div>
         </div>

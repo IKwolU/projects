@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('url');
             $table->float('commission');
             $table->string('park_name');
+            $table->integer('self_imployeds_discount');
             $table->text('about');
             $table->timestamps();
         });

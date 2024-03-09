@@ -9,7 +9,7 @@ use App\Models\Tariff;
 use App\Models\City;
 use App\Models\Driver;
 use App\Models\DriverSpecification;
-use App\Models\Division;
+use App\Models\Division;use App\Models\Park;
 use App\Models\RentTerm;
 use App\Models\Schema;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +45,8 @@ class CarsController extends Controller
      *             @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *             @OA\Property(property="fuel_type", type="string", description="Тип топлива",ref="#/components/schemas/FuelType"),
      *             @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
-     *             @OA\Property(property="brand", type="array", description="Марка автомобиля",@OA\Items()),
+     *             @OA\Property(property="brand", type="array", description="Марка автомобиля", @OA\Items()),
+     *             @OA\Property(property="park_name", type="array", description="Парк автомобиля", @OA\Items()),
      *             @OA\Property(property="search", type="array", description="Марка или модель автомобиля",@OA\Items()),
      *             @OA\Property(property="sorting", type="string", description="сортировка, asc или desc"),
      *             @OA\Property(property="car_vin", type="string", description="VIN авто"),
@@ -150,7 +151,7 @@ class CarsController extends Controller
 
         $brand = $request->brand;
         $model = $request->model;
-
+        $parksName = $request->park_name;
         $carClassValues = $request->car_class ? $request->car_class : [];
         $translatedValues = [];
 
@@ -241,6 +242,11 @@ class CarsController extends Controller
         if ($commission) {
             $carsQuery->whereHas('division.park', function ($query) use ($commission) {
                 $query->where('commission', '<=', $commission);
+            });
+        }
+        if ($parksName) {
+            $carsQuery->whereHas('division.park', function ($query) use ($parksName) {
+                $query->whereIn('park_name', $parksName);
             });
         }
         if ($isBuyoutPossible) {
@@ -742,16 +748,22 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      * Показать список брендов
      *
      * @OA\Post(
-     *     path="/cars/brand-list",
-     *     operationId="GetBrandList",
+     *     path="/cars/brand-park-list",
+     *     operationId="getBrandsAndParksList",
      *     summary="Показать список брендов",
      *     tags={"Cars"},
      *     @OA\Response(
      *         response="200",
      *         description="Успешный ответ",
      *         @OA\JsonContent(
-     * @OA\Property(property="brands", type="array",@OA\Items(type="string"), description="Список брендов"),
-     *     )),
+     * @OA\Property(property="brands", type="array",
+     * @OA\Items(
+     *                             @OA\Property(property="name", type="string"),
+     *                             @OA\Property(property="models", type="array", @OA\Items(type="string")),
+     *                         )),
+     *                 @OA\Property(property="parks", type="array", @OA\Items(type="string")),
+     *                 )
+     *     ),
      *     @OA\Response(
      *         response="500",
      *         description="Ошибка сервера",
@@ -764,10 +776,20 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
-    public function GetBrandList()
+    public function getBrandsAndParksList()
     {
-        $brandList = Car::select('brand')->distinct()->orderBy('brand', 'asc')->get()->pluck('brand')->toArray();
-        return response()->json(['brands' => $brandList]);
+        $cars = Car::orderBy('brand')->orderBy('model')->get();
+
+        $brandList = $cars->groupBy('brand')->map(function ($group) {
+            return [
+                'name' => $group->first()->brand,
+                'models' => $group->pluck('model')->unique()->sort()->values()->all()
+            ];
+        })->values()->all();
+
+        $parkList = Park::orderBy('park_name')->pluck('park_name')->all();
+
+        return response()->json(['brands' => $brandList, 'parks' => $parkList]);
     }
 }
 

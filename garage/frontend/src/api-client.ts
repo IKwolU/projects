@@ -1199,8 +1199,8 @@ export class Client {
      * Показать список брендов
      * @return Успешный ответ
      */
-    getBrandList(): Promise<Anonymous67> {
-        let url_ = this.baseUrl + "/cars/brand-list";
+    getBrandsAndParksList(): Promise<Anonymous67> {
+        let url_ = this.baseUrl + "/cars/brand-park-list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1211,11 +1211,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetBrandList(_response);
+            return this.processGetBrandsAndParksList(_response);
         });
     }
 
-    protected processGetBrandList(response: Response): Promise<Anonymous67> {
+    protected processGetBrandsAndParksList(response: Response): Promise<Anonymous67> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -1851,6 +1851,8 @@ export class Body8 implements IBody8 {
     park_name?: string;
     /** Описание парка */
     about?: string;
+    /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
+    self_imployeds_discount?: number;
 
     [key: string]: any;
 
@@ -1873,6 +1875,7 @@ export class Body8 implements IBody8 {
             this.commission = _data["commission"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
+            this.self_imployeds_discount = _data["self_imployeds_discount"];
         }
     }
 
@@ -1893,6 +1896,7 @@ export class Body8 implements IBody8 {
         data["commission"] = this.commission;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
+        data["self_imployeds_discount"] = this.self_imployeds_discount;
         return data;
     }
 }
@@ -1906,6 +1910,8 @@ export interface IBody8 {
     park_name?: string;
     /** Описание парка */
     about?: string;
+    /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
+    self_imployeds_discount?: number;
 
     [key: string]: any;
 }
@@ -2427,6 +2433,8 @@ export class Body15 implements IBody15 {
     transmission_type?: TransmissionType;
     /** Марка автомобиля */
     brand?: any[];
+    /** Парк автомобиля */
+    park_name?: any[];
     /** Марка или модель автомобиля */
     search?: any[];
     /** сортировка, asc или desc */
@@ -2469,6 +2477,11 @@ export class Body15 implements IBody15 {
                 this.brand = [] as any;
                 for (let item of _data["brand"])
                     this.brand!.push(item);
+            }
+            if (Array.isArray(_data["park_name"])) {
+                this.park_name = [] as any;
+                for (let item of _data["park_name"])
+                    this.park_name!.push(item);
             }
             if (Array.isArray(_data["search"])) {
                 this.search = [] as any;
@@ -2516,6 +2529,11 @@ export class Body15 implements IBody15 {
             for (let item of this.brand)
                 data["brand"].push(item);
         }
+        if (Array.isArray(this.park_name)) {
+            data["park_name"] = [];
+            for (let item of this.park_name)
+                data["park_name"].push(item);
+        }
         if (Array.isArray(this.search)) {
             data["search"] = [];
             for (let item of this.search)
@@ -2552,6 +2570,8 @@ export interface IBody15 {
     transmission_type?: TransmissionType;
     /** Марка автомобиля */
     brand?: any[];
+    /** Парк автомобиля */
+    park_name?: any[];
     /** Марка или модель автомобиля */
     search?: any[];
     /** сортировка, asc или desc */
@@ -5905,8 +5925,8 @@ export interface IAnonymous66 {
 }
 
 export class Anonymous67 implements IAnonymous67 {
-    /** Список брендов */
-    brands?: string[];
+    brands?: Brands[];
+    parks?: string[];
 
     [key: string]: any;
 
@@ -5928,7 +5948,12 @@ export class Anonymous67 implements IAnonymous67 {
             if (Array.isArray(_data["brands"])) {
                 this.brands = [] as any;
                 for (let item of _data["brands"])
-                    this.brands!.push(item);
+                    this.brands!.push(Brands.fromJS(item));
+            }
+            if (Array.isArray(_data["parks"])) {
+                this.parks = [] as any;
+                for (let item of _data["parks"])
+                    this.parks!.push(item);
             }
         }
     }
@@ -5949,15 +5974,20 @@ export class Anonymous67 implements IAnonymous67 {
         if (Array.isArray(this.brands)) {
             data["brands"] = [];
             for (let item of this.brands)
-                data["brands"].push(item);
+                data["brands"].push(item.toJSON());
+        }
+        if (Array.isArray(this.parks)) {
+            data["parks"] = [];
+            for (let item of this.parks)
+                data["parks"].push(item);
         }
         return data;
     }
 }
 
 export interface IAnonymous67 {
-    /** Список брендов */
-    brands?: string[];
+    brands?: Brands[];
+    parks?: string[];
 
     [key: string]: any;
 }
@@ -6840,6 +6870,66 @@ export interface IBooking {
     end_date?: string;
     car?: Car;
     rent_term?: Rent_term2;
+
+    [key: string]: any;
+}
+
+export class Brands implements IBrands {
+    name?: string;
+    models?: string[];
+
+    [key: string]: any;
+
+    constructor(data?: IBrands) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.name = _data["name"];
+            if (Array.isArray(_data["models"])) {
+                this.models = [] as any;
+                for (let item of _data["models"])
+                    this.models!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Brands {
+        data = typeof data === 'object' ? data : {};
+        let result = new Brands();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["name"] = this.name;
+        if (Array.isArray(this.models)) {
+            data["models"] = [];
+            for (let item of this.models)
+                data["models"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IBrands {
+    name?: string;
+    models?: string[];
 
     [key: string]: any;
 }

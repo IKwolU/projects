@@ -927,6 +927,10 @@
                                     "about": {
                                         "description": "Описание парка",
                                         "type": "string"
+                                    },
+                                    "self_imployeds_discount": {
+                                        "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -2158,6 +2162,11 @@
                                         "type": "array",
                                         "items": {}
                                     },
+                                    "park_name": {
+                                        "description": "Парк автомобиля",
+                                        "type": "array",
+                                        "items": {}
+                                    },
                                     "search": {
                                         "description": "Марка или модель автомобиля",
                                         "type": "array",
@@ -2778,14 +2787,14 @@
                 ]
             }
         },
-        "/cars/brand-list": {
+        "/cars/brand-park-list": {
             "post": {
                 "tags": [
                     "Cars"
                 ],
                 "summary": "Показать список брендов",
                 "description": "Показать список брендов",
-                "operationId": "GetBrandList",
+                "operationId": "getBrandsAndParksList",
                 "responses": {
                     "200": {
                         "description": "Успешный ответ",
@@ -2794,7 +2803,23 @@
                                 "schema": {
                                     "properties": {
                                         "brands": {
-                                            "description": "Список брендов",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "models": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "parks": {
                                             "type": "array",
                                             "items": {
                                                 "type": "string"

@@ -7,9 +7,11 @@ import { useEffect, useState } from "react";
 
 import {
   Body15,
+  Brands,
   CarClass,
   Cars2,
   FuelType,
+  IBrands,
   Schemas,
   Schemas2,
   TransmissionType,
@@ -51,6 +53,8 @@ const DEFAULT_COMMISSION_PERCENTAGE = 0;
 
 type CarFilter = {
   brands: string[];
+  models: string[];
+  parksName: string[];
   carClass: CarClass[];
   commission: number | null;
   fuelType: FuelType | null;
@@ -82,6 +86,8 @@ export const Finder = () => {
     commission: DEFAULT_COMMISSION_PERCENTAGE,
     fuelType: null,
     brands: [],
+    models: [],
+    parksName: [],
     transmissionType: null,
     selfEmployed: false,
     buyoutPossible: undefined,
@@ -92,19 +98,20 @@ export const Finder = () => {
 
   const [cars, setCars] = useState<Cars2[]>([]);
   const [activeFilter, setActiveFilter] = useState<ActiveFilter | null>(null);
-  const [brands, setBrands] = useState<string[]>([]);
+  const [brands, setBrands] = useState<IBrands>({ name: "", models: [] });
+  const [parksName, setParksName] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const city = useRecoilValue(cityAtom);
 
   useEffect(() => {
-    const getBrandList = async () => {
-      const data = await client.getBrandList();
-
+    const getBrandsAndParksList = async () => {
+      const data = await client.getBrandsAndParksList();
       setBrands(data.brands!);
+      setParksName(data.parks!);
     };
 
-    getBrandList();
+    getBrandsAndParksList();
   }, []);
 
   useEffect(() => {
@@ -112,6 +119,8 @@ export const Finder = () => {
       const data = await client.searchCars(
         new Body15({
           brand: filters.brands,
+          model: filters.models,
+          park_name: filters.parksName,
           city,
           fuel_type: filters.fuelType || undefined,
           transmission_type: filters.transmissionType || undefined,
@@ -144,6 +153,8 @@ export const Finder = () => {
       commission: DEFAULT_COMMISSION_PERCENTAGE,
       fuelType: null,
       brands: [],
+      models: [],
+      parksName: [],
       transmissionType: null,
       selfEmployed: false,
       buyoutPossible: undefined,
@@ -152,9 +163,10 @@ export const Finder = () => {
       car_vin: null,
     });
   };
-
-  const filteredBrands = brands.filter((brand) =>
-    brand.toLowerCase().includes(searchTerm.toLowerCase())
+  const brandsArray = Object.values(brands);
+  const filteredBrands = brandsArray.filter(
+    (brand: Brands) =>
+      brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   useEffect(
     () =>
@@ -233,7 +245,7 @@ export const Finder = () => {
               filter: ActiveFilter.RentTerm,
               isEngaged: filters.schema !== null,
             },
-            { isEngaged: !!filters.brands.length },
+            { isEngaged: !!filters.brands!.length },
 
             {
               title: getTransmissionDisplayName(filters.transmissionType),
@@ -291,7 +303,8 @@ export const Finder = () => {
                       />
                     </div>
                     <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
-                      <Button
+                      <div
+                        className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-700"
                         onClick={() => {
                           setFilters({
                             ...filters,
@@ -300,13 +313,13 @@ export const Finder = () => {
                         }}
                       >
                         Показать все марки
-                      </Button>
-                      {filteredBrands.map((x: string) => {
-                        const title = x;
+                      </div>
+                      <Separator className="mt-1" />
+                      {filteredBrands.map((x: IBrands) => {
+                        const title = x.name!;
                         const isActive = filters.brands.some(
                           (b) => b === title
                         );
-
                         return (
                           <span
                             className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
@@ -401,6 +414,92 @@ export const Finder = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog> */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+                {filters.parksName.length > 3 &&
+                  `${filters.parksName.slice(0, 3).join(", ")} и еще ${
+                    filters.parksName.length - 3
+                  }`}
+                {!!filters.parksName.length &&
+                  filters.parksName.length <= 3 &&
+                  `${filters.parksName.join(", ")}`}
+                {!filters.parksName.length && "Все парки"}
+              </span>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[800px]">
+              <DialogHeader>
+                <DialogTitle>Название парка</DialogTitle>
+              </DialogHeader>
+              <div className="">
+                <input
+                  className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
+                  type="text"
+                  placeholder="Поиск"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
+                <div
+                  className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-700"
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      parksName: [],
+                    });
+                  }}
+                >
+                  Показать все парки
+                </div>
+                <Separator className="mt-1" />
+                {parksName
+                  .filter((x) => x)
+                  .map((x) => {
+                    const title = x!;
+                    const isActive = filters.brands.some((b) => b === title);
+                    return (
+                      <span
+                        className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
+                          isActive ? "" : ""
+                        }`}
+                        key={title}
+                        onClick={() =>
+                          setFilters({
+                            ...filters,
+                            parksName: isActive
+                              ? filters.parksName.filter((b) => b != title)
+                              : [...filters.parksName, title],
+                          })
+                        }
+                      >
+                        <span
+                          className={`w-full block p-1 rounded-xl ${
+                            isActive ? "text-green-700" : ""
+                          }`}
+                        >
+                          {" "}
+                          {title}
+                        </span>{" "}
+                        <Separator className="mt-1" />
+                      </span>
+                    );
+                  })}
+              </div>
+
+              <DialogFooter>
+                <DialogClose asChild>
+                  <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                    <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                      <div className="sm:max-w-[250px] w-full">
+                        <Button>Выбрать</Button>
+                      </div>
+                    </div>
+                  </div>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <div className="cursor-pointer inline-flex items-center h-10 text-nowrap active:bg-white whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-black transition-colors focus:outline-none bg-grey">
             <FontAwesomeIcon
               onClick={filtersClean}

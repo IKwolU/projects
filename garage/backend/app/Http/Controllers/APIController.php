@@ -925,6 +925,7 @@ class APIController extends Controller
      *             @OA\Property(property="commission", type="number", description="Комиссия"),
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
+     *             @OA\Property(property="self_imployeds_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(
      *         response=200,
@@ -972,6 +973,8 @@ class APIController extends Controller
             'commission' => 'numeric',
             'park_name' => 'string',
             'about' => 'string','phone' => 'string',
+            'self_imployeds_discount' => 'integer',
+            'phone' => 'string',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
@@ -988,7 +991,9 @@ class APIController extends Controller
         if ($request->about) {
             $park->about = $request->about;
         }
-
+        if ($request->self_imployeds_discount) {
+            $park->self_imployeds_discount = $request->self_imployeds_discount;
+        }
         $park->save();
         return response()->json(['message' => 'Парк обновлен'], 200);
     }

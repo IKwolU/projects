@@ -198,7 +198,7 @@ export const BookingDrawer = () => {
                   <Badge variant="card">Выкуп автомобиля</Badge>
                 )}
               </div>
-              <div className="flex flex-wrap gap-1 pb-2 mb-1">
+              <div className="flex flex-wrap gap-1 pb-2 mt-1 mb-1">
                 {booking
                   .rent_term!.schemas!.slice(0, 3)
                   .map((currentSchema, i) => (

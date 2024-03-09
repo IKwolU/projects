@@ -87,6 +87,7 @@ export const BookingDrawer = () => {
       if (a.end_date! < b.end_date!) return 1;
       return 0;
     });
+
   return (
     <>
       {sortedBookings.map((booking) => (
@@ -127,7 +128,16 @@ export const BookingDrawer = () => {
               <Separator />
               <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
               <Separator />
-              <p className="text-base">{`Адрес: ${booking.car?.division?.address}`}</p>
+              <p className="text-base">
+                Адрес:{" "}
+                <a
+                  href={`https://yandex.ru/maps/?rtext=${navigator.geolocation.getCurrentPosition}~${booking.car?.division?.address}`}
+                  className="text-base text-black"
+                  target="_blank"
+                >
+                  {`${booking.car?.division?.address}`}
+                </a>
+              </p>
               <Separator />
               <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
               <div className="hidden space-y-1 md:block">

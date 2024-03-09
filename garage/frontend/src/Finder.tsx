@@ -46,6 +46,7 @@ import { Badge } from "@/components/ui/badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
+  faCheck,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Separator } from "@/components/ui/separator";
@@ -345,7 +346,7 @@ export const Finder = () => {
                                 })
                               }
                               className={`w-full block p-1 rounded-xl ${
-                                isActive ? "text-green-700" : ""
+                                isActive ? "text-green-500" : ""
                               }`}
                             >
                               {" "}
@@ -373,14 +374,19 @@ export const Finder = () => {
                                       })
                                     }
                                   >
-                                    <Separator className="mt-1" />
                                     <span
-                                      className={` ml-20 w-full block p-1 rounded-xl ${
-                                        isActiveModel ? "text-green-700" : ""
+                                      className={` w-full font-normal text-base block p-1 rounded-xl ${
+                                        isActiveModel ? "" : ""
                                       }`}
                                     >
                                       {" "}
                                       {model}
+                                      {isActiveModel && (
+                                        <FontAwesomeIcon
+                                          icon={faCheck}
+                                          className="px-1 ml-1 text-green-500 cursor-pointer"
+                                        />
+                                      )}
                                     </span>
                                   </span>
                                 );

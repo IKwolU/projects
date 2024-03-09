@@ -319,7 +319,19 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                       {!!activeBooking && (
                         <div className="w-full my-2">
                           <Confirmation
-                            title={`У вас есть активная бронь: ${activeBooking.car?.brand} ${activeBooking.car?.model}. Отменить и забронировать ${car.brand} ${car.model}?`}
+                            title={
+                              <div className="text-center">
+                                <div>
+                                  У вас есть активная бронь:{" "}
+                                  {activeBooking.car?.brand}{" "}
+                                  {activeBooking.car?.model}
+                                </div>
+                                <div>
+                                  Отменить и забронировать {car.brand}{" "}
+                                  {car.model}?
+                                </div>
+                              </div>
+                            }
                             type="green"
                             accept={() => book(id)}
                             cancel={() => {}}
@@ -360,7 +372,17 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
         {!!activeBooking && carVariants.length <= 1 && (
           <div className="w-1/2 max-w-[250px]">
             <Confirmation
-              title={`У вас есть активная бронь: ${activeBooking.car?.brand} ${activeBooking.car?.model}. Отменить и забронировать ${car.brand} ${car.model}?`}
+              title={
+                <div className="text-center ">
+                  <div>
+                    У вас есть активная бронь: {activeBooking.car?.brand}{" "}
+                    {activeBooking.car?.model}
+                  </div>
+                  <div>
+                    Отменить и забронировать {car.brand} {car.model}?
+                  </div>
+                </div>
+              }
               type="green"
               accept={book}
               cancel={() => {}}

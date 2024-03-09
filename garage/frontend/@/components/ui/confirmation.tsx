@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "./button";
 
 interface ConfirmationProps {
-  title: string;
+  title: string | JSX.Element;
   type: "red" | "green";
   cancel: () => void;
   accept: () => void;

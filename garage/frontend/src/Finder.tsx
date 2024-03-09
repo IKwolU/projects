@@ -465,7 +465,7 @@ export const Finder = () => {
                   .filter((x) => x)
                   .map((x) => {
                     const title = x!;
-                    const isActive = filters.brands.some((b) => b === title);
+                    const isActive = filters.parksName.some((b) => b === title);
                     return (
                       <span
                         className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${

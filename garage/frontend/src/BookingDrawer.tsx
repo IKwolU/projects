@@ -131,13 +131,13 @@ export const BookingDrawer = () => {
               <Separator />
               <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
               <div className="hidden space-y-1 md:block">
-                <Separator />
-                <div className="flex items-center">
+                {/* <Separator /> */}
+                {/* <div className="flex items-center">
                   <p className="text-base font-semibold">
                     Дата начала бронирования:{" "}
                     {format(booking.start_date!, "dd.MM.yyyy HH:mm")}
                   </p>
-                </div>
+                </div> */}
                 {![BookingStatus.RentOver, BookingStatus.RentStart].includes(
                   booking.status!
                 ) && (
@@ -246,15 +246,15 @@ export const BookingDrawer = () => {
               </div>
             </>
           )}
-          <Separator className="md:hidden" />
+          {/* <Separator className="md:hidden" /> */}
           <div className="md:hidden">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <p className="w-1/2 font-semibold">Дата начала бронирования:</p>
               {format(booking.start_date!, "dd.MM.yyyy HH:mm")}
-            </div>
+            </div> */}
             {![BookingStatus.RentStart].includes(booking.status!) && (
               <>
-                <Separator />
+                <Separator className="mt-1" />
                 <div className="flex items-center">
                   <p className="w-1/2 font-semibold">
                     Дата окончания бронирования:

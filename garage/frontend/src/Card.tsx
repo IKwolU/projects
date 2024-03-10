@@ -18,7 +18,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="max-w-[352px] p-1 pb-4 mx-auto mb-8 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
+        <div className="max-w-[352px] p-1 pb-4 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 p-2 font-medium rounded-tl-lg rounded-br-lg shadow text-gray bg-yellow">
               {car.park_name}
@@ -44,39 +44,39 @@ export const Card = ({ car }: { car: Cars2 }) => {
           </div>
           <div className="px-4">
             <h1 className="my-2 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
-            <div className="flex flex-col justify-start gap-1 mt-2 mb-2">
-              <div>
-                <Badge variant="card" className="px-0 py-0 bg-grey ">
-                  <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                    Депозит{" "}
-                    {formatRoubles(car.rent_term!.deposit_amount_total!)}
-                  </span>
-                  <span className="flex items-center h-full px-2 ">
-                    {formatRoubles(car.rent_term!.deposit_amount_daily!)}
-                    /день
-                  </span>
-                </Badge>
+            <div className="flex flex-wrap justify-start gap-2 mb-2">
+              <div className="flex flex-col justify-start gap-1">
+                <div>
+                  <Badge variant="card" className="px-0 py-0 bg-grey ">
+                    <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                      Депозит{" "}
+                      {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                    </span>
+                    <span className="flex items-center h-full px-2 ">
+                      {formatRoubles(car.rent_term!.deposit_amount_daily!)}
+                      /день
+                    </span>
+                  </Badge>
+                </div>
               </div>
-              <div className="mt-1">
+              <div className="">
                 <Badge variant="card">Комиссия {car.commission} %</Badge>{" "}
               </div>
-            </div>
-
-            <div className="mt-2 mb-2 space-x-1">
-              <Badge variant="card">
+              <Badge variant="card" className="w-fit">
                 {getTransmissionDisplayName(car.transmission_type)}
               </Badge>
-              <Badge variant="card" className="mr-2">
+              <Badge variant="card" className=" w-fit">
                 {getFuelTypeDisplayName(car.fuel_type)}
               </Badge>
-            </div>
-            <div>
-              {/* {!!car.self_employed && (
+
+              <div>
+                {/* {!!car.self_employed && (
                 <Badge variant="card">Для самозанятых</Badge>
               )} */}
-              {!!car.rent_term?.is_buyout_possible && (
-                <Badge variant="card">Выкуп автомобиля</Badge>
-              )}
+                {!!car.rent_term?.is_buyout_possible && (
+                  <Badge variant="card">Выкуп автомобиля</Badge>
+                )}
+              </div>
             </div>
             <div className="flex flex-wrap gap-1">
               {currentSchemas?.slice(0, 3).map((currentSchema, i) => (

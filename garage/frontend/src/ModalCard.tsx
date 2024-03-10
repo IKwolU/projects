@@ -242,7 +242,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
             </Badge>{" "}
           </div>
           <div className="">
-            <Badge variant="card" className="mr-2 md:text-lg">
+            <Badge variant="card" className=" md:text-lg">
               {getFuelTypeDisplayName(car.fuel_type)}
             </Badge>
           </div>

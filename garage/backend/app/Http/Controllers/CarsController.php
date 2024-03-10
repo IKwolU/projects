@@ -347,6 +347,7 @@ class CarsController extends Controller
             foreach ($uniqueCars as $car) {
                 $formattedCar = $car;
                 $formattedCar['images'] = json_decode($car['images']);
+                $formattedCar['images'] = array_slice($formattedCar['images'], 0, 3);
                 $formattedCar['fuel_type'] = FuelType::from($car['fuel_type'])->name;
                 $formattedCar['transmission_type'] = TransmissionType::from($car['transmission_type'])->name;
                 $classCar = $car['tariff']['class'];

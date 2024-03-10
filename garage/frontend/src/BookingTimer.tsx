@@ -56,7 +56,7 @@ export const BookingTimer = () => {
           {`${hours}ч:${minutes}м`}
         </span>
       </div>
-      <div className="flex w-full mb-2 space-x-1 max-w-[600px]">
+      <div className="flex w-full mb-2 space-x-1 max-w-[300px]">
         {window.location.pathname !== "/bookings" && (
           <Button className="w-full">Подробнее</Button>
         )}

@@ -493,7 +493,7 @@ export const Finder = () => {
               </div>
               <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
                 <div
-                  className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-700"
+                  className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-500"
                   onClick={() => {
                     setFilters({
                       ...filters,
@@ -527,7 +527,7 @@ export const Finder = () => {
                       >
                         <span
                           className={`w-full block p-1 rounded-xl ${
-                            isActive ? "text-green-700" : ""
+                            isActive ? "text-green-500" : ""
                           }`}
                         >
                           {" "}

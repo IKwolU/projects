@@ -101,10 +101,10 @@ export const DriverLogin = () => {
     let formattedPhone = "+";
 
     if (input.length > 0) {
-      if (input[0] === "7") {
+      if (input[0] === "7" || input[0] === "8") {
         formattedPhone += "7";
       } else {
-        formattedPhone += "7";
+        formattedPhone += `7 (${input[0]}`;
       }
     }
 

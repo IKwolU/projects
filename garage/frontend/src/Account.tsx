@@ -10,20 +10,20 @@ import { client } from "./backend";
 import { DriverDocumentType, User, UserStatus } from "./api-client";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "./atoms";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import QRCode from "qrcode.react";
+// import {
+//   Dialog,
+//   DialogClose,
+//   DialogContent,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog";
+// import QRCode from "qrcode.react";
 
 export const Account = ({ user }: { user: User }) => {
   const setUser = useSetRecoilState(userAtom);
-  const [showQRCode, setShowQRCode] = useState(false);
+  // const [showQRCode, setShowQRCode] = useState(false);
 
   const [docs] = useState<
     {
@@ -64,7 +64,7 @@ export const Account = ({ user }: { user: User }) => {
   if (!user) {
     return <></>;
   }
-  const referralLink = `https://api.gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
+  // const referralLink = `https://api.gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
   const requiredDocumentCount = docs.length;
   const uploadedDocumentCount = user.docs?.filter((x) => !!x.url).length || 0;
 
@@ -104,9 +104,9 @@ export const Account = ({ user }: { user: User }) => {
     window.location.href = "/";
   };
 
-  const handleShowQRCode = () => {
-    setShowQRCode(true);
-  };
+  // const handleShowQRCode = () => {
+  //   setShowQRCode(true);
+  // };
 
   // const handleShare = async () => {
   //   if (navigator.share) {
@@ -124,17 +124,17 @@ export const Account = ({ user }: { user: User }) => {
   //   }
   // };
 
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(referralLink)
-      .then(() => {
-        console.log("Link copied to clipboard");
-        // You can add any additional functionality here after successful copy
-      })
-      .catch((error) => {
-        console.error("Failed to copy: ", error);
-      });
-  };
+  // const handleCopy = () => {
+  //   navigator.clipboard
+  //     .writeText(referralLink)
+  //     .then(() => {
+  //       console.log("Link copied to clipboard");
+  //       // You can add any additional functionality here after successful copy
+  //     })
+  //     .catch((error) => {
+  //       console.error("Failed to copy: ", error);
+  //     });
+  // };
 
   return (
     <>

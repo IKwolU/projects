@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BookingStatus } from "./api-client";
+import { BookingStatus, Bookings, User } from "./api-client";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
@@ -23,15 +23,30 @@ const Animation = () => {
 export default Animation;
 
 export const BookingTimer = () => {
-  const [user] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
 
   const activeBooking = user?.bookings!.find(
     (x) => x.status === BookingStatus.Booked
   );
 
-  const { days, minutes, hours, restart } = useTimer({
+  const { days, minutes, hours, seconds, restart } = useTimer({
     expiryTimestamp: new Date(),
     autoStart: false,
+    onExpire: () => {
+      setUser(
+        new User({
+          ...user,
+          bookings: [
+            ...user.bookings!.filter((x) => x !== activeBooking),
+            new Bookings({
+              ...activeBooking,
+              status: BookingStatus.UnBooked,
+              end_date: new Date().toISOString(),
+            }),
+          ],
+        })
+      );
+    },
   });
 
   useEffect(() => {
@@ -53,7 +68,9 @@ export const BookingTimer = () => {
         До конца бронирования осталось:{" "}
         <span>
           {!!days && `${days}д:`}
-          {`${hours}ч:${minutes}м`}
+          {(days !== 0 || minutes !== 0 || hours !== 0) &&
+            `${hours}ч:${minutes}м`}
+          {days === 0 && minutes === 0 && hours === 0 && `${seconds}c`}
         </span>
       </div>
       <div className="flex w-full mb-2 space-x-1 max-w-[300px]">

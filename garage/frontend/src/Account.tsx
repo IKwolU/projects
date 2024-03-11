@@ -138,7 +138,7 @@ export const Account = ({ user }: { user: User }) => {
 
   return (
     <>
-      {!!user.referral_info && (
+      {/* {!!user.referral_info && (
         <Dialog>
           <DialogTrigger asChild>
             <Button>Реферральная программа</Button>
@@ -190,7 +190,7 @@ export const Account = ({ user }: { user: User }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      )}
+      )} */}
       <div className="mx-auto w-80 sm:w-full sm:mx-0">
         <h1 className="mt-8 text-center md:text-2xl">
           Подтвердите свою личность

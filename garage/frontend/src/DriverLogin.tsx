@@ -6,7 +6,17 @@ import { Label } from "@/components/ui/label";
 import { Body8, Body9 } from "./api-client";
 import React, { ChangeEvent } from "react";
 import { useTimer } from "react-timer-hook";
+import { useRecoilState } from "recoil";
+import { userAtom } from "./atoms";
+import { useNavigate } from "react-router-dom";
+
 export const DriverLogin = () => {
+  const [user] = useRecoilState(userAtom);
+
+  const navigate = useNavigate();
+  if (user) {
+    navigate("/");
+  }
   const CODE_LENGTH = 4;
 
   const [codeRequested, setRequested] = useState(false);

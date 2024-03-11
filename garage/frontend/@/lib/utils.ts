@@ -3,7 +3,6 @@ import {
   DayOfWeek,
   FuelType,
   TransmissionType,
-  Working_hours2,
   Working_hours5,
 } from "../../src/api-client";
 import { twMerge } from "tailwind-merge";

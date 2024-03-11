@@ -16,8 +16,8 @@ import { useEffect, useState } from "react";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);

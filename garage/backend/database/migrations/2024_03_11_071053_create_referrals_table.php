@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('invited_id');
-            $table->string('link');
+            $table->string('referral_code');
+            $table->string('status');
             $table->integer('coins')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('invited_id')->references('id')->on('users');
         });
     }
 

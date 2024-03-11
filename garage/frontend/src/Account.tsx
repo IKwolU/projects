@@ -160,7 +160,7 @@ export const Account = ({ user }: { user: User }) => {
                 href="#"
                 // onClick={handleShare}
                 onClick={handleCopy}
-                className="mx-auto max-w-[250px] w-full"
+                className="mx-auto sm:max-w-[250px] w-full"
               >
                 <Button>Копировть</Button>
               </a>
@@ -174,7 +174,7 @@ export const Account = ({ user }: { user: User }) => {
                 </div>
               ) : (
                 <Button
-                  className="mx-auto max-w-[250px]"
+                  className="mx-auto sm:max-w-[250px]"
                   onClick={handleShowQRCode}
                 >
                   Показать QR-код
@@ -184,7 +184,7 @@ export const Account = ({ user }: { user: User }) => {
             <DialogFooter>
               <DialogClose asChild>
                 <div className="fixed bottom-0 flex w-full p-2">
-                  <Button className="mx-auto max-w-[250px]">Назад</Button>
+                  <Button className="mx-auto sm:max-w-[250px]">Назад</Button>
                 </div>
               </DialogClose>
             </DialogFooter>

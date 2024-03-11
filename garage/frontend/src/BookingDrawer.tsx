@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -145,10 +147,14 @@ export const BookingDrawer = () => {
                       ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
                       : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`
                   }
-                  className="text-base text-black"
+                  className="text-base text-black active:text-yellow"
                   target="_blank"
                 >
                   {`${booking.car?.division?.address}`}
+                  <FontAwesomeIcon
+                    icon={faLocationDot}
+                    className="px-1 cursor-pointer text-yellow"
+                  />
                 </a>
               </p>
               <Separator />
@@ -194,6 +200,72 @@ export const BookingDrawer = () => {
           ) && (
             <>
               <div className="flex flex-wrap items-center justify-start gap-1 my-3 ">
+                <div className="min-h-fit">
+                  {!isWorkingHours &&
+                    Object.keys(DayOfWeek)
+                      .filter(
+                        (x) =>
+                          x === DayOfWeek.Monday || x === DayOfWeek.Saturday
+                      )
+                      .map((x) => {
+                        const { working_hours } = booking.car!.division!;
+                        const currentDay = working_hours!.find(
+                          ({ day }) => day === x
+                        )!;
+                        return (
+                          <div className="flex flex-col items-start" key={x}>
+                            <div className="text-base capitalize">
+                              {x === DayOfWeek.Monday && "Понедельник-Пятница"}
+                              {x === DayOfWeek.Saturday &&
+                                "Суббота-Воскресенье"}
+                            </div>
+                            {currentDay && (
+                              <>
+                                {formatWorkingTime(
+                                  currentDay.start!.hours!,
+                                  currentDay.start!.minutes!
+                                )}{" "}
+                                -{" "}
+                                {formatWorkingTime(
+                                  currentDay.end!.hours!,
+                                  currentDay.end!.minutes!
+                                )}
+                              </>
+                            )}
+                            {!currentDay && "Выходной"}
+                          </div>
+                        );
+                      })}
+                  {isWorkingHours &&
+                    Object.keys(DayOfWeek).map((x) => {
+                      const { working_hours } = booking.car!.division!;
+                      const currentDay = working_hours!.find(
+                        ({ day }) => day === x
+                      )!;
+                      return (
+                        <div className="flex items-center" key={x}>
+                          <div className="text-sm capitalize w-28">
+                            {getDayOfWeekDisplayName(x as any)}
+                          </div>
+                          {currentDay && (
+                            <>
+                              {formatWorkingTime(
+                                currentDay.start!.hours!,
+                                currentDay.start!.minutes!
+                              )}{" "}
+                              -{" "}
+                              {formatWorkingTime(
+                                currentDay.end!.hours!,
+                                currentDay.end!.minutes!
+                              )}
+                            </>
+                          )}
+                          {!currentDay && <>Выходной</>}
+                        </div>
+                      );
+                    })}
+                </div>
+                <Separator className="mb-1" />
                 <Badge variant="card" className="px-0 py-0 bg-grey ">
                   <span className="flex items-center h-full px-2 bg-white rounded-xl">
                     Депозит{" "}
@@ -235,70 +307,9 @@ export const BookingDrawer = () => {
                     </Badge>
                   ))}
               </div>
-              <p className="mb-2 text-base font-semibold text-gray">
+              {/* <p className="mb-2 text-base font-semibold text-gray">
                 Минимум дней аренды: {booking.rent_term?.minimum_period_days}
-              </p>
-              <div className="min-h-fit">
-                {!isWorkingHours &&
-                  Object.keys(DayOfWeek)
-                    .filter(
-                      (x) => x === DayOfWeek.Monday || x === DayOfWeek.Saturday
-                    )
-                    .map((x) => {
-                      const { working_hours } = booking.car!.division!;
-                      const currentDay = working_hours!.find(
-                        ({ day }) => day === x
-                      )!;
-                      return (
-                        <div className="flex items-start gap-2" key={x}>
-                          <div className="text-base capitalize">
-                            {x === DayOfWeek.Monday && "Пн-Пт"}
-                          </div>
-                          {currentDay && (
-                            <>
-                              {formatWorkingTime(
-                                currentDay.start!.hours!,
-                                currentDay.start!.minutes!
-                              )}{" "}
-                              -{" "}
-                              {formatWorkingTime(
-                                currentDay.end!.hours!,
-                                currentDay.end!.minutes!
-                              )}
-                            </>
-                          )}
-                        </div>
-                      );
-                    })}
-                {isWorkingHours &&
-                  Object.keys(DayOfWeek).map((x) => {
-                    const { working_hours } = booking.car!.division!;
-                    const currentDay = working_hours!.find(
-                      ({ day }) => day === x
-                    )!;
-                    return (
-                      <div className="flex items-center" key={x}>
-                        <div className="text-sm capitalize w-28">
-                          {getDayOfWeekDisplayName(x as any)}
-                        </div>
-                        {currentDay && (
-                          <>
-                            {formatWorkingTime(
-                              currentDay.start!.hours!,
-                              currentDay.start!.minutes!
-                            )}{" "}
-                            -{" "}
-                            {formatWorkingTime(
-                              currentDay.end!.hours!,
-                              currentDay.end!.minutes!
-                            )}
-                          </>
-                        )}
-                        {!currentDay && <>Выходной</>}
-                      </div>
-                    );
-                  })}
-              </div>
+              </p> */}
             </>
           )}
           {/* <Separator className="md:hidden" /> */}
@@ -330,6 +341,15 @@ export const BookingDrawer = () => {
           </div>
           {booking.status === BookingStatus.Booked && (
             <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3">
+              <div className="w-1/2">
+                <Confirmation
+                  title="Отмена бронирования. Хотите продолжить?"
+                  type="red"
+                  accept={cancelBooking}
+                  cancel={() => {}}
+                  trigger={<Button variant="reject">Отменить</Button>}
+                />
+              </div>
               <Button
                 className="w-1/2 font-normal text-white bg-green-500"
                 onClick={() => {
@@ -348,15 +368,6 @@ export const BookingDrawer = () => {
                   <span>Позвонить в парк</span>
                 )}
               </Button>
-              <div className="w-1/2">
-                <Confirmation
-                  title="Отмена бронирования. Хотите продолжить?"
-                  type="red"
-                  accept={cancelBooking}
-                  cancel={() => {}}
-                  trigger={<Button variant="reject">Отменить</Button>}
-                />
-              </div>
             </div>
           )}
         </div>

@@ -84,7 +84,7 @@ const FullScreenImages = ({
             <div className="fixed bottom-0 flex w-full p-2">
               {" "}
               <Button
-                className="mx-auto max-w-[250px]"
+                className="mx-auto sm:max-w-[250px]"
                 onClick={() => setIsOpen(false)}
               >
                 Назад

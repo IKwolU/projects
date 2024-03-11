@@ -19,13 +19,13 @@ const CustomModal = ({ content, cancel, trigger }: CustomModalProps) => {
     <>
       {isOpen && (
         <div className="fixed top-0 -left-2 z-[51] flex flex-col items-center justify-center w-full  h-full bg-black bg-opacity-50 overflow-y-auto ">
-          <div className="absolute top-0 pb-10 mx-auto w-full flex flex-col items-center justify-center bg-white max-w-[800px] ">
+          <div className="absolute top-0 pb-10 mx-auto w-full flex flex-col items-center justify-center  bg-white max-w-[800px] ">
             {content}
-            <div
-              className="fixed bottom-0 left-0 flex w-full p-2 space-x-2 {
-          }"
-            >
-              <Button className="max-w-[250px] mx-auto" onClick={handleCancel}>
+            <div className="fixed bottom-0 left-0 flex w-full p-2 space-x-2 bg-white max-w-[800px]">
+              <Button
+                className="sm:max-w-[250px] mx-auto"
+                onClick={handleCancel}
+              >
                 Назад
               </Button>
             </div>

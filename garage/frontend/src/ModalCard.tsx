@@ -295,7 +295,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
           <CustomModal
             trigger={
               <div className="">
-                <Button className="max-w-[250px] md:text-lg">
+                <Button className="sm:max-w-[250px] md:text-lg">
                   Забронировать
                 </Button>
               </div>
@@ -359,7 +359,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
           />
         )}
         {!activeBooking && carVariants.length <= 1 && (
-          <div className="w-1/2 max-w-[250px]">
+          <div className="w-1/2 sm:max-w-[250px]">
             <Confirmation
               title={`Забронировать ${car.brand} ${car.model}?`}
               type="green"
@@ -370,7 +370,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
           </div>
         )}
         {!!activeBooking && carVariants.length <= 1 && (
-          <div className="w-1/2 max-w-[250px]">
+          <div className="w-1/2 sm:max-w-[250px]">
             <Confirmation
               title={
                 <div className="text-center ">

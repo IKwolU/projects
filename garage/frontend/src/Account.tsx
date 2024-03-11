@@ -19,12 +19,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import QRCode from "qrcode.react";
 
 export const Account = ({ user }: { user: User }) => {
-  // lol wtf ejection
-  if (!user) {
-    return <></>;
-  }
+  const setUser = useSetRecoilState(userAtom);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const [docs] = useState<
     {
@@ -61,9 +60,11 @@ export const Account = ({ user }: { user: User }) => {
       placeholderImg: backPassport,
     },
   ]);
-
-  const setUser = useSetRecoilState(userAtom);
-
+  // lol wtf ejection
+  if (!user) {
+    return <></>;
+  }
+  const referralLink = `https://api.gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
   const requiredDocumentCount = docs.length;
   const uploadedDocumentCount = user.docs?.filter((x) => !!x.url).length || 0;
 
@@ -103,29 +104,93 @@ export const Account = ({ user }: { user: User }) => {
     window.location.href = "/";
   };
 
+  const handleShowQRCode = () => {
+    setShowQRCode(true);
+  };
+
+  // const handleShare = async () => {
+  //   if (navigator.share) {
+  //     try {
+  //       await navigator.share({
+  //         title: "Мой гараж",
+  //         text: "Присоединитесь к реферральной программе",
+  //         url: referralLink,
+  //       });
+  //     } catch (error) {
+  //       console.error("Ошибка при попытке поделиться:", error);
+  //     }
+  //   } else {
+  //     console.log("Web Share API не поддерживается в вашем браузере");
+  //   }
+  // };
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(referralLink)
+      .then(() => {
+        console.log("Link copied to clipboard");
+        // You can add any additional functionality here after successful copy
+      })
+      .catch((error) => {
+        console.error("Failed to copy: ", error);
+      });
+  };
+
   return (
     <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button>Реферральная программа</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
-          <DialogHeader>
-            <DialogTitle>Реферральная программа</DialogTitle>
-          </DialogHeader>
-          <div className="">
-            <span>Заработано коинов:</span>
-            <span></span>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <div className="fixed bottom-0 flex w-full p-2">
-                <Button className="mx-auto max-w-[250px]">Назад</Button>
+      {
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Реферральная программа</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[800px]">
+            <DialogHeader>
+              <DialogTitle>Реферральная программа</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col space-y-3 text-xl">
+              <div className="flex justify-center space-x-2 text-xl">
+                <span>Заработано баллов:</span>
+                <span>{user.referral_info?.coins}</span>
               </div>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+              <div className="mx-auto text-center">
+                Ваша реферральная ссылка:{" "}
+                <div className="font-semibold">{referralLink}</div>
+              </div>
+              <a
+                href="#"
+                // onClick={handleShare}
+                onClick={handleCopy}
+                className="mx-auto max-w-[250px] w-full"
+              >
+                <Button>Копировть</Button>
+              </a>
+              {showQRCode ? (
+                <div className="flex justify-center w-full mx-auto max-w-96">
+                  <QRCode
+                    value={referralLink}
+                    className="w-full mx-auto max-w-96"
+                    size={300}
+                  />
+                </div>
+              ) : (
+                <Button
+                  className="mx-auto max-w-[250px]"
+                  onClick={handleShowQRCode}
+                >
+                  Показать QR-код
+                </Button>
+              )}
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <div className="fixed bottom-0 flex w-full p-2">
+                  <Button className="mx-auto max-w-[250px]">Назад</Button>
+                </div>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      }
       <div className="mx-auto w-80 sm:w-full sm:mx-0">
         <h1 className="mt-8 text-center md:text-2xl">
           Подтвердите свою личность

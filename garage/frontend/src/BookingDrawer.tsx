@@ -238,7 +238,7 @@ export const BookingDrawer = () => {
               <p className="mb-2 text-base font-semibold text-gray">
                 Минимум дней аренды: {booking.rent_term?.minimum_period_days}
               </p>
-              <div className="min-h-28">
+              <div className="min-h-fit">
                 {!isWorkingHours &&
                   Object.keys(DayOfWeek)
                     .filter(
@@ -250,10 +250,9 @@ export const BookingDrawer = () => {
                         ({ day }) => day === x
                       )!;
                       return (
-                        <div className="flex flex-col items-start" key={x}>
+                        <div className="flex items-start gap-2" key={x}>
                           <div className="text-base capitalize">
-                            {x === DayOfWeek.Monday && "Понедельник-Пятница"}
-                            {x === DayOfWeek.Saturday && "Суббота-Воскресенье"}
+                            {x === DayOfWeek.Monday && "Пн-Пт"}
                           </div>
                           {currentDay && (
                             <>
@@ -268,7 +267,6 @@ export const BookingDrawer = () => {
                               )}
                             </>
                           )}
-                          {!currentDay && <>Выходной</>}
                         </div>
                       );
                     })}

@@ -16,11 +16,14 @@ use App\Models\Booking;
 use App\Enums\BookingStatus;
 use App\Enums\SuitEnum;
 use App\Enums\CarStatus;use App\Enums\DayOfWeek;
+use App\Enums\ReferralStatus;
+use App\Services\RewardService;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use App\Http\Controllers\Enums;
 use Carbon\Carbon;
 use App\Http\Controllers\ParserController;
+use App\Models\Referral;
 use App\Models\Schema;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
@@ -886,7 +889,15 @@ class APIController extends Controller
                 ], 404);
             }
             $booking->status = $status;
+$userId = $booking->driver->user_id;
             $booking->save();
+            $referral = Referral::where('user_id', $userId)->first();
+if($referral->status === ReferralStatus::Invited->name){$rewardServive = new RewardService;
+    $isRewarded=$rewardServive->rewardingReferral($userId);
+
+    if($isRewarded){
+        return response()->json(['message' => 'Статус бронирования успешно изменен, аренда начата, награда за приглашение выдана'], 200);}
+}
             return response()->json(['message' => 'Статус бронирования успешно изменен, аренда начата'], 200);
         }
         if ($status === BookingStatus::RentOver->value) {

@@ -26,6 +26,7 @@ use App\Enums\TransmissionType;
 use App\Enums\ReferralStatus;
 use App\Enums\FuelType;
 use App\Models\Referral;
+use App\Services\RewardService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
@@ -309,13 +310,14 @@ class AuthController extends Controller
             if (!$referral->referral_code) {
                 $referral->referral_code = Str::random(20);
                 if ($request->referral_code) {
-                    $referral->status = ReferralStatus::Invited;
+                    $referral->status = ReferralStatus::Invited->name;
                     $referral->invited_id = Referral::where('referral_code', $request->referral_code)->with('user')->first()->user->id;
                 } else {
-                    $referral->status = ReferralStatus::NoInvited;
+                    $referral->status = ReferralStatus::NoInvited->name;
                 }
                 $referral->save();
             }
+
             $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
             $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
             $token = $user->createToken('auth_token')->plainTextToken;

@@ -1351,6 +1351,13 @@ export enum FuelType {
 }
 
 /** The unique identifier of a product in our catalog */
+export enum ReferralStatus {
+    NoInvited = "NoInvited",
+    Invited = "Invited",
+    Approved = "Approved",
+}
+
+/** The unique identifier of a product in our catalog */
 export enum TransmissionType {
     Mechanics = "Mechanics",
     Automatic = "Automatic",
@@ -2319,6 +2326,8 @@ export class Body13 implements IBody13 {
     phone?: string;
     /** Код аутентификации */
     code?: number;
+    /** Код пригласившего */
+    referral_code?: string;
 
     [key: string]: any;
 
@@ -2339,6 +2348,7 @@ export class Body13 implements IBody13 {
             }
             this.phone = _data["phone"];
             this.code = _data["code"];
+            this.referral_code = _data["referral_code"];
         }
     }
 
@@ -2357,6 +2367,7 @@ export class Body13 implements IBody13 {
         }
         data["phone"] = this.phone;
         data["code"] = this.code;
+        data["referral_code"] = this.referral_code;
         return data;
     }
 }
@@ -2366,6 +2377,8 @@ export interface IBody13 {
     phone?: string;
     /** Код аутентификации */
     code?: number;
+    /** Код пригласившего */
+    referral_code?: string;
 
     [key: string]: any;
 }
@@ -6557,6 +6570,8 @@ export class User implements IUser {
     user_type?: string;
     /** Название города */
     city_name?: string;
+    /** Данные по реферральной программе */
+    referral_info?: Referral_info;
     /** Данные документов водителя */
     docs?: Docs[];
     /** Список бронирований */
@@ -6585,6 +6600,7 @@ export class User implements IUser {
             this.email = _data["email"];
             this.user_type = _data["user_type"];
             this.city_name = _data["city_name"];
+            this.referral_info = _data["referral_info"] ? Referral_info.fromJS(_data["referral_info"]) : <any>undefined;
             if (Array.isArray(_data["docs"])) {
                 this.docs = [] as any;
                 for (let item of _data["docs"])
@@ -6617,6 +6633,7 @@ export class User implements IUser {
         data["email"] = this.email;
         data["user_type"] = this.user_type;
         data["city_name"] = this.city_name;
+        data["referral_info"] = this.referral_info ? this.referral_info.toJSON() : <any>undefined;
         if (Array.isArray(this.docs)) {
             data["docs"] = [];
             for (let item of this.docs)
@@ -6644,6 +6661,8 @@ export interface IUser {
     user_type?: string;
     /** Название города */
     city_name?: string;
+    /** Данные по реферральной программе */
+    referral_info?: Referral_info;
     /** Данные документов водителя */
     docs?: Docs[];
     /** Список бронирований */
@@ -7154,6 +7173,66 @@ export interface IEnd2 {
     hours?: number;
     /** Минуты (0-59) */
     minutes?: number;
+
+    [key: string]: any;
+}
+
+export class Referral_info implements IReferral_info {
+    /** код для рефферальной ссылки */
+    referral_code?: string;
+    status?: ReferralStatus;
+    /** Количесство заработанных монет */
+    coins?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IReferral_info) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.referral_code = _data["referral_code"];
+            this.status = _data["status"];
+            this.coins = _data["coins"];
+        }
+    }
+
+    static fromJS(data: any): Referral_info {
+        data = typeof data === 'object' ? data : {};
+        let result = new Referral_info();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["referral_code"] = this.referral_code;
+        data["status"] = this.status;
+        data["coins"] = this.coins;
+        return data;
+    }
+}
+
+export interface IReferral_info {
+    /** код для рефферальной ссылки */
+    referral_code?: string;
+    status?: ReferralStatus;
+    /** Количесство заработанных монет */
+    coins?: number;
 
     [key: string]: any;
 }

@@ -58,6 +58,14 @@ class AuthController extends Controller
      *             @OA\Property(property="user_type", type="string", description="Тип пользователя"),
      *             @OA\Property(property="city_name", type="string", description="Название города"),
      *             @OA\Property(
+     *                 property="referral_info",
+     *                 type="object",
+     *                 description="Данные по реферральной программе",
+     *                     @OA\Property(property="referral_code", type="string", description="код для рефферальной ссылки"),
+     *                     @OA\Property(property="status", type="string", description="Статус реферральной программы" ,ref="#/components/schemas/ReferralStatus"),
+     *                     @OA\Property(property="coins", type="integer", description="Количесство заработанных монет")
+     *             ),
+     *             @OA\Property(
      *                 property="docs",
      *                 type="array",
      *                 description="Данные документов водителя",
@@ -176,6 +184,7 @@ class AuthController extends Controller
         $user->user_type = UserType::from($user->user_type)->name;
         $user->user_status = UserStatus::from($user->user_status)->name;
         $driver = Driver::where('user_id', $user->id)->with('city')->first();
+        $referral = Referral::where('user_id', $user->id)->select('referral_code', 'status', 'coins')->first();
         $driverDocs = DriverDoc::where('driver_id', $driver->id)->first(['image_licence_front', 'image_licence_back', 'image_pasport_front', 'image_pasport_address', 'image_fase_and_pasport']);
         $docs = [];
         foreach ($driverDocs->toArray() as $key => $value) {
@@ -245,7 +254,7 @@ class AuthController extends Controller
             }
         }
 
-
+        $user->referral_info = $referral;
         $user->docs = $docs;
         $user->bookings = $bookings ? $bookings : null;
         unset($user->id, $user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);

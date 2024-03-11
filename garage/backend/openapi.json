@@ -1685,6 +1685,23 @@
                                                     "description": "Название города",
                                                     "type": "string"
                                                 },
+                                                "referral_info": {
+                                                    "description": "Данные по реферральной программе",
+                                                    "properties": {
+                                                        "referral_code": {
+                                                            "description": "код для рефферальной ссылки",
+                                                            "type": "string"
+                                                        },
+                                                        "status": {
+                                                            "$ref": "#/components/schemas/ReferralStatus"
+                                                        },
+                                                        "coins": {
+                                                            "description": "Количесство заработанных монет",
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
                                                 "docs": {
                                                     "description": "Данные документов водителя",
                                                     "type": "array",
@@ -1972,6 +1989,10 @@
                                         "description": "Код аутентификации",
                                         "type": "integer",
                                         "example": 1234
+                                    },
+                                    "referral_code": {
+                                        "description": "Код пригласившего",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -2983,6 +3004,15 @@
                 "enum": [
                     "Gas",
                     "Gasoline"
+                ]
+            },
+            "ReferralStatus": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "string",
+                "enum": [
+                    "NoInvited",
+                    "Invited",
+                    "Approved"
                 ]
             },
             "TransmissionType": {

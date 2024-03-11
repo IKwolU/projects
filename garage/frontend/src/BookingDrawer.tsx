@@ -147,14 +147,14 @@ export const BookingDrawer = () => {
                       ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
                       : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`
                   }
-                  className="text-base text-black active:text-yellow"
+                  className="text-base text-blue-400 underline active:text-yellow"
                   target="_blank"
                 >
                   {`${booking.car?.division?.address}`}
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     icon={faLocationDot}
                     className="px-1 cursor-pointer text-yellow"
-                  />
+                  /> */}
                 </a>
               </p>
               <Separator />

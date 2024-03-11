@@ -302,8 +302,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'phone' => 'required|string',
-            'code' => 'required|integer',
-            'referral_code' => 'string',
+            'code' => 'required|integer'
         ]);
         $user = $this->phoneCodeAuthentication($request->phone, $request->code);
         if ($user) {
@@ -312,6 +311,7 @@ class AuthController extends Controller
                 $user->avatar = "users/default.png";
                 $user->user_type = UserType::Driver->value;
             }
+
             $user->code = null;
             $user->save();
             $driver = Driver::firstOrCreate(['user_id' => $user->id]);

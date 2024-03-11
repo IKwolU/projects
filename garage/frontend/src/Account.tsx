@@ -10,6 +10,15 @@ import { client } from "./backend";
 import { DriverDocumentType, User, UserStatus } from "./api-client";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "./atoms";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const Account = ({ user }: { user: User }) => {
   // lol wtf ejection
@@ -96,6 +105,27 @@ export const Account = ({ user }: { user: User }) => {
 
   return (
     <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>Реферральная программа</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Реферральная программа</DialogTitle>
+          </DialogHeader>
+          <div className="">
+            <span>Заработано коинов:</span>
+            <span></span>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <div className="fixed bottom-0 flex w-full p-2">
+                <Button className="mx-auto max-w-[250px]">Назад</Button>
+              </div>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <div className="mx-auto w-80 sm:w-full sm:mx-0">
         <h1 className="mt-8 text-center md:text-2xl">
           Подтвердите свою личность

@@ -8,7 +8,7 @@ import React, { ChangeEvent } from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const DriverLogin = () => {
   const [user] = useRecoilState(userAtom);
@@ -17,6 +17,11 @@ export const DriverLogin = () => {
   if (user) {
     navigate("/");
   }
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const referral_code = searchParams.get("code");
+
   const CODE_LENGTH = 4;
 
   const [codeRequested, setRequested] = useState(false);
@@ -46,7 +51,7 @@ export const DriverLogin = () => {
   const login = async () => {
     try {
       const access_token = await client.loginOrRegister(
-        new Body8({ phone, code })
+        new Body8({ phone, code, referral_code })
       );
 
       localStorage.setItem("token", access_token!);

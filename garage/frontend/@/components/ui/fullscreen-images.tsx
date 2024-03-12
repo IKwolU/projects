@@ -52,12 +52,15 @@ const FullScreenImages = ({
           <div className="relative flex flex-col justify-center h-full m-auto">
             <Slider ref={sliderRef} {...settings}>
               {images.map((image, index) => (
-                <div className="md:h-screen md:w-screen" key={index}>
+                <div
+                  className="flex items-center content-center h-96 md:h-screen md:w-screen"
+                  key={index}
+                >
                   <img
                     onClick={() => setIsOpen(false)}
                     src={image}
                     alt={`Slide ${index}`}
-                    className="object-contain h-auto m-auto sm:min-w-full md:h-screen md:w-screen"
+                    className="object-contain h-full m-auto sm:min-w-full md:h-screen md:w-screen"
                   />
                 </div>
               ))}

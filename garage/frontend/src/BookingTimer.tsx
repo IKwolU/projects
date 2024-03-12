@@ -40,7 +40,7 @@ export const BookingTimer = () => {
             ...user.bookings!.filter((x) => x !== activeBooking),
             new Bookings({
               ...activeBooking,
-              status: BookingStatus.UnBooked,
+              status: BookingStatus.BookingTimeOver,
               end_date: new Date().toISOString(),
             }),
           ],

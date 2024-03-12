@@ -40,7 +40,7 @@ const Confirmation = ({
                     Да
                   </Button>
                   <Button
-                    className="text-white bg-green-500"
+                    className="font-normal text-white bg-green-500"
                     onClick={handleCancel}
                   >
                     Нет

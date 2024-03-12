@@ -303,7 +303,7 @@ export const BookingDrawer = () => {
                       variant="schema"
                     >
                       {`${formatRoubles(currentSchema.daily_amount!)}`}
-                      <div className="text-xs font-medium text-black">{`${currentSchema.working_days}раб. /${currentSchema.non_working_days}вых.`}</div>
+                      <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
                     </Badge>
                   ))}
               </div>

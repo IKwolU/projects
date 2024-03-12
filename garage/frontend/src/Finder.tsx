@@ -200,24 +200,20 @@ export const Finder = () => {
 
             return (
               <div
+                onClick={() =>
+                  setFilters({
+                    ...filters,
+                    carClass: isActive
+                      ? filters.carClass.filter((c) => c != carClass)
+                      : [...filters.carClass, carClass as CarClass],
+                  })
+                }
                 key={carClass}
                 className={`cursor-pointer w-20 flex flex-col items-center bg-white rounded-xl transition-all h-fit pb-2 ${
                   isActive ? "shadow border-2 border-yellow" : " scale-90"
                 }`}
               >
-                <img
-                  alt=""
-                  className="w-12 rounded-xl"
-                  onClick={() =>
-                    setFilters({
-                      ...filters,
-                      carClass: isActive
-                        ? filters.carClass.filter((c) => c != carClass)
-                        : [...filters.carClass, carClass as CarClass],
-                    })
-                  }
-                  src={img}
-                />
+                <img alt="" className="w-12 rounded-xl" src={img} />
                 <span className="text-xs font-bold text-gray">{title}</span>
               </div>
             );

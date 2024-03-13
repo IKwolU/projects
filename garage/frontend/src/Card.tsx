@@ -96,7 +96,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] h-full">
         {/* <DialogHeader>
         <DialogTitle></DialogTitle> */}
         {/* <DialogDescription>DialogDescription</DialogDescription> */}

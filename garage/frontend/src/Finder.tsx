@@ -65,6 +65,7 @@ type CarFilter = {
   schema: Schemas2 | null;
   sorting: "asc" | "desc";
   car_vin: string | null;
+  on_map: boolean;
 };
 
 enum ActiveFilter {
@@ -95,6 +96,7 @@ export const Finder = () => {
     sorting: "asc",
     schema: null,
     car_vin: null,
+    on_map: false,
   });
 
   const [cars, setCars] = useState<Cars2[]>([]);
@@ -163,6 +165,7 @@ export const Finder = () => {
       sorting: "asc",
       schema: null,
       car_vin: null,
+      on_map: false,
     });
   };
   const brandsArray = Object.values(brands);
@@ -170,6 +173,7 @@ export const Finder = () => {
     (brand: Brands) =>
       brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   const filteredParks = parksName.filter(
     (name: string) =>
       name && name.toLowerCase().includes(searchParkTerm.toLowerCase())
@@ -220,6 +224,21 @@ export const Finder = () => {
           })}
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
+          {/* <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+            {filters.on_map && (
+              <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
+            )}
+            <span
+              onClick={() => {
+                setFilters({
+                  ...filters,
+                  on_map: !filters.on_map,
+                });
+              }}
+            >
+              На карте
+            </span>
+          </div> */}
           {[
             {
               title: (
@@ -662,14 +681,16 @@ export const Finder = () => {
           />
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
-        <div className="flex flex-wrap gap-2 md:justify-start ">
-          {cars.map((car) => {
-            return <Card key={car.id} car={car} />;
-          })}
+        {!filters.on_map && (
+          <div className="flex flex-wrap gap-2 md:justify-start ">
+            {cars.map((car) => {
+              return <Card key={car.id} car={car} />;
+            })}
+          </div>
+        )}
+        <div className={filters.on_map ? "block" : "hidden"}>
+          {<OnMap cars={cars} />}
         </div>
-        {/* <div className="">
-          <OnMap cars={cars} />
-        </div> */}
       </div>
     </>
   );

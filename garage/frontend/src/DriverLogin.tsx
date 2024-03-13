@@ -4,11 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Body8, Body9 } from "./api-client";
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { useLocation, useNavigate } from "react-router-dom";
+import InputMask from "react-input-mask";
+
+function PhoneInput(props: any) {
+  return (
+    <InputMask
+      className="w-full h-12 p-4 mt-1 mb-3 text-lg md:mt-2 rounded-xl"
+      mask="+7 (999) 999-99-99"
+      value={props.value}
+      onChange={props.onChange}
+      type={"tel"}
+      placeholder={"+7 (999) 123-45-67"}
+    ></InputMask>
+  );
+}
 
 export const DriverLogin = () => {
   const [user] = useRecoilState(userAtom);
@@ -111,35 +125,7 @@ export const DriverLogin = () => {
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setCode(parseInt(e.target.value));
 
-  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value.replace(/\D/g, "");
-    let formattedPhone = "+";
-
-    if (input.length > 0) {
-      if (input[0] === "7" || input[0] === "8") {
-        formattedPhone += "7";
-      } else {
-        formattedPhone += `7 (${input[0]}`;
-      }
-    }
-
-    if (input.length > 1) {
-      formattedPhone += ` (${input.substring(1, 4)}`;
-    }
-
-    if (input.length > 4) {
-      formattedPhone += `) ${input.substring(4, 7)}`;
-    }
-
-    if (input.length > 7) {
-      formattedPhone += `-${input.substring(7, 9)}`;
-    }
-
-    if (input.length > 9) {
-      formattedPhone += `-${input.substring(9, 11)}`;
-    }
-    setPhone(formattedPhone);
-  };
+  const handleInput = ({ target: { value } }: any) => setPhone(value);
 
   return (
     <>
@@ -150,15 +136,12 @@ export const DriverLogin = () => {
 
         <div className="max-w-sm mx-auto">
           <Label className="text-lg">Введите ваш телефон</Label>
-          <Input
-            type="tel"
-            pattern="[0-9]{1} [0-9]{3} [0-9]{3}-[0-9]{2}-[0-9]{2}"
-            className="h-12 p-4 mt-1 text-lg md:mt-2"
-            onChange={handlePhoneChange}
+          <PhoneInput
+            className="w-full h-12 p-4 mt-1 text-lg md:mt-2"
             value={phone}
-            placeholder="+7 (999) 123-45-67"
-            autoComplete="tel-national"
-          />
+            onChange={handleInput}
+            placeholder={"+7 (999) 123-45-67"}
+          ></PhoneInput>
 
           {codeRequested && (
             <>

@@ -10,7 +10,7 @@ import {
 import { Cars2 } from "src/api-client";
 import { useRecoilValue } from "recoil";
 import { cityAtom } from "../../../src/atoms";
-import { ModalCard } from "../../../src/ModalCard";
+// import { ModalCard } from "../../../src/ModalCard";
 
 interface Props {
   cars: Cars2[];
@@ -19,7 +19,7 @@ interface Props {
 const OnMap: React.FC<Props> = ({ cars }) => {
   const city = useRecoilValue(cityAtom);
   const [isLoad, setIsLoad] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  // const [activeIndex, setActiveIndex] = useState(-1);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
 
@@ -41,7 +41,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
     zoom: 9,
   };
 
-  const handleClusterClick = (e) => {
+  const handleClusterClick = (e: any) => {
     const target = e.get("target");
     console.log(target);
   };
@@ -76,10 +76,10 @@ const OnMap: React.FC<Props> = ({ cars }) => {
             ))}
           </Clusterer>
           <FullscreenControl />
-          <ZoomControl options={{ float: "right" }} />
+          <ZoomControl />
         </Map>
       </YMaps>
-      {activeIndex !== -1 && <ModalCard car={cars[activeIndex]} />}
+      {/* {activeIndex !== -1 && <ModalCard car={cars[activeIndex]} />} */}
     </>
   );
 };

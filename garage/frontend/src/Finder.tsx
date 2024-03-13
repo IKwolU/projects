@@ -263,7 +263,7 @@ export const Finder = () => {
             {
               title: filters.schema
                 ? `${filters.schema?.working_days}/${filters.schema?.non_working_days}`
-                : "Любой график аренды",
+                : "График аренды",
               filter: ActiveFilter.RentTerm,
               isEngaged: filters.schema !== null,
             },
@@ -308,25 +308,25 @@ export const Finder = () => {
                       {!!filters.brands.length &&
                         filters.brands.length <= 3 &&
                         `${filters.brands.join(", ")}`}
-                      {!filters.brands.length && "Все марки"}
+                      {!filters.brands.length && "Модели"}
                     </span>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[800px]">
                     <DialogHeader>
-                      <DialogTitle>Марка автомобиля</DialogTitle>
+                      <DialogTitle></DialogTitle>
                     </DialogHeader>
                     <div className="">
                       <input
                         className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
                         type="text"
-                        placeholder="Поиск"
+                        placeholder="Поиск модели"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
                     <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
                       <div
-                        className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-700"
+                        className="w-full p-1 text-xl text-black cursor-pointer "
                         onClick={() => {
                           setFilters({
                             ...filters,
@@ -336,7 +336,7 @@ export const Finder = () => {
                           setSearchTerm("");
                         }}
                       >
-                        Показать все марки
+                        Все модели
                       </div>
                       <Separator className="mt-1" />
                       {filteredBrands.map((x: IBrands) => {
@@ -360,12 +360,16 @@ export const Finder = () => {
                                     : [...filters.brands, title],
                                 })
                               }
-                              className={`w-full block p-1 rounded-xl ${
-                                isActive ? "text-green-500" : ""
-                              }`}
+                              className={`w-full block p-1 rounded-xl font-normal`}
                             >
                               {" "}
                               {title}
+                              {isActive && (
+                                <FontAwesomeIcon
+                                  icon={faCheck}
+                                  className="px-1 ml-4 cursor-pointer"
+                                />
+                              )}
                             </span>{" "}
                             {isActive &&
                               x.models!.map((model) => {
@@ -374,7 +378,7 @@ export const Finder = () => {
                                 );
                                 return (
                                   <span
-                                    className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
+                                    className={`cursor-pointer text-xl  w-full py-1 text-black ${
                                       isActiveModel ? "" : ""
                                     }`}
                                     key={model}
@@ -399,7 +403,7 @@ export const Finder = () => {
                                       {isActiveModel && (
                                         <FontAwesomeIcon
                                           icon={faCheck}
-                                          className="px-1 ml-1 text-green-500 cursor-pointer"
+                                          className="px-1 ml-4 cursor-pointer"
                                         />
                                       )}
                                     </span>
@@ -490,25 +494,25 @@ export const Finder = () => {
                 {!!filters.parksName.length &&
                   filters.parksName.length <= 3 &&
                   `${filters.parksName.join(", ")}`}
-                {!filters.parksName.length && "Все парки"}
+                {!filters.parksName.length && "Автопарк"}
               </span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[800px]">
               <DialogHeader>
-                <DialogTitle>Название парка</DialogTitle>
+                <DialogTitle></DialogTitle>
               </DialogHeader>
               <div className="">
                 <input
                   className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
                   type="text"
-                  placeholder="Поиск"
+                  placeholder="Поиск автопарка"
                   value={searchParkTerm}
                   onChange={(e) => setSearchParkTerm(e.target.value)}
                 />
               </div>
               <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
                 <div
-                  className="w-full p-1 text-xl font-bold text-black cursor-pointer active:text-green-500"
+                  className="w-full p-1 text-xl text-black cursor-pointer"
                   onClick={() => {
                     setFilters({
                       ...filters,
@@ -517,7 +521,7 @@ export const Finder = () => {
                     setSearchParkTerm("");
                   }}
                 >
-                  Показать все парки
+                  Все автопарки
                 </div>
                 <Separator className="mt-1" />
                 {filteredParks
@@ -527,9 +531,7 @@ export const Finder = () => {
                     const isActive = filters.parksName.some((b) => b === title);
                     return (
                       <span
-                        className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
-                          isActive ? "" : ""
-                        }`}
+                        className={`cursor-pointer text-xl w-full py-1 text-black `}
                         key={title}
                         onClick={() =>
                           setFilters({
@@ -540,13 +542,15 @@ export const Finder = () => {
                           })
                         }
                       >
-                        <span
-                          className={`w-full block p-1 rounded-xl ${
-                            isActive ? "text-green-500" : ""
-                          }`}
-                        >
+                        <span className={`w-full block p-1 rounded-xl `}>
                           {" "}
                           {title}
+                          {isActive && (
+                            <FontAwesomeIcon
+                              icon={faCheck}
+                              className="px-1 ml-4 cursor-pointer"
+                            />
+                          )}
                         </span>{" "}
                         <Separator className="mt-1" />
                       </span>

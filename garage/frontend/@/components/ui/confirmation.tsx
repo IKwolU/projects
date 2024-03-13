@@ -36,13 +36,14 @@ const Confirmation = ({
             <div className="flex w-full mt-2 space-x-2 ">
               {type === "red" && (
                 <>
-                  <Button variant="reject" onClick={handleAccept}>
+                  <Button
+                    variant="reject"
+                    className="text-black bg-white border-2 border-grey"
+                    onClick={handleAccept}
+                  >
                     Да
                   </Button>
-                  <Button
-                    className="font-normal text-white bg-green-500"
-                    onClick={handleCancel}
-                  >
+                  <Button className="font-normal" onClick={handleCancel}>
                     Нет
                   </Button>
                 </>

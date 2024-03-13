@@ -347,11 +347,18 @@ export const BookingDrawer = () => {
                   type="red"
                   accept={cancelBooking}
                   cancel={() => {}}
-                  trigger={<Button variant="reject">Отменить</Button>}
+                  trigger={
+                    <Button
+                      variant="reject"
+                      className="text-black bg-white border-2 border-grey"
+                    >
+                      Отменить
+                    </Button>
+                  }
                 />
               </div>
               <Button
-                className="w-1/2 font-normal text-white bg-green-500"
+                className="w-1/2 font-normal"
                 onClick={() => {
                   setIsPhoneClicked(true);
                 }}

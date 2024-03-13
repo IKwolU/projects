@@ -18,11 +18,16 @@ export const Card = ({ car }: { car: Cars2 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="max-w-[352px] p-1 pb-4 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
+        <div className="relative max-w-[352px] p-1 pb-4 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 p-2 font-medium rounded-tl-lg rounded-br-lg shadow text-gray bg-yellow">
               {car.park_name}
             </div>
+            {car.variants!.length > 1 && (
+              <div className="absolute z-50 p-2 font-medium rounded-tr-lg rounded-bl-lg shadow right-1 text-gray bg-yellow">
+                +{car.variants!.length - 1}
+              </div>
+            )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden">
               {car.images?.map((x, i) => (
                 <img

@@ -4,7 +4,7 @@ import comfort from "./assets/car_icons/comfort.png";
 import comfortPlus from "./assets/car_icons/comfort-plus.png";
 import business from "./assets/car_icons/business.png";
 import { useEffect, useState } from "react";
-
+import OnMap from "@/components/ui/on-map";
 import {
   Body15,
   Brands,
@@ -667,6 +667,9 @@ export const Finder = () => {
             return <Card key={car.id} car={car} />;
           })}
         </div>
+        {/* <div className="">
+          <OnMap cars={cars} />
+        </div> */}
       </div>
     </>
   );

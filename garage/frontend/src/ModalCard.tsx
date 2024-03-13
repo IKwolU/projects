@@ -335,9 +335,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
           <CustomModal
             trigger={
               <div className="">
-                <Button className="sm:max-w-[250px] md:text-lg">
-                  Забронировать
-                </Button>
+                <Button className="sm:max-w-[250px] md:text-lg">Выбрать</Button>
               </div>
             }
             cancel={() => {}}
@@ -375,7 +373,9 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                             type="green"
                             accept={() => book(id)}
                             cancel={() => {}}
-                            trigger={<Button className="">Выбрать</Button>}
+                            trigger={
+                              <Button className="">Забронировать</Button>
+                            }
                           />
                         </div>
                       )}
@@ -386,7 +386,9 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                             type="green"
                             accept={() => book(id)}
                             cancel={() => {}}
-                            trigger={<Button className="">Выбрать</Button>}
+                            trigger={
+                              <Button className="">Забронировать</Button>
+                            }
                           />
                         </div>
                       )}

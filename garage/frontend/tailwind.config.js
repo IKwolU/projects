@@ -31,6 +31,7 @@ module.exports = {
         pale: "#D9D9D9",
         grey: "#e8e7e6",
         white: "#ffffff",
+        lightgrey: "#f5f4f2",
       },
       keyframes: {
         "accordion-down": {

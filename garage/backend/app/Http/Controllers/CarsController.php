@@ -69,7 +69,7 @@ class CarsController extends Controller
      *                 @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
      *                 @OA\Property(property="brand", type="string", description="Марка автомобиля"),
      *                 @OA\Property(property="model", type="string", description="Модель автомобиля"),
-     *                 @OA\Property(property="VIN", type="string", description="VIN автомобиля"),
+     *                 @OA\Property(property="vin", type="string", description="VIN автомобиля"),
      *                 @OA\Property(property="year_produced", type="integer", description="Год производства"),
      *                 @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
      *                 @OA\Property(property="сar_class", type="string", description="Класс тарифа", ref="#/components/schemas/CarClass"),
@@ -78,7 +78,7 @@ class CarsController extends Controller
      *                         type="object",
      *                         @OA\Property(property="id", type="integer"),
      *                         @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
-     *                         @OA\Property(property="VIN", type="string", description="VIN автомобиля")
+     *                         @OA\Property(property="vin", type="string", description="VIN автомобиля")
      *                     )),
      *                 @OA\Property(
      *                     property="working_hours",
@@ -343,7 +343,7 @@ class CarsController extends Controller
                 return [
                     'id' => $similarCar->id,
                     'images' => json_decode($similarCar->images),
-                    'VIN'=>$similarCar->car_id
+                    'vin'=>$similarCar->car_id
                 ];
             })->values()->all();}
             $formattedCars = [];
@@ -366,7 +366,7 @@ class CarsController extends Controller
                 $formattedCar['park_name'] = $parkName;
                 $formattedCar['working_hours'] = $workingHours;
                 $formattedCar['phone'] = $phone;
-                $formattedCar['VIN'] = $car['car_id'];
+                $formattedCar['vin'] = $car['car_id'];
                 $formattedCar['about'] = $about;
                 $commissionFormatted = number_format($commission, 2);
                 $formattedCar['commission'] = rtrim(rtrim($commissionFormatted, '0'), '.');

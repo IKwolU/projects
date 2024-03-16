@@ -218,7 +218,7 @@ export const Finder = () => {
                 }`}
               >
                 <img alt="" className="w-12 rounded-xl" src={img} />
-                <span className="text-xs font-bold text-gray">{title}</span>
+                <span className="text-xs font-semibold text-gray">{title}</span>
               </div>
             );
           })}
@@ -346,7 +346,7 @@ export const Finder = () => {
                         );
                         return (
                           <span
-                            className={`cursor-pointer text-xl font-bold w-full py-1 text-black ${
+                            className={`cursor-pointer text-xl font-semibold w-full py-1 text-black ${
                               isActive ? "" : ""
                             }`}
                             key={title}

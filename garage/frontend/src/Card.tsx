@@ -6,7 +6,12 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { ModalCard } from "./ModalCard";
 import SliderImages from "@/components/ui/slider-images";
 
@@ -101,7 +106,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] h-full">
+      <DialogContent className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-8">
         {/* <DialogHeader>
         <DialogTitle></DialogTitle> */}
         {/* <DialogDescription>DialogDescription</DialogDescription> */}
@@ -112,6 +117,13 @@ export const Card = ({ car }: { car: Cars2 }) => {
           <Button>Выбрать</Button>
         </DialogClose>
       </DialogFooter> */}
+        <DialogClose asChild>
+          <div className="fixed bottom-0 left-0 flex w-full px-2  space-x-2 max-w-[800px]">
+            <div className="flex w-full p-2 space-x-2 bg-white rounded-b-xl">
+              <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
+            </div>
+          </div>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );

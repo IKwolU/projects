@@ -2270,7 +2270,7 @@
                                                         "description": "Модель автомобиля",
                                                         "type": "string"
                                                     },
-                                                    "VIN": {
+                                                    "vin": {
                                                         "description": "VIN автомобиля",
                                                         "type": "string"
                                                     },
@@ -2306,7 +2306,7 @@
                                                                         "type": "string"
                                                                     }
                                                                 },
-                                                                "VIN": {
+                                                                "vin": {
                                                                     "description": "VIN автомобиля",
                                                                     "type": "string"
                                                                 }

@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-yellow text-black font-semibold w-full hover:bg-slate-900/50 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+          "bg-yellow text-black  w-full hover:bg-darkyellow dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
         reject:
-          "bg-red text-white hover:bg-red dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90 w-full",
+          "bg-white text-white hover:bg-pale dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90 w-full",
         outline:
           "border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         secondary:
-          "bg-pale text-slate-900 font-semibold hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
+          "bg-pale text-slate-900  hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
       },
     },
     defaultVariants: {

@@ -509,7 +509,7 @@ class CarsController extends Controller
             'id' => 'required|integer',
             'schema_id' => 'required|integer'
         ]);
-        $rent_time = 3;
+
         $user = Auth::guard('sanctum')->user();
 
         // Проверка статуса пользователя
@@ -537,8 +537,8 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
         if ($checkBook) {
             return response()->json(['message' => 'У пользователя уже есть активная бронь!'], 409);
         }
-
         $division = $car->division;
+        $rent_time = $division->park->period_for_book;
         $driver = $user->driver;
 
         //date_default_timezone_set('UTC');

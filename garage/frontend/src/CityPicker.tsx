@@ -37,21 +37,21 @@ export function CityPicker() {
           {city}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button> */}
-        <div className="h-4 flex items-center w-32 text-[12px] font-bold justify-end sm:text-xl sm:w-96">
+        <div className="h-4 flex items-center w-32 text-[12px] font-bold justify-end sm:text-xl  sm:w-96">
           {city}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[200px] p-0 h-96">
         <Command>
           <CommandInput placeholder={city} />
           <CommandEmpty></CommandEmpty>
-          <CommandGroup>
+          <CommandGroup className="w-[200px] p-0 h-96 overflow-y-scroll">
             {allCities.map((c: string) => (
               <CommandItem
                 key={c}
                 value={c}
-                onSelect={(ccc) => {
-                  setCity(ccc);
+                onSelect={() => {
+                  setCity(c);
                   setOpen(false);
                 }}
               >

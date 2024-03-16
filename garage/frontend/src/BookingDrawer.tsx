@@ -134,7 +134,7 @@ export const BookingDrawer = () => {
               src={booking.car!.images![0]}
               alt=""
             />
-            <div className=" md:space-y-1">
+            <div className=" md:space-y-1 md:w-full">
               <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
               <Separator />
               <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
@@ -192,6 +192,22 @@ export const BookingDrawer = () => {
                   </>
                 )}
               </div>
+              {booking.status === BookingStatus.Booked && (
+                <div className="flex-wrap hidden md:flex">
+                  {booking
+                    .rent_term!.schemas!.slice(0, 3)
+                    .map((currentSchema, i) => (
+                      <Badge
+                        key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                        className="flex-col items-start justify-start flex-grow h-full max-w-full px-2 text-lg font-bold text-wrap"
+                        variant="schema"
+                      >
+                        {`${formatRoubles(currentSchema.daily_amount!)}`}
+                        <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
+                      </Badge>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -199,8 +215,8 @@ export const BookingDrawer = () => {
             booking!.status!
           ) && (
             <>
-              <div className="flex flex-wrap items-center justify-start gap-1 my-3 ">
-                <div className="min-h-fit">
+              <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap md:space-x-5">
+                <div className="min-h-fit md:min-w-[250px]">
                   {!isWorkingHours &&
                     Object.keys(DayOfWeek)
                       .filter(
@@ -265,35 +281,37 @@ export const BookingDrawer = () => {
                       );
                     })}
                 </div>
-                <Separator className="mb-1" />
-                <Badge variant="card" className="px-0 py-0 bg-grey ">
-                  <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                    Депозит{" "}
-                    {formatRoubles(booking.rent_term!.deposit_amount_total!)}
-                  </span>
-                  <span className="flex items-center h-full px-2 ">
-                    {formatRoubles(booking.rent_term!.deposit_amount_daily!)}
-                    /день
-                  </span>
-                </Badge>
-                <Badge variant="card">
-                  Комиссия {booking.car!.division!.park!.commission}
-                </Badge>
-                <Badge variant="card">
-                  {getFuelTypeDisplayName(booking.car!.fuel_type)}
-                </Badge>
-                <Badge variant="card">
-                  {getTransmissionDisplayName(booking.car!.transmission_type)}
-                </Badge>
+                <Separator className="mb-1 md:hidden" />
+                <div className="flex flex-wrap items-center justify-start gap-1 md:items-start ">
+                  <Badge variant="card" className="px-0 py-0 bg-grey ">
+                    <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                      Депозит{" "}
+                      {formatRoubles(booking.rent_term!.deposit_amount_total!)}
+                    </span>
+                    <span className="flex items-center h-full px-2 ">
+                      {formatRoubles(booking.rent_term!.deposit_amount_daily!)}
+                      /день
+                    </span>
+                  </Badge>
+                  <Badge variant="card">
+                    Комиссия {booking.car!.division!.park!.commission}
+                  </Badge>
+                  <Badge variant="card">
+                    {getFuelTypeDisplayName(booking.car!.fuel_type)}
+                  </Badge>
+                  <Badge variant="card">
+                    {getTransmissionDisplayName(booking.car!.transmission_type)}
+                  </Badge>
 
-                {booking.car!.division!.park!.self_employed && (
-                  <Badge variant="card">Для самозанятых</Badge>
-                )}
-                {!!booking.rent_term!.is_buyout_possible && (
-                  <Badge variant="card">Выкуп автомобиля</Badge>
-                )}
+                  {booking.car!.division!.park!.self_employed && (
+                    <Badge variant="card">Для самозанятых</Badge>
+                  )}
+                  {!!booking.rent_term!.is_buyout_possible && (
+                    <Badge variant="card">Выкуп автомобиля</Badge>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-1 pb-2 mt-1 mb-1">
+              <div className="flex flex-wrap gap-1 pb-2 mt-1 mb-1 md:hidden">
                 {booking
                   .rent_term!.schemas!.slice(0, 3)
                   .map((currentSchema, i) => (
@@ -340,7 +358,7 @@ export const BookingDrawer = () => {
             )}
           </div>
           {booking.status === BookingStatus.Booked && (
-            <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3">
+            <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3  mx-auto">
               <div className="w-1/2">
                 <Confirmation
                   title="Отмена бронирования. Хотите продолжить?"

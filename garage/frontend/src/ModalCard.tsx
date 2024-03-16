@@ -166,7 +166,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
               <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
 
               <div className="flex flex-col md:flex-row md:flex-wrap">
-                <div className="md:w-1/2 md:space-y-2">
+                <div className="md:w-1/2 md:space-y-2 ">
                   <p className="flex justify-between pr-4 text-base md:text-lg font-regular text-gray">
                     <span>Парк: {car.park_name}</span>
                     <span>VIN: {x.vin}</span>
@@ -181,7 +181,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                   </p>
                   <Separator className="my-1" />
                 </div>
-                <div className="min-h-fit md:w-1/2 ">
+                <div className="min-h-fit md:w-1/2 md:pl-8">
                   {!isWorkingHours &&
                     Object.keys(DayOfWeek)
                       .filter(

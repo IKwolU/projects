@@ -30,6 +30,10 @@
                                         "description": "Название парка",
                                         "type": "string"
                                     },
+                                    "period_for_book": {
+                                        "description": "Срок на который можно забронировать авто, в часах",
+                                        "type": "number"
+                                    },
                                     "about": {
                                         "description": "Описание парка",
                                         "type": "string"
@@ -452,6 +456,139 @@
             }
         },
         "/parks/tariff": {
+            "put": {
+                "tags": ["API"],
+                "summary": "Обновление требований к кандидатам",
+                "description": "Обновление требований к кандидатам\n\nЭтот метод позволяет обновлять тарифы авто с критериями блокерами для парков.",
+                "operationId": "upfateTariff",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "id тарифа",
+                                        "type": "integer"
+                                    },
+                                    "has_caused_accident": {
+                                        "description": "Участие в ДТП, true/false",
+                                        "type": "boolean",
+                                        "nullable": true
+                                    },
+                                    "experience": {
+                                        "description": "Минимальный опыт вождения",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "max_fine_count": {
+                                        "description": "Максимальное количество штрафов",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "abandoned_car": {
+                                        "description": "Бросал ли машину, true/false",
+                                        "type": "boolean",
+                                        "nullable": true
+                                    },
+                                    "min_scoring": {
+                                        "description": "минимальный скоринг",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "is_north_caucasus": {
+                                        "description": "Права выданы в Северном Кавказе",
+                                        "type": "boolean",
+                                        "nullable": true
+                                    },
+                                    "criminal_ids": {
+                                        "description": "Массив запрещенных республик",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "alcohol": {
+                                        "description": "Принимает ли что-то водитель, алкоголь/иное, true/false",
+                                        "type": "boolean",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление тарифа",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Тариф успешно обнолвен"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Парк с указанным API ключом не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Парк не найден"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
             "post": {
                 "tags": ["API"],
                 "summary": "Требования к кандидатам",
@@ -575,139 +712,6 @@
                                         "message": {
                                             "type": "string",
                                             "example": "В этом городе уже есть такой тариф"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ошибка сервера"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["API"],
-                "summary": "Обновление требований к кандидатам",
-                "description": "Обновление требований к кандидатам\n\nЭтот метод позволяет обновлять тарифы авто с критериями блокерами для парков.",
-                "operationId": "upfateTariff",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "description": "id тарифа",
-                                        "type": "integer"
-                                    },
-                                    "has_caused_accident": {
-                                        "description": "Участие в ДТП, true/false",
-                                        "type": "boolean",
-                                        "nullable": true
-                                    },
-                                    "experience": {
-                                        "description": "Минимальный опыт вождения",
-                                        "type": "integer",
-                                        "nullable": true
-                                    },
-                                    "max_fine_count": {
-                                        "description": "Максимальное количество штрафов",
-                                        "type": "integer",
-                                        "nullable": true
-                                    },
-                                    "abandoned_car": {
-                                        "description": "Бросал ли машину, true/false",
-                                        "type": "boolean",
-                                        "nullable": true
-                                    },
-                                    "min_scoring": {
-                                        "description": "минимальный скоринг",
-                                        "type": "integer",
-                                        "nullable": true
-                                    },
-                                    "is_north_caucasus": {
-                                        "description": "Права выданы в Северном Кавказе",
-                                        "type": "boolean",
-                                        "nullable": true
-                                    },
-                                    "criminal_ids": {
-                                        "description": "Массив запрещенных республик",
-                                        "type": "string",
-                                        "nullable": true
-                                    },
-                                    "alcohol": {
-                                        "description": "Принимает ли что-то водитель, алкоголь/иное, true/false",
-                                        "type": "boolean",
-                                        "nullable": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Успешное обновление тарифа",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Тариф успешно обнолвен"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Ошибка аутентификации",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ошибка аутентификации"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Парк с указанным API ключом не найден",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Парк не найден"
                                         }
                                     },
                                     "type": "object"
@@ -917,6 +921,125 @@
             }
         },
         "/cars": {
+            "put": {
+                "tags": ["API"],
+                "summary": "Обновление информации о машине",
+                "description": "Обновление информации о машине",
+                "operationId": "updateCar",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "VIN-номер машины",
+                                        "type": "string",
+                                        "maxLength": 20
+                                    },
+                                    "division_id": {
+                                        "description": "id подразделения",
+                                        "type": "integer",
+                                        "maxLength": 250
+                                    },
+                                    "class": {
+                                        "description": "Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "images": {
+                                        "description": "Изображения машины",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление информации о машине",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Машина успешно обновлена"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": [
+                                                    "Поле id обязательно для заполнения."
+                                                ],
+                                                "city": [
+                                                    "Поле city должно быть строкой."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
             "post": {
                 "tags": ["API"],
                 "summary": "Добавить несколько автомобилей, все добавленные автомобили будут доступны к бронированию сразу после привязки к ним Условий бронирования (метод: /cars/rent-term). Выполнение метода возможно только после выполнения методов: обновление информации о парке, создание подразделения, создание тарифа. Статус допуска в бронированию по умолчанию будет 'допущено'",
@@ -1048,125 +1171,6 @@
                                             "description": "Список ошибок валидации",
                                             "type": "object",
                                             "nullable": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["API"],
-                "summary": "Обновление информации о машине",
-                "description": "Обновление информации о машине",
-                "operationId": "updateCar",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "id": {
-                                        "description": "VIN-номер машины",
-                                        "type": "string",
-                                        "maxLength": 20
-                                    },
-                                    "division_id": {
-                                        "description": "id подразделения",
-                                        "type": "integer",
-                                        "maxLength": 250
-                                    },
-                                    "class": {
-                                        "description": "Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
-                                        "type": "integer",
-                                        "nullable": true
-                                    },
-                                    "images": {
-                                        "description": "Изображения машины",
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "nullable": true
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Успешное обновление информации о машине",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Машина успешно обновлена"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Ошибка аутентификации",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ошибка аутентификации"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Ошибка сервера"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ошибки валидации",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "type": "object",
-                                            "example": {
-                                                "id": [
-                                                    "Поле id обязательно для заполнения."
-                                                ],
-                                                "city": [
-                                                    "Поле city должно быть строкой."
-                                                ]
-                                            }
                                         }
                                     },
                                     "type": "object"

@@ -69,6 +69,7 @@ class CarsController extends Controller
      *                 @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
      *                 @OA\Property(property="brand", type="string", description="Марка автомобиля"),
      *                 @OA\Property(property="model", type="string", description="Модель автомобиля"),
+     *                 @OA\Property(property="VIN", type="string", description="VIN автомобиля"),
      *                 @OA\Property(property="year_produced", type="integer", description="Год производства"),
      *                 @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
      *                 @OA\Property(property="сar_class", type="string", description="Класс тарифа", ref="#/components/schemas/CarClass"),
@@ -76,7 +77,8 @@ class CarsController extends Controller
      *                 @OA\Property(property="variants", type="array", @OA\Items(
      *                         type="object",
      *                         @OA\Property(property="id", type="integer"),
-     *                         @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения")
+     *                         @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
+     *                         @OA\Property(property="VIN", type="string", description="VIN автомобиля")
      *                     )),
      *                 @OA\Property(
      *                     property="working_hours",
@@ -166,8 +168,7 @@ class CarsController extends Controller
         $isBuyoutPossible = $request->is_buyout_possible;
         $commission = $request->commission;
 
-        $carsQuery = Car::query()->where('status', '!=', 0)
-            ->where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
+        $carsQuery = Car::query()->where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
             ->whereHas('division', function ($query) use ($cityId) {
                 $query->where('city_id', $cityId);
             });
@@ -310,7 +311,8 @@ class CarsController extends Controller
                 $item->fuel_type . $item->transmission_type . $item->brand . $item->model . $item->year_produced;
         });
 
-        $similarCars = Car::where(function ($query) use ($uniqueCars) {
+        $similarCars = Car::where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
+        ->where(function ($query) use ($uniqueCars) {
             foreach ($uniqueCars as $uniqueCar) {
                 $query->orWhere(function ($subQuery) use ($uniqueCar) {
                     $subQuery->where('division_id', $uniqueCar->division_id)
@@ -340,7 +342,8 @@ class CarsController extends Controller
             })->map(function ($similarCar) {
                 return [
                     'id' => $similarCar->id,
-                    'images' => json_decode($similarCar->images)
+                    'images' => json_decode($similarCar->images),
+                    'VIN'=>$similarCar->car_id
                 ];
             })->values()->all();}
             $formattedCars = [];
@@ -363,6 +366,7 @@ class CarsController extends Controller
                 $formattedCar['park_name'] = $parkName;
                 $formattedCar['working_hours'] = $workingHours;
                 $formattedCar['phone'] = $phone;
+                $formattedCar['VIN'] = $car['car_id'];
                 $formattedCar['about'] = $about;
                 $commissionFormatted = number_format($commission, 2);
                 $formattedCar['commission'] = rtrim(rtrim($commissionFormatted, '0'), '.');

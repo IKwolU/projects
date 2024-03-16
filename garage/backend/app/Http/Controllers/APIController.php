@@ -58,6 +58,7 @@ class APIController extends Controller
      *             @OA\Property(property="url", type="string", description="URL парка"),
      *             @OA\Property(property="commission", type="number", description="Комиссия"),
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
+     *             @OA\Property(property="period_for_book", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
      *             @OA\Property(property="self_imployeds_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
@@ -109,9 +110,13 @@ class APIController extends Controller
             'about' => 'string','phone' => 'string',
             'self_imployeds_discount' => 'integer',
             'phone' => 'string',
+            'period_for_book' => 'integer',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
+        }
+        if ($request->period_for_book) {
+            $park->period_for_book = $request->period_for_book;
         }
         if ($request->url) {
             $park->url = $request->url;

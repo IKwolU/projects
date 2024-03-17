@@ -64,7 +64,7 @@ export const Account = ({ user }: { user: User }) => {
   if (!user) {
     return <></>;
   }
-  const referralLink = `https://gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
+  const referralLink = `https://gar77.ru/login/driver?code=${user.referral_info?.referral_code}`;
   const requiredDocumentCount = docs.length;
   const uploadedDocumentCount = user.docs?.filter((x) => !!x.url).length || 0;
 
@@ -141,7 +141,7 @@ export const Account = ({ user }: { user: User }) => {
       {!!user.referral_info && (
         <Dialog>
           <DialogTrigger asChild>
-            <div className="flex justify-center w-full">
+            <div className="flex justify-center w-full mt-4">
               <Button className="sm:max-w-[512px] mx-auto inset-0">
                 Реферальная программа
               </Button>

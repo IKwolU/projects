@@ -571,7 +571,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
             $startTimeOfWorkDayTomorrow = Carbon::create($nextWorkingDay->year, $nextWorkingDay->month, $nextWorkingDay->day, $nextWorkingDayInfo['start']['hours'], $nextWorkingDayInfo['start']['minutes'], 0);
             $newEndTime = $startTimeOfWorkDayTomorrow->addHours($rent_time);
         } elseif ($currentTime < $startTimeOfWorkDayToday) {
-            $newEndTime = $startTimeOfWorkDayToday->addHours($rent_time)->addHours($rent_time);
+            $newEndTime = $startTimeOfWorkDayToday->addHours($rent_time);
         } else {
             $newEndTime = $currentTime->addHours($rent_time);
         }

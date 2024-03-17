@@ -10,20 +10,20 @@ import { client } from "./backend";
 import { DriverDocumentType, User, UserStatus } from "./api-client";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "./atoms";
-// import {
-//   Dialog,
-//   DialogClose,
-//   DialogContent,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// import QRCode from "qrcode.react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import QRCode from "qrcode.react";
 
 export const Account = ({ user }: { user: User }) => {
   const setUser = useSetRecoilState(userAtom);
-  // const [showQRCode, setShowQRCode] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const [docs] = useState<
     {
@@ -64,7 +64,7 @@ export const Account = ({ user }: { user: User }) => {
   if (!user) {
     return <></>;
   }
-  // const referralLink = `https://api.gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
+  const referralLink = `https://gar77.ru/driver/login?code=${user.referral_info?.referral_code}`;
   const requiredDocumentCount = docs.length;
   const uploadedDocumentCount = user.docs?.filter((x) => !!x.url).length || 0;
 
@@ -104,9 +104,9 @@ export const Account = ({ user }: { user: User }) => {
     window.location.href = "/";
   };
 
-  // const handleShowQRCode = () => {
-  //   setShowQRCode(true);
-  // };
+  const handleShowQRCode = () => {
+    setShowQRCode(true);
+  };
 
   // const handleShare = async () => {
   //   if (navigator.share) {
@@ -124,28 +124,34 @@ export const Account = ({ user }: { user: User }) => {
   //   }
   // };
 
-  // const handleCopy = () => {
-  //   navigator.clipboard
-  //     .writeText(referralLink)
-  //     .then(() => {
-  //       console.log("Link copied to clipboard");
-  //       // You can add any additional functionality here after successful copy
-  //     })
-  //     .catch((error) => {
-  //       console.error("Failed to copy: ", error);
-  //     });
-  // };
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(referralLink)
+      .then(() => {
+        console.log("Link copied to clipboard");
+        // You can add any additional functionality here after successful copy
+      })
+      .catch((error) => {
+        console.error("Failed to copy: ", error);
+      });
+  };
 
   return (
     <>
-      {/* {!!user.referral_info && (
+      {!!user.referral_info && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Реферральная программа</Button>
+            <div className="flex justify-center w-full">
+              <Button className="sm:max-w-[512px] mx-auto inset-0">
+                Реферальная программа
+              </Button>
+            </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[800px]">
             <DialogHeader>
-              <DialogTitle>Реферральная программа</DialogTitle>
+              <DialogTitle className="mx-auto text-black">
+                Реферальная программа
+              </DialogTitle>
             </DialogHeader>
             <div className="flex flex-col space-y-3 text-xl">
               <div className="flex justify-center space-x-2 text-xl">
@@ -153,16 +159,18 @@ export const Account = ({ user }: { user: User }) => {
                 <span>{user.referral_info?.coins}</span>
               </div>
               <div className="mx-auto text-center">
-                Ваша реферральная ссылка:{" "}
+                Ваша реферальная ссылка:{" "}
                 <div className="font-semibold">{referralLink}</div>
               </div>
               <a
                 href="#"
-                // onClick={handleShare}
-                onClick={handleCopy}
+                onClick={() => {
+                  // handleShare();
+                  handleCopy();
+                }}
                 className="mx-auto sm:max-w-[250px] w-full"
               >
-                <Button>Копировть</Button>
+                <Button>Копировать</Button>
               </a>
               {showQRCode ? (
                 <div className="flex justify-center w-full mx-auto max-w-96">
@@ -183,14 +191,14 @@ export const Account = ({ user }: { user: User }) => {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <div className="fixed bottom-0 flex w-full p-2">
-                  <Button className="mx-auto sm:max-w-[250px]">Назад</Button>
+                <div className="fixed bottom-0 left-0 flex w-full p-2">
+                  <Button className="mx-auto max-w-[250px]">Назад</Button>
                 </div>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      )} */}
+      )}
       <div className="mx-auto w-80 sm:w-full sm:mx-0">
         <h1 className="mt-8 text-center md:text-2xl">
           Подтвердите свою личность
@@ -237,7 +245,7 @@ export const Account = ({ user }: { user: User }) => {
                   src={actualUrl}
                   alt=""
                 />
-                <div className="text-center md:text-xl">
+                <div className="flex justify-center text-center md:text-xl">
                   <FileInput
                     title="Загрузить"
                     onChange={(fileList) => onFileSelected(fileList[0], type)}
@@ -248,7 +256,11 @@ export const Account = ({ user }: { user: User }) => {
           })}
         </div>
         <div className="my-8 text-center max-w-[320px] mx-auto">
-          <Button variant="reject" className="md:text-xl" onClick={logout}>
+          <Button
+            variant="reject"
+            className="text-black md:text-xl"
+            onClick={logout}
+          >
             Выйти из приложения
           </Button>
         </div>

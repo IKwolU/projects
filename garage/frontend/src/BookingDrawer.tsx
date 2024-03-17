@@ -159,47 +159,108 @@ export const BookingDrawer = () => {
               </p>
               <Separator />
               <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
-              <div className="hidden space-y-1 md:block">
-                {/* <Separator /> */}
-                {/* <div className="flex items-center">
-                  <p className="text-base font-semibold">
-                    Дата начала бронирования:{" "}
-                    {format(booking.start_date!, "dd.MM.yyyy HH:mm")}
-                  </p>
-                </div> */}
-                {![BookingStatus.RentOver, BookingStatus.RentStart].includes(
-                  booking.status!
-                ) && (
-                  <>
-                    <Separator />
-                    <div className="flex items-center">
-                      <p className="text-base ">
-                        Дата окончания бронирования:{" "}
+              {![BookingStatus.RentStart, BookingStatus.Booked].includes(
+                booking!.status!
+              ) && (
+                <div className="hidden md:block">
+                  {![BookingStatus.RentStart].includes(booking.status!) && (
+                    <>
+                      <Separator className="mt-1" />
+                      <div className="flex items-center">
+                        <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
+                          Дата окончания бронирования:
+                        </p>
                         {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
-                      </p>
-                    </div>
-                  </>
-                )}
-                {booking.status === BookingStatus.RentOver && (
-                  <>
-                    <Separator />
-                    <div className="flex items-center">
-                      <p className="text-base font-semibold">
-                        Дата окончания аренды:{" "}
+                      </div>
+                    </>
+                  )}
+                  {booking.status === BookingStatus.RentOver && (
+                    <>
+                      <Separator />
+                      <div className="flex items-center">
+                        <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
+                          Дата окончания аренды:
+                        </p>
                         {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
-                      </p>
-                    </div>
-                  </>
-                )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+              <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:block hidden">
+                {!isWorkingHours &&
+                  [BookingStatus.RentStart, BookingStatus.Booked].includes(
+                    booking!.status!
+                  ) &&
+                  Object.keys(DayOfWeek)
+                    .filter(
+                      (x) => x === DayOfWeek.Monday || x === DayOfWeek.Saturday
+                    )
+                    .map((x) => {
+                      const { working_hours } = booking.car!.division!;
+                      const currentDay = working_hours!.find(
+                        ({ day }) => day === x
+                      )!;
+                      return (
+                        <div className="flex flex-col items-start" key={x}>
+                          <div className="text-base capitalize">
+                            {x === DayOfWeek.Monday && "Понедельник-Пятница"}
+                            {x === DayOfWeek.Saturday && "Суббота-Воскресенье"}
+                          </div>
+                          {currentDay && (
+                            <>
+                              {formatWorkingTime(
+                                currentDay.start!.hours!,
+                                currentDay.start!.minutes!
+                              )}{" "}
+                              -{" "}
+                              {formatWorkingTime(
+                                currentDay.end!.hours!,
+                                currentDay.end!.minutes!
+                              )}
+                            </>
+                          )}
+                          {!currentDay && "Выходной"}
+                        </div>
+                      );
+                    })}
+                {isWorkingHours &&
+                  Object.keys(DayOfWeek).map((x) => {
+                    const { working_hours } = booking.car!.division!;
+                    const currentDay = working_hours!.find(
+                      ({ day }) => day === x
+                    )!;
+                    return (
+                      <div className="flex items-center" key={x}>
+                        <div className="text-sm capitalize w-28">
+                          {getDayOfWeekDisplayName(x as any)}
+                        </div>
+                        {currentDay && (
+                          <>
+                            {formatWorkingTime(
+                              currentDay.start!.hours!,
+                              currentDay.start!.minutes!
+                            )}{" "}
+                            -{" "}
+                            {formatWorkingTime(
+                              currentDay.end!.hours!,
+                              currentDay.end!.minutes!
+                            )}
+                          </>
+                        )}
+                        {!currentDay && <>Выходной</>}
+                      </div>
+                    );
+                  })}
               </div>
               {booking.status === BookingStatus.Booked && (
-                <div className="flex-wrap hidden md:flex">
+                <div className="flex-wrap hidden w-1/2 md:flex">
                   {booking
                     .rent_term!.schemas!.slice(0, 3)
                     .map((currentSchema, i) => (
                       <Badge
                         key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                        className="flex-col items-start justify-start flex-grow h-full max-w-full px-2 text-lg font-bold text-wrap"
+                        className="flex-col items-start justify-start flex-grow w-1/2 h-full px-2 text-lg font-bold max-w-1/2 text-wrap"
                         variant="schema"
                       >
                         {`${formatRoubles(currentSchema.daily_amount!)}`}
@@ -215,8 +276,8 @@ export const BookingDrawer = () => {
             booking!.status!
           ) && (
             <>
-              <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap md:space-x-5">
-                <div className="min-h-fit md:min-w-[250px]">
+              <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap">
+                <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:hidden">
                   {!isWorkingHours &&
                     Object.keys(DayOfWeek)
                       .filter(
@@ -282,7 +343,7 @@ export const BookingDrawer = () => {
                     })}
                 </div>
                 <Separator className="mb-1 md:hidden" />
-                <div className="flex flex-wrap items-center justify-start gap-1 md:items-start ">
+                <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">
                   <Badge variant="card" className="px-0 py-0 bg-grey ">
                     <span className="flex items-center h-full px-2 bg-white rounded-xl">
                       Депозит{" "}
@@ -331,7 +392,13 @@ export const BookingDrawer = () => {
             </>
           )}
           {/* <Separator className="md:hidden" /> */}
-          <div className="md:hidden">
+          <div
+            className={`${
+              ![BookingStatus.RentStart, BookingStatus.Booked].includes(
+                booking!.status!
+              ) && "md:hidden"
+            }`}
+          >
             {/* <div className="flex items-center">
               <p className="w-1/2 font-semibold">Дата начала бронирования:</p>
               {format(booking.start_date!, "dd.MM.yyyy HH:mm")}
@@ -340,7 +407,7 @@ export const BookingDrawer = () => {
               <>
                 <Separator className="mt-1" />
                 <div className="flex items-center">
-                  <p className="w-1/2 font-semibold">
+                  <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
                     Дата окончания бронирования:
                   </p>
                   {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
@@ -351,7 +418,9 @@ export const BookingDrawer = () => {
               <>
                 <Separator />
                 <div className="flex items-center">
-                  <p className="w-1/2 font-semibold">Дата окончания аренды:</p>
+                  <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
+                    Дата окончания аренды:
+                  </p>
                   {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
                 </div>
               </>

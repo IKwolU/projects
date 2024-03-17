@@ -60,7 +60,7 @@ export const BookingTimer = () => {
   }
 
   return (
-    <div className="flex flex-col items-center content-center justify-center px-2 py-2 my-4 font-semibold bg-white rounded-xl">
+    <div className="flex flex-col items-center content-center justify-center px-2 py-2 my-4 bg-white rounded-xl">
       <div className="">
         <Animation />
       </div>

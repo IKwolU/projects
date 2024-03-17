@@ -14,7 +14,7 @@ import InputMask from "react-input-mask";
 function PhoneInput(props: any) {
   return (
     <InputMask
-      className="w-full h-12 p-4 mt-1 mb-3 text-lg md:mt-2 rounded-xl"
+      className="w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
       mask="+7 (999) 999-99-99"
       value={props.value}
       onChange={props.onChange}
@@ -49,7 +49,6 @@ export const DriverLogin = () => {
 
   const getCode = async () => {
     const time = new Date();
-
     codeAttempts < 3
       ? time.setSeconds(time.getSeconds() + 60)
       : time.setSeconds(time.getSeconds() + 300);
@@ -131,13 +130,13 @@ export const DriverLogin = () => {
     <>
       <div className="mx-auto w-80 sm:w-full">
         <h2 className="my-10 text-xl text-center">
-          Зарегистрируйтесь или войдите в личный кабинет.
+          Зарегистрируйтесь или войдите в личный кабинет
         </h2>
 
         <div className="max-w-sm mx-auto">
           <Label className="text-lg">Введите ваш телефон</Label>
           <PhoneInput
-            className="w-full h-12 p-4 mt-1 text-lg md:mt-2"
+            className="w-full h-10 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
             value={phone}
             onChange={handleInput}
             placeholder={"+7 (999) 123-45-67"}
@@ -175,7 +174,7 @@ export const DriverLogin = () => {
             )}
             {codeRequested && !(!!minutes || !!seconds) && (
               <Button
-                className="text-lg"
+                className="text-lg text-black"
                 variant={"reject"}
                 onAsyncClick={getCode}
               >
@@ -183,7 +182,7 @@ export const DriverLogin = () => {
               </Button>
             )}
             {(!!minutes || !!seconds) && (
-              <Button className="text-lg bg-grey active:bg-grey hover:bg-grey">
+              <Button className="text-base bg-lightgrey active:bg-lightgrey hover:bg-lightgrey">
                 Повторная отправка через: ({`${minutes}:${seconds}`})
               </Button>
             )}
@@ -199,9 +198,9 @@ export const DriverLogin = () => {
           </div>
 
           {codeRequested && (
-            <div className="my-4 text-lg text-center">
+            <div className="flex flex-col my-4 text-base text-center">
               Нажимая &laquo;Войти&raquo; вы соглашаетесь с{" "}
-              <a className="text-lg text-blue-800 underline" href="kwol.ru">
+              <a className="text-base text-blue-800 underline" href="kwol.ru">
                 условиями договора
               </a>
             </div>

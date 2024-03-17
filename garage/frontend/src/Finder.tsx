@@ -224,7 +224,7 @@ export const Finder = () => {
           })}
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
-          {/* <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
             {filters.on_map && (
               <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
             )}
@@ -238,7 +238,7 @@ export const Finder = () => {
             >
               На карте
             </span>
-          </div> */}
+          </div>
           {[
             {
               title: (
@@ -324,7 +324,7 @@ export const Finder = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
+                    <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-auto ">
                       <div
                         className="w-full p-1 text-xl text-black cursor-pointer "
                         onClick={() => {
@@ -360,7 +360,7 @@ export const Finder = () => {
                                     : [...filters.brands, title],
                                 })
                               }
-                              className={`w-full block p-1 rounded-xl font-normal`}
+                              className={`w-full  p-1 rounded-xl font-normal flex justify-between`}
                             >
                               {" "}
                               {title}
@@ -394,7 +394,7 @@ export const Finder = () => {
                                     }
                                   >
                                     <span
-                                      className={` w-full font-normal text-base block p-1 rounded-xl ${
+                                      className={` w-full font-normal text-base p-1 rounded-xl flex justify-between ${
                                         isActiveModel ? "" : ""
                                       }`}
                                     >
@@ -510,7 +510,7 @@ export const Finder = () => {
                   onChange={(e) => setSearchParkTerm(e.target.value)}
                 />
               </div>
-              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-scroll ">
+              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-auto ">
                 <div
                   className="w-full p-1 text-xl text-black cursor-pointer"
                   onClick={() => {
@@ -542,7 +542,9 @@ export const Finder = () => {
                           })
                         }
                       >
-                        <span className={`w-full block p-1 rounded-xl `}>
+                        <span
+                          className={`w-full p-1 rounded-xl flex justify-between`}
+                        >
                           {" "}
                           {title}
                           {isActive && (

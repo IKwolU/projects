@@ -29,8 +29,9 @@ export const Card = ({ car }: { car: Cars2 }) => {
               {car.park_name}
             </div>
             {car.variants!.length > 1 && (
-              <div className="absolute z-50 p-2 font-medium rounded-tr-lg rounded-bl-lg shadow right-1 text-gray bg-yellow">
-                +{car.variants!.length - 1}
+              <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg shadow right-1 text-gray">
+                {/* +{car.variants!.length - 1} */}
+                Больше вариантов
               </div>
             )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden">
@@ -53,7 +54,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
             </div>
           </div>
           <div className="px-1">
-            <h1 className="my-2 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+            <h1 className="my-2 text-center md:mb-4">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
             <div className="flex flex-wrap justify-start gap-2 mb-2">
               <div className="flex flex-col justify-start gap-1">
                 <div>

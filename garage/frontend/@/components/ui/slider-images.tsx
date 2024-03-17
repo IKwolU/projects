@@ -25,7 +25,7 @@ const SliderImages = ({
   const settings = {
     dots: false,
     infinite: true,
-    speed: 300,
+    speed: 100,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
@@ -67,7 +67,7 @@ const SliderImages = ({
           trigger={
             openIsAffordable ? (
               <Slider ref={sliderRef} {...settings}>
-                {images.map((image, index) => (
+                {images.slice(0, 3).map((image, index) => (
                   <div key={index}>
                     <img
                       src={image}
@@ -87,7 +87,7 @@ const SliderImages = ({
         <div
           className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 ${classPaginationImages}`}
         >
-          {images.map((x, i) => (
+          {images.slice(0, 3).map((x, i) => (
             <div
               key={`image_${i}`}
               className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${

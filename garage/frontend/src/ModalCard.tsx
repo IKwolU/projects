@@ -37,7 +37,7 @@ import { useRecoilState } from "recoil";
 import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
-import CustomModal from "@/components/ui/custom-modal";
+// import CustomModal from "@/components/ui/custom-modal";
 import { useState } from "react";
 
 export const ModalCard = ({ car }: { car: Cars2 }) => {
@@ -51,7 +51,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
     (x) => x.status === BookingStatus.Booked
   );
 
-  const carVariants = car.variants!;
+  // const carVariants = car.variants!;
 
   // временно удаляем проверку на верификацию!!!
   const book = async (variant_id: number | null = null) => {
@@ -115,7 +115,11 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
     <div className="pb-10">
       {car.variants!.map((x: Variants, i: number) => (
         <div key={i} className="mb-2">
-          <div className="flex flex-col justify-center p-2 overflow-y-auto bg-white rounded-xl ">
+          <div
+            className={`flex flex-col justify-center p-2  overflow-y-auto bg-white rounded-xl ${
+              car.variants!.length === 1 && "pb-16"
+            }`}
+          >
             <SliderImages
               openIsAffordable={true}
               images={x.images!}
@@ -164,12 +168,14 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
             {/* </div> */}
             <div className="space-y-2">
               <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
-
+              <p className="flex justify-between pr-4 text-base md:text-lg font-regular text-gray">
+                <span>VIN: {x.vin}</span>
+              </p>
               <div className="flex flex-col md:flex-row md:flex-wrap">
                 <div className="md:w-1/2 md:space-y-2 ">
+                  <Separator className="my-1" />
                   <p className="flex justify-between pr-4 text-base md:text-lg font-regular text-gray">
                     <span>Парк: {car.park_name}</span>
-                    <span>VIN: {x.vin}</span>
                   </p>
                   <Separator className="my-1" />
                   <p className="text-base md:text-lg font-regular text-gray">
@@ -194,8 +200,11 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                           ({ day }) => day === x
                         )!;
                         return (
-                          <div className="flex flex-col items-start" key={x}>
-                            <div className="text-base capitalize">
+                          <div
+                            className="flex flex-col items-start md:text-lg"
+                            key={x}
+                          >
+                            <div className="text-base capitalize md:text-lg">
                               {x === DayOfWeek.Monday && "Понедельник-Пятница"}
                               {x === DayOfWeek.Saturday &&
                                 "Суббота-Воскресенье"}
@@ -252,14 +261,14 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                   О парке ▼
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="mb-2 text-sm text-gray-700 md:text-lg">
+                  <div className="mb-2 text-sm text-gray-700 md:text-base">
                     {car.about}
                   </div>
                 </CollapsibleContent>
               </Collapsible>
             </div>
             <Separator />
-            <div className="flex flex-wrap gap-2 mt-2 mb-2">
+            <div className="flex flex-wrap gap-2 mt-2 mb-2 md:mb-4">
               <div>
                 <Badge variant="card" className="px-0 py-0 bg-grey ">
                   <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
@@ -312,28 +321,35 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                 </Badge>
               ))}
             </div>
-            <div className="flex justify-center h-16 w-full max-w-[800px] px-0 py-2 space-x-2 bg-white border-t border-pale inset-x-0 mx-auto sm:px-40">
-              <Select
-                onValueChange={(value) => setSelectedSchema(Number(value))}
-                defaultValue={`${schemas![0].id}`}
-              >
-                <SelectTrigger className="w-1/2 h-auto pb-1 border-none pl-3text-left bg-grey rounded-xl md:px-5 ">
-                  <SelectValue placeholder="Схема аренды" />
-                </SelectTrigger>
-                <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
-                  {schemas!.map((currentSchema, i) => (
-                    <SelectItem
-                      className="mb-1 border rounded-xl border-zinc-300 "
-                      key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                      value={`${currentSchema.id}`}
-                    >
-                      {`${formatRoubles(currentSchema.daily_amount!)}`}
-                      <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* {carVariants.length > 1 && (
+            <div
+              className={
+                car.variants!.length === 1
+                  ? `fixed bottom-14 left-0 flex justify-center w-full px-4 space-x-2`
+                  : ""
+              }
+            >
+              <div className="flex justify-center h-16 w-full max-w-[800px] px-0 py-2 space-x-2 bg-white  inset-x-0 mx-auto sm:px-40">
+                <Select
+                  onValueChange={(value) => setSelectedSchema(Number(value))}
+                  defaultValue={`${schemas![0].id}`}
+                >
+                  <SelectTrigger className="w-1/2 h-auto pb-1 border-none pl-3text-left bg-grey rounded-xl md:px-5 ">
+                    <SelectValue placeholder="Схема аренды" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
+                    {schemas!.map((currentSchema, i) => (
+                      <SelectItem
+                        className="mb-1 border rounded-xl border-zinc-300 "
+                        key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                        value={`${currentSchema.id}`}
+                      >
+                        {`${formatRoubles(currentSchema.daily_amount!)}`}
+                        <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/* {carVariants.length > 1 && (
                   <CustomModal
                     trigger={
                       <div className="">
@@ -411,38 +427,40 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                     }
                   />
                 )} */}
-              {!activeBooking && (
-                <div className="w-1/2 sm:max-w-[250px]">
-                  <Confirmation
-                    title={`Забронировать ${car.brand} ${car.model}?`}
-                    type="green"
-                    accept={book}
-                    cancel={() => {}}
-                    trigger={<Button className="">Забронировать</Button>}
-                  />
-                </div>
-              )}
-              {!!activeBooking && (
-                <div className="w-1/2 sm:max-w-[250px]">
-                  <Confirmation
-                    title={
-                      <div className="text-center ">
-                        <div>
-                          У вас есть активная бронь: {activeBooking.car?.brand}{" "}
-                          {activeBooking.car?.model}
+                {!activeBooking && (
+                  <div className="w-1/2 sm:max-w-[250px]">
+                    <Confirmation
+                      title={`Забронировать ${car.brand} ${car.model}?`}
+                      type="green"
+                      accept={book}
+                      cancel={() => {}}
+                      trigger={<Button className="">Забронировать</Button>}
+                    />
+                  </div>
+                )}
+                {!!activeBooking && (
+                  <div className="w-1/2 sm:max-w-[250px]">
+                    <Confirmation
+                      title={
+                        <div className="text-center ">
+                          <div>
+                            У вас есть активная бронь:{" "}
+                            {activeBooking.car?.brand}{" "}
+                            {activeBooking.car?.model}
+                          </div>
+                          <div>
+                            Отменить и забронировать {car.brand} {car.model}?
+                          </div>
                         </div>
-                        <div>
-                          Отменить и забронировать {car.brand} {car.model}?
-                        </div>
-                      </div>
-                    }
-                    type="green"
-                    accept={book}
-                    cancel={() => {}}
-                    trigger={<Button className="">Забронировать</Button>}
-                  />
-                </div>
-              )}
+                      }
+                      type="green"
+                      accept={book}
+                      cancel={() => {}}
+                      trigger={<Button className="">Забронировать</Button>}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

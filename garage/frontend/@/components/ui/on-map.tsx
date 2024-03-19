@@ -106,7 +106,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
       </YMaps>
       {isClicked && (
         <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
-          <div className=" flex flex-wrap items-start justify-start w-full h-full gap-2 bg-lightgrey max-w-[744px] p-4 mx-auto overflow-y-auto pb-16">
+          <div className=" flex flex-wrap items-start justify-start w-full h-full gap-2 bg-lightgrey max-w-[764px] p-4 mx-auto overflow-y-auto pb-16">
             <div className="flex flex-wrap gap-2 md:justify-start ">
               {clickedCars.map((car) => {
                 return <Card key={car.id} car={car} />;

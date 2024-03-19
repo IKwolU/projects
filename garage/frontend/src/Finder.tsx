@@ -215,7 +215,7 @@ export const Finder = () => {
                   })
                 }
                 key={carClass}
-                className={`cursor-pointer w-20 flex flex-col items-center bg-white rounded-xl transition-all h-fit pb-2 ${
+                className={`cursor-pointer w-20 md:w-32 flex flex-col items-center bg-white rounded-xl transition-all h-fit pb-2 ${
                   isActive ? "shadow border-2 border-yellow" : " scale-90"
                 }`}
               >
@@ -226,8 +226,9 @@ export const Finder = () => {
           })}
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
-          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-10">
+          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
             <span
+              className=""
               onClick={() => {
                 setFilters({
                   ...filters,
@@ -295,9 +296,11 @@ export const Finder = () => {
                 <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
               )}
               {!!filter && (
-                <div className="cursor-pointer">
+                <div className="cursor-pointer ">
                   <Badge
-                    className={`${activeFilter === filter ? "bg-white" : ""} `}
+                    className={`${
+                      activeFilter === filter ? "bg-white" : ""
+                    } md:px-4`}
                     onClick={() =>
                       setActiveFilter(activeFilter === filter ? null : filter)
                     }
@@ -310,13 +313,13 @@ export const Finder = () => {
               {!filter && (
                 <Dialog>
                   <DialogTrigger asChild>
-                    <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
-                      {filters.brands.length > 3 &&
-                        `${filters.brands.slice(0, 3).join(", ")} и еще ${
-                          filters.brands.length - 3
+                    <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
+                      {filters.brands.length > 1 &&
+                        `${filters.brands.slice(0, 1).join(", ")} и еще ${
+                          filters.brands.length - 1
                         }`}
                       {!!filters.brands.length &&
-                        filters.brands.length <= 3 &&
+                        filters.brands.length === 1 &&
                         `${filters.brands.join(", ")}`}
                       {!filters.brands.length && "Модели"}
                     </span>
@@ -370,16 +373,17 @@ export const Finder = () => {
                                     : [...filters.brands, title],
                                 })
                               }
-                              className={`w-full  p-1 rounded-xl font-normal flex justify-between`}
+                              className={`w-full  p-1 rounded-xl font-normal flex justify-start ${
+                                isActive ? "" : "ml-[46px]"
+                              }`}
                             >
-                              {" "}
-                              {title}
                               {isActive && (
                                 <FontAwesomeIcon
                                   icon={faCheck}
-                                  className="px-1 ml-4 cursor-pointer"
+                                  className="px-1 mr-[20.5px] cursor-pointer"
                                 />
                               )}
+                              {title}
                             </span>{" "}
                             {isActive &&
                               x.models!.map((model) => {
@@ -404,18 +408,18 @@ export const Finder = () => {
                                     }
                                   >
                                     <span
-                                      className={` w-full font-normal text-base p-1 rounded-xl flex justify-between ${
-                                        isActiveModel ? "" : ""
+                                      className={` w-full font-normal text-base p-1 rounded-xl flex justify-start ${
+                                        isActiveModel ? "" : "ml-[46px]"
                                       }`}
                                     >
                                       {" "}
-                                      {model}
                                       {isActiveModel && (
                                         <FontAwesomeIcon
                                           icon={faCheck}
-                                          className="px-1 ml-4 cursor-pointer"
+                                          className="px-1 mr-6 cursor-pointer"
                                         />
-                                      )}
+                                      )}{" "}
+                                      {model}
                                     </span>
                                   </span>
                                 );
@@ -493,16 +497,17 @@ export const Finder = () => {
           </Dialog> */}
           <Dialog>
             <DialogTrigger asChild>
-              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-10">
+              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
+                {filters.parksName.length > 1 &&
+                  `${filters.parksName.slice(0, 1).join(", ")} и еще ${
+                    filters.parksName.length - 1
+                  }`}
+
                 {!!filters.parksName.length && (
                   <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
                 )}
-                {filters.parksName.length > 3 &&
-                  `${filters.parksName.slice(0, 3).join(", ")} и еще ${
-                    filters.parksName.length - 3
-                  }`}
                 {!!filters.parksName.length &&
-                  filters.parksName.length <= 3 &&
+                  filters.parksName.length === 1 &&
                   `${filters.parksName.join(", ")}`}
                 {!filters.parksName.length && "Автопарк"}
               </span>
@@ -553,16 +558,18 @@ export const Finder = () => {
                         }
                       >
                         <span
-                          className={`w-full p-1 rounded-xl flex justify-between`}
+                          className={`w-full p-1 rounded-xl flex justify-start ${
+                            isActive ? "" : "ml-[49.5px]"
+                          }`}
                         >
                           {" "}
-                          {title}
                           {isActive && (
                             <FontAwesomeIcon
                               icon={faCheck}
-                              className="px-1 ml-4 cursor-pointer"
+                              className="px-1 mr-6 cursor-pointer"
                             />
                           )}
+                          {title}
                         </span>{" "}
                         <Separator className="mt-1" />
                       </span>
@@ -583,7 +590,7 @@ export const Finder = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <div className="cursor-pointer inline-flex items-center h-10 text-nowrap active:bg-white whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-black transition-colors focus:outline-none bg-grey">
+          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-4 active:bg-gray whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-pale transition-colors focus:outline-none bg-black bg-opacity-85">
             <FontAwesomeIcon
               onClick={filtersClean}
               icon={faTrashCan}
@@ -596,7 +603,7 @@ export const Finder = () => {
             ["asc", "desc"].map((sorting, i) => (
               <Badge
                 key={`sorting ${i}`}
-                className={`${
+                className={` ${
                   filters.sorting === sorting ? "bg-white" : ""
                 } cursor-pointer`}
                 onClick={() =>

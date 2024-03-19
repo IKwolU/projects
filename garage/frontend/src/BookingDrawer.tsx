@@ -425,7 +425,7 @@ export const BookingDrawer = () => {
       {sortedTimeOverBookings.length > 0 && (
         <CSSTransition
           nodeRef={nodeRef}
-          timeout={500}
+          timeout={300}
           classNames="height"
           unmountOnExit
           in={isOpenedTimeOverBookings}

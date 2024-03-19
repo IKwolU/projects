@@ -44,6 +44,9 @@ function App() {
         <Menu user={user} />
         {/* <span className="font-bold text-md text-gray"></span> */}
       </div>
+      <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
+        Закажи билетов пачку и получишь нашу тачку!
+      </div>
       <Link to="bookings">
         <BookingTimer />
       </Link>

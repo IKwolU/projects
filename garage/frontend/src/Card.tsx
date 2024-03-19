@@ -30,8 +30,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
             </div>
             {car.variants!.length > 1 && (
               <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg shadow right-1 text-gray">
-                {/* +{car.variants!.length - 1} */}
-                Вариантов: {car.variants!.length}
+                +{car.variants!.length}
               </div>
             )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden">

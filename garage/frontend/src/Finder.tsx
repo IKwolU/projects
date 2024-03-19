@@ -226,7 +226,7 @@ export const Finder = () => {
           })}
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
-          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-10">
             <span
               onClick={() => {
                 setFilters({
@@ -493,7 +493,7 @@ export const Finder = () => {
           </Dialog> */}
           <Dialog>
             <DialogTrigger asChild>
-              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
+              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-10">
                 {!!filters.parksName.length && (
                   <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
                 )}

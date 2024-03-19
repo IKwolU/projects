@@ -79,7 +79,12 @@ const OnMap: React.FC<Props> = ({ cars }) => {
           suggest_apikey: "77383c0f-1a86-4e22-8cb6-821d0b5c3e7e",
         }}
       >
-        <Map state={mapState} onLoad={() => setIsLoad(true)}>
+        <Map
+          state={mapState}
+          onLoad={() => setIsLoad(true)}
+          width={"100%"}
+          height={"75vh"}
+        >
           <Clusterer
             options={{
               preset: "islands#ClusterIcons",
@@ -99,7 +104,6 @@ const OnMap: React.FC<Props> = ({ cars }) => {
           <ZoomControl />
         </Map>
       </YMaps>
-      {/* {activeIndex !== -1 && <ModalCard car={cars[activeIndex]} />} */}
       {isClicked && (
         <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
           <div className=" flex flex-wrap items-start justify-start w-full h-full gap-2 bg-lightgrey max-w-[744px] p-4 mx-auto overflow-y-auto pb-16">

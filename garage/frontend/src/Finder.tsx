@@ -48,6 +48,8 @@ import {
   faArrowRightArrowLeft,
   faCheck,
   faTrashCan,
+  faMapLocationDot,
+  faRectangleList,
 } from "@fortawesome/free-solid-svg-icons";
 import { Separator } from "@/components/ui/separator";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
@@ -225,9 +227,6 @@ export const Finder = () => {
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
           <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center">
-            {filters.on_map && (
-              <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
-            )}
             <span
               onClick={() => {
                 setFilters({
@@ -236,7 +235,18 @@ export const Finder = () => {
                 });
               }}
             >
-              На карте
+              {!filters.on_map && (
+                <>
+                  <FontAwesomeIcon icon={faMapLocationDot} className="mr-2" />
+                  <span>На карте</span>
+                </>
+              )}
+              {filters.on_map && (
+                <>
+                  <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
+                  <span>Списком</span>
+                </>
+              )}
             </span>
           </div>
           {[

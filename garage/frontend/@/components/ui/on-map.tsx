@@ -30,14 +30,14 @@ interface CityCoords {
 
 const OnMap: React.FC<Props> = ({ cars }) => {
   const city = useRecoilValue(cityAtom);
-  const [isLoad, setIsLoad] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [clickedCars, setClickedCars] = useState<Cars2[]>([]);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
+  const [placemarkKey, setPlacemarkKey] = useState(0);
 
   useEffect(() => {
-    if (city && isLoad) {
+    if (city) {
       const newCoordinates = citiesCoords.find(
         (cityCoord: CityCoords) => cityCoord.city_ru === city
       );
@@ -48,26 +48,41 @@ const OnMap: React.FC<Props> = ({ cars }) => {
         ]);
       }
     }
-  }, [city, isLoad]);
+  }, [city]);
 
   const mapState = {
     center: coordinates,
-    zoom: 9,
+    zoom: 8,
   };
 
   const handleClusterClick = (e: any) => {
     const target = e.get("target");
-    if (target && target.getGeoObjects) {
-      const geoObjects = target.getGeoObjects();
-      const clickedCars = cars.filter((car) => {
-        const [lat, lon] = car.division!.coords!.split(",");
-        return geoObjects.some((geoObj) => {
-          const [geoLat, geoLon] = geoObj.geometry.getCoordinates();
-          return lat === geoLat.toString() && lon === geoLon.toString();
+
+    if (target) {
+      if (target.getGeoObjects) {
+        const geoObjects = target.getGeoObjects();
+        const clickedCars = cars.filter((car) => {
+          const [lat, lon] = car.division!.coords!.split(",");
+          const tolerance = 0.0001;
+          return geoObjects.some((geoObj) => {
+            const [geoLat, geoLon] = geoObj.geometry.getCoordinates();
+            return (
+              Math.abs(Number(lat) - geoLat) < tolerance &&
+              Math.abs(Number(lon) - geoLon) < tolerance
+            );
+          });
         });
-      });
-      setClickedCars(clickedCars);
-      setIsClicked(true);
+        setClickedCars(clickedCars);
+        setIsClicked(true);
+      } else {
+        const clickedCars = cars.filter((car) => {
+          const [lat, lon] = car.division!.coords!.split(",");
+          const [geoLat, geoLon] = target.geometry._coordinates;
+          return lat === geoLat && lon && geoLon;
+        });
+        setClickedCars(clickedCars);
+        setIsClicked(true);
+      }
     }
   };
 
@@ -79,12 +94,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
           suggest_apikey: "77383c0f-1a86-4e22-8cb6-821d0b5c3e7e",
         }}
       >
-        <Map
-          state={mapState}
-          onLoad={() => setIsLoad(true)}
-          width={"100%"}
-          height={"75vh"}
-        >
+        <Map state={mapState} width={"100%"} height={"75vh"}>
           <Clusterer
             options={{
               preset: "islands#ClusterIcons",
@@ -93,12 +103,15 @@ const OnMap: React.FC<Props> = ({ cars }) => {
             instanceRef={clustererRef}
             onClick={handleClusterClick}
           >
-            {cars.map((car, index) => (
-              <Placemark
-                key={index}
-                geometry={car.division!.coords?.split(",")}
-              />
-            ))}
+            {cars.map((car, index) => {
+              return (
+                <Placemark
+                  key={`${car.id}-${city}`}
+                  geometry={car.division!.coords?.split(",")}
+                  onClick={handleClusterClick}
+                />
+              );
+            })}
           </Clusterer>
           <FullscreenControl />
           <ZoomControl />
@@ -106,7 +119,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
       </YMaps>
       {isClicked && (
         <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
-          <div className=" flex flex-wrap items-start justify-start w-full h-full gap-2 bg-lightgrey max-w-[764px] p-4 mx-auto overflow-y-auto pb-16">
+          <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[764px] p-4 mx-auto overflow-y-auto pb-16">
             <div className="flex flex-wrap gap-2 md:justify-start ">
               {clickedCars.map((car) => {
                 return <Card key={car.id} car={car} />;

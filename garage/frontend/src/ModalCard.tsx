@@ -324,7 +324,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
             <div
               className={
                 car.variants!.length === 1
-                  ? `fixed bottom-14 left-0 flex justify-center w-full px-4 space-x-2`
+                  ? `fixed bottom-14 left-0 flex justify-center w-full px-4 space-x-2 z-[52]`
                   : ""
               }
             >
@@ -428,7 +428,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                   />
                 )} */}
                 {!activeBooking && (
-                  <div className="w-1/2 sm:max-w-[250px]">
+                  <div className="w-1/2 sm:max-w-[250px] relative">
                     <Confirmation
                       title={`Забронировать ${car.brand} ${car.model}?`}
                       type="green"
@@ -439,7 +439,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                   </div>
                 )}
                 {!!activeBooking && (
-                  <div className="w-1/2 sm:max-w-[250px]">
+                  <div className="w-1/2 sm:max-w-[250px] relative">
                     <Confirmation
                       title={
                         <div className="text-center ">

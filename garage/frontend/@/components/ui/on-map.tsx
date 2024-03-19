@@ -10,10 +10,25 @@ import {
 import { Cars2 } from "src/api-client";
 import { useRecoilValue } from "recoil";
 import { cityAtom } from "../../../src/atoms";
+import citiesCoords from "../../../../backend/public/cities_coords.json";
+
 // import { ModalCard } from "../../../src/ModalCard";
 
 interface Props {
   cars: Cars2[];
+}
+interface CityCoords {
+  city_ru: string;
+  population: string;
+  lat: string;
+  lon: string;
+  region_name: string;
+  region_iso_code: string;
+  federal_district: string;
+  city_en: string;
+}
+interface Props {
+  citiesCoords: CityCoords[];
 }
 
 const OnMap: React.FC<Props> = ({ cars }) => {
@@ -25,14 +40,15 @@ const OnMap: React.FC<Props> = ({ cars }) => {
 
   useEffect(() => {
     if (city && isLoad) {
-      window.ymaps.geocode(city).then((res: any) => {
-        const firstGeoObject = res.geoObjects.get(0);
-        const coords = firstGeoObject!.geometry;
-        if (coords) {
-          const newCoordinates = coords._coordinates;
-          setCoordinates(newCoordinates);
-        }
-      });
+      const newCoordinates = citiesCoords.find(
+        (cityCoord: CityCoords) => cityCoord.city_ru === city
+      );
+      if (newCoordinates) {
+        setCoordinates([
+          Number(newCoordinates.lat),
+          Number(newCoordinates.lon),
+        ]);
+      }
     }
   }, [city, isLoad]);
 
@@ -52,14 +68,9 @@ const OnMap: React.FC<Props> = ({ cars }) => {
         query={{
           apikey: "77383c0f-1a86-4e22-8cb6-821d0b5c3e7e",
           suggest_apikey: "77383c0f-1a86-4e22-8cb6-821d0b5c3e7e",
-          ns: "ymaps",
         }}
       >
-        <Map
-          modules={["geocode"]}
-          state={mapState}
-          onLoad={() => setIsLoad(true)}
-        >
+        <Map state={mapState} onLoad={() => setIsLoad(true)}>
           <Clusterer
             options={{
               preset: "islands#ClusterIcons",

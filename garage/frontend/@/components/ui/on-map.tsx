@@ -11,8 +11,8 @@ import { Cars2 } from "src/api-client";
 import { useRecoilValue } from "recoil";
 import { cityAtom } from "../../../src/atoms";
 import citiesCoords from "../../../../backend/public/cities_coords.json";
-
-// import { ModalCard } from "../../../src/ModalCard";
+import { Card } from "../../../src/Card";
+import { Button } from "./button";
 
 interface Props {
   cars: Cars2[];
@@ -27,14 +27,12 @@ interface CityCoords {
   federal_district: string;
   city_en: string;
 }
-interface Props {
-  citiesCoords: CityCoords[];
-}
 
 const OnMap: React.FC<Props> = ({ cars }) => {
   const city = useRecoilValue(cityAtom);
   const [isLoad, setIsLoad] = useState(false);
-  // const [activeIndex, setActiveIndex] = useState(-1);
+  const [isClicked, setIsClicked] = useState(false);
+  const [clickedCars, setClickedCars] = useState<Cars2[]>([]);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
 
@@ -59,7 +57,18 @@ const OnMap: React.FC<Props> = ({ cars }) => {
 
   const handleClusterClick = (e: any) => {
     const target = e.get("target");
-    console.log(target);
+    if (target && target.getGeoObjects) {
+      const geoObjects = target.getGeoObjects();
+      const clickedCars = cars.filter((car) => {
+        const [lat, lon] = car.division!.coords!.split(",");
+        return geoObjects.some((geoObj) => {
+          const [geoLat, geoLon] = geoObj.geometry.getCoordinates();
+          return lat === geoLat.toString() && lon === geoLon.toString();
+        });
+      });
+      setClickedCars(clickedCars);
+      setIsClicked(true);
+    }
   };
 
   return (
@@ -91,6 +100,33 @@ const OnMap: React.FC<Props> = ({ cars }) => {
         </Map>
       </YMaps>
       {/* {activeIndex !== -1 && <ModalCard car={cars[activeIndex]} />} */}
+      {isClicked && (
+        <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
+          <div className=" flex flex-wrap items-start justify-start w-full h-full gap-2 bg-lightgrey max-w-[744px] p-4 mx-auto overflow-y-auto pb-16">
+            <div className="flex flex-wrap gap-2 md:justify-start ">
+              {clickedCars.map((car) => {
+                return <Card key={car.id} car={car} />;
+              })}
+            </div>
+          </div>
+          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[744px] mx-auto">
+            <Button
+              className="sm:max-w-[250px] mx-auto"
+              onClick={() => setIsClicked(false)}
+            >
+              Назад
+            </Button>
+          </div>
+          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[744px] mx-auto">
+            <Button
+              className="sm:max-w-[250px] mx-auto"
+              onClick={() => setIsClicked(false)}
+            >
+              Назад
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -480,7 +480,9 @@ class AuthController extends Controller
         if (Storage::exists($folderPath)) {
             Storage::deleteDirectory($folderPath);
         }
-
+        $referral = Referral::where('user_id', $user->id)->first();
+        $referral->user_id = 1;
+        $referral->save();
         // Удаление записей о пользователе и водителе
         $user->delete();
         if ($driver) {

@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QRCode from "qrcode.react";
+import Confirmation from "@/components/ui/confirmation";
 
 export const Account = ({ user }: { user: User }) => {
   const setUser = useSetRecoilState(userAtom);
@@ -98,6 +99,15 @@ export const Account = ({ user }: { user: User }) => {
   const logout = async () => {
     try {
       await client.logout();
+    } catch (error) {}
+
+    localStorage.clear();
+    window.location.href = "/";
+  };
+
+  const deleteUser = async () => {
+    try {
+      await client.deleteUser();
     } catch (error) {}
 
     localStorage.clear();
@@ -255,10 +265,37 @@ export const Account = ({ user }: { user: User }) => {
             );
           })}
         </div>
-        <div className="my-8 text-center max-w-[320px] mx-auto">
+        <div className="flex justify-center mx-auto my-8 space-x-2 text-center">
+          <div className="max-w-[320px] w-full">
+            <Confirmation
+              accept={deleteUser}
+              cancel={() => {}}
+              title={"Начать удаление?"}
+              type="red"
+              trigger={
+                <Confirmation
+                  accept={() => {}}
+                  cancel={() => {}}
+                  title={
+                    "При удалении аккаунта будет стерта вся информация пользователя, Вы уверены?"
+                  }
+                  type="red"
+                  trigger={
+                    <Button
+                      variant="reject"
+                      className="text-black md:text-xl max-w-[320px]"
+                      onClick={() => {}}
+                    >
+                      Удалить аккаунт
+                    </Button>
+                  }
+                />
+              }
+            />
+          </div>
           <Button
             variant="reject"
-            className="text-black md:text-xl"
+            className="text-black md:text-xl max-w-[320px]"
             onClick={logout}
           >
             Выйти из приложения

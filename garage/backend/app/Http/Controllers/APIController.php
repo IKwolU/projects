@@ -153,6 +153,7 @@ class APIController extends Controller
      *             @OA\Property(property="city", type="string", description="Город подразделения"),
      *             @OA\Property(property="coords", type="string", description="Координаты подразделения"),
      *             @OA\Property(property="address", type="string", description="Адрес подразделения"),
+     *             @OA\Property(property="metro", type="string", description="Название ближайшего метро"),
      *             @OA\Property(property="name", type="string", description="Название подразделения"),
      *             @OA\Property(property="phone", type="string", description="Телефон парка"),
      *             @OA\Property(property="timezone_difference", type="integer", description="Часовой пояс, разница во времени с +0"),
@@ -225,6 +226,7 @@ class APIController extends Controller
             'city' => 'required|string|max:250|exists:cities,name',
             'coords' => 'required|string',
             'address' => 'required|string',
+            'metro' => 'string',
             'timezone_difference' => 'required|integer',
             'phone'=>'required|string',
             'working_hours' => [
@@ -276,6 +278,7 @@ class APIController extends Controller
         $updatedWorkingHours = $this->sortWorkingHoursByDay($request->working_hours);
         $division->working_hours = json_encode($updatedWorkingHours);
         $division->coords = $request->coords;
+        $division->metro = $request->metro;
         $division->address = $request->address;
         $division->name = $request->name;
         $division->phone = $request->phone;
@@ -311,6 +314,7 @@ class APIController extends Controller
      *             @OA\Property(property="id", type="integer", description="Идентификатор подразделения"),
      *             @OA\Property(property="coords", type="string", description="Координаты подразделения"),
      *             @OA\Property(property="address", type="string", description="Адрес подразделения"),
+     *             @OA\Property(property="metro", type="string", description="Название ближайшего метро" ),
      *             @OA\Property(property="name", type="string", description="Название подразделения"),
      *             @OA\Property(property="phone", type="string", description="Телефон парка"),
      *             @OA\Property(property="timezone_difference", type="integer", description="Часовой пояс, разница во времени с +0"),
@@ -386,6 +390,7 @@ class APIController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer',
+            'metro' => 'string',
             'coords' => 'string',
             'address' => 'string',
             'timezone_difference' => 'integer',
@@ -438,6 +443,9 @@ class APIController extends Controller
         }
         if ($request->address) {
             $division->address = $request->address;
+        }
+        if ($request->metro) {
+            $division->metro = $request->metro;
         }
         $updatedWorkingHours = $this->sortWorkingHoursByDay($request->working_hours);
         if ($updatedWorkingHours) {
@@ -837,6 +845,8 @@ class APIController extends Controller
      *                     @OA\Property(property="transmission_type", type="integer", description="КПП ТС (1 - автомат, 0 - механика)"),
      *                     @OA\Property(property="brand", type="string", maxLength=50, description="Бренд автомобиля"),
      *                     @OA\Property(property="model", type="string", maxLength=80, description="Модель автомобиля"),
+     *                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *                     @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
      *                     @OA\Property(property="class", type="integer", description="Тариф автомобиля (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
      *                     @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
      *                     @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на фотографии автомобиля"),
@@ -892,6 +902,8 @@ class APIController extends Controller
         $validator = Validator::make($request->all(), [
             'cars' => 'required|array',
             'cars.*.division_id' => 'required|integer|exists:divisions,id',
+            'cars.*.mileage' => 'required|numeric',
+            'cars.*.license_plate' => 'required|string',
             'cars.*.fuel_type' => 'required|integer|max:1',
             'cars.*.transmission_type' => 'required|integer|max:1',
             'cars.*.brand' => [
@@ -944,6 +956,8 @@ class APIController extends Controller
             $division = Division::where('id', $carData['division_id'])->first();
             $car = new Car;
             $car->division_id = $carData['division_id'];
+            $car->mileage = $carData['mileage'];
+            $car->license_plate = $carData['license_plate'];
             $car->fuel_type = $carData['fuel_type'];
             $car->transmission_type = $carData['transmission_type'];
             $car->brand = $carData['brand'];
@@ -1102,6 +1116,8 @@ class APIController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
      *             @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
+     *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
      *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
      *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
      *         )
@@ -1154,37 +1170,13 @@ class APIController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:20',
             'division_id' => 'required|integer|exists:divisions,id',
-            'fuel_type' => 'nullable|integer|max:1',
-            'transmission_type' => 'nullable|integer|max:1',
-            'brand' => [
-                'nullable',
-                'string',
-                'max:50',
-                function ($attribute, $value, $fail) {
-                    $parser = new ParserController();
-                    if (!$parser->parseBrand($value)) {
-                        $fail('Некорректный бренд.');
-                    }
-                },
-            ],
-            'model' => [
-                'nullable',
-                'string',
-                'max:80',
-                function ($attribute, $value, $fail) {
-                    $parser = new ParserController();
-                    if (!$parser->parseModel($value)) {
-                        $fail('Некорректная модель.');
-                    }
-                },
-            ],
+            'mileage' => 'numeric',
+            'license_plate' => 'string',
             'class' => [
                 'required',
                 'integer',
                 'between:0,4'
             ],
-            'year_produced' => 'nullable|integer',
-            'description' => 'nullable|string|max:500',
             'images' => 'nullable|array',
             'images.*' => 'string',
         ]);
@@ -1203,29 +1195,34 @@ class APIController extends Controller
         if (!$division) {
             return response()->json(['message' => 'Подразделение не найдено'], 404);
         }
-        $tariff = Tariff::where('class', $request->class)
-            ->where('park_id', $park->id)
-            ->where('city_id', $division->city_id)
-            ->first();
 
-        if (!$tariff) {
-            return response()->json(['message' => 'Класса не существует для этого города'], 409);
-        }
         $car = Car::where('car_id', $carId)
             ->where('park_id', $park->id)
             ->first();
         if (!$car) {
             return response()->json(['message' => 'Автомобиль не найден'], 404);
         }
-        $car->tariff_id = $tariff->id;
+
+        if ($request->class) {
+            $tariff = Tariff::where('class', $request->class)
+            ->where('park_id', $park->id)
+            ->where('city_id', $division->city_id)
+            ->first();
+                if (!$tariff) {
+                    return response()->json(['message' => 'Класса не существует для этого города'], 409);
+                }
+            $car->tariff_id = $tariff->id;
+        }
+        if ($request->mileage) {
+            $car->mileage = $request->mileage;
+        }
+        if ($request->license_plate) {
+            $car->license_plate = $request->license_plate;
+        }
         $car->division_id = $division->id;
-        $car->park_id = $park->id;
-        $car->fuel_type = $request->input('fuel_type');
-        $car->transmission_type = $request->input('transmission_type');
-        $car->brand = $request->input('brand');
-        $car->model = $request->input('model');
-        $car->year_produced = $request->input('year_produced');
-        $car->images = json_encode($request->input('images'));
+        if ($request->input('images')) {
+            $car->images = json_encode($request->input('images'));
+        }
         $car->save();
 
         return response()->json(['message' => 'Автомобиль успешно изменен'], 200);
@@ -1465,6 +1462,230 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
         }
         return response()->json(['message' => 'Статус не найден'], 404);
     }
+
+
+    /**
+     * Замена забронированного авто
+     *
+     * Этот метод позволяет заменить один автообиль на другой в рамках текущей брони по VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/cars/booking/replace",
+     *     operationId="BookReplace",
+     *     summary="Замена забронированного авто",
+     *     tags={"API"},
+     *     security={{"api_key": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="string", description="VIN-номер текущего автомобиля"),
+     *             @OA\Property(property="new_car_id", type="string", description="VIN-номер нового автомобиля")
+
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Замена авто прошла успешно",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "car_id": {"Поле car_id обязательно для заполнения и должно быть строкой."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Автомобиль не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль не найден или бронирование не найдено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function BookReplace(Request $request)
+    {
+        $apiKey = $request->header('X-API-Key');
+        $park = Park::where('API_key', $apiKey)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'new_car_id' => 'required|string',
+            'car_id' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
+        }
+
+        $carId = $request->input('car_id');
+        $newCarId = $request->input('new_car_id');
+
+        $car = Car::where('car_id', $carId)
+            ->where('park_id', $park->id)
+            ->with('booking')
+            ->first();
+
+        if (!$car) {
+            return response()->json([
+                'message' => 'Автомобиль не найден',
+            ], 404);
+        }
+        $newCar = Car::where('car_id', $newCarId)
+            ->where('park_id', $park->id)
+            ->first();
+
+        if (!$newCar) {
+            return response()->json([
+                'message' => 'Новый автомобиль не найден',
+            ], 404);
+        }
+        if ($newCar->status !== CarStatus::AvailableForBooking->value || !$newCar->rent_term_id) {
+            return response()->json([
+                'message' => 'Новый автомобиль не доступен для брони',
+            ], 409);
+        }
+        // if ($newCar->rent_term_id !== $car->rent_term_id) {
+        //     return response()->json([
+        //         'message' => 'Замена на это авто невозможна',
+        //     ], 409);
+        // }
+            $booking = $car->booking()
+                ->where('status', BookingStatus::Booked)
+                ->first();
+            if (!$booking) {
+                return response()->json([
+                    'message' => 'Бронирование не найдено для данного автомобиля',
+                ], 404);
+            }
+            $booking->car_id = $newCar->id;
+            $booking->save();
+            $car->status = CarStatus::AvailableForBooking->value;
+            $car->save();
+            $newCar->status = CarStatus::Booked->value;
+            $car->save();
+            return response()->json(['message' => 'Замена авто прошла успешно'], 200);
+
+    }/**
+     * Пролонгация брони
+     *
+     * Этот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/cars/booking/prolongation",
+     *     operationId="BookProlongation",
+     *     summary="Пролонгация брони автомобиля",
+     *     tags={"API"},
+     *     security={{"api_key": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="hours", type="integer", description="Время в часах, на которое нужно продлить бронь")
+
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Бронь продлена на hours ч.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "car_id": {"Поле car_id обязательно для заполнения и должно быть строкой."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Автомобиль не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль не найден или бронирование не найдено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function BookProlongation(Request $request)
+    {
+        $apiKey = $request->header('X-API-Key');
+        $park = Park::where('API_key', $apiKey)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'hours' => 'required|integer',
+            'car_id' => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
+        }
+
+        $carId = $request->input('car_id');
+
+        $car = Car::where('car_id', $carId)
+            ->where('park_id', $park->id)
+            ->with('booking')
+            ->first();
+
+        if (!$car) {
+            return response()->json([
+                'message' => 'Автомобиль не найден',
+            ], 404);
+        }
+            $booking = $car->booking()
+                ->where('status', BookingStatus::Booked)
+                ->first();
+            if (!$booking) {
+                return response()->json([
+                    'message' => 'Бронирование не найдено для данного автомобиля',
+                ], 404);
+            }
+            $booking->booked_until = Carbon::create($booking->booked_until)->addHours($request->hours);
+            $booking->save();
+            return response()->json(['message' => 'Бронь продлена на '.$request->hours.'ч.'], 200);
+
+    }
+
  /**
      * Изменить статус бронирования автомобиля
      *

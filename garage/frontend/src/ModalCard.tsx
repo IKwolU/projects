@@ -169,7 +169,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
             <div className="space-y-2">
               <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
               <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular text-gray">
-                <span>VIN: {x.vin?.slice(-4)}</span>
+                {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
                 <span>Пробег: 500 км</span>
               </p>
               <div className="flex flex-col md:flex-row md:flex-wrap">

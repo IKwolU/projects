@@ -25,7 +25,7 @@ const SliderImages = ({
   const settings = {
     dots: false,
     infinite: true,
-    speed: 100,
+    speed: 0,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
@@ -50,6 +50,7 @@ const SliderImages = ({
   return (
     <>
       <div className={`relative h-64 sm:h-80 ${classImages}`}>
+        <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 rounded-b-xl bg-gradient-to-t from-black from-60%"></div>
         {!openIsAffordable && (
           <Slider ref={sliderRef} {...settings}>
             {images.map((image, index) => (
@@ -85,7 +86,7 @@ const SliderImages = ({
           images={images}
         />
         <div
-          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 ${classPaginationImages}`}
+          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 z-10 ${classPaginationImages}`}
         >
           {images.slice(0, 3).map((x, i) => (
             <div

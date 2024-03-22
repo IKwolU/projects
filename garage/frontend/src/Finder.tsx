@@ -50,6 +50,7 @@ import {
   faTrashCan,
   faMapLocationDot,
   faRectangleList,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { Separator } from "@/components/ui/separator";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
@@ -226,7 +227,7 @@ export const Finder = () => {
           })}
         </div>
         <div className="flex my-2 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
-          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
+          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
             <span
               className=""
               onClick={() => {
@@ -300,12 +301,20 @@ export const Finder = () => {
                   <Badge
                     className={`${
                       activeFilter === filter ? "bg-white" : ""
-                    } md:px-4`}
+                    } md:px-2`}
                     onClick={() =>
                       setActiveFilter(activeFilter === filter ? null : filter)
                     }
                   >
-                    {title}
+                    {title}{" "}
+                    {filter !== ActiveFilter.Sorting && (
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        className={`ml-2 transition-transform ${
+                          activeFilter === filter && "rotate-180"
+                        }`}
+                      />
+                    )}
                   </Badge>
                 </div>
               )}
@@ -313,15 +322,36 @@ export const Finder = () => {
               {!filter && (
                 <Dialog>
                   <DialogTrigger asChild>
-                    <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
-                      {filters.brands.length > 1 &&
-                        `${filters.brands.slice(0, 1).join(", ")} и еще ${
-                          filters.brands.length - 1
-                        }`}
+                    <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
+                      {filters.brands.length > 1 && (
+                        <>
+                          {filters.brands.slice(0, 1).join(", ")} и еще{" "}
+                          {filters.brands.length - 1}
+                          <FontAwesomeIcon
+                            icon={faCaretDown}
+                            className="ml-2"
+                          />
+                        </>
+                      )}
                       {!!filters.brands.length &&
-                        filters.brands.length === 1 &&
-                        `${filters.brands.join(", ")}`}
-                      {!filters.brands.length && "Модели"}
+                        filters.brands.length === 1 && (
+                          <>
+                            {filters.brands.join(", ")}
+                            <FontAwesomeIcon
+                              icon={faCaretDown}
+                              className="ml-2"
+                            />
+                          </>
+                        )}
+                      {!filters.brands.length && (
+                        <>
+                          Модели{" "}
+                          <FontAwesomeIcon
+                            icon={faCaretDown}
+                            className="ml-2"
+                          />
+                        </>
+                      )}
                     </span>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[800px]">
@@ -497,19 +527,31 @@ export const Finder = () => {
           </Dialog> */}
           <Dialog>
             <DialogTrigger asChild>
-              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-4">
-                {filters.parksName.length > 1 &&
-                  `${filters.parksName.slice(0, 1).join(", ")} и еще ${
-                    filters.parksName.length - 1
-                  }`}
+              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
+                {filters.parksName.length > 1 && (
+                  <>
+                    {filters.parksName.slice(0, 1).join(", ")} и еще{" "}
+                    {filters.parksName.length - 1}
+                    <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                  </>
+                )}
 
                 {!!filters.parksName.length && (
                   <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
                 )}
                 {!!filters.parksName.length &&
-                  filters.parksName.length === 1 &&
-                  `${filters.parksName.join(", ")}`}
-                {!filters.parksName.length && "Автопарк"}
+                  filters.parksName.length === 1 && (
+                    <>
+                      {filters.parksName.join(", ")}
+                      <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                    </>
+                  )}
+                {!filters.parksName.length && (
+                  <>
+                    Автопарк
+                    <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                  </>
+                )}
               </span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[800px]">
@@ -590,7 +632,7 @@ export const Finder = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-4 active:bg-gray whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-pale transition-colors focus:outline-none bg-black bg-opacity-85">
+          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-2 active:bg-gray whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-pale transition-colors focus:outline-none bg-black bg-opacity-85">
             <FontAwesomeIcon
               onClick={filtersClean}
               icon={faTrashCan}

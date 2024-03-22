@@ -34,7 +34,6 @@ const OnMap: React.FC<Props> = ({ cars }) => {
   const [clickedCars, setClickedCars] = useState<Cars2[]>([]);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
-  const [placemarkKey, setPlacemarkKey] = useState(0);
 
   useEffect(() => {
     if (city) {
@@ -64,7 +63,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
         const clickedCars = cars.filter((car) => {
           const [lat, lon] = car.division!.coords!.split(",");
           const tolerance = 0.0001;
-          return geoObjects.some((geoObj) => {
+          return geoObjects.some((geoObj: any) => {
             const [geoLat, geoLon] = geoObj.geometry.getCoordinates();
             return (
               Math.abs(Number(lat) - geoLat) < tolerance &&
@@ -103,7 +102,7 @@ const OnMap: React.FC<Props> = ({ cars }) => {
             instanceRef={clustererRef}
             onClick={handleClusterClick}
           >
-            {cars.map((car, index) => {
+            {cars.map((car) => {
               return (
                 <Placemark
                   key={`${car.id}-${city}`}

@@ -90,7 +90,7 @@ const SliderImages = ({
           images={images}
         />
         <div
-          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 z-10 ${classPaginationImages} ${
+          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2  z-10 ${classPaginationImages} ${
             type === "hover" && "h-full"
           }`}
         >
@@ -98,7 +98,7 @@ const SliderImages = ({
             images.slice(0, 3).map((x, i) => (
               <div
                 key={`image_${i}`}
-                className={`w-full flex items-center cursor-pointer bg-white rounded-xl transition-all h-14 ${
+                className={`w-full flex items-center cursor-pointer bg-white rounded-xl transition-all h-14 sm:h-28 ${
                   i === activeIndex
                     ? "shadow border-2 border-yellow"
                     : "scale-90"

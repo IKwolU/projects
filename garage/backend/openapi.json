@@ -156,6 +156,10 @@
                                         "description": "Адрес подразделения",
                                         "type": "string"
                                     },
+                                    "metro": {
+                                        "description": "Название ближайшего метро",
+                                        "type": "string"
+                                    },
                                     "name": {
                                         "description": "Название подразделения",
                                         "type": "string"
@@ -323,6 +327,10 @@
                                     },
                                     "address": {
                                         "description": "Адрес подразделения",
+                                        "type": "string"
+                                    },
+                                    "metro": {
+                                        "description": "Название ближайшего метро",
                                         "type": "string"
                                     },
                                     "name": {
@@ -956,6 +964,14 @@
                                         "type": "integer",
                                         "maxLength": 250
                                     },
+                                    "mileage": {
+                                        "description": "Пробег автомобиля",
+                                        "type": "number"
+                                    },
+                                    "license_plate": {
+                                        "description": "Госномер автомобиля",
+                                        "type": "string"
+                                    },
                                     "class": {
                                         "description": "Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
                                         "type": "integer",
@@ -1098,6 +1114,14 @@
                                                     "description": "Модель автомобиля",
                                                     "type": "string",
                                                     "maxLength": 80
+                                                },
+                                                "mileage": {
+                                                    "description": "Пробег автомобиля",
+                                                    "type": "number"
+                                                },
+                                                "license_plate": {
+                                                    "description": "Госномер автомобиля",
+                                                    "type": "string"
                                                 },
                                                 "class": {
                                                     "description": "Тариф автомобиля (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
@@ -1574,6 +1598,246 @@
                 ]
             }
         },
+        "/cars/booking/replace": {
+            "put": {
+                "tags": [
+                    "API"
+                ],
+                "summary": "Замена забронированного авто",
+                "description": "Замена забронированного авто\n\nЭтот метод позволяет заменить один автообиль на другой в рамках текущей брони по VIN-номеру.",
+                "operationId": "BookReplace",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "car_id": {
+                                        "description": "VIN-номер текущего автомобиля",
+                                        "type": "string"
+                                    },
+                                    "new_car_id": {
+                                        "description": "VIN-номер нового автомобиля",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Замена авто прошла успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "car_id": [
+                                                    "Поле car_id обязательно для заполнения и должно быть строкой."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Автомобиль не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Автомобиль не найден или бронирование не найдено"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/cars/booking/prolongation": {
+            "put": {
+                "tags": [
+                    "API"
+                ],
+                "summary": "Пролонгация брони автомобиля",
+                "description": "Пролонгация брони\n\nЭтот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.",
+                "operationId": "BookProlongation",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "car_id": {
+                                        "description": "VIN-номер автомобиля",
+                                        "type": "string"
+                                    },
+                                    "hours": {
+                                        "description": "Время в часах, на которое нужно продлить бронь",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Бронь продлена на hours ч.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "car_id": [
+                                                    "Поле car_id обязательно для заполнения и должно быть строкой."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Автомобиль не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Автомобиль не найден или бронирование не найдено"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
         "/URL_АДРЕС_ПАРКА/cars/outbound/status": {
             "put": {
                 "tags": [
@@ -1968,71 +2232,6 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/user/login": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Аутентификация пользователя или регистрация нового",
-                "description": "Аутентификация пользователя или регистрация нового",
-                "operationId": "loginOrRegister",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "phone": {
-                                        "description": "Номер телефона пользователя",
-                                        "type": "string",
-                                        "example": "1234567890"
-                                    },
-                                    "code": {
-                                        "description": "Код аутентификации",
-                                        "type": "integer",
-                                        "example": 1234
-                                    },
-                                    "referral_code": {
-                                        "description": "Код пригласившего",
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Успешная аутентификация или регистрация",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "Success"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Ошибка валидации",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "errors": {
-                                            "description": "Список ошибок валидации",
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
             }
         },
         "/user/logout": {

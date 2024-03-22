@@ -275,8 +275,8 @@ class AuthController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="phone", type="string", example="1234567890", description="Номер телефона пользователя"),
      *             @OA\Property(property="code", type="integer",  description="Код аутентификации"),
-     //*             @OA\Property(property="type", type="string",  description="Тип пользователя", ref="#/components/schemas/UserType"),
-     //*             @OA\Property(property="api_key", type="string",  description="Ключ"),
+     *             @OA\Property(property="type", type="string",  description="Тип пользователя", ref="#/components/schemas/UserType"),
+     *             @OA\Property(property="api_key", type="string",  description="Ключ"),
      *             @OA\Property(property="referral_code", type="string", description="Код пригласившего")
      *         )
      *     ),
@@ -307,15 +307,15 @@ class AuthController extends Controller
         $request->validate([
             'phone' => 'required|string',
             'code' => 'required|integer',
-            // 'type' => 'required|string',
-            // 'api_key' => 'string'
+            'type' => 'required|string',
+            'api_key' => 'string'
         ]);
         $user = $this->phoneCodeAuthentication($request->phone, $request->code);
         if ($user) {
             if ($user->user_status === null) {
                 $user->user_status = UserStatus::DocumentsNotUploaded->value;
                 $user->avatar = "users/default.png";
-                // $user->user_type = $request->type === UserType::Manager->name ? UserType::Manager->value : UserType::Driver->value;
+                $user->user_type = $request->type === UserType::Manager->name ? UserType::Manager->value : UserType::Driver->value;
                 $user->user_type = UserType::Driver->value;
             }
 
@@ -334,15 +334,15 @@ class AuthController extends Controller
                 $referral->save();
             }
 
-            // if ($request->type === UserType::Driver->name) {
-            $driver = Driver::firstOrCreate(['user_id' => $user->id]);
-            $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
-            $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
-            // }
-            // if ($request->type === UserType::Manager->name) {
-            //     $manager = Manager::firstOrCreate(['user_id' => $user->id]);
-            //     $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
-            // }
+            if ($request->type === UserType::Driver->name) {
+                $driver = Driver::firstOrCreate(['user_id' => $user->id]);
+                $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
+                $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
+            }
+            if ($request->type === UserType::Manager->name) {
+                $manager = Manager::firstOrCreate(['user_id' => $user->id]);
+                $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
+            }
             $token = $user->createToken('auth_token')->plainTextToken;
             return $token;
         }

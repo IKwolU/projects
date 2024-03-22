@@ -54,7 +54,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
             </div>
           </div>
           <div className="px-1">
-            <h1 className="pl-1 my-2 text-xl md:text-2xl md:mb-4">
+            <h1 className="pl-1 my-2 text-lg md:text-xl md:mb-4">
               {`${car.brand} ${car.model}`}
               <span className="font-normal"> {car.year_produced}</span>
             </h1>

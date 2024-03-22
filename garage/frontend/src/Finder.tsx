@@ -50,7 +50,7 @@ import {
   faTrashCan,
   faMapLocationDot,
   faRectangleList,
-  faCaretDown,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { Separator } from "@/components/ui/separator";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
@@ -309,7 +309,7 @@ export const Finder = () => {
                     {title}{" "}
                     {filter !== ActiveFilter.Sorting && (
                       <FontAwesomeIcon
-                        icon={faCaretDown}
+                        icon={faChevronDown}
                         className={`ml-2 transition-transform ${
                           activeFilter === filter && "rotate-180"
                         }`}
@@ -328,7 +328,7 @@ export const Finder = () => {
                           {filters.brands.slice(0, 1).join(", ")} и еще{" "}
                           {filters.brands.length - 1}
                           <FontAwesomeIcon
-                            icon={faCaretDown}
+                            icon={faChevronDown}
                             className="ml-2"
                           />
                         </>
@@ -338,7 +338,7 @@ export const Finder = () => {
                           <>
                             {filters.brands.join(", ")}
                             <FontAwesomeIcon
-                              icon={faCaretDown}
+                              icon={faChevronDown}
                               className="ml-2"
                             />
                           </>
@@ -347,7 +347,7 @@ export const Finder = () => {
                         <>
                           Модели{" "}
                           <FontAwesomeIcon
-                            icon={faCaretDown}
+                            icon={faChevronDown}
                             className="ml-2"
                           />
                         </>
@@ -532,7 +532,7 @@ export const Finder = () => {
                   <>
                     {filters.parksName.slice(0, 1).join(", ")} и еще{" "}
                     {filters.parksName.length - 1}
-                    <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                    <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
                   </>
                 )}
 
@@ -543,13 +543,13 @@ export const Finder = () => {
                   filters.parksName.length === 1 && (
                     <>
                       {filters.parksName.join(", ")}
-                      <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                      <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
                     </>
                   )}
                 {!filters.parksName.length && (
                   <>
                     Автопарк
-                    <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
+                    <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
                   </>
                 )}
               </span>

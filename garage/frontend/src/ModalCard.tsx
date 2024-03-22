@@ -121,6 +121,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
             }`}
           >
             <SliderImages
+              type="click"
               openIsAffordable={true}
               images={x.images!}
               classImages="md:h-92"

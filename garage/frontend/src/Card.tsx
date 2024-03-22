@@ -45,6 +45,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
             </div>
             <div className="hidden md:block">
               <SliderImages
+                type="hover"
                 openIsAffordable={false}
                 classImages="h-64 sm:h-64"
                 classPaginationImages=" sm:justify-between sm:w-full"

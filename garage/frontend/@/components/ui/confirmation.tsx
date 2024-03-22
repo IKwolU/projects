@@ -31,7 +31,7 @@ const Confirmation = ({
     <>
       {isOpen && (
         <div className="fixed top-0 left-0 z-[53] flex items-center justify-center w-full h-full bg-black/50">
-          <div className="flex flex-col items-center justify-center max-w-xs px-8 py-4 text-xl bg-white min-w-80 rounded-xl">
+          <div className="flex flex-col items-center justify-center max-w-xs px-8 py-4 text-xl text-center bg-white min-w-80 rounded-xl">
             {title}
             <div className="flex w-full mt-2 space-x-2 ">
               {type === "red" && (
@@ -50,7 +50,13 @@ const Confirmation = ({
               )}
               {type !== "red" && (
                 <>
-                  <Button onClick={handleCancel}>Нет</Button>
+                  <Button
+                    variant="reject"
+                    className="text-black bg-white border-2 border-grey"
+                    onClick={handleCancel}
+                  >
+                    Нет
+                  </Button>
                   <Button onClick={handleAccept}>Да</Button>
                 </>
               )}

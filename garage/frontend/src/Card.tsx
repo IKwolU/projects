@@ -25,11 +25,11 @@ export const Card = ({ car }: { car: Cars2 }) => {
       <DialogTrigger asChild>
         <div className="relative max-w-[352px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
-            <div className="absolute z-50 p-2 font-medium rounded-tl-lg rounded-br-lg shadow text-gray bg-yellow">
+            <div className="absolute z-50 p-2 font-medium bg-white rounded-tl-lg rounded-br-lg text-gray">
               {car.park_name}
             </div>
             {car.variants!.length > 1 && (
-              <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg shadow right-1 text-gray">
+              <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg right-1 text-gray">
                 +{car.variants!.length}
               </div>
             )}
@@ -54,14 +54,19 @@ export const Card = ({ car }: { car: Cars2 }) => {
             </div>
           </div>
           <div className="px-1">
-            <h1 className="my-2 text-center md:mb-4">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+            <h1 className="pl-1 my-2 text-xl md:text-2xl md:mb-4">
+              {`${car.brand} ${car.model}`}
+              <span className="font-normal"> {car.year_produced}</span>
+            </h1>
             <div className="flex flex-wrap justify-start gap-2 mb-2">
               <div className="flex flex-col justify-start gap-1">
                 <div>
                   <Badge variant="card" className="px-0 py-0 bg-grey ">
                     <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                      Депозит{" "}
-                      {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                      <span className="text-zinc-400">Депозит</span>
+                      <span className="ml-1">
+                        {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                      </span>
                     </span>
                     <span className="flex items-center h-full px-2 ">
                       {formatRoubles(car.rent_term!.deposit_amount_daily!)}
@@ -71,12 +76,15 @@ export const Card = ({ car }: { car: Cars2 }) => {
                 </div>
               </div>
               <div className="">
-                <Badge variant="card">Комиссия {car.commission} %</Badge>{" "}
+                <Badge variant="card">
+                  <span className="mr-1 text-zinc-400">Комиссия</span>{" "}
+                  {car.commission} %
+                </Badge>{" "}
               </div>
-              <Badge variant="card" className="w-fit">
+              <Badge variant="card" className="w-fit text-zinc-400">
                 {getTransmissionDisplayName(car.transmission_type)}
               </Badge>
-              <Badge variant="card" className=" w-fit">
+              <Badge variant="card" className=" w-fit text-zinc-400">
                 {getFuelTypeDisplayName(car.fuel_type)}
               </Badge>
 
@@ -85,7 +93,9 @@ export const Card = ({ car }: { car: Cars2 }) => {
                 <Badge variant="card">Для самозанятых</Badge>
               )} */}
                 {!!car.rent_term?.is_buyout_possible && (
-                  <Badge variant="card">Выкуп автомобиля</Badge>
+                  <Badge variant="card" className="text-zinc-400">
+                    Выкуп автомобиля
+                  </Badge>
                 )}
               </div>
             </div>
@@ -97,7 +107,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
                   variant="schema"
                 >
                   {`${formatRoubles(currentSchema.daily_amount!)}`}
-                  <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                  <div className="text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
                 </Badge>
               ))}
             </div>

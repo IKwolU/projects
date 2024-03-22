@@ -53,7 +53,7 @@ const SliderImages = ({
     <>
       <div className={`relative h-64 sm:h-80 ${classImages}`}>
         {type === "click" && (
-          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 rounded-b-xl bg-gradient-to-t from-black from-60%"></div>
+          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 rounded-b-xl bg-gradient-to-t from-black from-0%"></div>
         )}
         {!openIsAffordable && (
           <Slider ref={sliderRef} {...settings}>

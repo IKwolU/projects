@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\APIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('user', [AuthController::class, 'DeleteUser']);
     Route::get('user', [AuthController::class, 'GetUser']);
     Route::post('driver/upload-file', [DriverController::class, 'uploadDocs']);
+    Route::get('admin/parks', [AdminController::class, 'getParks']);
+    Route::put('admin/parks', [AdminController::class, 'changePark']);
+    Route::post('admin/parks', [AdminController::class, 'createPark']);
+    Route::get('admin/divisions', [AdminController::class, 'getDivisions']);
+    Route::put('admin/divisions', [AdminController::class, 'changeDivisions']);
+    Route::post('admin/divisions', [AdminController::class, 'createDivisions']);
 });
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
 Route::post('cars/brand-park-list', [CarsController::class, 'getBrandsAndParksList']);

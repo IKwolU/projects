@@ -5,7 +5,9 @@ import { Link, Route, Routes } from "react-router-dom";
 import { client } from "./backend";
 import { Finder } from "./Finder";
 import { Account } from "./Account";
+import { ParkManager } from "./ParkManager";
 import { DriverLogin } from "./DriverLogin";
+import { SuperAdmin } from "./SuperAdmin";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +17,7 @@ import {
   faRightToBracket,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { User } from "./api-client";
+import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
 import { BookingDrawer } from "./BookingDrawer";
 import { BookingTimer } from "./BookingTimer";
@@ -39,26 +41,52 @@ function App() {
     checkAuth();
   }, []);
   return (
-    <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-      <div className="flex justify-between my-0 space-x-2">
-        <Menu user={user} />
-        {/* <span className="font-bold text-md text-gray"></span> */}
-      </div>
-      <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
-        Закажи билетов пачку и получишь нашу тачку!
-      </div>
-      <Link to="bookings">
-        <BookingTimer />
-      </Link>
-      <Routes>
-        <Route path="/" element={<Finder />} />
-        <Route path="account" element={<Account user={user} />} />
-        <Route path="bookings" element={<BookingDrawer />} />
-        <Route path="login/driver" element={<DriverLogin />} />
-        <Route path="login/manager" element={<ManagerLogin />} />
-        <Route path="login/admin" element={<AdminLogin />} />
-      </Routes>
-    </div>
+    <>
+      {user?.user_type === UserType.Manager && (
+        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
+          <div className="flex justify-between my-0 space-x-2">
+            <Menu user={user} />
+            {/* <span className="font-bold text-md text-gray"></span> */}
+          </div>
+          <Routes>
+            <Route path="/" element={<ParkManager />} />
+          </Routes>
+        </div>
+      )}
+      {user?.user_type === UserType.Admin && (
+        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
+          <div className="flex justify-between my-0 space-x-2">
+            <Menu user={user} />
+            {/* <span className="font-bold text-md text-gray"></span> */}
+          </div>
+          <Routes>
+            <Route path="/" element={<SuperAdmin />} />
+          </Routes>
+        </div>
+      )}
+      {user?.user_type === UserType.Driver && (
+        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
+          <div className="flex justify-between my-0 space-x-2">
+            <Menu user={user} />
+            {/* <span className="font-bold text-md text-gray"></span> */}
+          </div>
+          <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
+            Закажи билетов пачку и получишь нашу тачку!
+          </div>
+          <Link to="bookings">
+            <BookingTimer />
+          </Link>
+          <Routes>
+            <Route path="/" element={<Finder />} />
+            <Route path="account" element={<Account user={user} />} />
+            <Route path="bookings" element={<BookingDrawer />} />
+            <Route path="login/driver" element={<DriverLogin />} />
+            <Route path="login/manager" element={<ManagerLogin />} />
+            <Route path="login/admin" element={<AdminLogin />} />
+          </Routes>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -117,9 +117,9 @@ const SliderImages = ({
             ))}
           {type === "hover" && (
             <div className="flex w-full h-full max-h-full p-3 transition-opacity opacity-0 hover:opacity-100 ">
-              {images.slice(0, 3).map((x, i) => (
+              {[0, 1, 2].map((i) => (
                 <div
-                  key={`image_${x}`}
+                  key={`image_${i}`}
                   className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10  `}
                   onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
                 >

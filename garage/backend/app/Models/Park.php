@@ -14,4 +14,12 @@ class Park extends Model
     {
         return $this->hasMany(Division::class);
     }
+    public function rent_terms()
+    {
+        return $this->hasMany(RentTerm::class);
+    }
+    public function tariffs()
+    {
+        return $this->hasMany(Tariff::class);
+    }
 }

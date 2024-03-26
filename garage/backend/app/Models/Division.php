@@ -19,4 +19,8 @@ class Division extends Model
     {
         return $this->belongsTo(City::class);
     }
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
 }

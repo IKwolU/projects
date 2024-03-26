@@ -2068,10 +2068,6 @@
                                     "id": {
                                         "description": "id парка",
                                         "type": "integer"
-                                    },
-                                    "api_key": {
-                                        "description": "Ключ парка",
-                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

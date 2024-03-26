@@ -82,8 +82,7 @@ class AdminController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", description="id парка"),
-     *             @OA\Property(property="api_key", type="string", description="Ключ парка"),
+     *             @OA\Property(property="id", type="integer", description="id парка")
      *         ),
      *     ),
      *     @OA\Response(
@@ -257,12 +256,11 @@ class AdminController extends Controller
     public function getParkWithDetails(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer',
-            'api_key' => 'required|string'
+            'id' => 'required|integer'
         ]);
         $user = Auth::guard('sanctum')->user();
         if ($user->user_type === UserType::Admin->value) {
-            $park = Park::where('id', $request->id)->where('API_key', $request->api_key)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->get();
+            $park = Park::where('id', $request->id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->get();
             foreach ($park as $item) {
                 unset($item->API_key, $item->id);
                 foreach ($item->divisions as $division) {

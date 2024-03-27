@@ -3,13 +3,14 @@ import { userAtom } from "./atoms";
 import { Parks, UserType, Users } from "./api-client";
 import { useEffect, useState } from "react";
 import { client } from "./backend";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { Park } from "./Park";
 
 export const SuperAdmin = () => {
   const [user] = useRecoilState(userAtom);
   const [parks, setParks] = useState<Parks[] | undefined>();
   const [users, setUsers] = useState<Users[] | undefined>();
+  const location = useLocation();
   const [selectedVariant, setSelectedVariant] = useState<"parks" | "users">(
     "parks"
   );
@@ -40,7 +41,7 @@ export const SuperAdmin = () => {
 
   return (
     <>
-      {window.location.pathname === "/" && (
+      {location.pathname === "/" && (
         <div className="flex justify-end h-full mt-4">
           <div className="fixed left-0 w-1/4 h-full bg-white top-16">
             <ul className="flex flex-col items-center justify-center py-6 space-y-2">

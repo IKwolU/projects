@@ -12,59 +12,41 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export const SuperAdmin = () => {
+export const Park = ({ park }: { park: Parks }) => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [parks, setParks] = useState<Parks[] | undefined>();
-
-  useEffect(() => {
-    if (user.user_type === UserType.Admin) {
-      const getParks = async () => {
-        try {
-          const parksData = await client.getParks();
-          setParks(parksData.parks);
-        } catch (error) {}
-      };
-
-      getParks();
-    }
-  }, []);
 
   if (user.user_type !== UserType.Admin) {
     return <></>;
   }
-  if (!parks) {
+  if (!park) {
     return <></>;
   }
   return (
     <>
       <div className="flex justify-end h-full mt-4">
         <div className="fixed left-0 w-1/4 h-full bg-white top-16">
-          <ul>
+          {/* <ul>
             <li>Парки</li>
             <li>Пользователи</li>
-          </ul>
+          </ul> */}
         </div>
         <div className="w-3/4 h-full">
-          {parks.map((x, i) => (
+          {/* {park.map((x, i) => (
             <div key={i} className="">
               {x.park_name}
             </div>
-          ))}
-          {/* <Breadcrumb>
+          ))} */}
+          <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Главная</BreadcrumbLink>
+                <BreadcrumbLink href="/admin">Главная</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Главная</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Подразделения</BreadcrumbPage>
+                <BreadcrumbPage>{park.park_name}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
-          </Breadcrumb> */}
+          </Breadcrumb>
         </div>
       </div>
     </>

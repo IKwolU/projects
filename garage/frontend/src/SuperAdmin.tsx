@@ -1,20 +1,15 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
-import { Parks, UserType } from "./api-client";
+import { Parks, UserType, Users } from "./api-client";
 import { useEffect, useState } from "react";
 import { client } from "./backend";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
+import { Park } from "./Park";
 
 export const SuperAdmin = () => {
-  const [user, setUser] = useRecoilState(userAtom);
+  const [user] = useRecoilState(userAtom);
   const [parks, setParks] = useState<Parks[] | undefined>();
+  const [users, setUsers] = useState<Users[] | undefined>();
   const [selectedVariant, setSelectedVariant] = useState<"parks" | "users">(
     "parks"
   );
@@ -26,45 +21,88 @@ export const SuperAdmin = () => {
           setParks(parksData.parks);
         } catch (error) {}
       };
-
+      const getUsers = async () => {
+        try {
+          const usersData = await client.getUsers();
+          setUsers(usersData.users);
+        } catch (error) {}
+      };
       getParks();
+      getUsers();
     }
   }, []);
-
   if (user.user_type !== UserType.Admin) {
     return <></>;
   }
-  if (!parks) {
+  if (!parks || !users) {
     return <></>;
   }
+
   return (
     <>
-      <div className="flex justify-end h-full mt-4">
-        <div className="fixed left-0 w-1/4 h-full bg-white top-16">
-          <ul>
-            <li onClick={() => setSelectedVariant("parks")}>Парки</li>
-            <li onClick={() => setSelectedVariant("users")}>Пользователи</li>
-          </ul>
+      {window.location.pathname === "/" && (
+        <div className="flex justify-end h-full mt-4">
+          <div className="fixed left-0 w-1/4 h-full bg-white top-16">
+            <ul className="flex flex-col items-center justify-center py-6 space-y-2">
+              <li
+                className="cursor-pointer"
+                onClick={() => setSelectedVariant("parks")}
+              >
+                Парки
+              </li>
+              <li
+                className="cursor-pointer"
+                onClick={() => setSelectedVariant("users")}
+              >
+                Пользователи
+              </li>
+            </ul>
+          </div>
+          {selectedVariant === "parks" && (
+            <div className="w-3/4 h-full py-6 space-y-2">
+              {parks.map((x, i) => (
+                <div
+                  key={`park_${i}`}
+                  className="flex flex-col items-start justify-start "
+                >
+                  <Link
+                    className="flex items-center hover:text-yellow"
+                    to={`/${x.park_name || `Park_${i}`}`}
+                  >
+                    {x.park_name || `Park_${i}`}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+          {selectedVariant === "users" && (
+            <div className="w-3/4 h-full py-6 space-y-2">
+              {users.map((x, i) => (
+                <div
+                  key={`user_${i}`}
+                  className="flex flex-col items-start justify-start "
+                >
+                  <Link
+                    className="flex items-center hover:text-yellow"
+                    to={x.phone!}
+                  >
+                    {x.phone}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        {selectedVariant === "parks" && (
-          <div className="w-3/4 h-full">
-            {parks.map((x, i) => (
-              <div key={i} className="">
-                {x.park_name}
-              </div>
-            ))}
-          </div>
-        )}
-        {selectedVariant === "users" && (
-          <div className="w-3/4 h-full">
-            {parks.map((x, i) => (
-              <div key={i} className="">
-                {x.park_name}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      )}
+      <Routes>
+        {parks.map((x, i) => (
+          <Route
+            key={`park_link_${i}`}
+            path={`/${x.park_name || `Park_${i}`}`}
+            element={<Park park={x} />}
+          />
+        ))}
+      </Routes>
     </>
   );
 };

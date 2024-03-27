@@ -60,7 +60,7 @@ function App() {
             {/* <span className="font-bold text-md text-gray"></span> */}
           </div>
           <Routes>
-            <Route path="/" element={<SuperAdmin />} />
+            <Route path="/*" element={<SuperAdmin />} />
           </Routes>
         </div>
       )}

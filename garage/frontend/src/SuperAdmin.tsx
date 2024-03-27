@@ -3,7 +3,7 @@ import { userAtom } from "./atoms";
 import { Parks, UserType, Users } from "./api-client";
 import { useEffect, useState } from "react";
 import { client } from "./backend";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { Park } from "./Park";
 
 export const SuperAdmin = () => {

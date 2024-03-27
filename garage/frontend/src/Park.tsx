@@ -1,8 +1,6 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { Parks, UserType } from "./api-client";
-import { useEffect, useState } from "react";
-import { client } from "./backend";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export const Park = ({ park }: { park: Parks }) => {
-  const [user, setUser] = useRecoilState(userAtom);
+  const [user] = useRecoilState(userAtom);
 
   if (user.user_type !== UserType.Admin) {
     return <></>;

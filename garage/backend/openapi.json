@@ -2341,6 +2341,88 @@
                 }
             }
         },
+        "admin/users": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Показать список парков",
+                "description": "Показать список парков",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "User ID",
+                                                        "type": "integer"
+                                                    },
+                                                    "user_status": {
+                                                        "$ref": "#/components/schemas/UserStatus"
+                                                    },
+                                                    "phone": {
+                                                        "description": "Phone number of the user",
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of the user",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "description": "Email of the user",
+                                                        "type": "string"
+                                                    },
+                                                    "email_verified_at": {
+                                                        "description": "Timestamp of email verification",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Timestamp of user creation",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "Timestamp of last user update",
+                                                        "type": "string"
+                                                    },
+                                                    "user_type": {
+                                                        "$ref": "#/components/schemas/UserType"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "tags": [

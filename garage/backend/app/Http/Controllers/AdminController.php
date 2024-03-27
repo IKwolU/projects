@@ -6,11 +6,13 @@ use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
+use App\Enums\UserStatus;
 use App\Models\Park;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserType;
 use App\Models\Division;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -348,5 +350,63 @@ class AdminController extends Controller
             $park->created_at
         );
         return response()->json(['park' => $park], 200);
+    }
+
+
+    /**
+     * Показать список парков
+     *
+     * @OA\Get(
+     *     path="admin/users",
+     *     operationId="getUsers",
+     *     summary="Показать список парков",
+     *     tags={"Admin"},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Успешный ответ",
+     * @OA\JsonContent(
+     *     @OA\Property(
+     *         property="users",
+     *         type="array",
+     *         @OA\Items(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="User ID"),
+     *             @OA\Property(property="user_status", type="string", description="Status of the user",ref="#/components/schemas/UserStatus"),
+     *             @OA\Property(property="phone", type="string", description="Phone number of the user"),
+     *             @OA\Property(property="name", type="string", description="Name of the user"),
+     *             @OA\Property(property="email", type="string", description="Email of the user"),
+     *             @OA\Property(property="email_verified_at", type="string", description="Timestamp of email verification"),
+     *             @OA\Property(property="created_at", type="string", description="Timestamp of user creation"),
+     *             @OA\Property(property="updated_at", type="string", description="Timestamp of last user update"),
+     *             @OA\Property(property="user_type", type="string", description="Type of user",ref="#/components/schemas/UserType")
+     *         )
+     *     )
+     * )),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="Внутренняя ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
+     */
+    public function getUsers()
+    {
+        $user = Auth::guard('sanctum')->user();
+        if ($user->user_type === UserType::Admin->value) {
+            $users = User::get();
+            foreach ($users as $userItem) {
+                $userItem->user_type = UserType::from($userItem->user_type)->name;
+                $userItem->user_status = UserStatus::from($userItem->user_status)->name;
+                unset($userItem->code, $userItem->avatar, $userItem->settings, $userItem->role_id);
+            }
+        } else {
+            return response()->json(['Нет прав доступа'], 409);
+        }
+        return response()->json(['users' => $users], 200);
     }
 }

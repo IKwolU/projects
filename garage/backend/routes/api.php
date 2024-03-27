@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthController::class, 'GetUser']);
     Route::post('driver/upload-file', [DriverController::class, 'uploadDocs']);
     Route::get('admin/parks', [AdminController::class, 'getParks']);
+    Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
     Route::put('admin/parks', [AdminController::class, 'changePark']);
     Route::post('admin/parks', [AdminController::class, 'createPark']);

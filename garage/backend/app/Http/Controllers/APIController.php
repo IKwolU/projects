@@ -906,7 +906,7 @@ class APIController extends Controller
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="string", maxLength=17, description="VIN-номер автомобиля"),
      *                     @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
-     *                     @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - газ, 0 - бензин)"),
+     *             @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
      *                     @OA\Property(property="transmission_type", type="integer", description="КПП ТС (1 - автомат, 0 - механика)"),
      *                     @OA\Property(property="brand", type="string", maxLength=50, description="Бренд автомобиля"),
      *                     @OA\Property(property="model", type="string", maxLength=80, description="Модель автомобиля"),
@@ -1182,6 +1182,7 @@ class APIController extends Controller
      *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
      *             @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
      *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *             @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
      *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
      *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
      *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
@@ -1237,6 +1238,7 @@ class APIController extends Controller
             'division_id' => 'required|integer|exists:divisions,id',
             'mileage' => 'numeric',
             'license_plate' => 'string',
+            'fuel_type' => 'integer',
             'class' => [
                 'required',
                 'integer',
@@ -1283,6 +1285,9 @@ class APIController extends Controller
         }
         if ($request->license_plate) {
             $car->license_plate = $request->license_plate;
+        }
+        if ($request->fuel_type) {
+            $car->fuel_type = $request->fuel_type;
         }
         $car->division_id = $division->id;
         if ($request->input('images')) {

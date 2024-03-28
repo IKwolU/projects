@@ -1663,8 +1663,10 @@ export enum DriverDocumentType {
 
 /** The unique identifier of a product in our catalog */
 export enum FuelType {
-    Gas = "Gas",
-    Gasoline = "Gasoline",
+    Methane = "methane",
+    Propane = "propane",
+    Gasoline = "gasoline",
+    Electric = "electric",
 }
 
 /** The unique identifier of a product in our catalog */
@@ -2285,6 +2287,8 @@ export class Body7 implements IBody7 {
     division_id?: number;
     /** Пробег автомобиля */
     mileage?: number;
+    /** Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро) */
+    fuel_type?: number;
     /** Госномер автомобиля */
     license_plate?: string;
     /** Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес) */
@@ -2312,6 +2316,7 @@ export class Body7 implements IBody7 {
             this.id = _data["id"];
             this.division_id = _data["division_id"];
             this.mileage = _data["mileage"];
+            this.fuel_type = _data["fuel_type"];
             this.license_plate = _data["license_plate"];
             this.class = _data["class"];
             if (Array.isArray(_data["images"])) {
@@ -2338,6 +2343,7 @@ export class Body7 implements IBody7 {
         data["id"] = this.id;
         data["division_id"] = this.division_id;
         data["mileage"] = this.mileage;
+        data["fuel_type"] = this.fuel_type;
         data["license_plate"] = this.license_plate;
         data["class"] = this.class;
         if (Array.isArray(this.images)) {
@@ -2356,6 +2362,8 @@ export interface IBody7 {
     division_id?: number;
     /** Пробег автомобиля */
     mileage?: number;
+    /** Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро) */
+    fuel_type?: number;
     /** Госномер автомобиля */
     license_plate?: string;
     /** Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес) */
@@ -7711,7 +7719,7 @@ export class Cars implements ICars {
     id?: string;
     /** id подразделения */
     division_id?: number;
-    /** Вид топлива (1 - газ, 0 - бензин) */
+    /** Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро) */
     fuel_type?: number;
     /** КПП ТС (1 - автомат, 0 - механика) */
     transmission_type?: number;
@@ -7802,7 +7810,7 @@ export interface ICars {
     id?: string;
     /** id подразделения */
     division_id?: number;
-    /** Вид топлива (1 - газ, 0 - бензин) */
+    /** Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро) */
     fuel_type?: number;
     /** КПП ТС (1 - автомат, 0 - механика) */
     transmission_type?: number;

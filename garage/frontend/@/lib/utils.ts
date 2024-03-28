@@ -18,8 +18,10 @@ export function getFuelTypeDisplayName(x: FuelType | undefined | null) {
   }
 
   const dict = {
-    [FuelType.Gas]: "Газ",
+    [FuelType.Propane]: "Пропан",
     [FuelType.Gasoline]: "Бензин",
+    [FuelType.Methane]: "Метан",
+    [FuelType.Electric]: "Электро",
   };
 
   return dict[x];

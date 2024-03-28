@@ -968,6 +968,10 @@
                                         "description": "Пробег автомобиля",
                                         "type": "number"
                                     },
+                                    "fuel_type": {
+                                        "description": "Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)",
+                                        "type": "integer"
+                                    },
                                     "license_plate": {
                                         "description": "Госномер автомобиля",
                                         "type": "string"
@@ -1098,7 +1102,7 @@
                                                     "maxLength": 250
                                                 },
                                                 "fuel_type": {
-                                                    "description": "Вид топлива (1 - газ, 0 - бензин)",
+                                                    "description": "Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)",
                                                     "type": "integer"
                                                 },
                                                 "transmission_type": {
@@ -3798,8 +3802,10 @@
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
                 "enum": [
-                    "Gas",
-                    "Gasoline"
+                    "methane",
+                    "propane",
+                    "gasoline",
+                    "electric"
                 ]
             },
             "ReferralStatus": {

@@ -721,7 +721,13 @@ export const Finder = () => {
               </Badge>
             ))}
           {activeFilter === ActiveFilter.FuelType &&
-            [FuelType.Gasoline, FuelType.Gas, null].map((fuelType, i) => (
+            [
+              FuelType.Gasoline,
+              FuelType.Electric,
+              FuelType.Methane,
+              FuelType.Propane,
+              null,
+            ].map((fuelType, i) => (
               <Badge
                 key={`fuelType ${i}`}
                 className={`${

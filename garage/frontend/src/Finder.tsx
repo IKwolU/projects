@@ -218,7 +218,7 @@ export const Finder = () => {
                   })
                 }
                 key={carClass}
-                className={`cursor-pointer w-20 md:w-32 flex flex-col items-center bg-white rounded-xl transition-all h-fit pb-2 ${
+                className={`cursor-pointer w-20 md:w-32 flex flex-col items-center bg-grey rounded-xl transition-all h-fit pb-2 ${
                   isActive ? "shadow border-2 border-yellow" : " scale-90"
                 }`}
               >

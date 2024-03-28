@@ -47,11 +47,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightArrowLeft,
   faCheck,
-  faTrashCan,
-  faRectangleList,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { faMapLocationDot } from "@fortawesome/free-light-svg-icons";
+import {
+  faMap,
+  faRectangleList,
+  faTrashCan,
+} from "@fortawesome/free-regular-svg-icons";
 import { Separator } from "@/components/ui/separator";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
 
@@ -239,11 +241,7 @@ export const Finder = () => {
             >
               {!filters.on_map && (
                 <>
-                  <FontAwesomeIcon
-                    icon={faMapLocationDot}
-                    className="mr-2 "
-                    type="light"
-                  />
+                  <FontAwesomeIcon icon={faMap} className="mr-2" />
                   <span>На карте</span>
                 </>
               )}
@@ -636,7 +634,7 @@ export const Finder = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-2 active:bg-gray whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular text-pale transition-colors focus:outline-none bg-black bg-opacity-85">
+          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-2 y whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular  transition-colors focus:outline-none bg-grey active:bg-white">
             <FontAwesomeIcon
               onClick={filtersClean}
               icon={faTrashCan}

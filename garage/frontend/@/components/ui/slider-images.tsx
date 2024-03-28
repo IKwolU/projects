@@ -53,7 +53,7 @@ const SliderImages = ({
     <>
       <div className={`relative h-64 sm:h-80 ${classImages}`}>
         {type === "click" && (
-          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 rounded-b-xl bg-gradient-to-t from-black from-0%"></div>
+          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 md:h-32 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
         )}
         {!openIsAffordable && (
           <Slider ref={sliderRef} {...settings}>
@@ -126,7 +126,7 @@ const SliderImages = ({
                   <div
                     className={`w-full rounded-xl h-1 ${
                       i === activeIndex
-                        ? "shadow  bg-yellow"
+                        ? "shadow  bg-white"
                         : "scale-90 bg-black bg-opacity-45"
                     }`}
                   ></div>

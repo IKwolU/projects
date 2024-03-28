@@ -25,7 +25,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
       <DialogTrigger asChild>
         <div className="relative max-w-[352px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
-            <div className="absolute z-50 p-2 font-medium bg-white rounded-tl-lg rounded-br-lg text-gray">
+            <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
               {car.park_name}
             </div>
             {car.variants!.length > 1 && (

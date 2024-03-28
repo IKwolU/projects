@@ -1663,10 +1663,10 @@ export enum DriverDocumentType {
 
 /** The unique identifier of a product in our catalog */
 export enum FuelType {
-    Methane = "methane",
-    Propane = "propane",
-    Gasoline = "gasoline",
-    Electric = "electric",
+    Methane = "Methane",
+    Propane = "Propane",
+    Gasoline = "Gasoline",
+    Electric = "Electric",
 }
 
 /** The unique identifier of a product in our catalog */

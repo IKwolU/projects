@@ -16,8 +16,8 @@ use OpenApi\Attributes as OAT;
 
 enum FuelType: int
 {
-    case methane = 1;
-    case propane = 0;
-    case gasoline = 2;
-    case electric = 3;
+    case Methane = 1;
+    case Propane = 0;
+    case Gasoline = 2;
+    case Electric = 3;
 }

@@ -540,7 +540,7 @@ class APIController extends Controller
          $validator = Validator::make($request->all(), [
              'class' => 'required|integer',
              'city' => 'required|string|max:250|exists:cities,name',
-             'criminal_ids' => 'required|array',
+             'criminal_ids' => 'array',
              'has_caused_accident' => 'required|bool',
              'experience' => 'required|integer',
              'max_fine_count' => 'required|integer',
@@ -563,7 +563,7 @@ class APIController extends Controller
              'class' => $request->class,
              'park_id' => $park->id,
              'city_id' => $city_id,
-             'criminal_ids' => json_encode($request->criminal_ids),
+             'criminal_ids' => $request->criminal_ids?json_encode($request->criminal_ids):'',
              'has_caused_accident' => $request->has_caused_accident,
              'experience' => $request->experience,
              'max_fine_count' => $request->max_fine_count,
@@ -788,19 +788,79 @@ class APIController extends Controller
                  ->where('park_id', $park->id)
                  ->first();
              if ($rentTerm) {
+                if(!$this->updateSchemas($request, $rentTerm)){
+                    return response()->json(['message' => 'Нельзя создать больше 10 схем аренды'], 409);}
+
                  $rentTerm->update($data);
                  return response()->json(['message' => 'Условие аренды успешно изменено'], 200);
              }
          }
 
          $rentTerm = new RentTerm($data);
-         $rentTerm->save();
+         if(count($request->schemas)>=10){
+            return response()->json(['message' => 'Нельзя создать больше 10 схем аренды'], 409);}
+
+            $rentTerm->save();
+            $this->updateSchemas($request, $rentTerm);
          return response()->json([
              'message' => 'Условие аренды успешно создано.',
              'id' => $rentTerm->id
          ], 200);
      }
 
+     private function updateSchemas(Request $request, RentTerm $rentTerm)
+     {
+         $schemas = $request->input('schemas');
+         $allSchemas = Schema::where('rent_term_id', $rentTerm->id)->get();
+
+         $updatedSchemasCount = 0;
+
+         foreach ($schemas as $schema) {
+             $existingSchema = $allSchemas->where('non_working_days', $schema['non_working_days'])
+                                         ->where('working_days', $schema['working_days'])
+                                         ->first();
+
+             if ($existingSchema) {
+                 $updatedSchemasCount++;
+             } else {
+                 if (count($allSchemas) + $updatedSchemasCount < 10) {
+                     $updatedSchemasCount++;
+                 } else {
+                     return false;
+                 }
+             }
+         }
+
+         $totalSchemas = count($allSchemas) + $updatedSchemasCount;
+
+         if ($totalSchemas > 10) {
+             return false;
+         }
+         foreach ($schemas as $schema) {
+            $existingSchema = $allSchemas->where('non_working_days', $schema['non_working_days'])
+                                        ->where('working_days', $schema['working_days'])
+                                        ->first();
+
+            if ($existingSchema) {
+                $existingSchema->update([
+                    'daily_amount' => $schema['daily_amount'],
+                ]);
+            } else {
+                if (count($allSchemas) + $updatedSchemasCount < 10) {
+                    $newSchema = new Schema([
+                        'rent_term_id' => $rentTerm->id,
+                        'daily_amount' => $schema['daily_amount'],
+                        'non_working_days' => $schema['non_working_days'],
+                        'working_days' => $schema['working_days'],
+                    ]);
+                    $newSchema->save();
+                } else {
+                    return false;
+                }
+            }
+        }
+         return true;
+     }
      private function validateRentTerm(Request $request)
      {
          $rules = [
@@ -810,6 +870,10 @@ class APIController extends Controller
              'name' => 'required|string',
              'is_buyout_possible' => 'required|boolean',
              'rent_term_id' => 'nullable|integer',
+             'schemas' => 'required|array',
+             'schemas.*.daily_amount' => 'required|numeric',
+             'schemas.*.non_working_days' => 'required|integer',
+             'schemas.*.working_days' => 'required|integer',
          ];
 
          $messages = [
@@ -818,6 +882,7 @@ class APIController extends Controller
              'integer' => 'Поле :attribute должно быть целым числом.',
              'string' => 'Поле :attribute должно быть строкой.',
              'boolean' => 'Поле :attribute должно быть булевым значением.',
+             'array' => 'Поле :attribute должно быть массивом.',
          ];
 
          return Validator::make($request->all(), $rules, $messages);

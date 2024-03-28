@@ -48,10 +48,10 @@ import {
   faArrowRightArrowLeft,
   faCheck,
   faTrashCan,
-  faMapLocationDot,
   faRectangleList,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { faMapLocationDot } from "@fortawesome/free-light-svg-icons";
 import { Separator } from "@/components/ui/separator";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
 
@@ -239,7 +239,11 @@ export const Finder = () => {
             >
               {!filters.on_map && (
                 <>
-                  <FontAwesomeIcon icon={faMapLocationDot} className="mr-2" />
+                  <FontAwesomeIcon
+                    icon={faMapLocationDot}
+                    className="mr-2 "
+                    type="light"
+                  />
                   <span>На карте</span>
                 </>
               )}

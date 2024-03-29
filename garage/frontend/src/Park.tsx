@@ -10,9 +10,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
-export const Park = ({ park }: { park: Parks }) => {
+export const Park = () => {
   const [user] = useRecoilState(userAtom);
+  const { parkId } = useParams();
   const [selectedVariant, setSelectedVariant] = useState<
     "park" | "divisions" | "managers" | "tariffs" | "rent_terms"
   >("park");
@@ -20,15 +22,13 @@ export const Park = ({ park }: { park: Parks }) => {
   if (user.user_type !== UserType.Admin) {
     return <></>;
   }
-  if (!park) {
-    return <></>;
-  }
+
   return (
     <>
       <div className="flex justify-end h-full mt-4">
         <div className="fixed left-0 w-1/4 h-full bg-white top-16">
           <ul>
-            <li>Данные парка</li>
+            <li>{parkId}</li>
             <li>Подразделения</li>
             <li>Менеджеры</li>
             <li>Тарифы</li>
@@ -48,7 +48,7 @@ export const Park = ({ park }: { park: Parks }) => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>{park.park_name}</BreadcrumbPage>
+                <BreadcrumbPage>парк</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

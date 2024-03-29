@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserType;
 use App\Models\Division;
+use App\Models\Manager;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,15 +40,7 @@ class AdminController extends Controller
      *                 @OA\Items(
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", description="id парка"),
-     *                     @OA\Property(property="API_key", type="string", description="Ключ парка"),
-     *                     @OA\Property(property="url", type="string", description="Endpoint парка для ответа"),
-     *                     @OA\Property(property="commission", type="number", description="Комиссия парка"),
-     *                     @OA\Property(property="period_for_book", type="integer", description="Время брони парка"),
-     *                     @OA\Property(property="park_name", type="string", description="Название парка"),
-     *                     @OA\Property(property="about", type="string", description="Описание парка"),
-     *                     @OA\Property(property="created_at", type="string", description="Дата создания парка"),
-     *                     @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо парка"),
-     *                     @OA\Property(property="self_imployeds_discount", type="number", description="Скидка парка для самозанятых")
+     *                     @OA\Property(property="park_name", type="string", description="Название парка")
      *                 )
      *             ))),
      *     @OA\Response(
@@ -66,7 +59,7 @@ class AdminController extends Controller
     {
         $user = Auth::guard('sanctum')->user();
         if ($user->user_type === UserType::Admin->value) {
-            $parks = Park::get();
+            $parks = Park::select('id', 'park_name')->get();
         } else {
             return response()->json(['Нет прав доступа'], 409);
         }
@@ -307,17 +300,24 @@ class AdminController extends Controller
      *     operationId="createPark",
      *     summary="Создать парк",
      *     tags={"Admin"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", description="Имя парка"),
+     *             @OA\Property(property="manager_phone", type="string", description="Телефон менеджера"),
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="Успешный ответ",
      *         @OA\JsonContent(
      *             @OA\Property(
-     *                 property="parks",
+     *                 property="park",
      *                 type="array",
      *                 @OA\Items(
      *                     type="object",
      *                     @OA\Property(property="id", type="integer", description="id парка"),
-     *                     @OA\Property(property="API_key", type="string", description="Ключ парка"),
+     *                     @OA\Property(property="park_name", type="string", description="Название парка")
      *                 )
      *             ))),
      *     @OA\Response(
@@ -333,23 +333,54 @@ class AdminController extends Controller
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
 
-    public function createPark()
+    public function createPark(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
-        if ($user->user_type === UserType::Admin->value) {
-            $apiKey = uuid_create(UUID_TYPE_RANDOM);
-            $park = Park::create();
-            $park->api_key = $apiKey;
-            $park->save();
-        } else {
+        if ($user->user_type !== UserType::Admin->value) {
             return response()->json(['Нет прав доступа'], 409);
         }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'manager_phone' => 'required|string',
+        ]);
 
-        unset(
-            $park->updated_at,
-            $park->created_at
-        );
-        return response()->json(['park' => $park], 200);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 400);
+        }
+
+        $name = $request->input('name');
+        $managerPhone = $request->input('manager_phone');
+
+        if (Park::where('park_name', $name)->exists()) {
+            return response()->json(['message' => 'Имя парка уже используется'], 400);
+        }
+
+        if (User::where('phone', $managerPhone)->exists()) {
+            return response()->json(['message' => 'Номер телефона уже используется'], 400);
+        }
+        $apiKey = uuid_create(UUID_TYPE_RANDOM);
+
+        $managerUser = User::create();
+        $managerUser->phone = $managerPhone;
+        $managerUser->user_type = UserType::Manager->value;
+        $managerUser->save();
+
+        $park = Park::create([
+            'API_key' => $apiKey,
+            'park_name' => $name,
+        ]);
+
+        $manager = Manager::create([
+            'park_id' => $park->id,
+            'user_id' => $managerUser->id,
+        ]);
+
+        $parkData = [
+            'id' => $park->id,
+            'park_name' => $park->park_name,
+        ];
+
+        return response()->json(['park' => $parkData], 200);
     }
 
 

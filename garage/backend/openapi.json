@@ -1936,41 +1936,9 @@
                                                         "description": "id парка",
                                                         "type": "integer"
                                                     },
-                                                    "API_key": {
-                                                        "description": "Ключ парка",
-                                                        "type": "string"
-                                                    },
-                                                    "url": {
-                                                        "description": "Endpoint парка для ответа",
-                                                        "type": "string"
-                                                    },
-                                                    "commission": {
-                                                        "description": "Комиссия парка",
-                                                        "type": "number"
-                                                    },
-                                                    "period_for_book": {
-                                                        "description": "Время брони парка",
-                                                        "type": "integer"
-                                                    },
                                                     "park_name": {
                                                         "description": "Название парка",
                                                         "type": "string"
-                                                    },
-                                                    "about": {
-                                                        "description": "Описание парка",
-                                                        "type": "string"
-                                                    },
-                                                    "created_at": {
-                                                        "description": "Дата создания парка",
-                                                        "type": "string"
-                                                    },
-                                                    "updated_at": {
-                                                        "description": "Последнее обновление инфо парка",
-                                                        "type": "string"
-                                                    },
-                                                    "self_imployeds_discount": {
-                                                        "description": "Скидка парка для самозанятых",
-                                                        "type": "number"
                                                     }
                                                 },
                                                 "type": "object"
@@ -2007,6 +1975,26 @@
                 "summary": "Создать парк",
                 "description": "Создать парк",
                 "operationId": "createPark",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Имя парка",
+                                        "type": "string"
+                                    },
+                                    "manager_phone": {
+                                        "description": "Телефон менеджера",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Успешный ответ",
@@ -2014,7 +2002,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "parks": {
+                                        "park": {
                                             "type": "array",
                                             "items": {
                                                 "properties": {
@@ -2022,8 +2010,8 @@
                                                         "description": "id парка",
                                                         "type": "integer"
                                                     },
-                                                    "API_key": {
-                                                        "description": "Ключ парка",
+                                                    "park_name": {
+                                                        "description": "Название парка",
                                                         "type": "string"
                                                     }
                                                 },

@@ -963,13 +963,17 @@ export class Client {
      * Создать парк
      * @return Успешный ответ
      */
-    createPark(): Promise<Anonymous60> {
+    createPark(body: Body15): Promise<Anonymous60> {
         let url_ = this.baseUrl + "/admin/parks";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
+            body: content_,
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -1008,7 +1012,7 @@ export class Client {
      * Показать данные парка
      * @return Успешный ответ
      */
-    getParkWithDetails(body: Body15): Promise<Anonymous62> {
+    getParkWithDetails(body: Body16): Promise<Anonymous62> {
         let url_ = this.baseUrl + "/admin/park";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1185,7 +1189,7 @@ export class Client {
      * Аутентификация пользователя или регистрация нового
      * @return Успешная аутентификация или регистрация
      */
-    loginOrRegister(body: Body16): Promise<string> {
+    loginOrRegister(body: Body17): Promise<string> {
         let url_ = this.baseUrl + "/user/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1280,7 +1284,7 @@ export class Client {
      * Создание и отправка проверочного кода на указанный номер телефона
      * @return Запрос успешно выполнен
      */
-    createAndSendCode(body: Body17): Promise<Anonymous72> {
+    createAndSendCode(body: Body18): Promise<Anonymous72> {
         let url_ = this.baseUrl + "/user/code";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1329,7 +1333,7 @@ export class Client {
      * Получение списка автомобилей с учетом фильтров (аутентифицированный запрос)
      * @return Успешный ответ
      */
-    searchCars(body: Body18): Promise<Anonymous74> {
+    searchCars(body: Body19): Promise<Anonymous74> {
         let url_ = this.baseUrl + "/cars/search";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1383,7 +1387,7 @@ export class Client {
      * Бронирование автомобиля
      * @return Успешное бронирование
      */
-    book(body: Body19): Promise<Anonymous75> {
+    book(body: Body20): Promise<Anonymous75> {
         let url_ = this.baseUrl + "/auth/cars/booking";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1439,7 +1443,7 @@ export class Client {
      * Отмена бронирования автомобиля (аутентифицированный запрос)
      * @return Успешный ответ
      */
-    cancelBooking(body: Body20): Promise<Anonymous78> {
+    cancelBooking(body: Body21): Promise<Anonymous78> {
         let url_ = this.baseUrl + "/auth/cars/cancel-booking";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2789,8 +2793,10 @@ export interface IBody14 {
 }
 
 export class Body15 implements IBody15 {
-    /** id парка */
-    id?: number;
+    /** Имя парка */
+    name?: string;
+    /** Телефон менеджера */
+    manager_phone?: string;
 
     [key: string]: any;
 
@@ -2809,7 +2815,8 @@ export class Body15 implements IBody15 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
+            this.name = _data["name"];
+            this.manager_phone = _data["manager_phone"];
         }
     }
 
@@ -2826,19 +2833,72 @@ export class Body15 implements IBody15 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
+        data["name"] = this.name;
+        data["manager_phone"] = this.manager_phone;
         return data;
     }
 }
 
 export interface IBody15 {
+    /** Имя парка */
+    name?: string;
+    /** Телефон менеджера */
+    manager_phone?: string;
+
+    [key: string]: any;
+}
+
+export class Body16 implements IBody16 {
+    /** id парка */
+    id?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IBody16) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): Body16 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body16();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBody16 {
     /** id парка */
     id?: number;
 
     [key: string]: any;
 }
 
-export class Body16 implements IBody16 {
+export class Body17 implements IBody17 {
     /** Номер телефона пользователя */
     phone?: string;
     /** Код аутентификации */
@@ -2851,7 +2911,7 @@ export class Body16 implements IBody16 {
 
     [key: string]: any;
 
-    constructor(data?: IBody16) {
+    constructor(data?: IBody17) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2874,9 +2934,9 @@ export class Body16 implements IBody16 {
         }
     }
 
-    static fromJS(data: any): Body16 {
+    static fromJS(data: any): Body17 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body16();
+        let result = new Body17();
         result.init(data);
         return result;
     }
@@ -2896,7 +2956,7 @@ export class Body16 implements IBody16 {
     }
 }
 
-export interface IBody16 {
+export interface IBody17 {
     /** Номер телефона пользователя */
     phone?: string;
     /** Код аутентификации */
@@ -2910,13 +2970,13 @@ export interface IBody16 {
     [key: string]: any;
 }
 
-export class Body17 implements IBody17 {
+export class Body18 implements IBody18 {
     /** Номер телефона пользователя */
     phone?: string;
 
     [key: string]: any;
 
-    constructor(data?: IBody17) {
+    constructor(data?: IBody18) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2935,9 +2995,9 @@ export class Body17 implements IBody17 {
         }
     }
 
-    static fromJS(data: any): Body17 {
+    static fromJS(data: any): Body18 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body17();
+        let result = new Body18();
         result.init(data);
         return result;
     }
@@ -2953,14 +3013,14 @@ export class Body17 implements IBody17 {
     }
 }
 
-export interface IBody17 {
+export interface IBody18 {
     /** Номер телефона пользователя */
     phone?: string;
 
     [key: string]: any;
 }
 
-export class Body18 implements IBody18 {
+export class Body19 implements IBody19 {
     /** Смещение (начальная позиция) для выборки */
     offset?: number;
     /** Максимальное количество записей для выборки */
@@ -2992,7 +3052,7 @@ export class Body18 implements IBody18 {
 
     [key: string]: any;
 
-    constructor(data?: IBody18) {
+    constructor(data?: IBody19) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3045,9 +3105,9 @@ export class Body18 implements IBody18 {
         }
     }
 
-    static fromJS(data: any): Body18 {
+    static fromJS(data: any): Body19 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body18();
+        let result = new Body19();
         result.init(data);
         return result;
     }
@@ -3097,7 +3157,7 @@ export class Body18 implements IBody18 {
     }
 }
 
-export interface IBody18 {
+export interface IBody19 {
     /** Смещение (начальная позиция) для выборки */
     offset?: number;
     /** Максимальное количество записей для выборки */
@@ -3130,65 +3190,11 @@ export interface IBody18 {
     [key: string]: any;
 }
 
-export class Body19 implements IBody19 {
-    /** Идентификатор машины */
-    id?: number;
-    /** Идентификатор схемы аренды */
-    schema_id?: number;
-
-    [key: string]: any;
-
-    constructor(data?: IBody19) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.id = _data["id"];
-            this.schema_id = _data["schema_id"];
-        }
-    }
-
-    static fromJS(data: any): Body19 {
-        data = typeof data === 'object' ? data : {};
-        let result = new Body19();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property))
-                data[property] = this[property];
-        }
-        data["id"] = this.id;
-        data["schema_id"] = this.schema_id;
-        return data;
-    }
-}
-
-export interface IBody19 {
-    /** Идентификатор машины */
-    id?: number;
-    /** Идентификатор схемы аренды */
-    schema_id?: number;
-
-    [key: string]: any;
-}
-
 export class Body20 implements IBody20 {
-    /** Идентификатор автомобиля, для которого необходимо отменить бронирование */
+    /** Идентификатор машины */
     id?: number;
+    /** Идентификатор схемы аренды */
+    schema_id?: number;
 
     [key: string]: any;
 
@@ -3208,6 +3214,7 @@ export class Body20 implements IBody20 {
                     this[property] = _data[property];
             }
             this.id = _data["id"];
+            this.schema_id = _data["schema_id"];
         }
     }
 
@@ -3225,11 +3232,64 @@ export class Body20 implements IBody20 {
                 data[property] = this[property];
         }
         data["id"] = this.id;
+        data["schema_id"] = this.schema_id;
         return data;
     }
 }
 
 export interface IBody20 {
+    /** Идентификатор машины */
+    id?: number;
+    /** Идентификатор схемы аренды */
+    schema_id?: number;
+
+    [key: string]: any;
+}
+
+export class Body21 implements IBody21 {
+    /** Идентификатор автомобиля, для которого необходимо отменить бронирование */
+    id?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IBody21) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): Body21 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body21();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBody21 {
     /** Идентификатор автомобиля, для которого необходимо отменить бронирование */
     id?: number;
 
@@ -6109,7 +6169,7 @@ export interface IAnonymous59 {
 }
 
 export class Anonymous60 implements IAnonymous60 {
-    parks?: Parks2[];
+    park?: Park[];
 
     [key: string]: any;
 
@@ -6128,10 +6188,10 @@ export class Anonymous60 implements IAnonymous60 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            if (Array.isArray(_data["parks"])) {
-                this.parks = [] as any;
-                for (let item of _data["parks"])
-                    this.parks!.push(Parks2.fromJS(item));
+            if (Array.isArray(_data["park"])) {
+                this.park = [] as any;
+                for (let item of _data["park"])
+                    this.park!.push(Park.fromJS(item));
             }
         }
     }
@@ -6149,17 +6209,17 @@ export class Anonymous60 implements IAnonymous60 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        if (Array.isArray(this.parks)) {
-            data["parks"] = [];
-            for (let item of this.parks)
-                data["parks"].push(item.toJSON());
+        if (Array.isArray(this.park)) {
+            data["park"] = [];
+            for (let item of this.park)
+                data["park"].push(item.toJSON());
         }
         return data;
     }
 }
 
 export interface IAnonymous60 {
-    parks?: Parks2[];
+    park?: Park[];
 
     [key: string]: any;
 }
@@ -6215,7 +6275,7 @@ export interface IAnonymous61 {
 }
 
 export class Anonymous62 implements IAnonymous62 {
-    parks?: Parks3[];
+    parks?: Parks2[];
 
     [key: string]: any;
 
@@ -6237,7 +6297,7 @@ export class Anonymous62 implements IAnonymous62 {
             if (Array.isArray(_data["parks"])) {
                 this.parks = [] as any;
                 for (let item of _data["parks"])
-                    this.parks!.push(Parks3.fromJS(item));
+                    this.parks!.push(Parks2.fromJS(item));
             }
         }
     }
@@ -6265,7 +6325,7 @@ export class Anonymous62 implements IAnonymous62 {
 }
 
 export interface IAnonymous62 {
-    parks?: Parks3[];
+    parks?: Parks2[];
 
     [key: string]: any;
 }
@@ -7953,24 +8013,8 @@ export interface ISchemas2 {
 export class Parks implements IParks {
     /** id парка */
     id?: number;
-    /** Ключ парка */
-    aPI_key?: string;
-    /** Endpoint парка для ответа */
-    url?: string;
-    /** Комиссия парка */
-    commission?: number;
-    /** Время брони парка */
-    period_for_book?: number;
     /** Название парка */
     park_name?: string;
-    /** Описание парка */
-    about?: string;
-    /** Дата создания парка */
-    created_at?: string;
-    /** Последнее обновление инфо парка */
-    updated_at?: string;
-    /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
 
     [key: string]: any;
 
@@ -7990,15 +8034,7 @@ export class Parks implements IParks {
                     this[property] = _data[property];
             }
             this.id = _data["id"];
-            this.aPI_key = _data["API_key"];
-            this.url = _data["url"];
-            this.commission = _data["commission"];
-            this.period_for_book = _data["period_for_book"];
             this.park_name = _data["park_name"];
-            this.about = _data["about"];
-            this.created_at = _data["created_at"];
-            this.updated_at = _data["updated_at"];
-            this.self_imployeds_discount = _data["self_imployeds_discount"];
         }
     }
 
@@ -8016,15 +8052,7 @@ export class Parks implements IParks {
                 data[property] = this[property];
         }
         data["id"] = this.id;
-        data["API_key"] = this.aPI_key;
-        data["url"] = this.url;
-        data["commission"] = this.commission;
-        data["period_for_book"] = this.period_for_book;
         data["park_name"] = this.park_name;
-        data["about"] = this.about;
-        data["created_at"] = this.created_at;
-        data["updated_at"] = this.updated_at;
-        data["self_imployeds_discount"] = this.self_imployeds_discount;
         return data;
     }
 }
@@ -8032,37 +8060,21 @@ export class Parks implements IParks {
 export interface IParks {
     /** id парка */
     id?: number;
-    /** Ключ парка */
-    aPI_key?: string;
-    /** Endpoint парка для ответа */
-    url?: string;
-    /** Комиссия парка */
-    commission?: number;
-    /** Время брони парка */
-    period_for_book?: number;
     /** Название парка */
     park_name?: string;
-    /** Описание парка */
-    about?: string;
-    /** Дата создания парка */
-    created_at?: string;
-    /** Последнее обновление инфо парка */
-    updated_at?: string;
-    /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
 
     [key: string]: any;
 }
 
-export class Parks2 implements IParks2 {
+export class Park implements IPark {
     /** id парка */
     id?: number;
-    /** Ключ парка */
-    aPI_key?: string;
+    /** Название парка */
+    park_name?: string;
 
     [key: string]: any;
 
-    constructor(data?: IParks2) {
+    constructor(data?: IPark) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8078,13 +8090,13 @@ export class Parks2 implements IParks2 {
                     this[property] = _data[property];
             }
             this.id = _data["id"];
-            this.aPI_key = _data["API_key"];
+            this.park_name = _data["park_name"];
         }
     }
 
-    static fromJS(data: any): Parks2 {
+    static fromJS(data: any): Park {
         data = typeof data === 'object' ? data : {};
-        let result = new Parks2();
+        let result = new Park();
         result.init(data);
         return result;
     }
@@ -8096,22 +8108,22 @@ export class Parks2 implements IParks2 {
                 data[property] = this[property];
         }
         data["id"] = this.id;
-        data["API_key"] = this.aPI_key;
+        data["park_name"] = this.park_name;
         return data;
     }
 }
 
-export interface IParks2 {
+export interface IPark {
     /** id парка */
     id?: number;
-    /** Ключ парка */
-    aPI_key?: string;
+    /** Название парка */
+    park_name?: string;
 
     [key: string]: any;
 }
 
 /** Список отделений в парке */
-export class Parks3 implements IParks3 {
+export class Parks2 implements IParks2 {
     /** Endpoint парка для ответа */
     url?: string;
     /** Комиссия парка */
@@ -8132,7 +8144,7 @@ export class Parks3 implements IParks3 {
 
     [key: string]: any;
 
-    constructor(data?: IParks3) {
+    constructor(data?: IParks2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8163,9 +8175,9 @@ export class Parks3 implements IParks3 {
         }
     }
 
-    static fromJS(data: any): Parks3 {
+    static fromJS(data: any): Parks2 {
         data = typeof data === 'object' ? data : {};
-        let result = new Parks3();
+        let result = new Parks2();
         result.init(data);
         return result;
     }
@@ -8194,7 +8206,7 @@ export class Parks3 implements IParks3 {
 }
 
 /** Список отделений в парке */
-export interface IParks3 {
+export interface IParks2 {
     /** Endpoint парка для ответа */
     url?: string;
     /** Комиссия парка */
@@ -10250,7 +10262,7 @@ export class Division2 implements IDivision2 {
     phone?: string;
     /** Расписание работы парка */
     working_hours?: Working_hours5[];
-    park?: Park;
+    park?: Park2;
 
     [key: string]: any;
 
@@ -10277,7 +10289,7 @@ export class Division2 implements IDivision2 {
                 for (let item of _data["working_hours"])
                     this.working_hours!.push(Working_hours5.fromJS(item));
             }
-            this.park = _data["park"] ? Park.fromJS(_data["park"]) : <any>undefined;
+            this.park = _data["park"] ? Park2.fromJS(_data["park"]) : <any>undefined;
         }
     }
 
@@ -10313,7 +10325,7 @@ export interface IDivision2 {
     phone?: string;
     /** Расписание работы парка */
     working_hours?: Working_hours5[];
-    park?: Park;
+    park?: Park2;
 
     [key: string]: any;
 }
@@ -10653,7 +10665,7 @@ export class Division3 implements IDivision3 {
     /** Расписание работы парка */
     working_hours?: Working_hours6[];
     /** Информация о парке */
-    park?: Park2;
+    park?: Park3;
 
     [key: string]: any;
 
@@ -10680,7 +10692,7 @@ export class Division3 implements IDivision3 {
                 for (let item of _data["working_hours"])
                     this.working_hours!.push(Working_hours6.fromJS(item));
             }
-            this.park = _data["park"] ? Park2.fromJS(_data["park"]) : <any>undefined;
+            this.park = _data["park"] ? Park3.fromJS(_data["park"]) : <any>undefined;
         }
     }
 
@@ -10717,7 +10729,7 @@ export interface IDivision3 {
     /** Расписание работы парка */
     working_hours?: Working_hours6[];
     /** Информация о парке */
-    park?: Park2;
+    park?: Park3;
 
     [key: string]: any;
 }
@@ -10782,7 +10794,7 @@ export interface IWorking_hours5 {
     [key: string]: any;
 }
 
-export class Park implements IPark {
+export class Park2 implements IPark2 {
     url?: string;
     commission?: number;
     park_name?: string;
@@ -10790,7 +10802,7 @@ export class Park implements IPark {
 
     [key: string]: any;
 
-    constructor(data?: IPark) {
+    constructor(data?: IPark2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -10812,9 +10824,9 @@ export class Park implements IPark {
         }
     }
 
-    static fromJS(data: any): Park {
+    static fromJS(data: any): Park2 {
         data = typeof data === 'object' ? data : {};
-        let result = new Park();
+        let result = new Park2();
         result.init(data);
         return result;
     }
@@ -10833,7 +10845,7 @@ export class Park implements IPark {
     }
 }
 
-export interface IPark {
+export interface IPark2 {
     url?: string;
     commission?: number;
     park_name?: string;
@@ -10902,7 +10914,7 @@ export interface IWorking_hours6 {
     [key: string]: any;
 }
 
-export class Park2 implements IPark2 {
+export class Park3 implements IPark3 {
     url?: string;
     commission?: number;
     park_name?: string;
@@ -10910,7 +10922,7 @@ export class Park2 implements IPark2 {
 
     [key: string]: any;
 
-    constructor(data?: IPark2) {
+    constructor(data?: IPark3) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -10932,9 +10944,9 @@ export class Park2 implements IPark2 {
         }
     }
 
-    static fromJS(data: any): Park2 {
+    static fromJS(data: any): Park3 {
         data = typeof data === 'object' ? data : {};
-        let result = new Park2();
+        let result = new Park3();
         result.init(data);
         return result;
     }
@@ -10953,7 +10965,7 @@ export class Park2 implements IPark2 {
     }
 }
 
-export interface IPark2 {
+export interface IPark3 {
     url?: string;
     commission?: number;
     park_name?: string;

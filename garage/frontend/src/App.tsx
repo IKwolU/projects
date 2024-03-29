@@ -7,7 +7,7 @@ import { Finder } from "./Finder";
 import { Account } from "./Account";
 import { ParkManager } from "./ParkManager";
 import { DriverLogin } from "./DriverLogin";
-import { SuperAdmin } from "./SuperAdmin";
+import { SuperAdmin } from "./Admin";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,10 +44,6 @@ function App() {
     <>
       {user?.user_type === UserType.Manager && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-          <div className="flex justify-between my-0 space-x-2">
-            <Menu user={user} />
-            {/* <span className="font-bold text-md text-gray"></span> */}
-          </div>
           <Routes>
             <Route path="/" element={<ParkManager />} />
           </Routes>
@@ -55,38 +51,33 @@ function App() {
       )}
       {user?.user_type === UserType.Admin && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-          <div className="flex justify-between my-0 space-x-2">
-            <Menu user={user} />
-            {/* <span className="font-bold text-md text-gray"></span> */}
-          </div>
           <Routes>
             <Route path="/*" element={<SuperAdmin />} />
           </Routes>
         </div>
       )}
-      {user?.user_type !== UserType.Admin &&
-        user?.user_type !== UserType.Manager && (
-          <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-            <div className="flex justify-between my-0 space-x-2">
-              <Menu user={user} />
-              {/* <span className="font-bold text-md text-gray"></span> */}
-            </div>
-            <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
-              Место для промо-акции
-            </div>
-            <Link to="bookings">
-              <BookingTimer />
-            </Link>
-            <Routes>
-              <Route path="/" element={<Finder />} />
-              <Route path="account" element={<Account user={user} />} />
-              <Route path="bookings" element={<BookingDrawer />} />
-              <Route path="login/driver" element={<DriverLogin />} />
-              <Route path="login/manager" element={<ManagerLogin />} />
-              <Route path="login/admin" element={<AdminLogin />} />
-            </Routes>
+      {(!user || user.user_type === UserType.Driver) && (
+        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
+          <div className="flex justify-between my-0 space-x-2">
+            <Menu user={user} />
+            {/* <span className="font-bold text-md text-gray"></span> */}
           </div>
-        )}
+          <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
+            Место для промо-акции
+          </div>
+          <Link to="bookings">
+            <BookingTimer />
+          </Link>
+          <Routes>
+            <Route path="/" element={<Finder />} />
+            <Route path="account" element={<Account user={user} />} />
+            <Route path="bookings" element={<BookingDrawer />} />
+            <Route path="login/driver" element={<DriverLogin />} />
+            <Route path="login/manager" element={<ManagerLogin />} />
+            <Route path="login/admin" element={<AdminLogin />} />
+          </Routes>
+        </div>
+      )}
     </>
   );
 }

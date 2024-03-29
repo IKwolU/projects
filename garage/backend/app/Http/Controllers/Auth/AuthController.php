@@ -342,6 +342,7 @@ class AuthController extends Controller
             if ($request->type === UserType::Manager->name) {
                 $manager = Manager::firstOrCreate(['user_id' => $user->id]);
                 $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
+                $manager->save();
             }
             $token = $user->createToken('auth_token')->plainTextToken;
             return $token;

@@ -22,4 +22,8 @@ class Park extends Model
     {
         return $this->hasMany(Tariff::class);
     }
+    public function managers()
+    {
+        return $this->hasMany(Manager::class);
+    }
 }

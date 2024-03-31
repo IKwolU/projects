@@ -276,7 +276,7 @@ export const ParkManager = () => {
               <div className="" key={`division_${i}`}>
                 <div className="">{x.address}</div>
               </div>
-            ))}{" "}
+            ))}
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="w-1/3">Создать</Button>

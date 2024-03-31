@@ -1,7 +1,7 @@
 import { Link } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, Park } from "./api-client";
+import { UserType, IPark2 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
 
@@ -12,13 +12,13 @@ type MainMenuItem = {
 
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
-  const [park, setPark] = useState<Park[] | undefined>();
+  const [park, setPark] = useState<IPark2 | undefined>();
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
       const getPark = async () => {
         try {
           const parkData = await client.getPark();
-          setPark(parkData.park);
+          setPark(parkData.park![0]);
         } catch (error) {}
       };
       getPark();
@@ -39,20 +39,8 @@ export const ParkManager = () => {
           <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
             МОЙ ГАРАЖ
           </div>
-          <div className="flex justify-end space-x-4 ">
-            {[
-              { name: "Парки", path: "parks" },
-              { name: "Пользователи", path: "users" },
-            ].map(({ name, path }: MainMenuItem, i) => (
-              <div key={`menu_${i}`} className="">
-                <Link
-                  className="flex items-center text-xl font-semibold hover:text-yellow"
-                  to={path}
-                >
-                  {name}
-                </Link>
-              </div>
-            ))}
+          <div className="flex items-center justify-end space-x-4 text-xl font-semibold">
+            {park.park_name}
           </div>
         </div>
       </div>

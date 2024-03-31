@@ -197,6 +197,9 @@ class ManagerController extends Controller
             return response()->json(['Нет прав доступа'], 409);
         }
         $manager = Manager::where('user_id', $user->id)->first();
+        if (!$manager) {
+            return response()->json(['Менеджер не найден'], 404);
+        }
         $park = Park::where('id', $manager->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->get();
         foreach ($park as $item) {
             unset($item->API_key, $item->id);

@@ -7,7 +7,7 @@ import { Finder } from "./Finder";
 import { Account } from "./Account";
 import { ParkManager } from "./ParkManager";
 import { DriverLogin } from "./DriverLogin";
-import { SuperAdmin } from "./Admin";
+import { Admin } from "./Admin";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,7 +52,7 @@ function App() {
       {user?.user_type === UserType.Admin && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
           <Routes>
-            <Route path="/*" element={<SuperAdmin />} />
+            <Route path="/*" element={<Admin />} />
           </Routes>
         </div>
       )}

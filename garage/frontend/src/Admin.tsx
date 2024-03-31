@@ -43,7 +43,7 @@ function PhoneInput(props: any) {
   );
 }
 
-export const SuperAdmin = () => {
+export const Admin = () => {
   const [user] = useRecoilState(userAtom);
   const [parks, setParks] = useState<Parks[] | undefined>();
   const [users, setUsers] = useState<Users[] | undefined>();

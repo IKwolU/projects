@@ -11,14 +11,24 @@ import {
   Body5,
   Body6,
   Schemas,
+  Body,
 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+
+type VariantItem = { name: string; id: number | null };
 
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
+  const [isKeyShowed, setIsKeyShowed] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
+    name: "park",
+    id: null,
+  });
 
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
@@ -151,8 +161,8 @@ export const ParkManager = () => {
       setPark([
         ...park![0],
         [
-          ...tariffs.filter((tariff) =>
-            rent_term_id ? tariff.id !== rent_term_id : tariff
+          ...rentTerms.filter((rent_term) =>
+            rent_term_id ? rent_term.id !== rent_term_id : rent_term
           ),
           {
             deposit_amount_daily,
@@ -169,6 +179,29 @@ export const ParkManager = () => {
     } catch (error) {}
   };
 
+  const updateParkInfo = async (
+    about: string,
+    commission: number,
+    period_for_book: number,
+    url: string
+  ) => {
+    {
+      try {
+        await client.updateParkInfo(
+          new Body({
+            about,
+            commission,
+            park_name: park?.park_name,
+            period_for_book,
+            url,
+          })
+        );
+
+        setPark([...park![0], [about, commission, period_for_book, url]]);
+      } catch (error) {}
+    }
+  };
+
   if (user.user_type !== UserType.Manager) {
     return <></>;
   }
@@ -179,6 +212,25 @@ export const ParkManager = () => {
   const divisions = park!.divisions! as Divisions2[];
   const tariffs = park!.tariffs as Tariffs[];
   const rentTerms = park!.rent_terms as IRent_terms[];
+
+  const selectedDivision =
+    selectedVariant.name === "division"
+      ? (divisions.find(
+          (division) => division.id === selectedVariant.id
+        ) as Divisions2)
+      : null;
+
+  const selectedRentTerm =
+    selectedVariant.name === "rent_term"
+      ? (rentTerms.find(
+          (rentTerm) => rentTerm.id === selectedVariant.id
+        ) as IRent_terms)
+      : null;
+
+  const selectedTariff =
+    selectedVariant.name === "tariff"
+      ? (tariffs.find((tariff) => tariff.id === selectedVariant.id) as Tariffs)
+      : null;
 
   return (
     <>
@@ -192,54 +244,137 @@ export const ParkManager = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
-        <div className="flex space-x-2">
-          <div className="">
+      <div className="flex space-x-1">
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+          <div className="flex items-center justify-between space-x-2">
             <div className="">Инфо парка</div>
-          </div>
 
-          <Button>Показать API-ключ</Button>
-        </div>
-        <div className="flex space-x-2">
-          {divisions.length === 0 && (
-            <div className="">
-              <div className="">Подразделений еще нет</div>
-            </div>
+            <Button
+              className="w-1/3"
+              onClick={() => setIsKeyShowed(!isKeyShowed)}
+            >
+              {isKeyShowed ? "Скрыть ключ" : "Показать ключ"}
+            </Button>
+          </div>
+          <Separator />
+          {isKeyShowed && (
+            <>
+              <div className="flex items-center justify-between space-x-2">
+                <div className="">
+                  <div className="">X-API-key:</div>
+                </div>
+
+                <div className="">{park.api_key}</div>
+              </div>
+              <Separator />
+            </>
           )}
-          {divisions.map((x, i) => (
-            <div className="" key={`division_${i}`}>
-              <div className="">{x.address}</div>
-            </div>
-          ))}{" "}
-          <Button>Создать</Button>
-        </div>
-        <div className="flex space-x-2">
-          {tariffs.length === 0 && (
-            <div className="">
-              <div className="">Требований к водителям еще нет</div>
-            </div>
-          )}
-          {tariffs.map((x, i) => (
-            <div className="" key={`tariff_${i}`}>
+          <div className="flex items-center justify-between space-x-2">
+            {divisions.length === 0 && (
               <div className="">
-                {x.city} - {x.class}
+                <div className="">Подразделений еще нет</div>
+              </div>
+            )}
+            {divisions.map((x, i) => (
+              <div className="" key={`division_${i}`}>
+                <div className="">{x.address}</div>
+              </div>
+            ))}{" "}
+            <Button className="w-1/3">Создать</Button>
+          </div>
+          <Separator />
+          <div className="flex items-center justify-between space-x-2">
+            {tariffs.length === 0 && (
+              <div className="">
+                <div className="">Требований к водителям еще нет</div>
+              </div>
+            )}
+            {tariffs.map((x, i) => (
+              <div className="" key={`tariff_${i}`}>
+                <div className="">
+                  {x.city} - {x.class}
+                </div>
+              </div>
+            ))}
+            <Button className="w-1/3">Создать</Button>
+          </div>
+          <Separator />
+          <div className="flex items-center justify-between space-x-2">
+            {rentTerms.length === 0 && (
+              <div className="">
+                <div className="">Условий аренды еще нет</div>{" "}
+              </div>
+            )}
+            {rentTerms.map((x, i) => (
+              <div className="" key={`rentTerm_${i}`}>
+                <div className="">{x.name}</div>{" "}
+              </div>
+            ))}
+            <Button className="w-1/3">Создать</Button>
+          </div>
+        </div>
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+          {selectedVariant.name === "park" && (
+            <div className="">
+              <h3>Инфо парка {park.park_name}</h3>
+              <div className="">
+                <div className="">
+                  <h4>Описание парка:</h4>
+                  <p>{park.about ? park.about : "Описания еще нет"}</p>
+                  <Input
+                    type="textarea"
+                    placeholder="Введите новое значение"
+                  ></Input>
+                </div>
+                <div className="">
+                  <h4>Комиссия парка:</h4>
+                  <p>
+                    {park.commission ? park.commission : "Комиссии еще нет"}
+                  </p>
+                  <Input
+                    type="number"
+                    placeholder="Введите новое значение"
+                  ></Input>
+                </div>
+                <div className="">
+                  <h4>URL парка для API:</h4>
+                  <p>{park.url ? park.url : "URL еще нет"}</p>
+                  <Input
+                    type="text"
+                    placeholder="Введите новое значение"
+                  ></Input>
+                </div>
+                <div className="">
+                  <h4>Время брони парка в часах:</h4>
+                  <p>{park.period_for_book}</p>
+                  <Input
+                    type="number"
+                    placeholder="Введите новое значение"
+                  ></Input>
+                </div>
+                <div className="">
+                  <h4>Работа с самозанятыми:</h4>
+                  <p>{park.self_imployeds_discount ? "Да" : "Нет"}</p>
+                  <Input
+                    type="checkbox"
+                    checked={!!park!.self_imployeds_discount}
+                  />
+                </div>
+                <Button>Применить изменения</Button>
               </div>
             </div>
-          ))}
-          <Button>Создать</Button>
-        </div>
-        <div className="flex space-x-2">
-          {rentTerms.length === 0 && (
+          )}
+          {selectedVariant.name === "division" && (
+            <div className="">Инфо подразделения {selectedDivision?.name}</div>
+          )}
+          {selectedVariant.name === "rent_term" && (
             <div className="">
-              <div className="">Условий аренды еще нет</div>{" "}
+              Инфо требований к водителям {selectedRentTerm?.name}
             </div>
           )}
-          {rentTerms.map((x, i) => (
-            <div className="" key={`rentTerm_${i}`}>
-              <div className="">{x.name}</div>{" "}
-            </div>
-          ))}
-          <Button className="">Создать</Button>
+          {selectedVariant.name === "tariff" && (
+            <div className="">Инфо тарифа {selectedTariff?.name}</div>
+          )}
         </div>
       </div>
     </>

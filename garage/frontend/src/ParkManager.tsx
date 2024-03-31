@@ -13,6 +13,7 @@ import {
   Schemas,
   Body,
   Park2,
+  Division3,
 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
@@ -26,6 +27,7 @@ export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
+  const [newDivision, setNewDivision] = useState<Divisions2 | undefined>();
   const [isKeyShowed, setIsKeyShowed] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
     name: "park",
@@ -56,27 +58,11 @@ export const ParkManager = () => {
     }
   }, []);
 
-  const createDivision = async (
-    address: string,
-    city: string,
-    coords: string,
-    metro: string,
-    name: string,
-    phone: string,
-    timezone_difference: number,
-    working_hours: Working_hours[]
-  ) => {
+  const createDivision = async ({ ...newDivision }: Division3) => {
     try {
       const newDivisionData = await client.createParkDivision(
         new Body3({
-          address,
-          city,
-          coords,
-          metro,
-          name,
-          phone,
-          timezone_difference,
-          working_hours,
+          ...newDivision,
         })
       );
       setPark({
@@ -86,14 +72,7 @@ export const ParkManager = () => {
           ...divisions,
 
           {
-            address,
-            city,
-            coords,
-            metro,
-            name,
-            phone,
-            timezone_difference,
-            working_hours,
+            ...newDivision,
             id: newDivisionData.id,
           },
         ],
@@ -211,6 +190,7 @@ export const ParkManager = () => {
       } catch (error) {}
     }
   };
+
   if (user.user_type !== UserType.Manager) {
     return <></>;
   }

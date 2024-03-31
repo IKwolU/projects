@@ -2329,6 +2329,22 @@
                                 }
                             }
                         }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -3727,6 +3743,296 @@
                     }
                 ]
             }
+        },
+        "manager/park": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Показать парк",
+                "description": "Показать список парков",
+                "operationId": "getPark",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "park": {
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Список подразделений в парке",
+                                                "properties": {
+                                                    "url": {
+                                                        "description": "Endpoint парка для ответа",
+                                                        "type": "string"
+                                                    },
+                                                    "commission": {
+                                                        "description": "Комиссия парка",
+                                                        "type": "number"
+                                                    },
+                                                    "period_for_book": {
+                                                        "description": "Время брони парка",
+                                                        "type": "integer"
+                                                    },
+                                                    "park_name": {
+                                                        "description": "Название парка",
+                                                        "type": "string"
+                                                    },
+                                                    "about": {
+                                                        "description": "Описание парка",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Дата создания парка",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "Последнее обновление инфо парка",
+                                                        "type": "string"
+                                                    },
+                                                    "self_imployeds_discount": {
+                                                        "description": "Скидка парка для самозанятых",
+                                                        "type": "number"
+                                                    },
+                                                    "divisions": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "id отделения",
+                                                                    "type": "integer"
+                                                                },
+                                                                "coords": {
+                                                                    "description": "Координаты отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "address": {
+                                                                    "description": "Адрес отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "metro": {
+                                                                    "description": "Станция метро ближайшая к отделению",
+                                                                    "type": "string"
+                                                                },
+                                                                "working_hours": {
+                                                                    "description": "Рабочие часы отделения",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "day": {
+                                                                                "description": "День недели",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "end": {
+                                                                                "properties": {
+                                                                                    "hours": {
+                                                                                        "description": "Час окончания",
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "minutes": {
+                                                                                        "description": "Минуты окончания",
+                                                                                        "type": "integer"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "start": {
+                                                                                "properties": {
+                                                                                    "hours": {
+                                                                                        "description": "Час начала",
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "minutes": {
+                                                                                        "description": "Минуты начала",
+                                                                                        "type": "integer"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                },
+                                                                "timezone_difference": {
+                                                                    "description": "Разница во времени",
+                                                                    "type": "integer"
+                                                                },
+                                                                "created_at": {
+                                                                    "description": "Дата создания отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "updated_at": {
+                                                                    "description": "Последнее обновление инфо отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "name": {
+                                                                    "description": "Название отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "phone": {
+                                                                    "description": "Телефон отделения",
+                                                                    "type": "string"
+                                                                },
+                                                                "city": {
+                                                                    "description": "Город, в котором находится отделение",
+                                                                    "type": "string"
+                                                                },
+                                                                "cars": {
+                                                                    "description": "Список автомобилей в отделении",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "description": "id автомобиля",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "tariff_id": {
+                                                                                "description": "id тарифа",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "mileage": {
+                                                                                "description": "Пробег автомобиля",
+                                                                                "type": "number"
+                                                                            },
+                                                                            "license_plate": {
+                                                                                "description": "Государственный номер автомобиля",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "rent_term_id": {
+                                                                                "description": "id условия аренды",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "fuel_type": {
+                                                                                "$ref": "#/components/schemas/FuelType"
+                                                                            },
+                                                                            "transmission_type": {
+                                                                                "$ref": "#/components/schemas/TransmissionType"
+                                                                            },
+                                                                            "brand": {
+                                                                                "description": "Марка автомобиля",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "model": {
+                                                                                "description": "Модель автомобиля",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "year_produced": {
+                                                                                "description": "Год выпуска автомобиля",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "vin": {
+                                                                                "description": "vin автомобиля",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "images": {
+                                                                                "description": "Ссылки на изображения автомобиля",
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "status": {
+                                                                                "$ref": "#/components/schemas/CarStatus"
+                                                                            },
+                                                                            "created_at": {
+                                                                                "description": "Дата создания записи об автомобиле",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "updated_at": {
+                                                                                "description": "Последнее обновление записи об автомобиле",
+                                                                                "type": "string"
+                                                                            },
+                                                                            "booking": {
+                                                                                "description": "Список бронирований для данного автомобиля",
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "properties": {
+                                                                                        "id": {
+                                                                                            "description": "id бронирования",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "status": {
+                                                                                            "description": "статус бронирования",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "schema_id": {
+                                                                                            "description": "id схемы",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "car_id": {
+                                                                                            "description": "id автомобиля",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "driver_id": {
+                                                                                            "description": "id водителя",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "booked_at": {
+                                                                                            "description": "дата и время начала бронирования",
+                                                                                            "type": "string",
+                                                                                            "format": "datetime"
+                                                                                        },
+                                                                                        "booked_until": {
+                                                                                            "description": "дата и время окончания бронирования",
+                                                                                            "type": "string",
+                                                                                            "format": "datetime"
+                                                                                        },
+                                                                                        "park_id": {
+                                                                                            "description": "id парка",
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "created_at": {
+                                                                                            "description": "дата создания записи",
+                                                                                            "type": "string",
+                                                                                            "format": "datetime"
+                                                                                        },
+                                                                                        "updated_at": {
+                                                                                            "description": "дата последнего обновления записи",
+                                                                                            "type": "string",
+                                                                                            "format": "datetime"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера ",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3830,24 +4136,6 @@
                     "Manager",
                     "Admin"
                 ]
-            }
-        },
-        "responses": {
-            "500": {
-                "description": "Ошибка сервера",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "message": {
-                                    "description": "Внутренняя ошибка сервера",
-                                    "type": "string"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
             }
         }
     }

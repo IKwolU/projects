@@ -307,7 +307,6 @@ class AuthController extends Controller
         $request->validate([
             'phone' => 'required|string',
             'code' => 'required|integer',
-            'type' => 'required|string',
             'api_key' => 'string'
         ]);
         $user = $this->phoneCodeAuthentication($request->phone, $request->code);
@@ -315,7 +314,6 @@ class AuthController extends Controller
             if ($user->user_status === null) {
                 $user->user_status = UserStatus::DocumentsNotUploaded->value;
                 $user->avatar = "users/default.png";
-                $user->user_type = $request->type === UserType::Manager->name ? UserType::Manager->value : UserType::Driver->value;
                 $user->user_type = UserType::Driver->value;
             }
 

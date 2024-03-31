@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
+use App\Http\Controllers\ManagerController;
 use PHPUnit\Framework\Attributes\Group;
 
 /*
@@ -28,6 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthController::class, 'GetUser']);
     Route::post('driver/upload-file', [DriverController::class, 'uploadDocs']);
     Route::get('admin/parks', [AdminController::class, 'getParks']);
+    Route::get('manager/park', [ManagerController::class, 'getPark']);
     Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
     Route::put('admin/parks', [AdminController::class, 'changePark']);

@@ -5,12 +5,10 @@ import {
   IPark2,
   Divisions2,
   Tariffs,
-  Rent_term,
   IRent_terms,
   Body3,
   Working_hours,
   Body5,
-  CarClass,
   Body6,
   Schemas,
 } from "./api-client";

@@ -12,6 +12,7 @@ import {
   Body6,
   Schemas,
   Body,
+  Park2,
 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
@@ -24,6 +25,7 @@ type VariantItem = { name: string; id: number | null };
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
+  const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
   const [isKeyShowed, setIsKeyShowed] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
     name: "park",
@@ -36,6 +38,16 @@ export const ParkManager = () => {
         try {
           const parkData = await client.getPark();
           setPark(parkData.park![0]);
+          setParkInfo([
+            {
+              ...parkData.park![0],
+              commission: parkData.park![0]?.commission || 0,
+              about: parkData.park![0]?.about || "",
+              url: parkData.park![0]?.url || "",
+              self_imployeds_discount:
+                parkData.park![0]?.self_imployeds_discount || 0,
+            },
+          ]);
           localStorage.setItem("X-API-key", parkData.park![0]!.api_key!);
         } catch (error) {}
       };
@@ -67,10 +79,12 @@ export const ParkManager = () => {
           working_hours,
         })
       );
-      setPark([
+      setPark({
         ...park![0],
-        [
+
+        divisions: [
           ...divisions,
+
           {
             address,
             city,
@@ -83,7 +97,7 @@ export const ParkManager = () => {
             id: newDivisionData.id,
           },
         ],
-      ]);
+      });
     } catch (error) {}
   };
 
@@ -114,10 +128,12 @@ export const ParkManager = () => {
           min_scoring,
         })
       );
-      setPark([
+      setPark({
         ...park![0],
-        [
+
+        tariffs: [
           ...tariffs,
+
           {
             abandoned_car,
             alcohol,
@@ -132,7 +148,7 @@ export const ParkManager = () => {
             id: newTariffData.id,
           },
         ],
-      ]);
+      });
     } catch (error) {}
   };
 
@@ -158,12 +174,14 @@ export const ParkManager = () => {
         })
       );
 
-      setPark([
+      setPark({
         ...park![0],
-        [
+
+        rent_terms: [
           ...rentTerms.filter((rent_term) =>
             rent_term_id ? rent_term.id !== rent_term_id : rent_term
           ),
+
           {
             deposit_amount_daily,
             deposit_amount_total,
@@ -175,37 +193,28 @@ export const ParkManager = () => {
             id: newTariffData.id,
           },
         ],
-      ]);
+      });
     } catch (error) {}
   };
 
-  const updateParkInfo = async (
-    about: string,
-    commission: number,
-    period_for_book: number,
-    url: string
-  ) => {
+  const updateParkInfo = async () => {
     {
       try {
         await client.updateParkInfo(
           new Body({
-            about,
-            commission,
-            park_name: park?.park_name,
-            period_for_book,
-            url,
+            ...parkInfo![0],
+            self_imployeds_discount: 0,
           })
         );
 
-        setPark([...park![0], [about, commission, period_for_book, url]]);
+        setPark({ ...park![0], ...parkInfo });
       } catch (error) {}
     }
   };
-
   if (user.user_type !== UserType.Manager) {
     return <></>;
   }
-  if (!park) {
+  if (!park || !parkInfo) {
     return <></>;
   }
 
@@ -322,6 +331,7 @@ export const ParkManager = () => {
                   <h4>Описание парка:</h4>
                   <p>{park.about ? park.about : "Описания еще нет"}</p>
                   <Input
+                    onChange={(e) => (parkInfo.about = e.target.value)}
                     type="textarea"
                     placeholder="Введите новое значение"
                   ></Input>
@@ -332,6 +342,9 @@ export const ParkManager = () => {
                     {park.commission ? park.commission : "Комиссии еще нет"}
                   </p>
                   <Input
+                    onChange={(e) =>
+                      (parkInfo!.commission = Number(e.target.value))
+                    }
                     type="number"
                     placeholder="Введите новое значение"
                   ></Input>
@@ -340,6 +353,7 @@ export const ParkManager = () => {
                   <h4>URL парка для API:</h4>
                   <p>{park.url ? park.url : "URL еще нет"}</p>
                   <Input
+                    onChange={(e) => (parkInfo.url = e.target.value)}
                     type="text"
                     placeholder="Введите новое значение"
                   ></Input>
@@ -348,19 +362,27 @@ export const ParkManager = () => {
                   <h4>Время брони парка в часах:</h4>
                   <p>{park.period_for_book}</p>
                   <Input
+                    onChange={(e) =>
+                      (parkInfo.period_for_book = Number(e.target.value))
+                    }
                     type="number"
                     placeholder="Введите новое значение"
                   ></Input>
                 </div>
-                <div className="">
-                  <h4>Работа с самозанятыми:</h4>
+                {/* <div className="">
+                  <h4>Скидка самозанятым:</h4>
                   <p>{park.self_imployeds_discount ? "Да" : "Нет"}</p>
                   <Input
-                    type="checkbox"
-                    checked={!!park!.self_imployeds_discount}
+                    onChange={(e) =>
+                      (parkInfo.self_imployeds_discount = Number(
+                        e.target.value
+                      ))
+                    }
+                    type="number"
+                    placeholder="Введите новое значение"
                   />
-                </div>
-                <Button>Применить изменения</Button>
+                </div> */}
+                <Button onClick={updateParkInfo}>Применить изменения</Button>
               </div>
             </div>
           )}

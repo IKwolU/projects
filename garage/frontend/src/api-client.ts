@@ -919,7 +919,7 @@ export class Client {
      * @return Успешный ответ
      */
     getParks(): Promise<Anonymous58> {
-        let url_ = this.baseUrl + "/admin/parks";
+        let url_ = this.baseUrl + "/api/admin/parks";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -964,7 +964,7 @@ export class Client {
      * @return Успешный ответ
      */
     createPark(body: Body15): Promise<Anonymous60> {
-        let url_ = this.baseUrl + "/admin/parks";
+        let url_ = this.baseUrl + "/api/admin/parks";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1013,7 +1013,7 @@ export class Client {
      * @return Успешный ответ
      */
     getParkWithDetails(body: Body16): Promise<Anonymous62> {
-        let url_ = this.baseUrl + "/admin/park";
+        let url_ = this.baseUrl + "/api/admin/park";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1062,7 +1062,7 @@ export class Client {
      * @return Успешный ответ
      */
     getUsers(): Promise<Anonymous64> {
-        let url_ = this.baseUrl + "/admin/users";
+        let url_ = this.baseUrl + "/api/admin/users";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1107,7 +1107,7 @@ export class Client {
      * @return Успешная аутентификация или регистрация
      */
     getUser(): Promise<Anonymous66> {
-        let url_ = this.baseUrl + "/user";
+        let url_ = this.baseUrl + "/api/user";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1152,7 +1152,7 @@ export class Client {
      * @return Пользователь успешно удален
      */
     deleteUser(): Promise<Anonymous68> {
-        let url_ = this.baseUrl + "/user";
+        let url_ = this.baseUrl + "/api/user";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1197,7 +1197,7 @@ export class Client {
      * @return Успешная аутентификация или регистрация
      */
     loginOrRegister(body: Body17): Promise<string> {
-        let url_ = this.baseUrl + "/user/login";
+        let url_ = this.baseUrl + "/api/user/login";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1247,7 +1247,7 @@ export class Client {
      * @return Пользователь успешно вышел из системы
      */
     logout(): Promise<Anonymous71> {
-        let url_ = this.baseUrl + "/user/logout";
+        let url_ = this.baseUrl + "/api/user/logout";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1341,7 +1341,7 @@ export class Client {
      * @return Успешный ответ
      */
     searchCars(body: Body19): Promise<Anonymous75> {
-        let url_ = this.baseUrl + "/cars/search";
+        let url_ = this.baseUrl + "/api/cars/search";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1395,7 +1395,7 @@ export class Client {
      * @return Успешное бронирование
      */
     book(body: Body20): Promise<Anonymous76> {
-        let url_ = this.baseUrl + "/auth/cars/booking";
+        let url_ = this.baseUrl + "/api/auth/cars/booking";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1451,7 +1451,7 @@ export class Client {
      * @return Успешный ответ
      */
     cancelBooking(body: Body21): Promise<Anonymous79> {
-        let url_ = this.baseUrl + "/auth/cars/cancel-booking";
+        let url_ = this.baseUrl + "/api/auth/cars/cancel-booking";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -1528,7 +1528,7 @@ export class Client {
      * @return Успешный ответ
      */
     getBrandsAndParksList(): Promise<Anonymous85> {
-        let url_ = this.baseUrl + "/cars/brand-park-list";
+        let url_ = this.baseUrl + "/api/cars/brand-park-list";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -1575,7 +1575,7 @@ export class Client {
      * @return Файл успешно загружен
      */
     uploadFile(file: FileParameter | undefined, driverDocumentType: DriverDocumentType | undefined): Promise<Anonymous87> {
-        let url_ = this.baseUrl + "/driver/upload-file";
+        let url_ = this.baseUrl + "/api/driver/upload-file";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
@@ -1631,7 +1631,7 @@ export class Client {
      * @return Успешный ответ
      */
     getPark(): Promise<Anonymous89> {
-        let url_ = this.baseUrl + "/manager/park";
+        let url_ = this.baseUrl + "/api/manager/park";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {

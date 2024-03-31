@@ -47,7 +47,7 @@ class APIController extends Controller
      * Этот метод позволяет обновлять информацию о парке.
      *
      * @OA\Put(
-     *     path="/parks",
+     *     path="parks",
      *     operationId="updateParkInfo",
      *     summary="Обновление информации о парке",
      *     tags={"API"},

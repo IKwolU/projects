@@ -6,7 +6,7 @@
         "version": "1.0.2"
     },
     "paths": {
-        "/parks": {
+        "parks": {
             "put": {
                 "tags": [
                     "API"
@@ -1913,7 +1913,7 @@
                 ]
             }
         },
-        "admin/parks": {
+        "api/admin/parks": {
             "get": {
                 "tags": [
                     "Admin"
@@ -2043,7 +2043,7 @@
                 }
             }
         },
-        "admin/park": {
+        "api/admin/park": {
             "get": {
                 "tags": [
                     "Admin"
@@ -2349,7 +2349,7 @@
                 }
             }
         },
-        "admin/users": {
+        "api/admin/users": {
             "get": {
                 "tags": [
                     "Admin"
@@ -2431,7 +2431,7 @@
                 }
             }
         },
-        "/user": {
+        "api/user": {
             "get": {
                 "tags": [
                     "Authentication"
@@ -2756,7 +2756,7 @@
                 ]
             }
         },
-        "/user/login": {
+        "api/user/login": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -2827,7 +2827,7 @@
                 }
             }
         },
-        "/user/logout": {
+        "api/user/logout": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -2938,7 +2938,7 @@
                 }
             }
         },
-        "/cars/search": {
+        "api/cars/search": {
             "post": {
                 "tags": [
                     "Cars"
@@ -3247,7 +3247,7 @@
                 ]
             }
         },
-        "/auth/cars/booking": {
+        "api/auth/cars/booking": {
             "post": {
                 "tags": [
                     "Cars"
@@ -3483,7 +3483,7 @@
                 ]
             }
         },
-        "/auth/cars/cancel-booking": {
+        "api/auth/cars/cancel-booking": {
             "post": {
                 "tags": [
                     "Cars"
@@ -3612,7 +3612,7 @@
                 ]
             }
         },
-        "/cars/brand-park-list": {
+        "api/cars/brand-park-list": {
             "post": {
                 "tags": [
                     "Cars"
@@ -3675,7 +3675,7 @@
                 }
             }
         },
-        "/driver/upload-file": {
+        "api/driver/upload-file": {
             "post": {
                 "tags": [
                     "Files"
@@ -3744,7 +3744,7 @@
                 ]
             }
         },
-        "manager/park": {
+        "api/manager/park": {
             "get": {
                 "tags": [
                     "Manager"

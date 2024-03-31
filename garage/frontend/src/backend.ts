@@ -1,6 +1,6 @@
 import { Client } from "./api-client";
 // 77.222.56.111
-const client = new Client("https://api.beebeep.ru/api", {
+const client = new Client("https://api.beebeep.ru", {
   fetch: async (url, options) => {
     try {
       const result = await fetch(url, {

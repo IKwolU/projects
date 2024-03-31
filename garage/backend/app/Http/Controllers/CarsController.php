@@ -31,7 +31,7 @@ class CarsController extends Controller
      * Получение списка автомобилей с учетом фильтров (аутентифицированный запрос)
      *
      * @OA\Post(
-     *     path="/cars/search",
+     *     path="api/cars/search",
      *     operationId="SearchCars",
      *     summary="Получение списка автомобилей с учетом фильтров (аутентифицированный запрос)",
      *     tags={"Cars"},
@@ -400,7 +400,7 @@ class CarsController extends Controller
      * Бронирование автомобиля
      *
      * @OA\Post(
-     *     path="/auth/cars/booking",
+     *     path="api/auth/cars/booking",
      *     operationId="Book",
      *     summary="Бронирование автомобиля",
      *     tags={"Cars"},
@@ -666,7 +666,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      * Отмена бронирования автомобиля (аутентифицированный запрос)
      *
      * @OA\Post(
-     *     path="/auth/cars/cancel-booking",
+     *     path="api/auth/cars/cancel-booking",
      *     operationId="cancelBooking",
      *     summary="Отмена бронирования автомобиля (аутентифицированный запрос)",
      *     tags={"Cars"},
@@ -753,7 +753,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      * Показать список брендов
      *
      * @OA\Post(
-     *     path="/cars/brand-park-list",
+     *     path="api/cars/brand-park-list",
      *     operationId="getBrandsAndParksList",
      *     summary="Показать список брендов",
      *     tags={"Cars"},

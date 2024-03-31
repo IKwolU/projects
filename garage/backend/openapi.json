@@ -3762,7 +3762,6 @@
                                         "park": {
                                             "type": "array",
                                             "items": {
-                                                "description": "Список подразделений в парке",
                                                 "properties": {
                                                     "url": {
                                                         "description": "Endpoint парка для ответа",
@@ -3799,6 +3798,7 @@
                                                     "divisions": {
                                                         "type": "array",
                                                         "items": {
+                                                            "description": "Список подразделений в парке",
                                                             "properties": {
                                                                 "id": {
                                                                     "description": "id отделения",
@@ -4000,6 +4000,150 @@
                                                                         },
                                                                         "type": "object"
                                                                     }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "rent_terms": {
+                                                        "description": "Список тарифов аренды",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "id тарифа",
+                                                                    "type": "integer"
+                                                                },
+                                                                "deposit_amount_daily": {
+                                                                    "description": "Сумма депозита на день",
+                                                                    "type": "string"
+                                                                },
+                                                                "deposit_amount_total": {
+                                                                    "description": "Общая сумма депозита",
+                                                                    "type": "string"
+                                                                },
+                                                                "minimum_period_days": {
+                                                                    "description": "Минимальный период аренды в днях",
+                                                                    "type": "integer"
+                                                                },
+                                                                "name": {
+                                                                    "description": "Название тарифа",
+                                                                    "type": "string"
+                                                                },
+                                                                "is_buyout_possible": {
+                                                                    "description": "Возможность выкупа",
+                                                                    "type": "integer"
+                                                                },
+                                                                "created_at": {
+                                                                    "description": "Дата создания записи",
+                                                                    "type": "string",
+                                                                    "format": "datetime"
+                                                                },
+                                                                "updated_at": {
+                                                                    "description": "Дата последнего обновления записи",
+                                                                    "type": "string",
+                                                                    "format": "datetime"
+                                                                },
+                                                                "schemas": {
+                                                                    "description": "Схемы тарифов",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "description": "id схемы",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "daily_amount": {
+                                                                                "description": "Сумма за день",
+                                                                                "type": "number"
+                                                                            },
+                                                                            "non_working_days": {
+                                                                                "description": "Количество нерабочих дней",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "working_days": {
+                                                                                "description": "Количество рабочих дней",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "created_at": {
+                                                                                "description": "Дата создания записи",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            },
+                                                                            "updated_at": {
+                                                                                "description": "Дата последнего обновления записи",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "tariffs": {
+                                                        "description": "Список тарифов",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "id тарифа",
+                                                                    "type": "integer"
+                                                                },
+                                                                "class": {
+                                                                    "$ref": "#/components/schemas/CarClass"
+                                                                },
+                                                                "city": {
+                                                                    "description": "Город",
+                                                                    "type": "string"
+                                                                },
+                                                                "criminal_ids": {
+                                                                    "description": "id преступлений",
+                                                                    "type": "string"
+                                                                },
+                                                                "has_caused_accident": {
+                                                                    "description": "Было ли аварий",
+                                                                    "type": "integer"
+                                                                },
+                                                                "experience": {
+                                                                    "description": "Опыт",
+                                                                    "type": "integer"
+                                                                },
+                                                                "max_fine_count": {
+                                                                    "description": "Максимальное количество штрафов",
+                                                                    "type": "integer"
+                                                                },
+                                                                "abandoned_car": {
+                                                                    "description": "Брошенный автомобиль",
+                                                                    "type": "integer"
+                                                                },
+                                                                "min_scoring": {
+                                                                    "description": "Минимальный балл",
+                                                                    "type": "integer"
+                                                                },
+                                                                "is_north_caucasus": {
+                                                                    "description": "Северный Кавказ",
+                                                                    "type": "integer"
+                                                                },
+                                                                "forbidden_republic_ids": {
+                                                                    "description": "Запрещенные республики",
+                                                                    "type": "string"
+                                                                },
+                                                                "alcohol": {
+                                                                    "description": "Алкоголь",
+                                                                    "type": "integer"
+                                                                },
+                                                                "created_at": {
+                                                                    "description": "Дата создания записи",
+                                                                    "type": "string",
+                                                                    "format": "datetime"
+                                                                },
+                                                                "updated_at": {
+                                                                    "description": "Дата последнего обновления записи",
+                                                                    "type": "string",
+                                                                    "format": "datetime"
                                                                 }
                                                             },
                                                             "type": "object"

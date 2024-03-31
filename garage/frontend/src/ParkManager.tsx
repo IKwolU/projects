@@ -1,18 +1,13 @@
-import { Link } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2 } from "./api-client";
+import { UserType, IPark2, Divisions2 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
-
-type MainMenuItem = {
-  name: string;
-  path: string;
-};
 
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
+
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
       const getPark = async () => {
@@ -31,6 +26,9 @@ export const ParkManager = () => {
   if (!park) {
     return <></>;
   }
+
+  const divisions = park!.divisions! as Divisions2[];
+  const rentTerms = park!.divisions as Divisions2[];
 
   return (
     <>

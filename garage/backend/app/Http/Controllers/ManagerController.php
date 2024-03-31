@@ -99,85 +99,80 @@ class ManagerController extends Controller
      *                                     @OA\Property(property="created_at", type="string", description="Дата создания записи об автомобиле"),
      *                                     @OA\Property(property="updated_at", type="string", description="Последнее обновление записи об автомобиле"),
      *                                     @OA\Property(
-     *property="booking",
-     *type="array",
-     *description="Список бронирований для данного автомобиля",
-     *@OA\Items(
-     *    type="object",
-     *    @OA\Property(property="id", type="integer", description="id бронирования"),
-     *    @OA\Property(property="status", type="integer", description="статус бронирования"),
-     *    @OA\Property(property="schema_id", type="integer", description="id схемы"),
-     *    @OA\Property(property="car_id", type="integer", description="id автомобиля"),
-     *    @OA\Property(property="driver_id", type="integer", description="id водителя"),
-     *    @OA\Property(property="booked_at", type="string", format="datetime", description="дата и время начала бронирования"),
-     *    @OA\Property(property="booked_until", type="string", format="datetime", description="дата и время окончания бронирования"),
-     *    @OA\Property(property="park_id", type="integer", description="id парка"),
-     *    @OA\Property(property="created_at", type="string", format="datetime", description="дата создания записи"),
-     *    @OA\Property(property="updated_at", type="string", format="datetime", description="дата последнего обновления записи")
-     *)
-     *)
+     *                                          property="booking",
+     *                                          type="array",
+     *                                          description="Список бронирований для данного автомобиля",
+     *                                          @OA\Items(
+     *                                              type="object",
+     *                                              @OA\Property(property="id", type="integer", description="id бронирования"),
+     *                                              @OA\Property(property="status", type="integer", description="статус бронирования"),
+     *                                              @OA\Property(property="schema_id", type="integer", description="id схемы"),
+     *                                              @OA\Property(property="car_id", type="integer", description="id автомобиля"),
+     *                                              @OA\Property(property="driver_id", type="integer", description="id водителя"),
+     *                                              @OA\Property(property="booked_at", type="string", format="datetime", description="дата и время начала бронирования"),
+     *                                              @OA\Property(property="booked_until", type="string", format="datetime", description="дата и время окончания бронирования"),
+     *                                              @OA\Property(property="park_id", type="integer", description="id парка"),
+     *                                              @OA\Property(property="created_at", type="string", format="datetime", description="дата создания записи"),
+     *                                              @OA\Property(property="updated_at", type="string", format="datetime", description="дата последнего обновления записи")
+     *                                          )
+     *                                          )
+     *                                 )
+     *                             ),
+     *                         description="Список подразделений в парке"
+     *                     )
+     *                 ),
+     *                      @OA\Property(
+     *                         property="rent_terms",
+     *                         type="array",
+     *                         description="Список тарифов аренды",
+     *                         @OA\Items(
+     *                             type="object",
+     *                             @OA\Property(property="id", type="integer", description="id тарифа"),
+     *                             @OA\Property(property="deposit_amount_daily", type="string", description="Сумма депозита на день"),
+     *                             @OA\Property(property="deposit_amount_total", type="string", description="Общая сумма депозита"),
+     *                             @OA\Property(property="minimum_period_days", type="integer", description="Минимальный период аренды в днях"),
+     *                             @OA\Property(property="name", type="string", description="Название тарифа"),
+     *                             @OA\Property(property="is_buyout_possible", type="integer", description="Возможность выкупа"),
+     *                             @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
+     *                             @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи"),
+     *                             @OA\Property(
+     *                                 property="schemas",
+     *                                 type="array",
+     *                                 description="Схемы тарифов",
+     *                                 @OA\Items(
+     *                                     type="object",
+     *                                     @OA\Property(property="id", type="integer", description="id схемы"),
+     *                                     @OA\Property(property="daily_amount", type="number", description="Сумма за день"),
+     *                                     @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),
+     *                                     @OA\Property(property="working_days", type="integer", description="Количество рабочих дней"),
+     *                                     @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
+     *                                     @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи")
      *                                 )
      *                             )
      *                         )
-     *                         ),
-     *                         description="Список подразделений в парке"
-     *                     )
-     *                 )
-     *             )
-     *         ),
-     * @OA\Property(
-     *    property="rent_terms",
-     *    type="array",
-     *    description="Список тарифов аренды",
-     *    @OA\Items(
-     *        type="object",
-     *        @OA\Property(property="id", type="integer", description="id тарифа"),
-     *        @OA\Property(property="deposit_amount_daily", type="string", description="Сумма депозита на день"),
-     *        @OA\Property(property="deposit_amount_total", type="string", description="Общая сумма депозита"),
-     *        @OA\Property(property="minimum_period_days", type="integer", description="Минимальный период аренды в днях"),
-     *        @OA\Property(property="name", type="string", description="Название тарифа"),
-     *        @OA\Property(property="is_buyout_possible", type="integer", description="Возможность выкупа"),
-     *        @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
-     *        @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи"),
-     *        @OA\Property(
-     *            property="schemas",
-     *            type="array",
-     *            description="Схемы тарифов",
-     *            @OA\Items(
-     *                type="object",
-     *                @OA\Property(property="id", type="integer", description="id схемы"),
-     *                @OA\Property(property="daily_amount", type="number", description="Сумма за день"),
-     *                @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),
-     *                @OA\Property(property="working_days", type="integer", description="Количество рабочих дней"),
-     *                @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
-     *                @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи")
-     *            )
-     *        )
-     *    )
-     *),
-     *@OA\Property(
-     *    property="tariffs",
-     *    type="array",
-     *    description="Список тарифов",
-     *    @OA\Items(
-     *        type="object",
-     *        @OA\Property(property="id", type="integer", description="id тарифа"),
-     *        @OA\Property(property="class", type="string", description="Класс" , ref="#/components/schemas/CarClass"),
-     *        @OA\Property(property="city", type="string", description="Город"),
-     *        @OA\Property(property="criminal_ids", type="string", description="id преступлений"),
-     *        @OA\Property(property="has_caused_accident", type="integer", description="Было ли аварий"),
-     *        @OA\Property(property="experience", type="integer", description="Опыт"),
-     *        @OA\Property(property="max_fine_count", type="integer", description="Максимальное количество штрафов"),
-     *        @OA\Property(property="abandoned_car", type="integer", description="Брошенный автомобиль"),
-     *        @OA\Property(property="min_scoring", type="integer", description="Минимальный балл"),
-     *        @OA\Property(property="is_north_caucasus", type="integer", description="Северный Кавказ"),
-     *        @OA\Property(property="forbidden_republic_ids", type="string", description="Запрещенные республики"),
-     *        @OA\Property(property="alcohol", type="integer", description="Алкоголь"),
-     *        @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
-     *        @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи")
-     *    )
-     *)
-     *     ,
+     *                      ),
+     *                      @OA\Property(
+     *                          property="tariffs",
+     *                          type="array",
+     *                          description="Список тарифов",
+     *                          @OA\Items(
+     *                              type="object",
+     *                              @OA\Property(property="id", type="integer", description="id тарифа"),
+     *                              @OA\Property(property="class", type="string", description="Класс" , ref="#/components/schemas/CarClass"),
+     *                              @OA\Property(property="city", type="string", description="Город"),
+     *                              @OA\Property(property="criminal_ids", type="string", description="id преступлений"),
+     *                              @OA\Property(property="has_caused_accident", type="integer", description="Было ли аварий"),
+     *                              @OA\Property(property="experience", type="integer", description="Опыт"),
+     *                              @OA\Property(property="max_fine_count", type="integer", description="Максимальное количество штрафов"),
+     *                              @OA\Property(property="abandoned_car", type="integer", description="Брошенный автомобиль"),
+     *                              @OA\Property(property="min_scoring", type="integer", description="Минимальный балл"),
+     *                              @OA\Property(property="is_north_caucasus", type="integer", description="Северный Кавказ"),
+     *                              @OA\Property(property="forbidden_republic_ids", type="string", description="Запрещенные республики"),
+     *                              @OA\Property(property="alcohol", type="integer", description="Алкоголь"),
+     *                              @OA\Property(property="created_at", type="string", format="datetime", description="Дата создания записи"),
+     *                              @OA\Property(property="updated_at", type="string", format="datetime", description="Дата последнего обновления записи")
+     *                          )
+     *                      ))))),
      *     @OA\Response(
      *         response="500",
      *         description="Ошибка сервера",

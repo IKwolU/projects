@@ -20,6 +20,14 @@ import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import Confirmation from "@/components/ui/confirmation";
+import { DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@radix-ui/react-dialog";
 
 type VariantItem = { name: string; id: number | null };
 
@@ -269,7 +277,41 @@ export const ParkManager = () => {
                 <div className="">{x.address}</div>
               </div>
             ))}{" "}
-            <Button className="w-1/3">Создать</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="w-1/3">Создать</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[800px]">
+                <div className="">
+                  <h3 className="my-4">Создание парка</h3>
+                  <p className="my-4">
+                    Чтобы создать новы парк - введите его название и номер
+                    телефона менеджера. Менеджер парка может получить API-ключ
+                    после авторизации по номеру телефона.{" "}
+                  </p>
+
+                  {/* <Confirmation
+                    accept={createPark}
+                    cancel={() => {}}
+                    trigger={<Button className="w-60">Применить</Button>}
+                    title={"Создать парк?"}
+                    type="green"
+                  /> */}
+                </div>
+
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                      <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                        <div className="sm:max-w-[250px] w-full">
+                          <Button>Назад</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
           <Separator />
           <div className="flex items-center justify-between space-x-2">

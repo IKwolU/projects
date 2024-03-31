@@ -3771,6 +3771,10 @@
                                                         "description": "Комиссия парка",
                                                         "type": "number"
                                                     },
+                                                    "api_key": {
+                                                        "description": "ключ",
+                                                        "type": "string"
+                                                    },
                                                     "period_for_book": {
                                                         "description": "Время брони парка",
                                                         "type": "integer"

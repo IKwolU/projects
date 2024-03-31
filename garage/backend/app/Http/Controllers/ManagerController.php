@@ -33,6 +33,7 @@ class ManagerController extends Controller
      *                     type="object",
      *                     @OA\Property(property="url", type="string", description="Endpoint парка для ответа"),
      *                     @OA\Property(property="commission", type="number", description="Комиссия парка"),
+     *                     @OA\Property(property="api_key", type="string", description="ключ"),
      *                     @OA\Property(property="period_for_book", type="integer", description="Время брони парка"),
      *                     @OA\Property(property="park_name", type="string", description="Название парка"),
      *                     @OA\Property(property="about", type="string", description="Описание парка"),
@@ -197,7 +198,8 @@ class ManagerController extends Controller
         }
         $park = Park::where('id', $manager->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->get();
         foreach ($park as $item) {
-            unset($item->API_key, $item->id);
+            $item->api_key = $item->API_key;
+            unset($item->id, $item->API_key);
             foreach ($item->divisions as $division) {
                 $division->working_hours = json_decode($division->working_hours);
                 $city = $division->city->name;

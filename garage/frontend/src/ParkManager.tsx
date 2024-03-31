@@ -26,8 +26,10 @@ export const ParkManager = () => {
         try {
           const parkData = await client.getPark();
           setPark(parkData.park![0]);
+          localStorage.setItem("X-API-key", parkData.park![0]!.api_key!);
         } catch (error) {}
       };
+
       getPark();
     }
   }, []);

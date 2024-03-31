@@ -8937,6 +8937,8 @@ export class Park2 implements IPark2 {
     url?: string;
     /** Комиссия парка */
     commission?: number;
+    /** ключ */
+    api_key?: string;
     /** Время брони парка */
     period_for_book?: number;
     /** Название парка */
@@ -8974,6 +8976,7 @@ export class Park2 implements IPark2 {
             }
             this.url = _data["url"];
             this.commission = _data["commission"];
+            this.api_key = _data["api_key"];
             this.period_for_book = _data["period_for_book"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
@@ -9013,6 +9016,7 @@ export class Park2 implements IPark2 {
         }
         data["url"] = this.url;
         data["commission"] = this.commission;
+        data["api_key"] = this.api_key;
         data["period_for_book"] = this.period_for_book;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
@@ -9043,6 +9047,8 @@ export interface IPark2 {
     url?: string;
     /** Комиссия парка */
     commission?: number;
+    /** ключ */
+    api_key?: string;
     /** Время брони парка */
     period_for_book?: number;
     /** Название парка */

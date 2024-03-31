@@ -1,6 +1,6 @@
-import {  Client } from "./api-client";
+import { Client } from "./api-client";
 // 77.222.56.111
-const client = new Client("https://api.gar77.ru/api", {
+const client = new Client("https://api.beebeep.ru/api", {
   fetch: async (url, options) => {
     try {
       const result = await fetch(url, {
@@ -8,13 +8,16 @@ const client = new Client("https://api.gar77.ru/api", {
         headers: {
           ...options?.headers,
           Authorization: `Bearer ${(window as any).token}`,
+          "X-API-key": localStorage.getItem("X-API-key")
+            ? localStorage.getItem("X-API-key")!
+            : "",
         },
       });
 
       return result;
     } catch (error) {
-        console.log("Uh oh!")
-        throw error;
+      console.log("Uh oh!");
+      throw error;
     }
   },
 });

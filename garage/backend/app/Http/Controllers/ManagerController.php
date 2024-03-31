@@ -18,7 +18,7 @@ class ManagerController extends Controller
      * Показать список парков
      *
      * @OA\Get(
-     *     path="api/manager/park",
+     *     path="manager/park",
      *     operationId="getPark",
      *     summary="Показать парк",
      *     tags={"Manager"},

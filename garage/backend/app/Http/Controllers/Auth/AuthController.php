@@ -40,7 +40,7 @@ class AuthController extends Controller
      * Получение данных пользователя (аутентифицированный запрос)
      *
      * @OA\Get(
-     *     path="api/user",
+     *     path="/user",
      *     operationId="GetUser",
      *     summary="Получение данных пользователя (аутентифицированный запрос)",
      *     tags={"Authentication"},
@@ -266,7 +266,7 @@ class AuthController extends Controller
      * Аутентификация пользователя или регистрация нового
      *
      * @OA\Post(
-     *     path="api/user/login",
+     *     path="/user/login",
      *     operationId="loginOrRegister",
      *     summary="Аутентификация пользователя или регистрация нового",
      *     tags={"Authentication"},
@@ -352,7 +352,7 @@ class AuthController extends Controller
      * Выход пользователя из системы
      *
      * @OA\Post(
-     *     path="api/user/logout",
+     *     path="/user/logout",
      *     operationId="logout",
      *     summary="Выход пользователя из системы",
      *     tags={"Authentication"},
@@ -459,7 +459,7 @@ class AuthController extends Controller
      * Удаление пользователя и связанных записей
      *
      * @OA\Delete(
-     *     path="api/user",
+     *     path="/user",
      *     operationId="DeleteUser",
      *     summary="Удаление пользователя и связанных записей",
      *     tags={"Authentication"},

@@ -18,7 +18,7 @@ class DriverController extends Controller
      * Этот эндпоинт позволяет аутентифицированным пользователям загружать файл и связывать его с их документами водителя.
      *
      * @OA\Post(
-     *     path="api/driver/upload-file",
+     *     path="/driver/upload-file",
      *     operationId="uploadFile",
      *     tags={"Files"},
      *     security={{"bearerAuth": {}}},

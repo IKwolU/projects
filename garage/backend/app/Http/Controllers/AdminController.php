@@ -26,7 +26,7 @@ class AdminController extends Controller
      * Показать список парков
      *
      * @OA\Get(
-     *     path="api/admin/parks",
+     *     path="admin/parks",
      *     operationId="getParks",
      *     summary="Показать список парков",
      *     tags={"Admin"},
@@ -70,7 +70,7 @@ class AdminController extends Controller
      * Показать данные парка
      *
      * @OA\Get(
-     *     path="api/admin/park",
+     *     path="admin/park",
      *     operationId="getParkWithDetails",
      *     summary="Показать данные парка",
      *     tags={"Admin"},
@@ -296,7 +296,7 @@ class AdminController extends Controller
      * Создать парк
      *
      * @OA\Post(
-     *     path="api/admin/parks",
+     *     path="admin/parks",
      *     operationId="createPark",
      *     summary="Создать парк",
      *     tags={"Admin"},
@@ -389,7 +389,7 @@ class AdminController extends Controller
      * Показать список парков
      *
      * @OA\Get(
-     *     path="api/admin/users",
+     *     path="admin/users",
      *     operationId="getUsers",
      *     summary="Показать список парков",
      *     tags={"Admin"},

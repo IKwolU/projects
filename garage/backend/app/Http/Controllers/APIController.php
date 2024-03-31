@@ -51,7 +51,6 @@ class APIController extends Controller
      *     operationId="updateParkInfo",
      *     summary="Обновление информации о парке",
      *     tags={"API"},
-     *     security={{"api_key": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

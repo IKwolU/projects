@@ -207,7 +207,7 @@ export const ParkManager = () => {
           })
         );
 
-        setPark({ ...park![0], ...parkInfo });
+        setPark({ ...park![0], ...parkInfo![0] });
       } catch (error) {}
     }
   };
@@ -331,7 +331,9 @@ export const ParkManager = () => {
                   <h4>Описание парка:</h4>
                   <p>{park.about ? park.about : "Описания еще нет"}</p>
                   <Input
-                    onChange={(e) => (parkInfo.about = e.target.value)}
+                    onChange={(e) =>
+                      setParkInfo([{ ...parkInfo[0], about: e.target.value }])
+                    }
                     type="textarea"
                     placeholder="Введите новое значение"
                   ></Input>
@@ -343,7 +345,9 @@ export const ParkManager = () => {
                   </p>
                   <Input
                     onChange={(e) =>
-                      (parkInfo!.commission = Number(e.target.value))
+                      setParkInfo([
+                        { ...parkInfo[0], commission: e.target.value },
+                      ])
                     }
                     type="number"
                     placeholder="Введите новое значение"
@@ -353,7 +357,9 @@ export const ParkManager = () => {
                   <h4>URL парка для API:</h4>
                   <p>{park.url ? park.url : "URL еще нет"}</p>
                   <Input
-                    onChange={(e) => (parkInfo.url = e.target.value)}
+                    onChange={(e) =>
+                      setParkInfo([{ ...parkInfo[0], url: e.target.value }])
+                    }
                     type="text"
                     placeholder="Введите новое значение"
                   ></Input>
@@ -363,7 +369,9 @@ export const ParkManager = () => {
                   <p>{park.period_for_book}</p>
                   <Input
                     onChange={(e) =>
-                      (parkInfo.period_for_book = Number(e.target.value))
+                      setParkInfo([
+                        { ...parkInfo[0], period_for_book: e.target.value },
+                      ])
                     }
                     type="number"
                     placeholder="Введите новое значение"

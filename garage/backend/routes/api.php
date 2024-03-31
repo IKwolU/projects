@@ -40,3 +40,17 @@ Route::post('cars/brand-park-list', [CarsController::class, 'getBrandsAndParksLi
 Route::get('car', [CarsController::class, 'GetCar']);
 Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
+
+Route::middleware('api.key')->post('/cars', [APIController::class, 'pushCars']);
+Route::middleware('api.key')->put('/cars', [APIController::class, 'updateCar']);
+Route::middleware('api.key')->put('/cars/rent-term', [APIController::class, 'updateCarRentTerm']);
+Route::middleware('api.key')->put('/cars/status', [APIController::class, 'updateCarStatus']);
+Route::middleware('api.key')->post('/parks/rent-terms', [APIController::class, 'createOrUpdateRentTerm']);
+Route::middleware('api.key')->put('/parks', [APIController::class, 'updateParkInfo']);
+Route::middleware('api.key')->post('/parks/division', [APIController::class, 'createParkDivision']);
+Route::middleware('api.key')->post('/parks/tariff', [APIController::class, 'createTariff']);
+Route::middleware('api.key')->put('/parks/tariff', [APIController::class, 'updateTariff']);
+Route::middleware('api.key')->put('/parks/division', [APIController::class, 'updateParkDivision']);
+Route::middleware('api.key')->put('/cars/booking', [APIController::class, 'updateCarBookingStatus']);
+Route::middleware('api.key')->put('/cars/booking/prolongation', [APIController::class, 'BookProlongation']);
+Route::middleware('api.key')->put('/cars/booking/replace', [APIController::class, 'BookReplace']);

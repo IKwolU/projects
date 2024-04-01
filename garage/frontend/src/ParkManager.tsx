@@ -7,15 +7,23 @@ import {
   Tariffs,
   IRent_terms,
   Body,
-  Car,
   Cars,
+  Body3,
+  Body5,
+  Body6,
+  Division3,
+  Schemas,
+  IDivisions2,
+  DayOfWeek,
 } from "./api-client";
-import { userAtom } from "./atoms";
+import { cityAtom, userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { DialogFooter } from "@/components/ui/dialog";
+import InputMask from "react-input-mask";
+
 import {
   Dialog,
   DialogTrigger,
@@ -24,6 +32,8 @@ import {
 } from "@/components/ui/dialog";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Confirmation from "@/components/ui/confirmation";
+import { CityPicker } from "./CityPicker";
+import { getDayOfWeekDisplayName } from "@/lib/utils";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -31,13 +41,37 @@ type MainMenuItem = {
   path: string;
 };
 
+function PhoneInput(props: any) {
+  return (
+    <InputMask
+      className="w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+      mask="+7 (999) 999-99-99"
+      value={props.value}
+      onChange={props.onChange}
+      type={"tel"}
+      placeholder={"+7 (999) 123-45-67"}
+    ></InputMask>
+  );
+}
+
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
+  const [city] = useRecoilState(cityAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
-  // const [newDivision, setNewDivision] = useState<Divisions2 | undefined>();
+  const [newDivisionPhone, setNewDivisionPhone] = useState("");
+  const [newDivision, setNewDivision] = useState<IDivisions2>({
+    city: city,
+    coords: "",
+    address: "",
+    metro: "",
+    name: "",
+    phone: "",
+    timezone_difference: 3,
+    working_hours: [],
+  });
   const [isKeyShowed, setIsKeyShowed] = useState(false);
-  const [selectedVariant] = useState<VariantItem>({
+  const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
     name: "park",
     id: null,
   });
@@ -206,6 +240,9 @@ export const ParkManager = () => {
     return <></>;
   }
 
+  const handlePhoneInput = ({ target: { value } }: any) =>
+    setNewDivisionPhone(value);
+
   const divisions = park!.divisions! as Divisions2[];
   const tariffs = park!.tariffs as Tariffs[];
   const rentTerms = park!.rent_terms as IRent_terms[];
@@ -340,43 +377,218 @@ export const ParkManager = () => {
                   <div className="">{x.address}</div>
                 </div>
               ))}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-1/3">Создать</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px]">
-                  <div className="">
-                    <h3 className="my-4">Создание парка</h3>
-                    <p className="my-4">
-                      Чтобы создать новы парк - введите его название и номер
-                      телефона менеджера. Менеджер парка может получить API-ключ
-                      после авторизации по номеру телефона.{" "}
-                    </p>
-
-                    <Confirmation
-                      accept={() => createDivision}
-                      cancel={() => {}}
-                      trigger={<Button className="w-60">Применить</Button>}
-                      title={"Создать подразделение?"}
-                      type="green"
-                    />
-                  </div>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                          <div className="sm:max-w-[250px] w-full">
-                            <Button>Назад</Button>
+            </div>
+            {selectedVariant.name !== "newDivision" && (
+              <Button
+                className="w-64 text-lg"
+                onClick={() =>
+                  setSelectedVariant({ name: "newDivision", id: 0 })
+                }
+              >
+                Создать
+              </Button>
+            )}
+          </div>
+          {selectedVariant.name === "newDivision" && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">Создание подразделения</h3>
+              <div className="">
+                <h4>Город подразделения:</h4>
+                <div className="p-2 cursor-pointer bg-grey rounded-xl w-fit">
+                  <CityPicker />
+                </div>
+              </div>
+              <div className="">
+                <h4>Координаты подразделения:</h4>
+                <Input
+                  onChange={(e) =>
+                    setNewDivision([{ ...newDivision, coords: e.target.value }])
+                  }
+                  type="text"
+                  placeholder="00.000, 00.000"
+                ></Input>
+              </div>
+              <div className="">
+                <h4>Адрес парка:</h4>
+                <Input
+                  onChange={(e) =>
+                    setNewDivision([
+                      { ...newDivision, address: e.target.value },
+                    ])
+                  }
+                  type="text"
+                  placeholder="г. Москва, ул. ..."
+                ></Input>
+              </div>
+              <div className="">
+                <h4>Ближайшее метро, если есть:</h4>
+                <Input
+                  onChange={(e) =>
+                    setNewDivision([{ ...newDivision, metro: e.target.value }])
+                  }
+                  type="text"
+                  placeholder="Введите значение"
+                ></Input>
+              </div>
+              <div className="">
+                <h4>Название подразделения:</h4>
+                <Input
+                  onChange={(e) =>
+                    setNewDivision([{ ...newDivision, name: e.target.value }])
+                  }
+                  type="text"
+                  placeholder="Введите значение"
+                ></Input>
+              </div>
+              <div className="">
+                <h4>Телефон подразделения:</h4>
+                <PhoneInput
+                  className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+                  value={newDivisionPhone}
+                  onChange={handlePhoneInput}
+                  placeholder={"+7 (999) 123-45-67"}
+                  required
+                ></PhoneInput>
+              </div>
+              <div className="">
+                <h4>Часовой пояс:</h4>
+                <Input
+                  onChange={(e) =>
+                    setNewDivision([
+                      { ...newDivision, timezone_difference: e.target.value },
+                    ])
+                  }
+                  value={3}
+                  type="number"
+                  placeholder="Введите значение"
+                ></Input>
+              </div>
+              <div className="">
+                <h4>Время работы:</h4>
+                <div className="flex flex-wrap">
+                  {Object.keys(DayOfWeek).map((x) => {
+                    return (
+                      <div className="flex flex-col items-start w-1/2" key={x}>
+                        <div className="w-80">
+                          <p className="capitalize">
+                            {getDayOfWeekDisplayName(x as any)}:
+                          </p>
+                          <div className="flex items-center space-x-2">
+                            <p>Начало:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                          <div className="flex items-center space-x-2 space-y-1">
+                            <p>Конец:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
                           </div>
                         </div>
+                        <Separator className="my-2" />
                       </div>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+                    );
+                  })}
+                </div>
+              </div>
+              <Confirmation
+                accept={() => createDivision}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Создать подразделение?"}
+                type="green"
+              />
             </div>
-          </div>
+          )}
         </div>
       </>
     );
@@ -611,7 +823,7 @@ export const ParkManager = () => {
       </div>
 
       <Routes>
-        <Route path="/" element={<Navigate to="/info" replace={true} />} />
+        <Route path="/*" element={<Navigate to="/info" replace={true} />} />
         <Route path={`/info`} element={<Info />} />
         <Route path={`/divisions`} element={<Divisions />} />
         <Route path={`/rent_terms`} element={<RentTerms />} />

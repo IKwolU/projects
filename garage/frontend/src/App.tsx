@@ -88,9 +88,9 @@ export default App;
 // };
 
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1104px]">
-    <Link to="/">
-      <div className="flex items-center text-sm tracking-widest sm:text-xl">
+  <div className="flex justify-between w-full space-x-4  sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1104px]">
+    <Link to="/" className="md:grow">
+      <div className="flex items-center text-sm font-semibold tracking-widest cursor-pointer sm:text-xl ">
         BeeBeep
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
@@ -103,25 +103,31 @@ const Menu = ({ user }: { user: User }) => (
         className="flex items-center hover:text-yellow"
         to={user ? "account" : "login/driver"}
       >
-        <FontAwesomeIcon icon={faUser} className="h-4 sm:h-5 md:hidden" />
-        <div className="hidden text-xl md:block">Кабинет</div>
+        <FontAwesomeIcon
+          icon={faUser}
+          className="h-4 cursor-pointer sm:h-5 md:hidden"
+        />
+        <div className="hidden text-xl cursor-pointer md:block">Кабинет</div>
       </Link>
     )}
     {user && (
       <Link className="flex items-center hover:text-yellow" to="bookings">
         <FontAwesomeIcon
           icon={faClockRotateLeft}
-          className="h-4 sm:h-5 md:hidden"
+          className="h-4 cursor-pointer sm:h-5 md:hidden"
         />
-        <div className="hidden text-xl md:block">Бронь</div>
+        <div className="hidden text-xl cursor-pointer md:block">Бронь</div>
       </Link>
     )}
-    <div className="flex items-center md:ml-auto md:grow md:flex md:justify-end">
+    <div className="flex items-center cursor-pointer md:ml-auto md:flex md:justify-end md:w-44">
       <CityPicker />
     </div>
     {!user && (
       <Link className="flex items-center hover:text-yellow" to="login/driver">
-        <FontAwesomeIcon icon={faRightToBracket} className="h-4 sm:h-5" />
+        <FontAwesomeIcon
+          icon={faRightToBracket}
+          className="h-4 cursor-pointer sm:h-5"
+        />
       </Link>
     )}
   </div>

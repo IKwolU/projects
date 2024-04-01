@@ -28,8 +28,13 @@ import {
   DialogContent,
   DialogClose,
 } from "@radix-ui/react-dialog";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 
 type VariantItem = { name: string; id: number | null };
+type MainMenuItem = {
+  name: string;
+  path: string;
+};
 
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
@@ -229,20 +234,11 @@ export const ParkManager = () => {
       ? (tariffs.find((tariff) => tariff.id === selectedVariant.id) as Tariffs)
       : null;
 
-  return (
-    <>
-      <div className="flex justify-end h-full mt-4">
-        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1104px]">
-          <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
-            МОЙ ГАРАЖ
-          </div>
-          <div className="flex items-center justify-end space-x-4 text-xl font-semibold">
-            {park.park_name}
-          </div>
-        </div>
-      </div>
-      <div className="flex space-x-1">
-        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+  const Info = () => {
+    return (
+      <div className="">
+        <h3>Инфо парка {park.park_name}</h3>
+        <div className="">
           <div className="flex items-center justify-between space-x-2">
             <div className="">Инфо парка</div>
 
@@ -266,169 +262,204 @@ export const ParkManager = () => {
               <Separator />
             </>
           )}
-          <div className="flex items-center justify-between space-x-2">
-            {divisions.length === 0 && (
-              <div className="">
-                <div className="">Подразделений еще нет</div>
-              </div>
-            )}
-            {divisions.map((x, i) => (
-              <div className="" key={`division_${i}`}>
-                <div className="">{x.address}</div>
-              </div>
-            ))}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="w-1/3">Создать</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[800px]">
-                <div className="">
-                  <h3 className="my-4">Создание парка</h3>
-                  <p className="my-4">
-                    Чтобы создать новы парк - введите его название и номер
-                    телефона менеджера. Менеджер парка может получить API-ключ
-                    после авторизации по номеру телефона.{" "}
-                  </p>
+          <div className="">
+            <h4>Описание парка:</h4>
+            <p>{park.about ? park.about : "Описания еще нет"}</p>
+            <Input
+              onChange={(e) =>
+                setParkInfo([{ ...parkInfo[0], about: e.target.value }])
+              }
+              type="textarea"
+              placeholder="Введите новое значение"
+            ></Input>
+          </div>
+          <div className="">
+            <h4>Комиссия парка:</h4>
+            <p>{park.commission ? park.commission : "Комиссии еще нет"}</p>
+            <Input
+              onChange={(e) =>
+                setParkInfo([{ ...parkInfo[0], commission: e.target.value }])
+              }
+              type="number"
+              placeholder="Введите новое значение"
+            ></Input>
+          </div>
+          <div className="">
+            <h4>URL парка для API:</h4>
+            <p>{park.url ? park.url : "URL еще нет"}</p>
+            <Input
+              onChange={(e) =>
+                setParkInfo([{ ...parkInfo[0], url: e.target.value }])
+              }
+              type="text"
+              placeholder="Введите новое значение"
+            ></Input>
+          </div>
+          <div className="">
+            <h4>Время брони парка в часах:</h4>
+            <p>{park.period_for_book}</p>
+            <Input
+              onChange={(e) =>
+                setParkInfo([
+                  { ...parkInfo[0], period_for_book: e.target.value },
+                ])
+              }
+              type="number"
+              placeholder="Введите новое значение"
+            ></Input>
+          </div>
+          {/* <div className="">
+              <h4>Скидка самозанятым:</h4>
+              <p>{park.self_imployeds_discount ? "Да" : "Нет"}</p>
+              <Input
+                onChange={(e) =>
+                  (parkInfo.self_imployeds_discount = Number(
+                    e.target.value
+                  ))
+                }
+                type="number"
+                placeholder="Введите новое значение"
+              />
+            </div> */}
+          <Button onClick={updateParkInfo}>Применить изменения</Button>
+        </div>
+      </div>
+    );
+  };
 
-                  {/* <Confirmation
+  const Divisions = () => {
+    return (
+      <>
+        <div className="">Инфо подразделения {selectedDivision?.name}</div>
+
+        <div className="flex space-x-1">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            <div className="flex items-center justify-between space-x-2">
+              {divisions.length === 0 && (
+                <div className="">
+                  <div className="">Подразделений еще нет</div>
+                </div>
+              )}
+              {divisions.map((x, i) => (
+                <div className="" key={`division_${i}`}>
+                  <div className="">{x.address}</div>
+                </div>
+              ))}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-1/3">Создать</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                  <div className="">
+                    <h3 className="my-4">Создание парка</h3>
+                    <p className="my-4">
+                      Чтобы создать новы парк - введите его название и номер
+                      телефона менеджера. Менеджер парка может получить API-ключ
+                      после авторизации по номеру телефона.{" "}
+                    </p>
+
+                    {/* <Confirmation
                     accept={createPark}
                     cancel={() => {}}
                     trigger={<Button className="w-60">Применить</Button>}
                     title={"Создать парк?"}
                     type="green"
                   /> */}
-                </div>
+                  </div>
 
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                      <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                        <div className="sm:max-w-[250px] w-full">
-                          <Button>Назад</Button>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                          <div className="sm:max-w-[250px] w-full">
+                            <Button>Назад</Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-          <Separator />
-          <div className="flex items-center justify-between space-x-2">
-            {tariffs.length === 0 && (
-              <div className="">
-                <div className="">Требований к водителям еще нет</div>
-              </div>
-            )}
-            {tariffs.map((x, i) => (
-              <div className="" key={`tariff_${i}`}>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between space-x-2">
+              {tariffs.length === 0 && (
                 <div className="">
-                  {x.city} - {x.class}
+                  <div className="">Требований к водителям еще нет</div>
                 </div>
-              </div>
-            ))}
-            <Button className="w-1/3">Создать</Button>
+              )}
+              {tariffs.map((x, i) => (
+                <div className="" key={`tariff_${i}`}>
+                  <div className="">
+                    {x.city} - {x.class}
+                  </div>
+                </div>
+              ))}
+              <Button className="w-1/3">Создать</Button>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between space-x-2">
+              {rentTerms.length === 0 && (
+                <div className="">
+                  <div className="">Условий аренды еще нет</div>{" "}
+                </div>
+              )}
+              {rentTerms.map((x, i) => (
+                <div className="" key={`rentTerm_${i}`}>
+                  <div className="">{x.name}</div>{" "}
+                </div>
+              ))}
+              <Button className="w-1/3">Создать</Button>
+            </div>
           </div>
-          <Separator />
-          <div className="flex items-center justify-between space-x-2">
-            {rentTerms.length === 0 && (
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            {selectedVariant.name === "rent_term" && (
               <div className="">
-                <div className="">Условий аренды еще нет</div>{" "}
+                Инфо требований к водителям {selectedRentTerm?.name}
               </div>
             )}
-            {rentTerms.map((x, i) => (
-              <div className="" key={`rentTerm_${i}`}>
-                <div className="">{x.name}</div>{" "}
-              </div>
-            ))}
-            <Button className="w-1/3">Создать</Button>
+            {selectedVariant.name === "tariff" && (
+              <div className="">Инфо тарифа {selectedTariff?.name}</div>
+            )}
           </div>
         </div>
-        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
-          {selectedVariant.name === "park" && (
-            <div className="">
-              <h3>Инфо парка {park.park_name}</h3>
-              <div className="">
-                <div className="">
-                  <h4>Описание парка:</h4>
-                  <p>{park.about ? park.about : "Описания еще нет"}</p>
-                  <Input
-                    onChange={(e) =>
-                      setParkInfo([{ ...parkInfo[0], about: e.target.value }])
-                    }
-                    type="textarea"
-                    placeholder="Введите новое значение"
-                  ></Input>
-                </div>
-                <div className="">
-                  <h4>Комиссия парка:</h4>
-                  <p>
-                    {park.commission ? park.commission : "Комиссии еще нет"}
-                  </p>
-                  <Input
-                    onChange={(e) =>
-                      setParkInfo([
-                        { ...parkInfo[0], commission: e.target.value },
-                      ])
-                    }
-                    type="number"
-                    placeholder="Введите новое значение"
-                  ></Input>
-                </div>
-                <div className="">
-                  <h4>URL парка для API:</h4>
-                  <p>{park.url ? park.url : "URL еще нет"}</p>
-                  <Input
-                    onChange={(e) =>
-                      setParkInfo([{ ...parkInfo[0], url: e.target.value }])
-                    }
-                    type="text"
-                    placeholder="Введите новое значение"
-                  ></Input>
-                </div>
-                <div className="">
-                  <h4>Время брони парка в часах:</h4>
-                  <p>{park.period_for_book}</p>
-                  <Input
-                    onChange={(e) =>
-                      setParkInfo([
-                        { ...parkInfo[0], period_for_book: e.target.value },
-                      ])
-                    }
-                    type="number"
-                    placeholder="Введите новое значение"
-                  ></Input>
-                </div>
-                {/* <div className="">
-                  <h4>Скидка самозанятым:</h4>
-                  <p>{park.self_imployeds_discount ? "Да" : "Нет"}</p>
-                  <Input
-                    onChange={(e) =>
-                      (parkInfo.self_imployeds_discount = Number(
-                        e.target.value
-                      ))
-                    }
-                    type="number"
-                    placeholder="Введите новое значение"
-                  />
-                </div> */}
-                <Button onClick={updateParkInfo}>Применить изменения</Button>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <div className="flex justify-end h-full mt-4">
+        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1104px]">
+          <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
+            МОЙ ГАРАЖ
+          </div>
+          <div className="flex justify-end space-x-4 ">
+            {[
+              { name: "Инфо", path: "/info" },
+              { name: "Подразделения", path: "/divisions" },
+            ].map(({ name, path }: MainMenuItem, i) => (
+              <div key={`menu_${i}`} className="">
+                <Link
+                  className="flex items-center text-xl font-semibold hover:text-yellow"
+                  to={path}
+                >
+                  {name}
+                </Link>
               </div>
-            </div>
-          )}
-          {selectedVariant.name === "division" && (
-            <div className="">Инфо подразделения {selectedDivision?.name}</div>
-          )}
-          {selectedVariant.name === "rent_term" && (
-            <div className="">
-              Инфо требований к водителям {selectedRentTerm?.name}
-            </div>
-          )}
-          {selectedVariant.name === "tariff" && (
-            <div className="">Инфо тарифа {selectedTariff?.name}</div>
-          )}
+            ))}
+          </div>
+          <div className="flex items-center justify-end space-x-4 text-xl font-semibold">
+            {park.park_name}
+          </div>
         </div>
       </div>
+
+      <Routes>
+        <Route path="/" element={<Navigate to="/info" replace={true} />} />
+        <Route path={`/info`} element={<Info />} />
+        <Route path={`/divisions`} element={<Divisions />} />
+      </Routes>
     </>
   );
 };

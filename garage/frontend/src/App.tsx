@@ -44,9 +44,7 @@ function App() {
     <>
       {user?.user_type === UserType.Manager && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-          <Routes>
-            <Route path="/" element={<ParkManager />} />
-          </Routes>
+         <ParkManager />
         </div>
       )}
       {user?.user_type === UserType.Admin && (

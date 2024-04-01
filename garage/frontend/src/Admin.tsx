@@ -3,15 +3,10 @@ import { userAtom } from "./atoms";
 import { Body15, Parks, UserType, Users } from "./api-client";
 import { useEffect, useState } from "react";
 import { client } from "./backend";
-import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { Park } from "./Park";
 import { Button } from "@/components/ui/button";
-import SliderImages from "@/components/ui/slider-images";
-import {
-  formatRoubles,
-  getTransmissionDisplayName,
-  getFuelTypeDisplayName,
-} from "@/lib/utils";
+
 import {
   Dialog,
   DialogTrigger,
@@ -19,11 +14,8 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import InputMask from "react-input-mask";
-import { Badge } from "lucide-react";
-import { ModalCard } from "./ModalCard";
 import { DialogFooter } from "@/components/ui/dialog";
 import Confirmation from "@/components/ui/confirmation";
-import { Value } from "@radix-ui/react-select";
 
 type MainMenuItem = {
   name: string;
@@ -49,10 +41,7 @@ export const Admin = () => {
   const [users, setUsers] = useState<Users[] | undefined>();
   const [newParkPhone, setNewParkPhone] = useState("");
   const [newParkName, setNewParkName] = useState("");
-  const location = useLocation();
-  const [selectedVariant, setSelectedVariant] = useState<"parks" | "users">(
-    "parks"
-  );
+  const [selectedVariant] = useState<"parks" | "users">("parks");
   useEffect(() => {
     if (user.user_type === UserType.Admin) {
       const getParks = async () => {

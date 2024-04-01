@@ -6,21 +6,13 @@ import {
   Divisions2,
   Tariffs,
   IRent_terms,
-  Body3,
-  Working_hours,
-  Body5,
-  Body6,
-  Schemas,
   Body,
-  Park2,
-  Division3,
 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import Confirmation from "@/components/ui/confirmation";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
   Dialog,
@@ -40,9 +32,9 @@ export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
-  const [newDivision, setNewDivision] = useState<Divisions2 | undefined>();
+  // const [newDivision, setNewDivision] = useState<Divisions2 | undefined>();
   const [isKeyShowed, setIsKeyShowed] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
+  const [selectedVariant] = useState<VariantItem>({
     name: "park",
     id: null,
   });
@@ -71,123 +63,123 @@ export const ParkManager = () => {
     }
   }, []);
 
-  const createDivision = async ({ ...newDivision }: Division3) => {
-    try {
-      const newDivisionData = await client.createParkDivision(
-        new Body3({
-          ...newDivision,
-        })
-      );
-      setPark({
-        ...park![0],
+  // const createDivision = async ({ ...newDivision }: Division3) => {
+  //   try {
+  //     const newDivisionData = await client.createParkDivision(
+  //       new Body3({
+  //         ...newDivision,
+  //       })
+  //     );
+  //     setPark({
+  //       ...park![0],
 
-        divisions: [
-          ...divisions,
+  //       divisions: [
+  //         ...divisions,
 
-          {
-            ...newDivision,
-            id: newDivisionData.id,
-          },
-        ],
-      });
-    } catch (error) {}
-  };
+  //         {
+  //           ...newDivision,
+  //           id: newDivisionData.id,
+  //         },
+  //       ],
+  //     });
+  //   } catch (error) {}
+  // };
 
-  const createTariff = async (
-    abandoned_car: boolean,
-    alcohol: boolean,
-    city: string,
-    carClass: number,
-    criminal_ids: string[],
-    experience: number,
-    has_caused_accident: boolean,
-    is_north_caucasus: boolean,
-    max_fine_count: number,
-    min_scoring: number
-  ) => {
-    try {
-      const newTariffData = await client.createTariff(
-        new Body5({
-          abandoned_car,
-          alcohol,
-          city,
-          class: carClass,
-          criminal_ids,
-          experience,
-          has_caused_accident,
-          is_north_caucasus,
-          max_fine_count,
-          min_scoring,
-        })
-      );
-      setPark({
-        ...park![0],
+  // const createTariff = async (
+  //   abandoned_car: boolean,
+  //   alcohol: boolean,
+  //   city: string,
+  //   carClass: number,
+  //   criminal_ids: string[],
+  //   experience: number,
+  //   has_caused_accident: boolean,
+  //   is_north_caucasus: boolean,
+  //   max_fine_count: number,
+  //   min_scoring: number
+  // ) => {
+  //   try {
+  //     const newTariffData = await client.createTariff(
+  //       new Body5({
+  //         abandoned_car,
+  //         alcohol,
+  //         city,
+  //         class: carClass,
+  //         criminal_ids,
+  //         experience,
+  //         has_caused_accident,
+  //         is_north_caucasus,
+  //         max_fine_count,
+  //         min_scoring,
+  //       })
+  //     );
+  //     setPark({
+  //       ...park![0],
 
-        tariffs: [
-          ...tariffs,
+  //       tariffs: [
+  //         ...tariffs,
 
-          {
-            abandoned_car,
-            alcohol,
-            city,
-            class: carClass,
-            criminal_ids,
-            experience,
-            has_caused_accident,
-            is_north_caucasus,
-            max_fine_count,
-            min_scoring,
-            id: newTariffData.id,
-          },
-        ],
-      });
-    } catch (error) {}
-  };
+  //         {
+  //           abandoned_car,
+  //           alcohol,
+  //           city,
+  //           class: carClass,
+  //           criminal_ids,
+  //           experience,
+  //           has_caused_accident,
+  //           is_north_caucasus,
+  //           max_fine_count,
+  //           min_scoring,
+  //           id: newTariffData.id,
+  //         },
+  //       ],
+  //     });
+  //   } catch (error) {}
+  // };
 
-  const apcertRentTerm = async (
-    deposit_amount_daily: number,
-    deposit_amount_total: number,
-    is_buyout_possible: boolean,
-    minimum_period_days: number,
-    name: string,
-    rent_term_id: number | undefined,
-    schemas: Schemas[]
-  ) => {
-    try {
-      const newTariffData = await client.createOrUpdateRentTerm(
-        new Body6({
-          deposit_amount_daily,
-          deposit_amount_total,
-          is_buyout_possible,
-          minimum_period_days,
-          name,
-          rent_term_id,
-          schemas,
-        })
-      );
+  // const apcertRentTerm = async (
+  //   deposit_amount_daily: number,
+  //   deposit_amount_total: number,
+  //   is_buyout_possible: boolean,
+  //   minimum_period_days: number,
+  //   name: string,
+  //   rent_term_id: number | undefined,
+  //   schemas: Schemas[]
+  // ) => {
+  //   try {
+  //     const newTariffData = await client.createOrUpdateRentTerm(
+  //       new Body6({
+  //         deposit_amount_daily,
+  //         deposit_amount_total,
+  //         is_buyout_possible,
+  //         minimum_period_days,
+  //         name,
+  //         rent_term_id,
+  //         schemas,
+  //       })
+  //     );
 
-      setPark({
-        ...park![0],
+  //     setPark({
+  //       ...park![0],
 
-        rent_terms: [
-          ...rentTerms.filter((rent_term) =>
-            rent_term_id ? rent_term.id !== rent_term_id : rent_term
-          ),
+  //       rent_terms: [
+  //         ...rentTerms.filter((rent_term) =>
+  //           rent_term_id ? rent_term.id !== rent_term_id : rent_term
+  //         ),
 
-          {
-            deposit_amount_daily,
-            deposit_amount_total,
-            is_buyout_possible,
-            minimum_period_days,
-            name,
-            rent_term_id,
-            schemas,
-            id: newTariffData.id,
-          },
-        ],
-      });
-    } catch (error) {}
-  };
+  //         {
+  //           deposit_amount_daily,
+  //           deposit_amount_total,
+  //           is_buyout_possible,
+  //           minimum_period_days,
+  //           name,
+  //           rent_term_id,
+  //           schemas,
+  //           id: newTariffData.id,
+  //         },
+  //       ],
+  //     });
+  //   } catch (error) {}
+  // };
 
   const updateParkInfo = async () => {
     {

@@ -44,7 +44,7 @@ function App() {
     <>
       {user?.user_type === UserType.Manager && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-         <ParkManager />
+          <ParkManager />
         </div>
       )}
       {user?.user_type === UserType.Admin && (
@@ -61,7 +61,7 @@ function App() {
             {/* <span className="font-bold text-md text-gray"></span> */}
           </div>
           <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
-            Место для промо-акции
+            Сервис аренды автомобилей
           </div>
           <Link to="bookings">
             <BookingTimer />
@@ -90,8 +90,8 @@ export default App;
 const Menu = ({ user }: { user: User }) => (
   <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1104px]">
     <Link to="/">
-      <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
-        МОЙ ГАРАЖ
+      <div className="flex items-center text-sm tracking-widest sm:text-xl">
+        BeeBeep
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
     </Link>
@@ -104,7 +104,7 @@ const Menu = ({ user }: { user: User }) => (
         to={user ? "account" : "login/driver"}
       >
         <FontAwesomeIcon icon={faUser} className="h-4 sm:h-5 md:hidden" />
-        <div className="hidden text-xl font-semibold md:block">Кабинет</div>
+        <div className="hidden text-xl md:block">Кабинет</div>
       </Link>
     )}
     {user && (
@@ -113,7 +113,7 @@ const Menu = ({ user }: { user: User }) => (
           icon={faClockRotateLeft}
           className="h-4 sm:h-5 md:hidden"
         />
-        <div className="hidden text-xl font-semibold md:block">Бронь</div>
+        <div className="hidden text-xl md:block">Бронь</div>
       </Link>
     )}
     <div className="flex items-center md:ml-auto md:grow md:flex md:justify-end">

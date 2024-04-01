@@ -7,6 +7,8 @@ import {
   Tariffs,
   IRent_terms,
   Body,
+  Car,
+  Cars,
 } from "./api-client";
 import { userAtom } from "./atoms";
 import { client } from "./backend";
@@ -21,6 +23,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
+import Confirmation from "@/components/ui/confirmation";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -63,123 +66,123 @@ export const ParkManager = () => {
     }
   }, []);
 
-  // const createDivision = async ({ ...newDivision }: Division3) => {
-  //   try {
-  //     const newDivisionData = await client.createParkDivision(
-  //       new Body3({
-  //         ...newDivision,
-  //       })
-  //     );
-  //     setPark({
-  //       ...park![0],
+  const createDivision = async ({ ...newDivision }: Division3) => {
+    try {
+      const newDivisionData = await client.createParkDivision(
+        new Body3({
+          ...newDivision,
+        })
+      );
+      setPark({
+        ...park![0],
 
-  //       divisions: [
-  //         ...divisions,
+        divisions: [
+          ...divisions,
 
-  //         {
-  //           ...newDivision,
-  //           id: newDivisionData.id,
-  //         },
-  //       ],
-  //     });
-  //   } catch (error) {}
-  // };
+          {
+            ...newDivision,
+            id: newDivisionData.id,
+          },
+        ],
+      });
+    } catch (error) {}
+  };
 
-  // const createTariff = async (
-  //   abandoned_car: boolean,
-  //   alcohol: boolean,
-  //   city: string,
-  //   carClass: number,
-  //   criminal_ids: string[],
-  //   experience: number,
-  //   has_caused_accident: boolean,
-  //   is_north_caucasus: boolean,
-  //   max_fine_count: number,
-  //   min_scoring: number
-  // ) => {
-  //   try {
-  //     const newTariffData = await client.createTariff(
-  //       new Body5({
-  //         abandoned_car,
-  //         alcohol,
-  //         city,
-  //         class: carClass,
-  //         criminal_ids,
-  //         experience,
-  //         has_caused_accident,
-  //         is_north_caucasus,
-  //         max_fine_count,
-  //         min_scoring,
-  //       })
-  //     );
-  //     setPark({
-  //       ...park![0],
+  const createTariff = async (
+    abandoned_car: boolean,
+    alcohol: boolean,
+    city: string,
+    carClass: number,
+    criminal_ids: string[],
+    experience: number,
+    has_caused_accident: boolean,
+    is_north_caucasus: boolean,
+    max_fine_count: number,
+    min_scoring: number
+  ) => {
+    try {
+      const newTariffData = await client.createTariff(
+        new Body5({
+          abandoned_car,
+          alcohol,
+          city,
+          class: carClass,
+          criminal_ids,
+          experience,
+          has_caused_accident,
+          is_north_caucasus,
+          max_fine_count,
+          min_scoring,
+        })
+      );
+      setPark({
+        ...park![0],
 
-  //       tariffs: [
-  //         ...tariffs,
+        tariffs: [
+          ...tariffs,
 
-  //         {
-  //           abandoned_car,
-  //           alcohol,
-  //           city,
-  //           class: carClass,
-  //           criminal_ids,
-  //           experience,
-  //           has_caused_accident,
-  //           is_north_caucasus,
-  //           max_fine_count,
-  //           min_scoring,
-  //           id: newTariffData.id,
-  //         },
-  //       ],
-  //     });
-  //   } catch (error) {}
-  // };
+          {
+            abandoned_car,
+            alcohol,
+            city,
+            class: carClass,
+            criminal_ids,
+            experience,
+            has_caused_accident,
+            is_north_caucasus,
+            max_fine_count,
+            min_scoring,
+            id: newTariffData.id,
+          },
+        ],
+      });
+    } catch (error) {}
+  };
 
-  // const apcertRentTerm = async (
-  //   deposit_amount_daily: number,
-  //   deposit_amount_total: number,
-  //   is_buyout_possible: boolean,
-  //   minimum_period_days: number,
-  //   name: string,
-  //   rent_term_id: number | undefined,
-  //   schemas: Schemas[]
-  // ) => {
-  //   try {
-  //     const newTariffData = await client.createOrUpdateRentTerm(
-  //       new Body6({
-  //         deposit_amount_daily,
-  //         deposit_amount_total,
-  //         is_buyout_possible,
-  //         minimum_period_days,
-  //         name,
-  //         rent_term_id,
-  //         schemas,
-  //       })
-  //     );
+  const upsertRentTerm = async (
+    deposit_amount_daily: number,
+    deposit_amount_total: number,
+    is_buyout_possible: boolean,
+    minimum_period_days: number,
+    name: string,
+    rent_term_id: number | undefined,
+    schemas: Schemas[]
+  ) => {
+    try {
+      const newTariffData = await client.createOrUpdateRentTerm(
+        new Body6({
+          deposit_amount_daily,
+          deposit_amount_total,
+          is_buyout_possible,
+          minimum_period_days,
+          name,
+          rent_term_id,
+          schemas,
+        })
+      );
 
-  //     setPark({
-  //       ...park![0],
+      setPark({
+        ...park![0],
 
-  //       rent_terms: [
-  //         ...rentTerms.filter((rent_term) =>
-  //           rent_term_id ? rent_term.id !== rent_term_id : rent_term
-  //         ),
+        rent_terms: [
+          ...rentTerms.filter((rent_term) =>
+            rent_term_id ? rent_term.id !== rent_term_id : rent_term
+          ),
 
-  //         {
-  //           deposit_amount_daily,
-  //           deposit_amount_total,
-  //           is_buyout_possible,
-  //           minimum_period_days,
-  //           name,
-  //           rent_term_id,
-  //           schemas,
-  //           id: newTariffData.id,
-  //         },
-  //       ],
-  //     });
-  //   } catch (error) {}
-  // };
+          {
+            deposit_amount_daily,
+            deposit_amount_total,
+            is_buyout_possible,
+            minimum_period_days,
+            name,
+            rent_term_id,
+            schemas,
+            id: newTariffData.id,
+          },
+        ],
+      });
+    } catch (error) {}
+  };
 
   const updateParkInfo = async () => {
     {
@@ -322,7 +325,7 @@ export const ParkManager = () => {
   const Divisions = () => {
     return (
       <>
-        <div className="">Инфо подразделения {selectedDivision?.name}</div>
+        <div className="">Подразделения</div>
 
         <div className="flex space-x-1">
           <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
@@ -350,13 +353,13 @@ export const ParkManager = () => {
                       после авторизации по номеру телефона.{" "}
                     </p>
 
-                    {/* <Confirmation
-                    accept={createPark}
-                    cancel={() => {}}
-                    trigger={<Button className="w-60">Применить</Button>}
-                    title={"Создать парк?"}
-                    type="green"
-                  /> */}
+                    <Confirmation
+                      accept={() => createDivision}
+                      cancel={() => {}}
+                      trigger={<Button className="w-60">Применить</Button>}
+                      title={"Создать подразделение?"}
+                      type="green"
+                    />
                   </div>
 
                   <DialogFooter>
@@ -373,7 +376,19 @@ export const ParkManager = () => {
                 </DialogContent>
               </Dialog>
             </div>
-            <Separator />
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const Tariffs = () => {
+    return (
+      <>
+        <div className="">Тарифы (требования к водителям)</div>
+
+        <div className="flex space-x-1">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
             <div className="flex items-center justify-between space-x-2">
               {tariffs.length === 0 && (
                 <div className="">
@@ -387,9 +402,55 @@ export const ParkManager = () => {
                   </div>
                 </div>
               ))}
-              <Button className="w-1/3">Создать</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-1/3">Создать</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                  <div className="">
+                    <h3 className="my-4">Создание тарифа</h3>
+                    <p className="my-4">
+                      Чтобы создать новы парк - введите его название и номер
+                      телефона менеджера. Менеджер парка может получить API-ключ
+                      после авторизации по номеру телефона.{" "}
+                    </p>
+
+                    <Confirmation
+                      accept={() => createTariff}
+                      cancel={() => {}}
+                      trigger={<Button className="w-60">Применить</Button>}
+                      title={"Создать тариф?"}
+                      type="green"
+                    />
+                  </div>
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                          <div className="sm:max-w-[250px] w-full">
+                            <Button>Назад</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
-            <Separator />
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const RentTerms = () => {
+    return (
+      <>
+        <div className="">Условия аренды</div>
+
+        <div className="flex space-x-1">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
             <div className="flex items-center justify-between space-x-2">
               {rentTerms.length === 0 && (
                 <div className="">
@@ -401,7 +462,106 @@ export const ParkManager = () => {
                   <div className="">{x.name}</div>{" "}
                 </div>
               ))}
-              <Button className="w-1/3">Создать</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-1/3">Создать</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                  <div className="">
+                    <h3 className="my-4">Создание условия аренды</h3>
+                    <p className="my-4">
+                      Чтобы создать новы парк - введите его название и номер
+                      телефона менеджера. Менеджер парка может получить API-ключ
+                      после авторизации по номеру телефона.{" "}
+                    </p>
+
+                    <Confirmation
+                      accept={() => upsertRentTerm}
+                      cancel={() => {}}
+                      trigger={<Button className="w-60">Применить</Button>}
+                      title={"создать условие аренды?"}
+                      type="green"
+                    />
+                  </div>
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                          <div className="sm:max-w-[250px] w-full">
+                            <Button>Назад</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const Cars = () => {
+    return (
+      <>
+        <div className="">Авто</div>
+
+        <div className="flex space-x-1">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            <div className="flex items-center justify-between space-x-2">
+              {divisions.length === 0 && <div className="">Авто в еще нет</div>}
+              {divisions.map((x, i) => (
+                <div className="" key={`division_${i}`}>
+                  {x.cars?.length === 0 && (
+                    <div className="">
+                      Авто в подразделении {x.name} еще нет
+                    </div>
+                  )}
+                  {x.map((car: Cars) => (
+                    <div key={`car_${car.id}`} className="">
+                      {car.license_plate} {car.brand} {car.model}
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-1/3">Создать</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                  <div className="">
+                    <h3 className="my-4">Создание парка</h3>
+                    <p className="my-4">
+                      Чтобы создать новы парк - введите его название и номер
+                      телефона менеджера. Менеджер парка может получить API-ключ
+                      после авторизации по номеру телефона.{" "}
+                    </p>
+
+                    {/* <Confirmation
+                    accept={createPark}
+                    cancel={() => {}}
+                    trigger={<Button className="w-60">Применить</Button>}
+                    title={"Создать парк?"}
+                    type="green"
+                  />  */}
+                  </div>
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
+                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                          <div className="sm:max-w-[250px] w-full">
+                            <Button>Назад</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
           <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
@@ -426,10 +586,13 @@ export const ParkManager = () => {
           <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
             МОЙ ГАРАЖ
           </div>
-          <div className="flex justify-end space-x-4 ">
+          <div className="flex justify-end space-x-8 ">
             {[
               { name: "Инфо", path: "/info" },
               { name: "Подразделения", path: "/divisions" },
+              { name: "Условия аренды", path: "/rent_terms" },
+              { name: "Тарифы", path: "/tariffs" },
+              { name: "Автомобили", path: "/cars" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="">
                 <Link
@@ -451,6 +614,9 @@ export const ParkManager = () => {
         <Route path="/" element={<Navigate to="/info" replace={true} />} />
         <Route path={`/info`} element={<Info />} />
         <Route path={`/divisions`} element={<Divisions />} />
+        <Route path={`/rent_terms`} element={<RentTerms />} />
+        <Route path={`/tariffs`} element={<Tariffs />} />
+        <Route path={`/cars`} element={<Cars />} />
       </Routes>
     </>
   );

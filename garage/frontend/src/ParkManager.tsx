@@ -27,7 +27,7 @@ import {
   DialogTrigger,
   DialogContent,
   DialogClose,
-} from "@radix-ui/react-dialog";
+} from "@/components/ui/dialog";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 
 type VariantItem = { name: string; id: number | null };

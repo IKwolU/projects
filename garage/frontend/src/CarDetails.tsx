@@ -18,16 +18,12 @@ import {
   BookingStatus,
   Bookings,
   Cars2,
-  DayOfWeek,
   User,
   Variants,
 } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import {
-  CheckWorkingHours,
   formatRoubles,
-  formatWorkingTime,
-  getDayOfWeekDisplayName,
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
@@ -101,12 +97,6 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
     // }
   };
   const { schemas } = car.rent_term!;
-  let isWorkingHours = false;
-  if (activeBooking) {
-    isWorkingHours = CheckWorkingHours(
-      activeBooking!.car!.division!.working_hours!
-    );
-  }
 
   return (
     <div className="pb-10">
@@ -148,72 +138,18 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
                   <Separator className="my-1" />
                 </div>
                 <div className="min-h-fit md:w-1/2 md:pl-8">
-                  {!isWorkingHours &&
-                    Object.keys(DayOfWeek)
-                      .filter(
-                        (x) =>
-                          x === DayOfWeek.Monday || x === DayOfWeek.Saturday
-                      )
-                      .map((x) => {
-                        const { working_hours } = car;
-                        const currentDay = working_hours!.find(
-                          ({ day }) => day === x
-                        )!;
-                        return (
-                          <div
-                            className="flex flex-col items-start md:text-lg"
-                            key={x}
-                          >
-                            <div className="text-base capitalize md:text-lg">
-                              {x === DayOfWeek.Monday && "Понедельник-Пятница"}
-                              {x === DayOfWeek.Saturday &&
-                                "Суббота-Воскресенье"}
-                            </div>
-                            {currentDay && (
-                              <>
-                                {formatWorkingTime(
-                                  currentDay.start!.hours!,
-                                  currentDay.start!.minutes!
-                                )}{" "}
-                                -{" "}
-                                {formatWorkingTime(
-                                  currentDay.end!.hours!,
-                                  currentDay.end!.minutes!
-                                )}
-                              </>
-                            )}
-                            {!currentDay && "Выходной"}
-                          </div>
-                        );
-                      })}
-                  {isWorkingHours &&
-                    Object.keys(DayOfWeek).map((x) => {
-                      const { working_hours } = car;
-                      const currentDay = working_hours!.find(
-                        ({ day }) => day === x
-                      )!;
-                      return (
-                        <div className="flex items-center" key={x}>
-                          <div className="text-sm capitalize w-28">
-                            {getDayOfWeekDisplayName(x as any)}
-                          </div>
-                          {currentDay && (
-                            <>
-                              {formatWorkingTime(
-                                currentDay.start!.hours!,
-                                currentDay.start!.minutes!
-                              )}{" "}
-                              -{" "}
-                              {formatWorkingTime(
-                                currentDay.end!.hours!,
-                                currentDay.end!.minutes!
-                              )}
-                            </>
-                          )}
-                          {!currentDay && <>Выходной</>}
+                  {car.working_hours!.map((x, i) => {
+                    return (
+                      <div
+                        className="flex flex-col items-start md:text-lg"
+                        key={`hours_${i}`}
+                      >
+                        <div className="text-base capitalize md:text-lg">
+                          {x}
                         </div>
-                      );
-                    })}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <Collapsible>

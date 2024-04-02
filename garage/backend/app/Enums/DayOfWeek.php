@@ -14,13 +14,13 @@ use OpenApi\Attributes as OAT;
  * )
  */
 
-enum DayOfWeek
+enum DayOfWeek: string
 {
-    case Monday;
-    case Tuesday;
-    case Wednesday;
-    case Thursday;
-    case Friday;
-    case Saturday;
-    case Sunday;
+    case Monday = 'Понедельник';
+    case Tuesday = 'Вторник';
+    case Wednesday = 'Среда';
+    case Thursday = 'Четверг';
+    case Friday = 'Пятница';
+    case Saturday = 'Суббота';
+    case Sunday = 'Воскресенье';
 }

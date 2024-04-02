@@ -22,6 +22,7 @@ use App\Enums\CarClass;
 use Carbon\Carbon;
 use App\Http\Controllers\APIController;
 use App\Enums\BookingStatus;
+use App\Enums\DayOfWeek;
 
 class CarsController extends Controller
 
@@ -84,18 +85,7 @@ class CarsController extends Controller
      *                     property="working_hours",
      *                     type="array",
      *                     description="Расписание работы парка",
-     *     @OA\Items(
-     *         type="object",
-     *         @OA\Property(property="day", type="string", description="День недели на русском"),
-     *         @OA\Property(property="start", type="object", description="Время начала",
-     *             @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *             @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *         ),
-     *         @OA\Property(property="end", type="object", description="Время окончания",
-     *             @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *             @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *         )
-     *     )
+     *     @OA\Items(type="string")
      * ),
      *                 @OA\Property(property="about", type="string", description="Описание парка"),
      *                 @OA\Property(property="commission", type="number", description="Комиссия"),
@@ -364,7 +354,7 @@ class CarsController extends Controller
                 $formattedCar['city'] = $city;
                 $formattedCar['CarClass'] = $end;
                 $formattedCar['park_name'] = $parkName;
-                $formattedCar['working_hours'] = $workingHours;
+                $formattedCar['working_hours'] = $this->formattedWorkingHours($workingHours);
                 $formattedCar['phone'] = $phone;
                 $formattedCar['vin'] = $car['car_id'];
                 $formattedCar['about'] = $about;
@@ -394,8 +384,47 @@ class CarsController extends Controller
         return response()->json(['cars' => $formattedCars]);
     }
 
+    private function formattedWorkingHours($workingHours) {
+        $weekdays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+        $output = [];
+        $allDaysMatch = true;
+        $weekendAbsent = true;
+
+        $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 
+        for ($i = 0; $i < count($workingHours)-1; $i++) {
+            if ($i < 5) {
+                if ($workingHours[$i]['start'] != $workingHours[$i + 1]['start'] || $workingHours[$i]['end'] != $workingHours[$i + 1]['end']) {
+                    $allDaysMatch = false;
+                }
+                if (count($workingHours)>5) {
+                    $weekendAbsent = false;
+                }
+            }
+        }
+        if ($allDaysMatch && $weekendAbsent) {
+            $output[] = 'Понедельник-Пятница';
+            $output[] = sprintf("%02d:%02d - %02d:%02d", $workingHours[0]['start']['hours'], $workingHours[0]['start']['minutes'], $workingHours[0]['end']['hours'], $workingHours[0]['end']['minutes']);
+            $output[] = 'Суббота-Воскресенье';
+            $output[] = 'Выходной';
+        }else{ foreach ($daysOfWeek as $day) {
+            $found = false;
+            foreach ($workingHours as $workingDay) {
+                if ($workingDay['day'] === $day) {
+                    $output[] = $weekdays[array_search($day, $daysOfWeek)] . ': ' . sprintf("%02d:%02d - %02d:%02d", $workingDay['start']['hours'], $workingDay['start']['minutes'], $workingDay['end']['hours'], $workingDay['end']['minutes']);
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $output[] = $weekdays[array_search($day, $daysOfWeek)] . ': выходной';
+
+            }
+        }}
+
+        return $output;
+    }
     /**
      * Бронирование автомобиля
      *

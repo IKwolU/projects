@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('admin/parks', [AdminController::class, 'createPark']);
 });
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
-Route::post('cars/brand-park-list', [CarsController::class, 'getBrandsAndParksList']);
+Route::post('cars/brand-park-list', [CarsController::class, 'getFinderFilterData']);
 Route::get('car', [CarsController::class, 'GetCar']);
 Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);

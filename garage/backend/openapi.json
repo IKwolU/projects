@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Мой гараж",
-        "description": "Это список методов для интеграции с Мой гараж, в заголовках всех запросов должен присутствоваться API-ключ, который будет предоставлен администратором на почту клиента после регистрации клиента в сервисе администратором",
+        "title": "API Beebeep.ru",
+        "description": "Авторизация запросов выполнена посредством передачи заголовка 'X-API-key'. Ключ доступен менеджеру в панели управления парком.",
         "version": "1.0.2"
     },
     "paths": {
@@ -32,7 +32,7 @@
                                         "description": "Название парка",
                                         "type": "string"
                                     },
-                                    "period_for_book": {
+                                    "booking_window": {
                                         "description": "Срок на который можно забронировать авто, в часах",
                                         "type": "number"
                                     },
@@ -40,7 +40,7 @@
                                         "description": "Описание парка",
                                         "type": "string"
                                     },
-                                    "self_imployeds_discount": {
+                                    "self_employed_discount": {
                                         "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
                                         "type": "integer"
                                     }
@@ -2082,7 +2082,7 @@
                                                         "description": "Комиссия парка",
                                                         "type": "number"
                                                     },
-                                                    "period_for_book": {
+                                                    "booking_window": {
                                                         "description": "Время брони парка",
                                                         "type": "integer"
                                                     },
@@ -2102,7 +2102,7 @@
                                                         "description": "Последнее обновление инфо парка",
                                                         "type": "string"
                                                     },
-                                                    "self_imployeds_discount": {
+                                                    "self_employed_discount": {
                                                         "description": "Скидка парка для самозанятых",
                                                         "type": "number"
                                                     },
@@ -3614,7 +3614,7 @@
                 ],
                 "summary": "Показать список брендов",
                 "description": "Показать список брендов",
-                "operationId": "getBrandsAndParksList",
+                "operationId": "getFinderFilterData",
                 "responses": {
                     "200": {
                         "description": "Успешный ответ",
@@ -3746,7 +3746,7 @@
                 ],
                 "summary": "Показать парк",
                 "description": "Показать список парков",
-                "operationId": "getPark",
+                "operationId": "getParkManager",
                 "responses": {
                     "200": {
                         "description": "Успешный ответ",
@@ -3770,7 +3770,7 @@
                                                         "description": "ключ",
                                                         "type": "string"
                                                     },
-                                                    "period_for_book": {
+                                                    "booking_window": {
                                                         "description": "Время брони парка",
                                                         "type": "integer"
                                                     },
@@ -3790,7 +3790,7 @@
                                                         "description": "Последнее обновление инфо парка",
                                                         "type": "string"
                                                     },
-                                                    "self_imployeds_discount": {
+                                                    "self_employed_discount": {
                                                         "description": "Скидка парка для самозанятых",
                                                         "type": "number"
                                                     },
@@ -4176,6 +4176,49 @@
                     }
                 }
             }
+        },
+        "manager/park/key": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Показать ключ",
+                "description": "Показать ключ",
+                "operationId": "getParkKey",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "API_key": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера ",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -4239,8 +4282,8 @@
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
                 "enum": [
-                    "Methane",
                     "Propane",
+                    "Methane",
                     "Gasoline",
                     "Electric"
                 ]

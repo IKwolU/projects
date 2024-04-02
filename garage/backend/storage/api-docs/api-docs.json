@@ -30,7 +30,7 @@
                                         "description": "Название парка",
                                         "type": "string"
                                     },
-                                    "period_for_book": {
+                                    "booking_window": {
                                         "description": "Срок на который можно забронировать авто, в часах",
                                         "type": "number"
                                     },
@@ -38,7 +38,7 @@
                                         "description": "Описание парка",
                                         "type": "string"
                                     },
-                                    "self_imployeds_discount": {
+                                    "self_employed_discount": {
                                         "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
                                         "type": "integer"
                                     }

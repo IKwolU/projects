@@ -57,9 +57,9 @@ class APIController extends Controller
      *             @OA\Property(property="url", type="string", description="URL парка"),
      *             @OA\Property(property="commission", type="number", description="Комиссия"),
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
-     *             @OA\Property(property="period_for_book", type="number", description="Срок на который можно забронировать авто, в часах"),
+     *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
-     *             @OA\Property(property="self_imployeds_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
+     *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(
      *         response=200,
@@ -107,14 +107,14 @@ class APIController extends Controller
             'commission' => 'numeric',
             'park_name' => 'string',
             'about' => 'string',
-            'self_imployeds_discount' => 'integer',
-            'period_for_book' => 'integer',
+            'self_employed_discount' => 'integer',
+            'booking_window' => 'integer',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
         }
-        if ($request->period_for_book) {
-            $park->period_for_book = $request->period_for_book;
+        if ($request->booking_window) {
+            $park->booking_window = $request->booking_window;
         }
         if ($request->url) {
             $park->url = $request->url;
@@ -128,8 +128,8 @@ class APIController extends Controller
         if ($request->about) {
             $park->about = $request->about;
         }
-        if ($request->self_imployeds_discount) {
-            $park->self_imployeds_discount = $request->self_imployeds_discount;
+        if ($request->self_employed_discount) {
+            $park->self_employed_discount = $request->self_employed_discount;
         }
         $park->save();
         return response()->json(['message' => 'Парк обновлен'], 200);

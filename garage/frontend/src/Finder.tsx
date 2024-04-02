@@ -114,13 +114,13 @@ export const Finder = () => {
   const city = useRecoilValue(cityAtom);
 
   useEffect(() => {
-    const getBrandsAndParksList = async () => {
-      const data = await client.getBrandsAndParksList();
+    const getFinderFilterData = async () => {
+      const data = await client.getFinderFilterData();
       setBrands(data.brands!);
       setParksName(data.parks!);
     };
 
-    getBrandsAndParksList();
+    getFinderFilterData();
   }, []);
 
   useEffect(() => {

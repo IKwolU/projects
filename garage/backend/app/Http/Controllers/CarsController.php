@@ -538,7 +538,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
             return response()->json(['message' => 'У пользователя уже есть активная бронь!'], 409);
         }
         $division = $car->division;
-        $rent_time = $division->park->period_for_book;
+        $rent_time = $division->park->booking_window;
         $driver = $user->driver;
 
         //date_default_timezone_set('UTC');
@@ -754,7 +754,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      *
      * @OA\Post(
      *     path="/cars/brand-park-list",
-     *     operationId="getBrandsAndParksList",
+     *     operationId="getFinderFilterData",
      *     summary="Показать список брендов",
      *     tags={"Cars"},
      *     @OA\Response(
@@ -781,7 +781,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
      * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
-    public function getBrandsAndParksList()
+    public function getFinderFilterData()
     {
         $cars = Car::orderBy('brand')->orderBy('model')->get();
 

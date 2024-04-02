@@ -1527,7 +1527,7 @@ export class Client {
      * Показать список брендов
      * @return Успешный ответ
      */
-    getBrandsAndParksList(): Promise<Anonymous85> {
+    getFinderFilterData(): Promise<Anonymous85> {
         let url_ = this.baseUrl + "/cars/brand-park-list";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1539,11 +1539,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetBrandsAndParksList(_response);
+            return this.processGetFinderFilterData(_response);
         });
     }
 
-    protected processGetBrandsAndParksList(response: Response): Promise<Anonymous85> {
+    protected processGetFinderFilterData(response: Response): Promise<Anonymous85> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -1630,7 +1630,7 @@ export class Client {
      * Показать парк
      * @return Успешный ответ
      */
-    getPark(): Promise<Anonymous89> {
+    getParkManager(): Promise<Anonymous89> {
         let url_ = this.baseUrl + "/manager/park";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1642,11 +1642,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetPark(_response);
+            return this.processGetParkManager(_response);
         });
     }
 
-    protected processGetPark(response: Response): Promise<Anonymous89> {
+    protected processGetParkManager(response: Response): Promise<Anonymous89> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -1669,6 +1669,51 @@ export class Client {
             });
         }
         return Promise.resolve<Anonymous89>(null as any);
+    }
+
+    /**
+     * Показать ключ
+     * @return Успешный ответ
+     */
+    getParkKey(): Promise<Anonymous91> {
+        let url_ = this.baseUrl + "/manager/park/key";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetParkKey(_response);
+        });
+    }
+
+    protected processGetParkKey(response: Response): Promise<Anonymous91> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous91.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous92.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous91>(null as any);
     }
 }
 
@@ -1719,8 +1764,8 @@ export enum DriverDocumentType {
 
 /** The unique identifier of a product in our catalog */
 export enum FuelType {
-    Methane = "Methane",
     Propane = "Propane",
+    Methane = "Methane",
     Gasoline = "Gasoline",
     Electric = "Electric",
 }
@@ -1760,11 +1805,11 @@ export class Body implements IBody {
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
-    period_for_book?: number;
+    booking_window?: number;
     /** Описание парка */
     about?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
 
     [key: string]: any;
 
@@ -1786,9 +1831,9 @@ export class Body implements IBody {
             this.url = _data["url"];
             this.commission = _data["commission"];
             this.park_name = _data["park_name"];
-            this.period_for_book = _data["period_for_book"];
+            this.booking_window = _data["booking_window"];
             this.about = _data["about"];
-            this.self_imployeds_discount = _data["self_imployeds_discount"];
+            this.self_employed_discount = _data["self_employed_discount"];
         }
     }
 
@@ -1808,9 +1853,9 @@ export class Body implements IBody {
         data["url"] = this.url;
         data["commission"] = this.commission;
         data["park_name"] = this.park_name;
-        data["period_for_book"] = this.period_for_book;
+        data["booking_window"] = this.booking_window;
         data["about"] = this.about;
-        data["self_imployeds_discount"] = this.self_imployeds_discount;
+        data["self_employed_discount"] = this.self_employed_discount;
         return data;
     }
 }
@@ -1823,11 +1868,11 @@ export interface IBody {
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
-    period_for_book?: number;
+    booking_window?: number;
     /** Описание парка */
     about?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
 
     [key: string]: any;
 }
@@ -7800,6 +7845,104 @@ export interface IAnonymous90 {
     [key: string]: any;
 }
 
+export class Anonymous91 implements IAnonymous91 {
+    aPI_key?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous91) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.aPI_key = _data["API_key"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous91 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous91();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["API_key"] = this.aPI_key;
+        return data;
+    }
+}
+
+export interface IAnonymous91 {
+    aPI_key?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous92 implements IAnonymous92 {
+    /** Внутренняя ошибка сервера  */
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous92) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous92 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous92();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous92 {
+    /** Внутренняя ошибка сервера  */
+    message?: string;
+
+    [key: string]: any;
+}
+
 export class Working_hours implements IWorking_hours {
     day?: DayOfWeek;
     /** Время начала работы */
@@ -8337,7 +8480,7 @@ export class Parks2 implements IParks2 {
     /** Комиссия парка */
     commission?: number;
     /** Время брони парка */
-    period_for_book?: number;
+    booking_window?: number;
     /** Название парка */
     park_name?: string;
     /** Описание парка */
@@ -8347,7 +8490,7 @@ export class Parks2 implements IParks2 {
     /** Последнее обновление инфо парка */
     updated_at?: string;
     /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
     divisions?: Divisions[];
 
     [key: string]: any;
@@ -8369,12 +8512,12 @@ export class Parks2 implements IParks2 {
             }
             this.url = _data["url"];
             this.commission = _data["commission"];
-            this.period_for_book = _data["period_for_book"];
+            this.booking_window = _data["booking_window"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
-            this.self_imployeds_discount = _data["self_imployeds_discount"];
+            this.self_employed_discount = _data["self_employed_discount"];
             if (Array.isArray(_data["divisions"])) {
                 this.divisions = [] as any;
                 for (let item of _data["divisions"])
@@ -8398,12 +8541,12 @@ export class Parks2 implements IParks2 {
         }
         data["url"] = this.url;
         data["commission"] = this.commission;
-        data["period_for_book"] = this.period_for_book;
+        data["booking_window"] = this.booking_window;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
-        data["self_imployeds_discount"] = this.self_imployeds_discount;
+        data["self_employed_discount"] = this.self_employed_discount;
         if (Array.isArray(this.divisions)) {
             data["divisions"] = [];
             for (let item of this.divisions)
@@ -8420,7 +8563,7 @@ export interface IParks2 {
     /** Комиссия парка */
     commission?: number;
     /** Время брони парка */
-    period_for_book?: number;
+    booking_window?: number;
     /** Название парка */
     park_name?: string;
     /** Описание парка */
@@ -8430,7 +8573,7 @@ export interface IParks2 {
     /** Последнее обновление инфо парка */
     updated_at?: string;
     /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
     divisions?: Divisions[];
 
     [key: string]: any;
@@ -8940,7 +9083,7 @@ export class Park2 implements IPark2 {
     /** ключ */
     api_key?: string;
     /** Время брони парка */
-    period_for_book?: number;
+    booking_window?: number;
     /** Название парка */
     park_name?: string;
     /** Описание парка */
@@ -8950,7 +9093,7 @@ export class Park2 implements IPark2 {
     /** Последнее обновление инфо парка */
     updated_at?: string;
     /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
     divisions?: Divisions2[];
     /** Список тарифов аренды */
     rent_terms?: Rent_terms[];
@@ -8977,12 +9120,12 @@ export class Park2 implements IPark2 {
             this.url = _data["url"];
             this.commission = _data["commission"];
             this.api_key = _data["api_key"];
-            this.period_for_book = _data["period_for_book"];
+            this.booking_window = _data["booking_window"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
-            this.self_imployeds_discount = _data["self_imployeds_discount"];
+            this.self_employed_discount = _data["self_employed_discount"];
             if (Array.isArray(_data["divisions"])) {
                 this.divisions = [] as any;
                 for (let item of _data["divisions"])
@@ -9017,12 +9160,12 @@ export class Park2 implements IPark2 {
         data["url"] = this.url;
         data["commission"] = this.commission;
         data["api_key"] = this.api_key;
-        data["period_for_book"] = this.period_for_book;
+        data["booking_window"] = this.booking_window;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
-        data["self_imployeds_discount"] = this.self_imployeds_discount;
+        data["self_employed_discount"] = this.self_employed_discount;
         if (Array.isArray(this.divisions)) {
             data["divisions"] = [];
             for (let item of this.divisions)
@@ -9050,7 +9193,7 @@ export interface IPark2 {
     /** ключ */
     api_key?: string;
     /** Время брони парка */
-    period_for_book?: number;
+    booking_window?: number;
     /** Название парка */
     park_name?: string;
     /** Описание парка */
@@ -9060,7 +9203,7 @@ export interface IPark2 {
     /** Последнее обновление инфо парка */
     updated_at?: string;
     /** Скидка парка для самозанятых */
-    self_imployeds_discount?: number;
+    self_employed_discount?: number;
     divisions?: Divisions2[];
     /** Список тарифов аренды */
     rent_terms?: Rent_terms[];

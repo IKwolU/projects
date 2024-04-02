@@ -117,19 +117,15 @@ export const ParkManager = () => {
     if (user.user_type === UserType.Manager) {
       const getPark = async () => {
         try {
-          const parkData = await client.getPark();
-          setPark(parkData.park![0]);
-          setParkInfo([
-            {
-              ...parkData.park![0],
-              commission: parkData.park![0]?.commission || 0,
-              about: parkData.park![0]?.about || "",
-              url: parkData.park![0]?.url || "",
-              self_imployeds_discount:
-                parkData.park![0]?.self_imployeds_discount || 0,
-            },
-          ]);
-          localStorage.setItem("X-API-key", parkData.park![0]!.api_key!);
+          const parkData: IPark2 = await client.getParkManager();
+          setPark(parkData.park);
+          setParkInfo({
+            ...parkData.park,
+            commission: parkData.park?.commission || 0,
+            about: parkData.park?.about || "",
+            url: parkData.park?.url || "",
+            self_employed_discount: parkData.park?.self_employed_discount || 0,
+          });
         } catch (error) {}
       };
 
@@ -145,7 +141,7 @@ export const ParkManager = () => {
         })
       );
       setPark({
-        ...park![0],
+        ...park,
 
         divisions: [
           ...divisions,
@@ -167,7 +163,7 @@ export const ParkManager = () => {
         })
       );
       setPark({
-        ...park![0],
+        ...park,
 
         tariffs: [
           ...tariffs,
@@ -188,7 +184,7 @@ export const ParkManager = () => {
       );
 
       setPark({
-        ...park![0],
+        ...park,
 
         rent_terms: [
           ...rentTerms.filter((rent_term) =>
@@ -212,11 +208,11 @@ export const ParkManager = () => {
         await client.updateParkInfo(
           new Body({
             ...parkInfo![0],
-            self_imployeds_discount: 0,
+            self_employed_discount: 0,
           })
         );
 
-        setPark({ ...park![0], ...parkInfo![0] });
+        setPark({ ...park, ...parkInfo![0] });
       } catch (error) {}
     }
   };
@@ -350,11 +346,11 @@ export const ParkManager = () => {
           </div>
           <div className="">
             <h4>Время брони парка в часах:</h4>
-            <p>{park.period_for_book}</p>
+            <p>{park.booking_window}</p>
             <Input
               onChange={(e) =>
                 setParkInfo([
-                  { ...parkInfo[0], period_for_book: e.target.value },
+                  { ...parkInfo[0], booking_window: e.target.value },
                 ])
               }
               type="number"
@@ -363,10 +359,10 @@ export const ParkManager = () => {
           </div>
           {/* <div className="">
               <h4>Скидка самозанятым:</h4>
-              <p>{park.self_imployeds_discount ? "Да" : "Нет"}</p>
+              <p>{park.self_employed_discount ? "Да" : "Нет"}</p>
               <Input
                 onChange={(e) =>
-                  (parkInfo.self_imployeds_discount = Number(
+                  (parkInfo.self_employed_discount = Number(
                     e.target.value
                   ))
                 }

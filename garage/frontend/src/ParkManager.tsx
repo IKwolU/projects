@@ -241,6 +241,25 @@ export const ParkManager = () => {
     });
   };
 
+  const handleInputNewRentTermChange = (e, param) => {
+    setNewRentTerm({
+      ...newRentTerm,
+      [param]: e.target.value,
+    });
+  };
+
+  const handleInputNewRentTermSchemaChange = (e, param, id) => {
+    const currentSchema = newRentTerm.schemas!.find(
+      (schema) => schema.id === id
+    );
+    setNewRentTerm({
+      ...newRentTerm,
+      schemas: [
+        ...newRentTerm.schemas!.filter((schema) => schema.id !== id),
+        { ...currentSchema!, [param]: e.target.value },
+      ],
+    });
+  };
   const handlePhoneInput = ({ target: { value } }: any) =>
     setNewDivisionPhone(value);
 
@@ -923,7 +942,7 @@ export const ParkManager = () => {
   const RentTerms = () => {
     const AddSchema = () => {
       const newSchema = {
-        id: 0,
+        id: newRentTerm.schemas[-1].id + 1,
         daily_amount: 0,
         non_working_days: 0,
         working_days: 0,
@@ -1017,7 +1036,9 @@ export const ParkManager = () => {
                     className={`${
                       input.type === "checkbox" && "flex w-6 m-0 "
                     }`}
-                    onChange={(e) => handleInputNewTariffChange(e, input.param)}
+                    onChange={(e) =>
+                      handleInputNewRentTermChange(e, input.param)
+                    }
                     type={input.type}
                     placeholder={input.placeholder}
                   ></Input>
@@ -1042,21 +1063,21 @@ export const ParkManager = () => {
                         title: "Стоимость ежедневно",
                         type: "number",
                         placeholder: "Введите значение",
-                        param: "schema.daily_amount",
+                        param: "daily_amount",
                         value: schema.daily_amount || 0,
                       },
                       {
                         title: "Рабочих дней",
                         type: "number",
                         placeholder: "Введите значение",
-                        param: "schema.non_working_days",
+                        param: "non_working_days",
                         value: schema.non_working_days || 0,
                       },
                       {
                         title: "Не рабочих дней",
                         type: "number",
                         placeholder: "Введите значение",
-                        param: "schema.working_days",
+                        param: "working_days",
                         value: schema.working_days || 0,
                       },
                     ].map((input, index) => (
@@ -1068,7 +1089,11 @@ export const ParkManager = () => {
                         <Input
                           className={"w-3/5 m-1"}
                           onChange={(e) =>
-                            handleInputNewTariffChange(e, input.param)
+                            handleInputNewRentTermSchemaChange(
+                              e,
+                              input.param,
+                              schema.id
+                            )
                           }
                           type={input.type}
                           placeholder={input.placeholder}
@@ -1080,7 +1105,7 @@ export const ParkManager = () => {
               </div>
 
               <Confirmation
-                accept={() => createTariff}
+                accept={() => upsertRentTerm}
                 cancel={() => {}}
                 trigger={<Button className="w-60">Применить</Button>}
                 title={"Создать подразделение?"}

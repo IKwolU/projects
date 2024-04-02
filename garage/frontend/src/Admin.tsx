@@ -16,16 +16,20 @@ import {
 import InputMask from "react-input-mask";
 import { DialogFooter } from "@/components/ui/dialog";
 import Confirmation from "@/components/ui/confirmation";
+import { Input } from "@/components/ui/input";
 
 type MainMenuItem = {
   name: string;
   path: string;
 };
 
-function PhoneInput(props: any) {
+const PhoneInput = (props: any) => {
   return (
     <InputMask
-      className="w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+      className={`w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white 
+      file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2
+       focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950
+        dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300`}
       mask="+7 (999) 999-99-99"
       value={props.value}
       onChange={props.onChange}
@@ -33,7 +37,7 @@ function PhoneInput(props: any) {
       placeholder={"+7 (999) 123-45-67"}
     ></InputMask>
   );
-}
+};
 
 export const Admin = () => {
   const [user] = useRecoilState(userAtom);
@@ -42,19 +46,16 @@ export const Admin = () => {
   const [newParkPhone, setNewParkPhone] = useState("");
   const [newParkName, setNewParkName] = useState("");
   const [selectedVariant] = useState<"parks" | "users">("parks");
+
   useEffect(() => {
     if (user.user_type === UserType.Admin) {
       const getParks = async () => {
-        try {
-          const parksData = await client.getParks();
-          setParks(parksData.parks);
-        } catch (error) {}
+        const parksData = await client.getParks();
+        setParks(parksData.parks);
       };
       const getUsers = async () => {
-        try {
-          const usersData = await client.getUsers();
-          setUsers(usersData.users);
-        } catch (error) {}
+        const usersData = await client.getUsers();
+        setUsers(usersData.users);
       };
       getParks();
       getUsers();
@@ -62,21 +63,15 @@ export const Admin = () => {
   }, []);
 
   const createPark = async () => {
-    try {
-      const newPark: Parks = await client.createPark(
-        new Body15({
-          name: newParkName,
-          manager_phone: newParkPhone,
-        })
-      );
+    const newPark: Parks = await client.createPark(
+      new Body15({
+        name: newParkName,
+        manager_phone: newParkPhone,
+      })
+    );
 
-      setParks([...parks!, newPark]);
-    } catch (error) {}
+    setParks([...parks!, newPark]);
   };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setNewParkName(e.target.value);
-  const handleInput = ({ target: { value } }: any) => setNewParkPhone(value);
 
   if (user.user_type !== UserType.Admin) {
     return <></>;
@@ -146,17 +141,17 @@ export const Admin = () => {
                       телефона менеджера. Менеджер парка может получить API-ключ
                       после авторизации по номеру телефона.{" "}
                     </p>
-                    <input
+                    <Input
                       className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
                       type="text"
                       placeholder="Название парка"
                       required
-                      onInput={handleNameChange}
-                    />
+                      onChange={(e) => setNewParkName(e.target.value)}
+                    ></Input>
                     <PhoneInput
                       className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
                       value={newParkPhone}
-                      onChange={handleInput}
+                      onChange={(e) => setNewParkPhone(e.target.value)}
                       placeholder={"+7 (999) 123-45-67"}
                       required
                     ></PhoneInput>

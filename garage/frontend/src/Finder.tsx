@@ -69,8 +69,8 @@ type CarFilter = {
   buyoutPossible: boolean | undefined;
   schema: Schemas2 | null;
   sorting: "asc" | "desc";
-  car_vin: string | null;
-  on_map: boolean;
+  carVin: string | null;
+  onMap: boolean;
 };
 
 enum ActiveFilter {
@@ -100,8 +100,8 @@ export const Finder = () => {
     buyoutPossible: undefined,
     sorting: "asc",
     schema: null,
-    car_vin: null,
-    on_map: false,
+    carVin: null,
+    onMap: false,
   });
 
   const [cars, setCars] = useState<Cars2[]>([]);
@@ -142,7 +142,7 @@ export const Finder = () => {
           self_employed: filters.selfEmployed,
           is_buyout_possible: filters.buyoutPossible,
           schemas: filters.schema || undefined,
-          car_vin: filters.car_vin || undefined,
+          carVin: filters.carVin || undefined,
         })
       );
 
@@ -169,11 +169,13 @@ export const Finder = () => {
       buyoutPossible: undefined,
       sorting: "asc",
       schema: null,
-      car_vin: null,
-      on_map: false,
+      carVin: null,
+      onMap: false,
     });
   };
+
   const brandsArray = Object.values(brands);
+
   const filteredBrands = brandsArray.filter(
     (brand: Brands) =>
       brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -188,7 +190,7 @@ export const Finder = () => {
     () =>
       setFilters({
         ...filters,
-        car_vin: searchParkTerm,
+        carVin: searchParkTerm,
       }),
     [searchParkTerm]
   );
@@ -235,17 +237,17 @@ export const Finder = () => {
               onClick={() => {
                 setFilters({
                   ...filters,
-                  on_map: !filters.on_map,
+                  onMap: !filters.onMap,
                 });
               }}
             >
-              {!filters.on_map && (
+              {!filters.onMap && (
                 <>
                   <FontAwesomeIcon icon={faMap} className="mr-2" />
                   <span>На карте</span>
                 </>
               )}
-              {filters.on_map && (
+              {filters.onMap && (
                 <>
                   <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
                   <span>Списком</span>
@@ -754,14 +756,14 @@ export const Finder = () => {
           />
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
-        {!filters.on_map && (
+        {!filters.onMap && (
           <div className="flex flex-wrap gap-2 md:justify-start ">
             {cars.map((car) => {
               return <Card key={car.id} car={car} />;
             })}
           </div>
         )}
-        <div className={filters.on_map ? "block" : "hidden"}>
+        <div className={filters.onMap ? "block" : "hidden"}>
           {<OnMap cars={cars} />}
         </div>
       </div>

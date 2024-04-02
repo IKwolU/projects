@@ -14,7 +14,7 @@ import citiesCoords from "../../../../backend/public/cities_coords.json";
 import { Card } from "../../../src/Card";
 import { Button } from "./button";
 
-interface Props {
+interface OnMapProps {
   cars: Cars2[];
 }
 interface CityCoords {
@@ -28,7 +28,7 @@ interface CityCoords {
   city_en: string;
 }
 
-const OnMap: React.FC<Props> = ({ cars }) => {
+const OnMap = ({ cars }: OnMapProps) => {
   const city = useRecoilValue(cityAtom);
   const [isClicked, setIsClicked] = useState(false);
   const [clickedCars, setClickedCars] = useState<Cars2[]>([]);

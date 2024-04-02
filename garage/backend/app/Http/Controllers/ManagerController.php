@@ -19,7 +19,7 @@ class ManagerController extends Controller
      *
      * @OA\Get(
      *     path="manager/park",
-     *     operationId="getPark",
+     *     operationId="getParkManager",
      *     summary="Показать парк",
      *     tags={"Manager"},
      *     @OA\Response(
@@ -186,49 +186,74 @@ class ManagerController extends Controller
      * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
-    public function getPark()
+    public function getParkManager(Request $request)
     {
-        $user = Auth::guard('sanctum')->user();
-        if ($user->user_type !== UserType::Manager->value) {
-            return response()->json(['Нет прав доступа'], 409);
-        }
-        $manager = Manager::where('user_id', $user->id)->first();
-        if (!$manager) {
-            return response()->json(['Менеджер не найден'], 404);
-        }
-        $park = Park::where('id', $manager->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->get();
-        foreach ($park as $item) {
-            $item->api_key = $item->API_key;
-            unset($item->id, $item->API_key);
-            foreach ($item->divisions as $division) {
-                $division->working_hours = json_decode($division->working_hours);
-                $city = $division->city->name;
-                unset($division->city, $division->park_id, $division->city_id);
 
-                $division->city = $city;
-                foreach ($division->cars as $car) {
-                    $car->images = json_decode($car->images);
-                    $car->fuel_type = FuelType::from($car->fuel_type)->name;
-                    $car->transmission_type = TransmissionType::from($car->transmission_type)->name;
-                    $car->status = CarStatus::from($car->status)->name;
-                    $car->vin = $car->car_id;
-                    unset($car->division_id, $car->park_id, $car->forbidden_republic_ids, $car->car_id);
-                }
-            }
-            foreach ($item->rent_terms as $rent_term) {
-                unset($rent_term->park_id);
-                foreach ($rent_term->schemas as $schema) {
-                    unset($schema->rent_term_id);
-                }
-            }
-            foreach ($item->tariffs as $tariff) {
-                $city = $tariff->city->name;
-                unset($tariff->city, $tariff->park_id, $tariff->city_id);
-                $tariff->class = CarClass::from($tariff->class)->name;
-                $tariff->city = $city;
+        $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->first();
+
+        unset($park->API_key);
+        foreach ($park->divisions as $division) {
+            $division->working_hours = json_decode($division->working_hours);
+            $city = $division->city->name;
+            unset($division->city, $division->park_id, $division->city_id);
+
+            $division->city = $city;
+            foreach ($division->cars as $car) {
+                $car->images = json_decode($car->images);
+                $car->fuel_type = FuelType::from($car->fuel_type)->name;
+                $car->transmission_type = TransmissionType::from($car->transmission_type)->name;
+                $car->status = CarStatus::from($car->status)->name;
+                $car->vin = $car->car_id;
+                unset($car->division_id, $car->park_id, $car->forbidden_republic_ids, $car->car_id);
             }
         }
+        foreach ($park->rent_terms as $rent_term) {
+            unset($rent_term->park_id);
+            foreach ($rent_term->schemas as $schema) {
+                unset($schema->rent_term_id);
+            }
+        }
+        foreach ($park->tariffs as $tariff) {
+            $city = $tariff->city->name;
+            unset($tariff->city, $tariff->park_id, $tariff->city_id);
+            $tariff->class = CarClass::from($tariff->class)->name;
+            $tariff->city = $city;
+        }
+
 
         return response()->json(['park' => $park], 200);
+    }
+
+    /**
+     * Показать ключ
+     *
+     * @OA\Get(
+     *     path="manager/park/key",
+     *     operationId="getParkKey",
+     *     summary="Показать ключ",
+     *     tags={"Manager"},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Успешный ответ",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="API_key",type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="Внутренняя ошибка сервера ")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
+     */
+    public function getParkKey(Request $request)
+    {
+        $key = Park::where('id', $request->park_id)->select('API_key')->first();
+        return response()->json($key, 200);
     }
 }

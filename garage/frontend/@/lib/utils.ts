@@ -87,24 +87,7 @@ export const getDayOfWeekDisplayName = (day: DayOfWeek) => {
   return daysOfWeek[day];
 };
 
-export const getCarClassNumberFromName = (carClass: CarClass) => {
-  const carClasses = {
-    [CarClass.Economy]: 1,
-    [CarClass.Comfort]: 2,
-    [CarClass.ComfortPlus]: 3,
-    [CarClass.Business]: 4,
-  };
-
-  for (const [key, value] of Object.entries(carClasses)) {
-    if (key === carClass) {
-      return value;
-    }
-  }
-
-  return 1;
-};
-
-export const getCarClassRussName = (carClass: CarClass) => {
+export const getCarClassDisplayName = (carClass: CarClass) => {
   const carClasses = {
     [CarClass.Economy]: "Эконом",
     [CarClass.Comfort]: "Комфорт",

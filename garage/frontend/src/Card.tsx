@@ -92,7 +92,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
                 {/* {!!car.self_employed && (
                 <Badge variant="card">Для самозанятых</Badge>
               )} */}
-                {!!car.rent_term?.is_buyout_possible && (
+                {!!car.rent_term!.is_buyout_possible && (
                   <Badge variant="card" className="text-zinc-400">
                     Выкуп автомобиля
                   </Badge>

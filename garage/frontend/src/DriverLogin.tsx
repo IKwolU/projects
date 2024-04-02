@@ -34,7 +34,7 @@ export const DriverLogin = () => {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const referral_code = searchParams.get("code");
+  const referralCode = searchParams.get("code");
 
   const CODE_LENGTH = 4;
 
@@ -64,7 +64,7 @@ export const DriverLogin = () => {
   const login = async () => {
     try {
       const access_token = await client.loginOrRegister(
-        new Body8({ phone, code, referral_code })
+        new Body8({ phone, code, referral_code: referralCode })
       );
 
       localStorage.setItem("token", access_token!);

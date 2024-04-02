@@ -29,7 +29,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [AuthController::class, 'GetUser']);
     Route::post('driver/upload-file', [DriverController::class, 'uploadDocs']);
     Route::get('admin/parks', [AdminController::class, 'getParks']);
-    Route::get('manager/park', [ManagerController::class, 'getPark']);
     Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
     Route::put('admin/parks', [AdminController::class, 'changePark']);
@@ -41,16 +40,23 @@ Route::get('car', [CarsController::class, 'GetCar']);
 Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
 
-Route::middleware('api.key')->post('/cars', [APIController::class, 'pushCars']);
-Route::middleware('api.key')->put('/cars', [APIController::class, 'updateCar']);
-Route::middleware('api.key')->put('/cars/rent-term', [APIController::class, 'updateCarRentTerm']);
-Route::middleware('api.key')->put('/cars/status', [APIController::class, 'updateCarStatus']);
-Route::middleware('api.key')->post('/parks/rent-terms', [APIController::class, 'createOrUpdateRentTerm']);
-Route::middleware('api.key')->put('/parks', [APIController::class, 'updateParkInfo']);
-Route::middleware('api.key')->post('/parks/division', [APIController::class, 'createParkDivision']);
-Route::middleware('api.key')->post('/parks/tariff', [APIController::class, 'createTariff']);
-Route::middleware('api.key')->put('/parks/tariff', [APIController::class, 'updateTariff']);
-Route::middleware('api.key')->put('/parks/division', [APIController::class, 'updateParkDivision']);
-Route::middleware('api.key')->put('/cars/booking', [APIController::class, 'updateCarBookingStatus']);
-Route::middleware('api.key')->put('/cars/booking/prolongation', [APIController::class, 'BookProlongation']);
-Route::middleware('api.key')->put('/cars/booking/replace', [APIController::class, 'BookReplace']);
+Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
+    Route::get('manager/park', [ManagerController::class, 'getParkManager']);
+    Route::get('manager/park/key', [ManagerController::class, 'getParkKey']);
+});
+
+Route::group(['middleware' => 'api.key'], function () {
+    Route::post('manager/cars', [ManagerController::class, 'pushCarsManager']);
+    Route::put('manager/cars', [ManagerController::class, 'updateCarManager']);
+    Route::put('manager/cars/rent-term', [ManagerController::class, 'updateCarRentTermManager']);
+    Route::put('manager/cars/status', [ManagerController::class, 'updateCarStatusManager']);
+    Route::post('manager/parks/rent-terms', [ManagerController::class, 'createOrUpdateRentTermManager']);
+    Route::put('manager/parks', [ManagerController::class, 'updateParkInfoManager']);
+    Route::post('manager/parks/division', [ManagerController::class, 'createParkDivisionManager']);
+    Route::post('manager/parks/tariff', [ManagerController::class, 'createTariffManager']);
+    Route::put('manager/parks/tariff', [ManagerController::class, 'updateTariffManager']);
+    Route::put('manager/parks/division', [ManagerController::class, 'updateParkDivisionManager']);
+    Route::put('manager/cars/booking', [ManagerController::class, 'updateCarBookingStatusManager']);
+    Route::put('manager/cars/booking/prolongation', [ManagerController::class, 'BookProlongationManager']);
+    Route::put('manager/cars/booking/replace', [ManagerController::class, 'BookReplaceManager']);
+});

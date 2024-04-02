@@ -39,6 +39,7 @@ import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
 import {
+  getCarClassDisplayName,
   getCarClassNumberFromName,
   getCarClassRussName,
   getDayOfWeekDisplayName,
@@ -846,10 +847,8 @@ export const ParkManager = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {Object.keys(CarClass).map((x) => (
-                      <SelectItem
-                        value={`${getCarClassNumberFromName(x as any)}`}
-                      >
-                        {getCarClassRussName(x as any)}
+                      <SelectItem value={x}>
+                        {getCarClassDisplayName(x as CarClass)}
                       </SelectItem>
                     ))}
                   </SelectContent>

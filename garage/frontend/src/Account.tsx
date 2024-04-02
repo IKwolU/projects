@@ -97,53 +97,23 @@ export const Account = ({ user }: { user: User }) => {
   };
 
   const logout = async () => {
-    try {
-      await client.logout();
-    } catch (error) {}
+    await client.logout();
 
     localStorage.clear();
     window.location.href = "/";
   };
 
   const deleteUser = async () => {
-    try {
-      await client.deleteUser();
-    } catch (error) {}
-
-    localStorage.clear();
-    window.location.href = "/";
+    await client.deleteUser();
+    await logout();
   };
 
   const handleShowQRCode = () => {
     setShowQRCode(true);
   };
 
-  // const handleShare = async () => {
-  //   if (navigator.share) {
-  //     try {
-  //       await navigator.share({
-  //         title: "Мой гараж",
-  //         text: "Присоединитесь к реферральной программе",
-  //         url: referralLink,
-  //       });
-  //     } catch (error) {
-  //       console.error("Ошибка при попытке поделиться:", error);
-  //     }
-  //   } else {
-  //     console.log("Web Share API не поддерживается в вашем браузере");
-  //   }
-  // };
-
   const handleCopy = () => {
-    navigator.clipboard
-      .writeText(referralLink)
-      .then(() => {
-        console.log("Link copied to clipboard");
-        // You can add any additional functionality here after successful copy
-      })
-      .catch((error) => {
-        console.error("Failed to copy: ", error);
-      });
+    navigator.clipboard.writeText(referralLink);
   };
 
   return (
@@ -175,7 +145,6 @@ export const Account = ({ user }: { user: User }) => {
               <a
                 href="#"
                 onClick={() => {
-                  // handleShare();
                   handleCopy();
                 }}
                 className="mx-auto sm:max-w-[250px] w-full"

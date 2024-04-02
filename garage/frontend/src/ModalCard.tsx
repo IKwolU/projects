@@ -127,51 +127,12 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
               classImages="md:h-92"
               classPaginationImages=""
             />
-            {/* <div className="relative w-full h-52">
-          <div className="flex space-x-4 overflow-scroll overflow-x-auto scrollbar-hide">
-            {car.images!.map((x, i) => {
-              return (
-                <div
-                  className={`min-w-[100%] h-52 pr-1 transition-transform ${
-                    i === activeImageIndex ? "" : ""
-                  }`}
-                >
-                  <img
-                    className="object-cover w-full h-full rounded-xl"
-                    src={x}
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </div> */}
-            {/* <div className="absolute bottom-0 flex px-1 py-1">
-            {car.images!.map((x, i) => {
-              return (
-                <div
-                  key={`modal_image_${i}`}
-                  className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${
-                    i === activeImageIndex
-                      ? "shadow border-2 border-yellow"
-                      : " scale-90"
-                  }`}
-                >
-                  <img
-                    className="object-cover w-full h-full rounded-xl"
-                    src={x}
-                    onClick={() => setActiveImageIndex(i)}
-                    alt=""
-                  />
-                </div>
-              );
-            })}
-          </div> */}
-            {/* </div> */}
+
             <div className="space-y-2">
               <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
               <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular text-gray">
                 {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
-                <span>Пробег: 500 км</span>
+                <span>Пробег: XXX км</span>
               </p>
               <div className="flex flex-col md:flex-row md:flex-wrap">
                 <div className="md:w-1/2 md:space-y-2 ">
@@ -301,9 +262,6 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                 </Badge>
               </div>
               <div className="">
-                {/* {!!car.self_employed && (
-                <Badge variant="card">Для самозанятых</Badge>
-              )} */}
                 {!!car.rent_term?.is_buyout_possible && (
                   <Badge variant="card" className="md:text-lg">
                     Выкуп автомобиля
@@ -351,84 +309,7 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                     ))}
                   </SelectContent>
                 </Select>
-                {/* {carVariants.length > 1 && (
-                  <CustomModal
-                    trigger={
-                      <div className="">
-                        <Button className="sm:max-w-[250px] md:text-lg">
-                          Выбрать
-                        </Button>
-                      </div>
-                    }
-                    cancel={() => {}}
-                    content={
-                      <div className="p-1 text-gray-700 w-100 rounded-xl">
-                        <h3 className="mb-4 text-center md:text-xl">
-                          Варианты доступных {car.brand} {car.model}:
-                        </h3>
 
-                        <div className="flex flex-row flex-wrap justify-center gap-4">
-                          {carVariants.map(({ id, images }, i) => (
-                            <div
-                              className="max-w-[352px]"
-                              key={`modal_card${id}${i}`}
-                            >
-                              <SliderImages
-                                openIsAffordable={true}
-                                classImages="h-64 sm:h-64"
-                                classPaginationImages=" sm:justify-between sm:w-full"
-                                images={images!}
-                              />
-                              {!!activeBooking && (
-                                <div className="w-full my-2">
-                                  <Confirmation
-                                    title={
-                                      <div className="text-center">
-                                        <div>
-                                          У вас есть активная бронь:{" "}
-                                          {activeBooking.car?.brand}{" "}
-                                          {activeBooking.car?.model}
-                                        </div>
-                                        <div>
-                                          Отменить и забронировать {car.brand}{" "}
-                                          {car.model}?
-                                        </div>
-                                      </div>
-                                    }
-                                    type="green"
-                                    accept={() => book(id)}
-                                    cancel={() => {}}
-                                    trigger={
-                                      <Button className="">
-                                        Забронировать
-                                      </Button>
-                                    }
-                                  />
-                                </div>
-                              )}
-                              {!activeBooking && (
-                                <div className="w-full my-2">
-                                  <Confirmation
-                                    title={`Забронировать ${car.brand} ${car.model}?`}
-                                    type="green"
-                                    accept={() => book(id)}
-                                    cancel={() => {}}
-                                    trigger={
-                                      <Button className="">
-                                        Забронировать
-                                      </Button>
-                                    }
-                                  />
-                                </div>
-                              )}
-                              <Separator className="my-4" />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    }
-                  />
-                )} */}
                 {!activeBooking && (
                   <div className="w-1/2 sm:max-w-[250px] relative">
                     <Confirmation
@@ -443,18 +324,11 @@ export const ModalCard = ({ car }: { car: Cars2 }) => {
                 {!!activeBooking && (
                   <div className="w-1/2 sm:max-w-[250px] relative">
                     <Confirmation
-                      title={
-                        <div className="text-center ">
-                          <div>
-                            У вас есть активная бронь:{" "}
-                            {activeBooking.car?.brand}{" "}
-                            {activeBooking.car?.model}
-                          </div>
-                          <div>
-                            Отменить и забронировать {car.brand} {car.model}?
-                          </div>
-                        </div>
-                      }
+                      title={`У вас есть активная бронь: {" "}
+                        ${activeBooking.car?.brand}{" "}
+                        ${activeBooking.car?.model}`}
+                      text={`Отменить и забронировать ${car.brand}} ${car.model}
+                   `}
                       type="green"
                       accept={book}
                       cancel={() => {}}

@@ -431,7 +431,7 @@ class AuthController extends Controller
         $response = Http::get('https://sms.ru/sms/send', [
             'api_id' => 'AFA267B8-9272-4CEB-CE8B-7EE807275EA9',
             'to' => $phone,
-            'msg' => 'Проверочный код: ' . $code,
+            'msg' => 'Код для входа в BeeBeep: ' . $code,
             'json' => 1
         ]);
         // $response = true;

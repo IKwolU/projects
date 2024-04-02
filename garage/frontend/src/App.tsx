@@ -70,9 +70,7 @@ function App() {
             <Route path="/" element={<Finder />} />
             <Route path="account" element={<Account user={user} />} />
             <Route path="bookings" element={<BookingDrawer />} />
-            <Route path="login/driver" element={<DriverLogin />} />
-            <Route path="login/manager" element={<ManagerLogin />} />
-            <Route path="login/admin" element={<AdminLogin />} />
+            {!user && <Route path="login/driver" element={<DriverLogin />} />}
           </Routes>
         </div>
       )}

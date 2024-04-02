@@ -6,9 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Body8, Body9 } from "./api-client";
 import React from "react";
 import { useTimer } from "react-timer-hook";
-import { useRecoilState } from "recoil";
-import { userAtom } from "./atoms";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import InputMask from "react-input-mask";
 
 function PhoneInput(props: any) {
@@ -25,13 +23,6 @@ function PhoneInput(props: any) {
 }
 
 export const DriverLogin = () => {
-  const [user] = useRecoilState(userAtom);
-
-  const navigate = useNavigate();
-  if (user) {
-    navigate("/");
-  }
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const referralCode = searchParams.get("code");

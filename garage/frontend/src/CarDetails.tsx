@@ -40,7 +40,7 @@ import SliderImages from "@/components/ui/slider-images";
 // import CustomModal from "@/components/ui/custom-modal";
 import { useState } from "react";
 
-export const ModalCard = ({ car }: { car: Cars2 }) => {
+export const CarDetails = ({ car }: { car: Cars2 }) => {
   const [user, setUser] = useRecoilState(userAtom);
   const [selectedSchema, setSelectedSchema] = useState(
     car.rent_term!.schemas![0]!.id

@@ -12,7 +12,7 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/ui/dialog";
-import { ModalCard } from "./ModalCard";
+import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
 
 export const Card = ({ car }: { car: Cars2 }) => {
@@ -122,7 +122,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
         <DialogTitle></DialogTitle> */}
         {/* <DialogDescription>DialogDescription</DialogDescription> */}
         {/* </DialogHeader> */}
-        <ModalCard car={car} />
+        <CarDetails car={car} />
         {/* <DialogFooter>
         <DialogClose asChild>
           <Button>Выбрать</Button>

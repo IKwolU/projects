@@ -37,7 +37,6 @@ import { useRecoilState } from "recoil";
 import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
-// import CustomModal from "@/components/ui/custom-modal";
 import { useState } from "react";
 
 export const CarDetails = ({ car }: { car: Cars2 }) => {
@@ -50,8 +49,6 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
   const activeBooking = user?.bookings!.find(
     (x) => x.status === BookingStatus.Booked
   );
-
-  // const carVariants = car.variants!;
 
   // временно удаляем проверку на верификацию!!!
   const book = async (variant_id: number | null = null) => {

@@ -91,21 +91,3 @@ html {
     display: none;
   }
 }
-
-.height-enter {
-  height: 0;
-}
-
-.height-enter-active {
-  height: auto;
-  transition: height 500ms ease-in-out;
-}
-
-.height-exit {
-  height: auto;
-}
-
-.height-exit-active {
-  height: 0;
-  transition: height 500ms ease-in-out;
-}

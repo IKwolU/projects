@@ -17,6 +17,9 @@ import {
   DayOfWeek,
   IBody5,
   CarClass,
+  Rent_term,
+  IRent_term3,
+  IRent_term,
 } from "./api-client";
 import { cityAtom, userAtom } from "./atoms";
 import { client } from "./backend";
@@ -95,6 +98,14 @@ export const ParkManager = () => {
     criminal_ids: [],
     alcohol: false,
   });
+  const [newRentTerm, setNewRentTerm] = useState({
+    deposit_amount_daily: 0,
+    deposit_amount_total: 0,
+    is_buyout_possible: false,
+    name: "",
+    minimum_period_days: 0,
+    schemas: [{ id: 0, daily_amount: 0, non_working_days: 0, working_days: 0 }],
+  });
   const [isKeyShowed, setIsKeyShowed] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
     name: "park",
@@ -169,26 +180,10 @@ export const ParkManager = () => {
     } catch (error) {}
   };
 
-  const upsertRentTerm = async (
-    deposit_amount_daily: number,
-    deposit_amount_total: number,
-    is_buyout_possible: boolean,
-    minimum_period_days: number,
-    name: string,
-    rent_term_id: number | undefined,
-    schemas: Schemas[]
-  ) => {
+  const upsertRentTerm = async ({ ...newRentTerm }: IRent_term) => {
     try {
       const newTariffData = await client.createOrUpdateRentTerm(
-        new Body6({
-          deposit_amount_daily,
-          deposit_amount_total,
-          is_buyout_possible,
-          minimum_period_days,
-          name,
-          rent_term_id,
-          schemas,
-        })
+        new Body6({ ...newRentTerm })
       );
 
       setPark({
@@ -196,17 +191,13 @@ export const ParkManager = () => {
 
         rent_terms: [
           ...rentTerms.filter((rent_term) =>
-            rent_term_id ? rent_term.id !== rent_term_id : rent_term
+            newRentTerm.rent_term_id
+              ? rent_term.id !== newRentTerm.rent_term_id
+              : rent_term
           ),
 
           {
-            deposit_amount_daily,
-            deposit_amount_total,
-            is_buyout_possible,
-            minimum_period_days,
-            name,
-            rent_term_id,
-            schemas,
+            ...newRentTerm,
             id: newTariffData.id,
           },
         ],
@@ -410,35 +401,35 @@ export const ParkManager = () => {
               </div>
               {[
                 {
-                  title: "Координаты подразделения:",
+                  title: "Координаты подразделения",
                   type: "text",
                   placeholder: "00.000, 00.000",
                   param: "coords",
                   value: "",
                 },
                 {
-                  title: "Адрес подразделения:",
+                  title: "Адрес подразделения",
                   type: "text",
                   placeholder: "г. Москва, ул. ...",
                   param: "address",
                   value: newDivision.address || "",
                 },
                 {
-                  title: "Ближайшее метро, если есть:",
+                  title: "Ближайшее метро, если есть",
                   type: "text",
                   placeholder: "Введите значение",
                   param: "metro",
                   value: newDivision.metro || "",
                 },
                 {
-                  title: "Название подразделения:",
+                  title: "Название подразделения",
                   type: "text",
                   placeholder: "Введите значение",
                   param: "name",
                   value: newDivision.name || "",
                 },
                 {
-                  title: "Часовой пояс:",
+                  title: "Часовой пояс",
                   type: "number",
                   placeholder: "Введите значение",
                   param: "timezone_difference",
@@ -599,35 +590,35 @@ export const ParkManager = () => {
               </h3>
               {[
                 {
-                  title: "Координаты подразделения:",
+                  title: "Координаты подразделения",
                   type: "text",
                   placeholder: "00.000, 00.000",
                   param: "coords",
                   value: "",
                 },
                 {
-                  title: "Адрес подразделения:",
+                  title: "Адрес подразделения",
                   type: "text",
                   placeholder: "г. Москва, ул. ...",
                   param: "address",
                   value: newDivision.address || "",
                 },
                 {
-                  title: "Ближайшее метро, если есть:",
+                  title: "Ближайшее метро, если есть",
                   type: "text",
                   placeholder: "Введите значение",
                   param: "metro",
                   value: newDivision.metro || "",
                 },
                 {
-                  title: "Название подразделения:",
+                  title: "Название подразделения",
                   type: "text",
                   placeholder: "Введите значение",
                   param: "name",
                   value: newDivision.name || "",
                 },
                 {
-                  title: "Часовой пояс:",
+                  title: "Часовой пояс",
                   type: "number",
                   placeholder: "Введите значение",
                   param: "timezone_difference",
@@ -814,7 +805,7 @@ export const ParkManager = () => {
               >
                 Создать
               </Button>
-            )}{" "}
+            )}
           </div>
           {selectedVariant.name === "newTariff" && (
             <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
@@ -847,49 +838,49 @@ export const ParkManager = () => {
               </div>
               {[
                 {
-                  title: "ДТП по вине водителя:",
+                  title: "ДТП по вине водителя",
                   type: "checkbox",
                   placeholder: "г. Москва, ул. ...",
                   param: "has_caused_accident",
                   value: newTariff.has_caused_accident || false,
                 },
                 {
-                  title: "Максимально количество штртафов:",
+                  title: "Максимально количество штртафов",
                   type: "number",
                   placeholder: "Введите значение",
                   param: "max_fine_count",
                   value: newTariff.max_fine_count || 0,
                 },
                 {
-                  title: "Бросал автомобиль:",
+                  title: "Бросал автомобиль",
                   type: "checkbox",
                   placeholder: "Введите значение",
                   param: "abandoned_car",
                   value: newTariff.abandoned_car || false,
                 },
                 {
-                  title: "Минимальный скоринг:",
+                  title: "Минимальный скоринг",
                   type: "number",
                   placeholder: "Введите значение",
                   param: "min_scoring",
                   value: newDivision.min_scoring || 3,
                 },
                 {
-                  title: "Северный кавказ:",
+                  title: "Северный кавказ",
                   type: "checkbox",
                   placeholder: "Введите значение",
                   param: "is_north_caucasus",
                   value: newTariff.is_north_caucasus || false,
                 },
                 {
-                  title: "Запрещенные статьи:",
+                  title: "Запрещенные статьи",
                   type: "text",
                   placeholder: "Введите значение",
                   param: "criminal_ids",
                   value: newTariff.criminal_ids || "",
                 },
                 {
-                  title: "Алкоголь/иное:",
+                  title: "Алкоголь/иное",
                   type: "checkbox",
                   placeholder: "Введите значение",
                   param: "alcohol",
@@ -914,6 +905,7 @@ export const ParkManager = () => {
                   ></Input>
                 </div>
               ))}
+
               <Confirmation
                 accept={() => createTariff}
                 cancel={() => {}}
@@ -929,6 +921,21 @@ export const ParkManager = () => {
   };
 
   const RentTerms = () => {
+    const AddSchema = () => {
+      const newSchema = {
+        id: 0,
+        daily_amount: 0,
+        non_working_days: 0,
+        working_days: 0,
+      };
+      if (newRentTerm.schemas.length < 10) {
+        setNewRentTerm({
+          ...newRentTerm,
+          schemas: [...newRentTerm.schemas!, newSchema],
+        });
+      }
+    };
+
     return (
       <>
         <div className="">Условия аренды</div>
@@ -946,43 +953,141 @@ export const ParkManager = () => {
                   <div className="">{x.name}</div>{" "}
                 </div>
               ))}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-1/3">Создать</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px]">
-                  <div className="">
-                    <h3 className="my-4">Создание условия аренды</h3>
-                    <p className="my-4">
-                      Чтобы создать новы парк - введите его название и номер
-                      телефона менеджера. Менеджер парка может получить API-ключ
-                      после авторизации по номеру телефона.{" "}
-                    </p>
-
-                    <Confirmation
-                      accept={() => upsertRentTerm}
-                      cancel={() => {}}
-                      trigger={<Button className="w-60">Применить</Button>}
-                      title={"создать условие аренды?"}
-                      type="green"
-                    />
-                  </div>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                          <div className="sm:max-w-[250px] w-full">
-                            <Button>Назад</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
             </div>
+            {selectedVariant.name !== "newRentTerm" && (
+              <Button
+                className="w-64 text-lg"
+                onClick={() =>
+                  setSelectedVariant({ name: "newRentTerm", id: 0 })
+                }
+              >
+                Создать
+              </Button>
+            )}
           </div>
+          {selectedVariant.name === "newRentTerm" && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">Создание условий аренды</h3>
+              {[
+                {
+                  title: "Ежедневный депозит",
+                  type: "nubmer",
+                  placeholder: "Введите значение",
+                  param: "deposit_amount_daily",
+                  value: newRentTerm.deposit_amount_daily || 0,
+                },
+                {
+                  title: "Всего депозит",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "deposit_amount_total",
+                  value: newRentTerm.deposit_amount_total || 0,
+                },
+                {
+                  title: "Возможность выкупа",
+                  type: "checkbox",
+                  placeholder: "Введите значение",
+                  param: "is_buyout_possible",
+                  value: newRentTerm.is_buyout_possible || false,
+                },
+                {
+                  title: "Минимальный срок аренды в днях",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "minimum_period_days",
+                  value: newRentTerm.minimum_period_days || 0,
+                },
+                {
+                  title: "Название",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "name",
+                  value: newRentTerm.name || "",
+                },
+              ].map((input, index) => (
+                <div
+                  key={`input_${index}`}
+                  className={`${
+                    input.type === "checkbox" &&
+                    "flex flex-row-reverse justify-end items-center gap-4"
+                  }`}
+                >
+                  <h4>{input.title}:</h4>
+                  <Input
+                    className={`${
+                      input.type === "checkbox" && "flex w-6 m-0 "
+                    }`}
+                    onChange={(e) => handleInputNewTariffChange(e, input.param)}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
+              <div className="flex items-center justify-between space-x-2">
+                <h4>Схемы аренды:</h4>
+                {newRentTerm.schemas.length < 10 && (
+                  <Button className="w-1/2" onClick={AddSchema}>
+                    Добавить схему аренды
+                  </Button>
+                )}
+              </div>
+              <div className="">
+                {newRentTerm?.schemas!.map((schema, i) => (
+                  <div
+                    key={`schema_${i}`}
+                    className="p-4 my-1 border border-grey rounded-xl"
+                  >
+                    {[
+                      {
+                        title: "Стоимость ежедневно",
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "schema.daily_amount",
+                        value: schema.daily_amount || 0,
+                      },
+                      {
+                        title: "Рабочих дней",
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "schema.non_working_days",
+                        value: schema.non_working_days || 0,
+                      },
+                      {
+                        title: "Не рабочих дней",
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "schema.working_days",
+                        value: schema.working_days || 0,
+                      },
+                    ].map((input, index) => (
+                      <div
+                        key={`input_${index}`}
+                        className="flex items-center justify-between"
+                      >
+                        <h4>{input.title}:</h4>
+                        <Input
+                          className={"w-3/5 m-1"}
+                          onChange={(e) =>
+                            handleInputNewTariffChange(e, input.param)
+                          }
+                          type={input.type}
+                          placeholder={input.placeholder}
+                        ></Input>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+
+              <Confirmation
+                accept={() => createTariff}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Создать подразделение?"}
+                type="green"
+              />
+            </div>
+          )}
         </div>
       </>
     );

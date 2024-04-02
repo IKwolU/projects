@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import {
+  CarClass,
   DayOfWeek,
   FuelType,
   TransmissionType,
@@ -7,6 +8,7 @@ import {
 } from "../../src/api-client";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
+import { forEach } from "ramda";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -83,4 +85,38 @@ export const getDayOfWeekDisplayName = (day: DayOfWeek) => {
     [DayOfWeek.Sunday]: "воскресенье",
   };
   return daysOfWeek[day];
+};
+
+export const getCarClassNumberFromName = (carClass: CarClass) => {
+  const carClasses = {
+    [CarClass.Economy]: 1,
+    [CarClass.Comfort]: 2,
+    [CarClass.ComfortPlus]: 3,
+    [CarClass.Business]: 4,
+  };
+
+  for (const [key, value] of Object.entries(carClasses)) {
+    if (key === carClass) {
+      return value;
+    }
+  }
+
+  return 1;
+};
+
+export const getCarClassRussName = (carClass: CarClass) => {
+  const carClasses = {
+    [CarClass.Economy]: "Эконом",
+    [CarClass.Comfort]: "Комфорт",
+    [CarClass.ComfortPlus]: "Комфорт плюс",
+    [CarClass.Business]: "Бизнес",
+  };
+
+  for (const [key, value] of Object.entries(carClasses)) {
+    if (key === carClass) {
+      return value;
+    }
+  }
+
+  return "Эконом";
 };

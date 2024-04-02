@@ -106,9 +106,8 @@ class APIController extends Controller
             'url' => 'string',
             'commission' => 'numeric',
             'park_name' => 'string',
-            'about' => 'string','phone' => 'string',
+            'about' => 'string',
             'self_imployeds_discount' => 'integer',
-            'phone' => 'string',
             'period_for_book' => 'integer',
         ]);
         if ($validator->fails()) {

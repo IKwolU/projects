@@ -15,6 +15,8 @@ import {
   Schemas,
   IDivisions2,
   DayOfWeek,
+  IBody5,
+  CarClass,
 } from "./api-client";
 import { cityAtom, userAtom } from "./atoms";
 import { client } from "./backend";
@@ -33,7 +35,18 @@ import {
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
-import { getDayOfWeekDisplayName } from "@/lib/utils";
+import {
+  getCarClassNumberFromName,
+  getCarClassRussName,
+  getDayOfWeekDisplayName,
+} from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -69,6 +82,18 @@ export const ParkManager = () => {
     phone: "",
     timezone_difference: 3,
     working_hours: [],
+  });
+  const [newTariff, setNewTariff] = useState<IBody5>({
+    class: 0,
+    city: "",
+    has_caused_accident: false,
+    experience: 0,
+    max_fine_count: 999,
+    abandoned_car: false,
+    min_scoring: 0,
+    is_north_caucasus: false,
+    criminal_ids: [],
+    alcohol: false,
   });
   const [isKeyShowed, setIsKeyShowed] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<VariantItem>({
@@ -122,31 +147,11 @@ export const ParkManager = () => {
     } catch (error) {}
   };
 
-  const createTariff = async (
-    abandoned_car: boolean,
-    alcohol: boolean,
-    city: string,
-    carClass: number,
-    criminal_ids: string[],
-    experience: number,
-    has_caused_accident: boolean,
-    is_north_caucasus: boolean,
-    max_fine_count: number,
-    min_scoring: number
-  ) => {
+  const createTariff = async ({ ...newTariff }: IBody5) => {
     try {
       const newTariffData = await client.createTariff(
         new Body5({
-          abandoned_car,
-          alcohol,
-          city,
-          class: carClass,
-          criminal_ids,
-          experience,
-          has_caused_accident,
-          is_north_caucasus,
-          max_fine_count,
-          min_scoring,
+          ...newTariff,
         })
       );
       setPark({
@@ -156,16 +161,7 @@ export const ParkManager = () => {
           ...tariffs,
 
           {
-            abandoned_car,
-            alcohol,
-            city,
-            class: carClass,
-            criminal_ids,
-            experience,
-            has_caused_accident,
-            is_north_caucasus,
-            max_fine_count,
-            min_scoring,
+            ...newTariff,
             id: newTariffData.id,
           },
         ],
@@ -239,6 +235,20 @@ export const ParkManager = () => {
   if (!park || !parkInfo) {
     return <></>;
   }
+
+  const handleInputNewDivisionChange = (e, param) => {
+    setNewDivision({
+      ...newDivision,
+      [param]: e.target.value,
+    });
+  };
+
+  const handleInputNewTariffChange = (e, param) => {
+    setNewTariff({
+      ...newTariff,
+      [param]: e.target.value,
+    });
+  };
 
   const handlePhoneInput = ({ target: { value } }: any) =>
     setNewDivisionPhone(value);
@@ -398,48 +408,54 @@ export const ParkManager = () => {
                   <CityPicker />
                 </div>
               </div>
-              <div className="">
-                <h4>Координаты подразделения:</h4>
-                <Input
-                  onChange={(e) =>
-                    setNewDivision([{ ...newDivision, coords: e.target.value }])
-                  }
-                  type="text"
-                  placeholder="00.000, 00.000"
-                ></Input>
-              </div>
-              <div className="">
-                <h4>Адрес парка:</h4>
-                <Input
-                  onChange={(e) =>
-                    setNewDivision([
-                      { ...newDivision, address: e.target.value },
-                    ])
-                  }
-                  type="text"
-                  placeholder="г. Москва, ул. ..."
-                ></Input>
-              </div>
-              <div className="">
-                <h4>Ближайшее метро, если есть:</h4>
-                <Input
-                  onChange={(e) =>
-                    setNewDivision([{ ...newDivision, metro: e.target.value }])
-                  }
-                  type="text"
-                  placeholder="Введите значение"
-                ></Input>
-              </div>
-              <div className="">
-                <h4>Название подразделения:</h4>
-                <Input
-                  onChange={(e) =>
-                    setNewDivision([{ ...newDivision, name: e.target.value }])
-                  }
-                  type="text"
-                  placeholder="Введите значение"
-                ></Input>
-              </div>
+              {[
+                {
+                  title: "Координаты подразделения:",
+                  type: "text",
+                  placeholder: "00.000, 00.000",
+                  param: "coords",
+                  value: "",
+                },
+                {
+                  title: "Адрес подразделения:",
+                  type: "text",
+                  placeholder: "г. Москва, ул. ...",
+                  param: "address",
+                  value: newDivision.address || "",
+                },
+                {
+                  title: "Ближайшее метро, если есть:",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "metro",
+                  value: newDivision.metro || "",
+                },
+                {
+                  title: "Название подразделения:",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "name",
+                  value: newDivision.name || "",
+                },
+                {
+                  title: "Часовой пояс:",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "timezone_difference",
+                  value: newDivision.timezone_difference || 3,
+                },
+              ].map((input, index) => (
+                <div key={`input_${index}`} className="">
+                  <h4>{input.title}:</h4>
+                  <Input
+                    onChange={(e) =>
+                      handleInputNewDivisionChange(e, input.param)
+                    }
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
               <div className="">
                 <h4>Телефон подразделения:</h4>
                 <PhoneInput
@@ -449,19 +465,6 @@ export const ParkManager = () => {
                   placeholder={"+7 (999) 123-45-67"}
                   required
                 ></PhoneInput>
-              </div>
-              <div className="">
-                <h4>Часовой пояс:</h4>
-                <Input
-                  onChange={(e) =>
-                    setNewDivision([
-                      { ...newDivision, timezone_difference: e.target.value },
-                    ])
-                  }
-                  value={3}
-                  type="number"
-                  placeholder="Введите значение"
-                ></Input>
               </div>
               <div className="">
                 <h4>Время работы:</h4>
@@ -589,6 +592,195 @@ export const ParkManager = () => {
               />
             </div>
           )}
+          {selectedDivision && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">
+                Изменение подразделения {selectedDivision.name}
+              </h3>
+              {[
+                {
+                  title: "Координаты подразделения:",
+                  type: "text",
+                  placeholder: "00.000, 00.000",
+                  param: "coords",
+                  value: "",
+                },
+                {
+                  title: "Адрес подразделения:",
+                  type: "text",
+                  placeholder: "г. Москва, ул. ...",
+                  param: "address",
+                  value: newDivision.address || "",
+                },
+                {
+                  title: "Ближайшее метро, если есть:",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "metro",
+                  value: newDivision.metro || "",
+                },
+                {
+                  title: "Название подразделения:",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "name",
+                  value: newDivision.name || "",
+                },
+                {
+                  title: "Часовой пояс:",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "timezone_difference",
+                  value: newDivision.timezone_difference || 3,
+                },
+              ].map((input, index) => (
+                <div key={`input_${index}`} className="">
+                  <h4>{input.title}:</h4>
+                  <Input
+                    onChange={(e) =>
+                      handleInputNewDivisionChange(e, input.param)
+                    }
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
+              <div className="">
+                <h4>Телефон подразделения:</h4>
+                <PhoneInput
+                  className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
+                  value={newDivisionPhone}
+                  onChange={handlePhoneInput}
+                  placeholder={"+7 (999) 123-45-67"}
+                  required
+                ></PhoneInput>
+              </div>
+              <div className="">
+                <h4>Время работы:</h4>
+                <div className="flex flex-wrap">
+                  {Object.keys(DayOfWeek).map((x) => {
+                    return (
+                      <div className="flex flex-col items-start w-1/2" key={x}>
+                        <div className="w-80">
+                          <p className="capitalize">
+                            {getDayOfWeekDisplayName(x as any)}:
+                          </p>
+                          <div className="flex items-center space-x-2">
+                            <p>Начало:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                          <div className="flex items-center space-x-2 space-y-1">
+                            <p>Конец:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                        </div>
+                        <Separator className="my-2" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* <Confirmation
+                accept={() => createDivision}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Обновить подразделение?"}
+                type="green"
+              /> */}
+            </div>
+          )}
         </div>
       </>
     );
@@ -614,43 +806,123 @@ export const ParkManager = () => {
                   </div>
                 </div>
               ))}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-1/3">Создать</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px]">
-                  <div className="">
-                    <h3 className="my-4">Создание тарифа</h3>
-                    <p className="my-4">
-                      Чтобы создать новы парк - введите его название и номер
-                      телефона менеджера. Менеджер парка может получить API-ключ
-                      после авторизации по номеру телефона.{" "}
-                    </p>
-
-                    <Confirmation
-                      accept={() => createTariff}
-                      cancel={() => {}}
-                      trigger={<Button className="w-60">Применить</Button>}
-                      title={"Создать тариф?"}
-                      type="green"
-                    />
-                  </div>
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                        <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                          <div className="sm:max-w-[250px] w-full">
-                            <Button>Назад</Button>
-                          </div>
-                        </div>
-                      </div>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
             </div>
+            {selectedVariant.name !== "newTariff" && (
+              <Button
+                className="w-64 text-lg"
+                onClick={() => setSelectedVariant({ name: "newTariff", id: 0 })}
+              >
+                Создать
+              </Button>
+            )}{" "}
           </div>
+          {selectedVariant.name === "newTariff" && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">Создание тарифа</h3>
+              <div className="">
+                <h4>Город тарифа:</h4>
+                <div className="p-2 cursor-pointer bg-grey rounded-xl w-fit">
+                  <CityPicker />
+                </div>
+              </div>
+              <div className="">
+                <Select
+                  onValueChange={(value) =>
+                    setNewTariff({ ...newTariff, class: Number(value) })
+                  }
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Класс" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(CarClass).map((x) => (
+                      <SelectItem
+                        value={`${getCarClassNumberFromName(x as any)}`}
+                      >
+                        {getCarClassRussName(x as any)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {[
+                {
+                  title: "ДТП по вине водителя:",
+                  type: "checkbox",
+                  placeholder: "г. Москва, ул. ...",
+                  param: "has_caused_accident",
+                  value: newTariff.has_caused_accident || false,
+                },
+                {
+                  title: "Максимально количество штртафов:",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "max_fine_count",
+                  value: newTariff.max_fine_count || 0,
+                },
+                {
+                  title: "Бросал автомобиль:",
+                  type: "checkbox",
+                  placeholder: "Введите значение",
+                  param: "abandoned_car",
+                  value: newTariff.abandoned_car || false,
+                },
+                {
+                  title: "Минимальный скоринг:",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "min_scoring",
+                  value: newDivision.min_scoring || 3,
+                },
+                {
+                  title: "Северный кавказ:",
+                  type: "checkbox",
+                  placeholder: "Введите значение",
+                  param: "is_north_caucasus",
+                  value: newTariff.is_north_caucasus || false,
+                },
+                {
+                  title: "Запрещенные статьи:",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "criminal_ids",
+                  value: newTariff.criminal_ids || "",
+                },
+                {
+                  title: "Алкоголь/иное:",
+                  type: "checkbox",
+                  placeholder: "Введите значение",
+                  param: "alcohol",
+                  value: newTariff.alcohol || false,
+                },
+              ].map((input, index) => (
+                <div
+                  key={`input_${index}`}
+                  className={`${
+                    input.type === "checkbox" &&
+                    "flex flex-row-reverse justify-end items-center gap-4"
+                  }`}
+                >
+                  <h4>{input.title}:</h4>
+                  <Input
+                    className={`${
+                      input.type === "checkbox" && "flex w-6 m-0 "
+                    }`}
+                    onChange={(e) => handleInputNewTariffChange(e, input.param)}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
+              <Confirmation
+                accept={() => createTariff}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Создать подразделение?"}
+                type="green"
+              />
+            </div>
+          )}
         </div>
       </>
     );

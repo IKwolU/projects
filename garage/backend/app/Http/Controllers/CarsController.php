@@ -384,7 +384,7 @@ class CarsController extends Controller
         return response()->json(['cars' => $formattedCars]);
     }
 
-    private function formattedWorkingHours($workingHours) {
+    static function formattedWorkingHours($workingHours) {
         $weekdays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
         $output = [];
         $allDaysMatch = true;
@@ -469,24 +469,7 @@ class CarsController extends Controller
      *                 property="working_hours",
      *                 type="array",
      *                 description="Расписание работы парка",
-     *                 @OA\Items(
-     *                     type="object",
-     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
-     *                     @OA\Property(
-     *                         property="start",
-     *                         type="object",
-     *                         description="Время начала работы",
-     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *                     ),
-     *                     @OA\Property(
-     *                         property="end",
-     *                         type="object",
-     *                         description="Время окончания работы",
-     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *                     )
-     *                 )
+     *                 @OA\Items(type="string",)
      *             ),
      *                         @OA\Property(property="park", type="object",
      *                             @OA\Property(property="url", type="string"),
@@ -620,7 +603,7 @@ if(!$schema){ return response()->json(['message' => 'Схема аренды н�
         $workingHours = json_decode($car->division->working_hours, true);
 
 
-        $car->division->working_hours = $workingHours;
+        $car->division->working_hours = $this->formattedWorkingHours($workingHours);
         $booked = $booking;
         $booked->status = BookingStatus::from($booked->status)->name;
         $booked->start_date = $booked->booked_at;

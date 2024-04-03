@@ -1,4 +1,4 @@
-import { Body17, BookingStatus, Bookings, DayOfWeek, User } from "./api-client";
+import { Body17, BookingStatus, Bookings, User } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { useRecoilState } from "recoil";
@@ -6,10 +6,7 @@ import { userAtom } from "./atoms";
 import { Badge } from "@/components/ui/badge";
 import { CSSTransition } from "react-transition-group";
 import {
-  CheckWorkingHours,
   formatRoubles,
-  formatWorkingTime,
-  getDayOfWeekDisplayName,
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
@@ -53,12 +50,6 @@ export const BookingDrawer = () => {
   const activeBooking = user!.bookings!.find(
     (x) => x.status === BookingStatus.Booked
   );
-  let isWorkingHours = false;
-  if (activeBooking) {
-    isWorkingHours = CheckWorkingHours(
-      activeBooking!.car!.division!.working_hours!
-    );
-  }
 
   const bookings = user!.bookings!;
 
@@ -182,67 +173,11 @@ export const BookingDrawer = () => {
               </div>
 
               <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:block hidden">
-                {!isWorkingHours &&
-                  Object.keys(DayOfWeek)
-                    .filter(
-                      (x) => x === DayOfWeek.Monday || x === DayOfWeek.Saturday
-                    )
-                    .map((x) => {
-                      const { working_hours } = booking.car!.division!;
-                      const currentDay = working_hours!.find(
-                        ({ day }) => day === x
-                      )!;
-                      return (
-                        <div className="flex flex-col items-start" key={x}>
-                          <div className="text-base capitalize">
-                            {x === DayOfWeek.Monday && "Понедельник-Пятница"}
-                            {x === DayOfWeek.Saturday && "Суббота-Воскресенье"}
-                          </div>
-                          {currentDay && (
-                            <>
-                              {formatWorkingTime(
-                                currentDay.start!.hours!,
-                                currentDay.start!.minutes!
-                              )}{" "}
-                              -{" "}
-                              {formatWorkingTime(
-                                currentDay.end!.hours!,
-                                currentDay.end!.minutes!
-                              )}
-                            </>
-                          )}
-                          {!currentDay && "Выходной"}
-                        </div>
-                      );
-                    })}
-                {isWorkingHours &&
-                  Object.keys(DayOfWeek).map((x) => {
-                    const { working_hours } = booking.car!.division!;
-                    const currentDay = working_hours!.find(
-                      ({ day }) => day === x
-                    )!;
-                    return (
-                      <div className="flex items-center" key={x}>
-                        <div className="text-sm capitalize w-28">
-                          {getDayOfWeekDisplayName(x as any)}
-                        </div>
-                        {currentDay && (
-                          <>
-                            {formatWorkingTime(
-                              currentDay.start!.hours!,
-                              currentDay.start!.minutes!
-                            )}{" "}
-                            -{" "}
-                            {formatWorkingTime(
-                              currentDay.end!.hours!,
-                              currentDay.end!.minutes!
-                            )}
-                          </>
-                        )}
-                        {!currentDay && <>Выходной</>}
-                      </div>
-                    );
-                  })}
+                {booking.car!.division!.working_hours!.map((x, i) => (
+                  <div className="flex flex-col items-start" key={`time_${i}`}>
+                    {x}
+                  </div>
+                ))}
               </div>
               {booking.status === BookingStatus.Booked && (
                 <div className="flex-wrap hidden w-1/2 md:flex">
@@ -264,67 +199,11 @@ export const BookingDrawer = () => {
           </div>
           <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap">
             <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:hidden">
-              {!isWorkingHours &&
-                Object.keys(DayOfWeek)
-                  .filter(
-                    (x) => x === DayOfWeek.Monday || x === DayOfWeek.Saturday
-                  )
-                  .map((x) => {
-                    const { working_hours } = booking.car!.division!;
-                    const currentDay = working_hours!.find(
-                      ({ day }) => day === x
-                    )!;
-                    return (
-                      <div className="flex flex-col items-start" key={x}>
-                        <div className="text-base capitalize">
-                          {x === DayOfWeek.Monday && "Понедельник-Пятница"}
-                          {x === DayOfWeek.Saturday && "Суббота-Воскресенье"}
-                        </div>
-                        {currentDay && (
-                          <>
-                            {formatWorkingTime(
-                              currentDay.start!.hours!,
-                              currentDay.start!.minutes!
-                            )}{" "}
-                            -{" "}
-                            {formatWorkingTime(
-                              currentDay.end!.hours!,
-                              currentDay.end!.minutes!
-                            )}
-                          </>
-                        )}
-                        {!currentDay && "Выходной"}
-                      </div>
-                    );
-                  })}
-              {isWorkingHours &&
-                Object.keys(DayOfWeek).map((x) => {
-                  const { working_hours } = booking.car!.division!;
-                  const currentDay = working_hours!.find(
-                    ({ day }) => day === x
-                  )!;
-                  return (
-                    <div className="flex items-center" key={x}>
-                      <div className="text-sm capitalize w-28">
-                        {getDayOfWeekDisplayName(x as any)}
-                      </div>
-                      {currentDay && (
-                        <>
-                          {formatWorkingTime(
-                            currentDay.start!.hours!,
-                            currentDay.start!.minutes!
-                          )}{" "}
-                          -{" "}
-                          {formatWorkingTime(
-                            currentDay.end!.hours!,
-                            currentDay.end!.minutes!
-                          )}
-                        </>
-                      )}
-                      {!currentDay && <>Выходной</>}
-                    </div>
-                  );
-                })}
+              {booking.car!.division!.working_hours!.map((x, i) => (
+                <div className="flex flex-col items-start" key={`time_${i}`}>
+                  {x}
+                </div>
+              ))}
             </div>
             <Separator className="mb-1 md:hidden" />
             <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">

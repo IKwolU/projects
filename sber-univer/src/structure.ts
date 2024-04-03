@@ -1,6 +1,7 @@
-const x = [
+export default [
   {
     id: 1,
+    coords: { x: 22, y: 22 },
     locationName: "Главный корпус 1 этаж",
     timestamps: {
       "00:00": "glavkorp/floor1/0.jpg",
@@ -37,6 +38,7 @@ const x = [
   },
   {
     id: 2,
+    coords: { x: 44, y: 44 },
     locationName: "Главный корпус 2 этаж",
     timestamps: {
       "00:00": "glavkorp/floor2/0.jpg",
@@ -55,6 +57,7 @@ const x = [
   },
   {
     id: 3,
+    coords: { x: 44, y: 44 },
     locationName: "Главный корпус 3 этаж",
     timestamps: {
       "00:12": "glavkorp/floor3/0.jpg",
@@ -73,6 +76,7 @@ const x = [
   },
   {
     id: 4,
+    coords: { x: 44, y: 44 },
     locationName: "Галерея",
     timestamps: {
       "01:29": "gallery/0.jpg",
@@ -96,6 +100,7 @@ const x = [
   },
   {
     id: 5,
+    coords: { x: 44, y: 44 },
     locationName: "Гостиничные корпуса",
     timestamps: {
       "00:55": "guest/0.jpg",
@@ -110,6 +115,7 @@ const x = [
   },
   {
     id: 6,
+    coords: { x: 44, y: 44 },
     locationName: "Лабиринт",
     timestamps: {
       "03:47": "maze/0.jpg",
@@ -130,6 +136,7 @@ const x = [
   },
   {
     id: 7,
+    coords: { x: 44, y: 44 },
     locationName: "Центральный парк",
     timestamps: {
       "00:00": "park/0.jpg",
@@ -150,6 +157,7 @@ const x = [
   },
   {
     id: 8,
+    coords: { x: 44, y: 44 },
     locationName: "Спортивный комплекс",
     timestamps: {
       "01:14": "sport/0.jpg",
@@ -166,6 +174,7 @@ const x = [
   },
   {
     id: 9,
+    coords: { x: 44, y: 44 },
     locationName: "Корпоративный центр 1 этаж",
     timestamps: {
       "00:15": "korpcenter/floor1/0.jpg",
@@ -182,6 +191,7 @@ const x = [
   },
   {
     id: 10,
+    coords: { x: 44, y: 44 },
     locationName: "Корпоративный центр 2 этаж",
     timestamps: {
       "00:15": "korpcenter/floor2/0.jpg",
@@ -197,6 +207,7 @@ const x = [
   },
   {
     id: 11,
+    coords: { x: 44, y: 44 },
     locationName: "Японский сад",
     timestamps: {
       "00:16": "japan/0.jpg",

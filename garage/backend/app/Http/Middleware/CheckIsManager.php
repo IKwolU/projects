@@ -24,7 +24,7 @@ class CheckIsManager
         }
         $key = Park::where('id', $manager->park_id)->select('API_key')->first()->API_key;
         $request->park_id = $manager->park_id;
-        $request->API_key = $key;
+        $request->key = $key;
 
         return $next($request);
     }

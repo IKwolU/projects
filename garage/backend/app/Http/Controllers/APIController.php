@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\ParserController;
 use App\Models\Referral;
 use App\Models\Schema;
+use App\Rules\WorkingHoursRule;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
@@ -213,6 +214,8 @@ class APIController extends Controller
      * @param \Illuminate\Http\Request $request Объект запроса с данными для создания подразделения
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
      */
+
+
     public function createParkDivision(Request $request)
     {
         $apiKey = $request->header('X-API-Key');
@@ -230,32 +233,7 @@ class APIController extends Controller
             'working_hours' => [
                 'required',
                 'array',
-                function ($attribute, $value, $fail) {
-                    $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                    foreach ($daysOfWeek as $day) {
-                        $found = false;
-                        foreach ($value as $workingDay) {
-                            if ($workingDay['day'] === $day) {
-                                $found = true;
-                                if (!isset($workingDay['start']['hours']) || !isset($workingDay['start']['minutes']) ||
-                                    !isset($workingDay['end']['hours']) || !isset($workingDay['end']['minutes']) ||
-                                    $workingDay['start']['hours'] < 0 || $workingDay['start']['hours'] > 23 ||
-                                    $workingDay['start']['minutes'] < 0 || $workingDay['start']['minutes'] > 59 ||
-                                    $workingDay['end']['hours'] < 0 || $workingDay['end']['hours'] > 23 ||
-                                    $workingDay['end']['minutes'] < 0 || $workingDay['end']['minutes'] > 59
-                                ) {
-                                    $fail('The ' . $attribute . ' field must have valid working hours for ' . $day . '.');
-                                    return;
-                                }
-                            }
-                        }
-                        if (!$found) {
-                            $fail('The ' . $attribute . ' field must contain ' . $day . ' working hours.');
-                            return;
-                        }
-                    }
-                },
-            ],
+                new WorkingHoursRule],
             'name' => [
                 'required',
                 'string',
@@ -394,31 +372,7 @@ class APIController extends Controller
             'timezone_difference' => 'integer',
             'working_hours' => [
                 'array',
-                function ($attribute, $value, $fail) {
-                    $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                    foreach ($daysOfWeek as $day) {
-                        $found = false;
-                        foreach ($value as $workingDay) {
-                            if ($workingDay['day'] === $day) {
-                                $found = true;
-                                if (!isset($workingDay['start']['hours']) || !isset($workingDay['start']['minutes']) ||
-                                    !isset($workingDay['end']['hours']) || !isset($workingDay['end']['minutes']) ||
-                                    $workingDay['start']['hours'] < 0 || $workingDay['start']['hours'] > 23 ||
-                                    $workingDay['start']['minutes'] < 0 || $workingDay['start']['minutes'] > 59 ||
-                                    $workingDay['end']['hours'] < 0 || $workingDay['end']['hours'] > 23 ||
-                                    $workingDay['end']['minutes'] < 0 || $workingDay['end']['minutes'] > 59
-                                ) {
-                                    $fail('The ' . $attribute . ' field must have valid working hours for ' . $day . '.');
-                                    return;
-                                }
-                            }
-                        }
-                        if (!$found) {
-                            $fail('The ' . $attribute . ' field must contain ' . $day . ' working hours.');
-                            return;
-                        }
-                    }
-                },
+                new WorkingHoursRule
             ],
             'name' => [
                 'required',
@@ -434,7 +388,6 @@ class APIController extends Controller
             return response()->json(['message' => 'Validation error', 'errors' => $validator->errors()], 400);
         }
 
-        // Update the division with the provided data
         $division = Division::where('id', $request->id)->where('park_id', $park->id)->first();
         if ($request->coords) {
             $division->coords = $request->coords;
@@ -1073,7 +1026,7 @@ class APIController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="errors", type="object", example={
      *                 "rent_term_id": {"Поле rent_term_id обязательно для заполнения и должно быть целым числом."},
-     *                 "id": {"Поле id обязательно для заполнения и должно быть целым числом."}
+     *                 "id": {"Поле id обязательно для заполнения и должно быть строкой."}
      *             })
      *         )
      *     ),
@@ -1116,7 +1069,6 @@ class APIController extends Controller
          $rentTerm = RentTerm::where('id', $rentTermId)
              ->where('park_id', $park->id)
              ->first();
-         $schema = Schema::where('rent_term_id', $rentTerm->id)->orderBy('daily_amount', 'asc')->select('daily_amount')->first();
          if (!$rentTerm) {
              return response()->json(['message' => 'Условие аренды не найдено'], 404);
          }

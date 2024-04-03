@@ -324,12 +324,14 @@ class ManagerController extends Controller
      */
     public function pushCarsManager(Request $request)
     {
+        $newCars = [];
         foreach ($request->cars as $car) {
-            $car->transmission_type=TransmissionType::{$car->transmission_type}->value;
-            $car->fuel_type=FuelType::{$car->fuel_type}->value;
-            $car->class=CarClass::{$car->car_class}->value;
-            unset($car->car_class);
+            $car['transmission_type']=TransmissionType::{$car['transmission_type']}->value;
+            $car['fuel_type']=FuelType::{$car['fuel_type']}->value;
+            $car['class']=CarClass::{$car['car_class']}->value;
+            $newCars[] = $car;
         }
+        $request->merge(['cars' => $newCars]);
         return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
     }
 
@@ -391,8 +393,10 @@ class ManagerController extends Controller
      */
     public function updateCarManager(Request $request)
     {
-        $request->fuel_type=FuelType::{$car->fuel_type}->value;
-        $request->class=CarClass::{$car->car_class}->value;
+        $request->merge([
+            'fuel_type'=>FuelType::{$request->fuel_type}->value,
+            'class'=>CarClass::{$request->car_class}->value
+        ]);
         return $this->callRouteWithApiKey('/cars', 'PUT', $request->all(), $request->key);
     }
 
@@ -521,7 +525,7 @@ class ManagerController extends Controller
      */
     public function updateCarStatusManager(Request $request)
     {
-        $request->status=CarStatus::{$car->status}->value;
+        $request->merge(['status'=>CarStatus::{$request->status}->value]);
         return $this->callRouteWithApiKey('/cars/status', 'PUT', $request->all(), $request->key);
     }
 
@@ -977,7 +981,7 @@ class ManagerController extends Controller
      */
     public function updateCarBookingStatusManager(Request $request)
     {
-        $request->car_id = $request->vin;
+        $request->merge(['car_id' => $request->vin ]);
         return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
     }
 
@@ -1043,7 +1047,7 @@ class ManagerController extends Controller
      */
     public function BookProlongationManager(Request $request)
     {
-        $request->car_id = $request->vin;
+        $request->merge(['car_id' => $request->vin]);
         return $this->callRouteWithApiKey('/cars/booking/prolongation', 'PUT', $request->all(), $request->key);
     }
 
@@ -1109,8 +1113,10 @@ class ManagerController extends Controller
      */
     public function BookReplaceManager(Request $request)
     {
-        $request->car_id = $request->vin;
-        $request->new_car_id = $request->new_vin;
+        $request->merge([
+            'car_id' => $request->vin,
+            'new_car_id' => $request->new_vin
+        ]);
         return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
     }
 

@@ -275,13 +275,13 @@ class ManagerController extends Controller
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="string", maxLength=17, description="VIN-номер автомобиля"),
      *                     @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
-     *                     @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
-     *                     @OA\Property(property="transmission_type", type="integer", description="КПП ТС (1 - автомат, 0 - механика)"),
+     *                     @OA\Property(property="fuel_type", type="string", description="Тип топлива",ref="#/components/schemas/FuelType"),
+     *                     @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
      *                     @OA\Property(property="brand", type="string", maxLength=50, description="Бренд автомобиля"),
      *                     @OA\Property(property="model", type="string", maxLength=80, description="Модель автомобиля"),
      *                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
      *                     @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
-     *                     @OA\Property(property="class", type="integer", description="Тариф автомобиля (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *                     @OA\Property(property="car_class", type="array", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",@OA\Items(ref="#/components/schemas/CarClass"))
      *                     @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
      *                     @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на фотографии автомобиля"),
      *                 )
@@ -324,6 +324,12 @@ class ManagerController extends Controller
      */
     public function pushCarsManager(Request $request)
     {
+        foreach ($request->cars as $car) {
+            $car->transmission_type=TransmissionType::{$car->transmission_type}->value;
+            $car->fuel_type=FuelType::{$car->fuel_type}->value;
+            $car->class=CarClass::{$car->car_class}->value;
+            unset($car->car_class);
+        }
         return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
     }
 
@@ -341,9 +347,9 @@ class ManagerController extends Controller
      *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
      *             @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
      *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
-     *             @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
+     *             @OA\Property(property="fuel_type", type="string", description="Тип топлива",ref="#/components/schemas/FuelType"),
      *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
-     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *             @OA\Property(property="car_class", type="array", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",@OA\Items(ref="#/components/schemas/CarClass"))
      *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
      *         )
      *     ),
@@ -385,6 +391,8 @@ class ManagerController extends Controller
      */
     public function updateCarManager(Request $request)
     {
+        $request->fuel_type=FuelType::{$car->fuel_type}->value;
+        $request->class=CarClass::{$car->car_class}->value;
         return $this->callRouteWithApiKey('/cars', 'PUT', $request->all(), $request->key);
     }
 
@@ -465,7 +473,7 @@ class ManagerController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер автомобиля"),
-     *             @OA\Property(property="status", type="integer", description="Допуск автомобиля к бронированию. 1 - допущен, 0 - заблокирован")
+     *             @OA\Property(property="status", type="integer", description="Допуск автомобиля к бронированию. 1 - допущен, 0 - заблокирован",ref="#/components/schemas/CarStatus")
      *         )
      *     ),
      *     @OA\Response(
@@ -513,6 +521,7 @@ class ManagerController extends Controller
      */
     public function updateCarStatusManager(Request $request)
     {
+        $request->status=CarStatus::{$car->status}->value;
         return $this->callRouteWithApiKey('/cars/status', 'PUT', $request->all(), $request->key);
     }
 
@@ -696,7 +705,7 @@ class ManagerController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",ref="#/components/schemas/CarClass"),
      *             @OA\Property(property="city", type="string", description="Город тарифа"),
      *             @OA\Property(property="has_caused_accident", type="bool", description="Участие в ДТП, true/false"),
      *             @OA\Property(property="experience", type="integer", description="Минимальный опыт вождения"),
@@ -751,6 +760,7 @@ class ManagerController extends Controller
      */
     public function createTariffManager(Request $request)
     {
+        $request->class=CarClass::{$car->class}->value;
         return $this->callRouteWithApiKey('/parks/tariff', 'POST', $request->all(), $request->key);
     }
 
@@ -917,7 +927,7 @@ class ManagerController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="car_id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="vin", type="string", description="VIN-номер автомобиля"),
      *             @OA\Property(property="status", type="string", description="Статус бронирования: UnBooked - бронь снята и авто может быть доступно к бронированию, RentStart - автомобиль выдан водителю в аренду, RentOver - аренда авто закончена и авто может быть доступно к бронированию", ref="#/components/schemas/BookingStatus")
 
      * )
@@ -967,6 +977,7 @@ class ManagerController extends Controller
      */
     public function updateCarBookingStatusManager(Request $request)
     {
+        $request->car_id = $request->vin;
         return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
     }
 
@@ -983,7 +994,7 @@ class ManagerController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="car_id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="vin", type="string", description="VIN-номер автомобиля"),
      *             @OA\Property(property="hours", type="integer", description="Время в часах, на которое нужно продлить бронь")
 
      * )
@@ -1032,6 +1043,7 @@ class ManagerController extends Controller
      */
     public function BookProlongationManager(Request $request)
     {
+        $request->car_id = $request->vin;
         return $this->callRouteWithApiKey('/cars/booking/prolongation', 'PUT', $request->all(), $request->key);
     }
 
@@ -1048,8 +1060,8 @@ class ManagerController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="car_id", type="string", description="VIN-номер текущего автомобиля"),
-     *             @OA\Property(property="new_car_id", type="string", description="VIN-номер нового автомобиля")
+     *             @OA\Property(property="vin", type="string", description="VIN-номер текущего автомобиля"),
+     *             @OA\Property(property="new_vin", type="string", description="VIN-номер нового автомобиля")
 
      * )
      *     ),
@@ -1097,6 +1109,8 @@ class ManagerController extends Controller
      */
     public function BookReplaceManager(Request $request)
     {
+        $request->car_id = $request->vin;
+        $request->new_car_id = $request->new_vin;
         return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
     }
 

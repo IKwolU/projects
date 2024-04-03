@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Enums\UserType;
 use App\Models\Manager;
+use App\Models\Park;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,9 @@ class CheckIsManager
         if (!$manager) {
             return response()->json(['Менеджер не найден'], 404);
         }
+        $key = Park::where('id', $manager->park_id)->select('API_key')->first()->API_key;
         $request->park_id = $manager->park_id;
+        $request->API_key = $key;
 
         return $next($request);
     }

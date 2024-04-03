@@ -584,7 +584,7 @@ class APIController extends Controller
      *
      * @OA\Put(
      *     path="/parks/tariff",
-     *     operationId="upfateTariff",
+     *     operationId="updateTariff",
      *     summary="Обновление требований к кандидатам",
      *     tags={"API"},
      *     security={{"api_key": {}}},
@@ -1654,7 +1654,8 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
             $car->save();
             return response()->json(['message' => 'Замена авто прошла успешно'], 200);
 
-    }/**
+    }
+    /**
      * Пролонгация брони
      *
      * Этот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.

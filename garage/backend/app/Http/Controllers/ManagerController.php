@@ -251,9 +251,861 @@ class ManagerController extends Controller
      * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор автомобиля для отмены бронирования
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
+
     public function getParkKey(Request $request)
     {
         $key = Park::where('id', $request->park_id)->select('API_key')->first();
         return response()->json($key, 200);
+    }
+
+    /**
+     * Добавить несколько автомобилей
+     *
+     * @OA\Post(
+     *     path="/manager/cars",
+     *     operationId="pushCarsManager",
+     *     summary="Добавить несколько автомобилей, все добавленные автомобили будут доступны к бронированию сразу после привязки к ним Условий бронирования (метод: /cars/rent-term). Выполнение метода возможно только после выполнения методов: обновление информации о парке, создание подразделения, создание тарифа. Статус допуска в бронированию по умолчанию будет 'допущено'",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="cars",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="string", maxLength=17, description="VIN-номер автомобиля"),
+     *                     @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
+     *                     @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
+     *                     @OA\Property(property="transmission_type", type="integer", description="КПП ТС (1 - автомат, 0 - механика)"),
+     *                     @OA\Property(property="brand", type="string", maxLength=50, description="Бренд автомобиля"),
+     *                     @OA\Property(property="model", type="string", maxLength=80, description="Модель автомобиля"),
+     *                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *                     @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
+     *                     @OA\Property(property="class", type="integer", description="Тариф автомобиля (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *                     @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
+     *                     @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на фотографии автомобиля"),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное добавление автомобилей",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобили успешно добавлены")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Неверные или недостающие параметры в запросе"),
+     *             @OA\Property(property="errors", type="object", nullable=true, description="Список ошибок валидации")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий информацию о добавляемых автомобилях
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом добавления автомобилей
+     */
+    public function pushCarsManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление информации о машине
+     *
+     * @OA\Put(
+     *     path="/manager/cars",
+     *     operationId="updateCarManager",
+     *     summary="Обновление информации о машине",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
+     *             @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
+     *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *             @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
+     *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
+     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление информации о машине",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Машина успешно обновлена")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "id": {"Поле id обязательно для заполнения."},
+     *                 "city": {"Поле city должно быть строкой."}
+     *             })
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий информацию об обновляемой машине
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом обновления информации о машине
+     */
+    public function updateCarManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление условия аренды для автомобиля
+     *
+     * Этот метод позволяет обновлять условие аренды для конкретного автомобиля по его VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/manager/cars/rent-term",
+     *     operationId="updateCarRentTermManager",
+     *     summary="Обновление условия аренды для автомобиля",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="rent_term_id", type="integer", description="Идентификатор условия аренды")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление условия аренды для автомобиля",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Условие аренды успешно обновлено для автомобиля")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "rent_term_id": {"Поле rent_term_id обязательно для заполнения и должно быть целым числом."},
+     *                 "id": {"Поле id обязательно для заполнения и должно быть целым числом."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Условие аренды или автомобиль не найдены",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Условие аренды или автомобиль не найдены")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function updateCarRentTermManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars/rent-term', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление статуса допуска к бронированию автомобиля
+     *
+     * @OA\Put(
+     *     path="/manager/cars/status",
+     *     operationId="updateCarStatusManager",
+     *     summary="Обновление статуса допуска к бронированию",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер автомобиля"),
+     *             @OA\Property(property="status", type="integer", description="Допуск автомобиля к бронированию. 1 - допущен, 0 - заблокирован")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление статуса автомобиля",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Статус автомобиля успешно обновлен")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "id": {"Поле id обязательно для заполнения."},
+     *                 "status": {"Поле status должно быть числом."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Конфликт",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль сейчас забронирован, изменение статуса невозможно")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий информацию об обновляемом статусе автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом обновления статуса автомобиля
+     */
+    public function updateCarStatusManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars/status', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Создание или обновление условий аренды
+     *
+     * Этот метод позволяет создавать новые или обновлять существующие условия аренды для парков.
+     *
+     * @OA\Post(
+     *     path="/manager/parks/rent-terms",
+     *     operationId="createOrUpdateRentTermManager",
+     *     summary="Создание или обновление условий аренды",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="rent_term_id", type="integer", nullable=true, description="Идентификатор существующего условия аренды (для обновления)"),
+     *             @OA\Property(property="deposit_amount_daily", type="number", description="Сумма ежедневного залога"),
+     *             @OA\Property(property="deposit_amount_total", type="number", description="Общая сумма залога"),
+     *             @OA\Property(property="is_buyout_possible", type="boolean", description="Возможность выкупа (true/false)"),
+     *             @OA\Property(property="minimum_period_days", type="integer", description="Минимальный период аренды в днях"),
+     *             @OA\Property(property="name", type="string", description="Название условия аренды"),
+     *             @OA\Property(
+     *                 property="schemas",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="daily_amount", type="number", format="float", description="Стоимость аренды авто"),
+     *                     @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),
+     *                     @OA\Property(property="working_days", type="integer", description="Количество рабочих дней")
+     *                 ),
+     *                 description="Схемы аренды"
+     *             ),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное создание или обновление условий аренды",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Условие аренды успешно создано или изменено"),
+     *             @OA\Property(property="id", type="integer", example="Идентификатор условия аренды")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "deposit_amount_daily": {"Поле deposit_amount_daily обязательно для заполнения и должно быть числом."},
+     *                 "deposit_amount_total": {"Поле deposit_amount_total обязательно для заполнения и должно быть числом."},
+     *                 "is_buyout_possible": {"Поле is_buyout_possible обязательно для заполнения и должно быть булевым значением."},
+     *                 "minimum_period_days": {"Поле minimum_period_days обязательно для заполнения и должно быть целым числом."},
+     *                 "name": {"Поле name обязательно для заполнения и должно быть строкой."},
+     *                 "schemas": {"Поле schemas обязательно для заполнения и должно быть массивом строк."},
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Парк с указанным API ключом не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Парк не найден")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для создания или обновления условий аренды
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function createOrUpdateRentTermManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks/rent-terms', 'POST', $request->all(), $request->key);
+    }
+
+    /**
+     * Создание подразделения парка
+     *
+     * Этот метод позволяет создавать подразделение в парке.
+     *
+     * @OA\Post(
+     *     path="/manager/parks/division",
+     *     operationId="createParkDivisionManager",
+     *     summary="Создание подразделения парка",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="city", type="string", description="Город подразделения"),
+     *             @OA\Property(property="coords", type="string", description="Координаты подразделения"),
+     *             @OA\Property(property="address", type="string", description="Адрес подразделения"),
+     *             @OA\Property(property="metro", type="string", description="Название ближайшего метро"),
+     *             @OA\Property(property="name", type="string", description="Название подразделения"),
+     *             @OA\Property(property="phone", type="string", description="Телефон парка"),
+     *             @OA\Property(property="timezone_difference", type="integer", description="Часовой пояс, разница во времени с +0"),
+     *             @OA\Property(
+     *                 property="working_hours",
+     *                 type="array",
+     *                 description="Расписание работы парка",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
+     *                     @OA\Property(
+     *                         property="start",
+     *                         type="object",
+     *                         description="Время начала работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="end",
+     *                         type="object",
+     *                         description="Время окончания работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное создание подразделения",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Подразделение создано"),
+     *             @OA\Property(property="id", type="integer", example="Идентификатор созданного подразделения")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Неверный ключ авторизации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка валидации"),
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "city": {"Поле city обязательно для заполнения и должно быть строкой."},
+     *                 "coords": {"Поле coords обязательно для заполнения и должно быть строкой."},
+     *                 "address": {"Поле address обязательно для заполнения и должно быть строкой."},
+     *                 "name": {"Поле name обязательно для заполнения и должно быть строкой."},
+     *             })
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для создания подразделения
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function createParkDivisionManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks/division', 'POST', $request->all(), $request->key);
+    }
+
+    /**
+     * Требования к кандидатам
+     *
+     * Этот метод позволяет создавать новые тарифы авто с критериями блокерами для парков. В одном городе для парка может быть толкьо один тариф заданного класса.
+     *
+     * @OA\Post(
+     *     path="/manager/parks/tariff",
+     *     operationId="createTariffManager",
+     *     summary="Требования к кандидатам",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *             @OA\Property(property="city", type="string", description="Город тарифа"),
+     *             @OA\Property(property="has_caused_accident", type="bool", description="Участие в ДТП, true/false"),
+     *             @OA\Property(property="experience", type="integer", description="Минимальный опыт вождения"),
+     *             @OA\Property(property="max_fine_count", type="integer", description="Максимальное количество штрафов"),
+     *             @OA\Property(property="abandoned_car", type="bool", description="Бросал ли машину, true/false"),
+     *             @OA\Property(property="min_scoring", type="integer", description="минимальный скоринг"),
+     *             @OA\Property(property="is_north_caucasus", type="bool", description="Права выданы в Северном Кавказе"),
+     *             @OA\Property(property="criminal_ids", type="array", description="Массив запрещенных республик", @OA\Items(type="string")),
+     *             @OA\Property(property="alcohol", type="bool", description="Принимает ли что-то водитель, алкоголь/иное, true/false")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное создание  тарифа",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Тариф успешно создан"),
+     *             @OA\Property(property="id", type="integer", example="Идентификатор тарифа")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Парк с указанным API ключом не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Парк не найден")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="В этом городе уже есть такой тариф",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="В этом городе уже есть такой тариф")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для создания или обновления условий аренды
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function createTariffManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks/tariff', 'POST', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление требований к кандидатам
+     *
+     * Этот метод позволяет обновлять тарифы авто с критериями блокерами для парков.
+     *
+     * @OA\Put(
+     *     path="/manager/parks/tariff",
+     *     operationId="updateTariffManager",
+     *     summary="Обновление требований к кандидатам",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", description="id тарифа"),
+     *             @OA\Property(property="has_caused_accident", nullable=true, type="bool", description="Участие в ДТП, true/false"),
+     *             @OA\Property(property="experience", type="integer", nullable=true, description="Минимальный опыт вождения"),
+     *             @OA\Property(property="max_fine_count", type="integer", nullable=true, description="Максимальное количество штрафов"),
+     *             @OA\Property(property="abandoned_car", type="bool", nullable=true, description="Бросал ли машину, true/false"),
+     *             @OA\Property(property="min_scoring", type="integer", nullable=true, description="минимальный скоринг"),
+     *             @OA\Property(property="is_north_caucasus", nullable=true, type="bool", description="Права выданы в Северном Кавказе"),
+     *             @OA\Property(property="criminal_ids", type="string", nullable=true, description="Массив запрещенных республик"),
+     *             @OA\Property(property="alcohol", type="bool", nullable=true, description="Принимает ли что-то водитель, алкоголь/иное, true/false")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление тарифа",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Тариф успешно обнолвен"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Парк с указанным API ключом не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Парк не найден")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для создания или обновления условий аренды
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function updateTariffManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks/tariff', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление подразделения парка
+     *
+     * Этот метод позволяет обновлять подразделение в парке.
+     *
+     * @OA\Put(
+     *     path="/manager/parks/division",
+     *     operationId="updateParkDivisionManager",
+     *     summary="Обновление подразделения парка",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", description="Идентификатор подразделения"),
+     *             @OA\Property(property="coords", type="string", description="Координаты подразделения"),
+     *             @OA\Property(property="address", type="string", description="Адрес подразделения"),
+     *             @OA\Property(property="metro", type="string", description="Название ближайшего метро" ),
+     *             @OA\Property(property="name", type="string", description="Название подразделения"),
+     *             @OA\Property(property="phone", type="string", description="Телефон парка"),
+     *             @OA\Property(property="timezone_difference", type="integer", description="Часовой пояс, разница во времени с +0"),
+     *             @OA\Property(
+     *                 property="working_hours",
+     *                 type="array",
+     *                 description="Расписание работы парка",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
+     *                     @OA\Property(
+     *                         property="start",
+     *                         type="object",
+     *                         description="Время начала работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="end",
+     *                         type="object",
+     *                         description="Время окончания работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление подразделения",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Подразделение успешно обновлено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Неверный ключ авторизации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка валидации"),
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "coords": {"Поле coords должно быть строкой."},
+     *                 "address": {"Поле address должно быть строкой."},
+     *                 "name": {"Поле name должно быть строкой и уникальным в пределах парка."},
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Подразделение не найдено",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Подразделение не найдено")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления подразделения
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function updateParkDivisionManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks/division', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Обновление статуса брони автомобиля
+     *
+     * Этот метод позволяет обновлять статус брони для конкретного автомобиля по его VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/manager/cars/booking",
+     *     operationId="updateCarBookingStatusManager",
+     *     summary="Обновление статуса брони автомобиля",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="status", type="string", description="Статус бронирования: UnBooked - бронь снята и авто может быть доступно к бронированию, RentStart - автомобиль выдан водителю в аренду, RentOver - аренда авто закончена и авто может быть доступно к бронированию", ref="#/components/schemas/BookingStatus")
+
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление статуса брони автомобиля",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="статуса брони автомобиля")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "status": {"Поле status обязательно для заполнения и должно быть строкой."},
+     *                 "id": {"Поле id обязательно для заполнения и должно быть строкой."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Автомобиль не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль не найден или бронирование не найдено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function updateCarBookingStatusManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Пролонгация брони
+     *
+     * Этот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/manager/cars/booking/prolongation",
+     *     operationId="BookProlongationManager",
+     *     summary="Пролонгация брони автомобиля",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="hours", type="integer", description="Время в часах, на которое нужно продлить бронь")
+
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Бронь продлена на hours ч.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "car_id": {"Поле car_id обязательно для заполнения и должно быть строкой."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Автомобиль не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль не найден или бронирование не найдено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function BookProlongationManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars/booking/prolongation', 'PUT', $request->all(), $request->key);
+    }
+
+    /**
+     * Замена забронированного авто
+     *
+     * Этот метод позволяет заменить один автообиль на другой в рамках текущей брони по VIN-номеру.
+     *
+     * @OA\Put(
+     *     path="/manager/cars/booking/replace",
+     *     operationId="BookReplaceManager",
+     *     summary="Замена забронированного авто",
+     *     tags={"Manager"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="string", description="VIN-номер текущего автомобиля"),
+     *             @OA\Property(property="new_car_id", type="string", description="VIN-номер нового автомобиля")
+
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Замена авто прошла успешно",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "car_id": {"Поле car_id обязательно для заполнения и должно быть строкой."}
+     *             })
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Автомобиль не найден",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Автомобиль не найден или бронирование не найдено")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function BookReplaceManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
+    }
+
+    private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
+    {
+        $subRequest = Request::create($url, $method, $requestData);
+        $subRequest->headers->set('X-API-key', $apiKey);
+        $response = app()->handle($subRequest);
+
+        return $response;
     }
 }

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
 use Illuminate\Support\Facades\URL;
+use TCG\Voyager\Facades\Voyager;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

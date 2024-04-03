@@ -41,9 +41,6 @@ Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
 Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::get('manager/park', [ManagerController::class, 'getParkManager']);
     Route::get('manager/park/key', [ManagerController::class, 'getParkKey']);
-});
-
-Route::group(['middleware' => 'api.key'], function () {
     Route::post('manager/cars', [ManagerController::class, 'pushCarsManager']);
     Route::put('manager/cars', [ManagerController::class, 'updateCarManager']);
     Route::put('manager/cars/rent-term', [ManagerController::class, 'updateCarRentTermManager']);

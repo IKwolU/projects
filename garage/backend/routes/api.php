@@ -22,8 +22,8 @@ use PHPUnit\Framework\Attributes\Group;
 */
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('auth/cars/booking', [CarsController::class, 'Book']);
-    Route::post('auth/cars/cancel-booking', [CarsController::class, 'cancelBooking']);
+    Route::post('auth/cars/booking', [DriverController::class, 'Book']);
+    Route::post('auth/cars/cancel-booking', [DriverController::class, 'cancelBooking']);
     Route::post('user/logout', [AuthController::class, 'logout']);
     Route::delete('user', [AuthController::class, 'DeleteUser']);
     Route::get('user', [AuthController::class, 'GetUser']);
@@ -31,15 +31,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('admin/parks', [AdminController::class, 'getParks']);
     Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
-    Route::put('admin/parks', [AdminController::class, 'changePark']);
-    Route::post('admin/parks', [AdminController::class, 'createPark']);
+    Route::post('admin/park', [AdminController::class, 'createPark']);
 });
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
-Route::post('cars/brand-park-list', [CarsController::class, 'getFinderFilterData']);
+Route::post('cars/app-data', [DriverController::class, 'getFinderFilterData']);
 Route::get('car', [CarsController::class, 'GetCar']);
 Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
-
 Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::get('manager/park', [ManagerController::class, 'getParkManager']);
     Route::get('manager/park/key', [ManagerController::class, 'getParkKey']);

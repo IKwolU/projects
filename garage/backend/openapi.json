@@ -1962,80 +1962,6 @@
                         }
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Создать парк",
-                "description": "Создать парк",
-                "operationId": "createPark",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "description": "Имя парка",
-                                        "type": "string"
-                                    },
-                                    "manager_phone": {
-                                        "description": "Телефон менеджера",
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Успешный ответ",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "park": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "description": "id парка",
-                                                        "type": "integer"
-                                                    },
-                                                    "park_name": {
-                                                        "description": "Название парка",
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Внутренняя ошибка сервера",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
             }
         },
         "admin/park": {
@@ -2314,6 +2240,80 @@
                                                             },
                                                             "type": "object"
                                                         }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Создать парк",
+                "description": "Создать парк",
+                "operationId": "createPark",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Имя парка",
+                                        "type": "string"
+                                    },
+                                    "manager_phone": {
+                                        "description": "Телефон менеджера",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "park": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "id парка",
+                                                        "type": "integer"
+                                                    },
+                                                    "park_name": {
+                                                        "description": "Название парка",
+                                                        "type": "string"
                                                     }
                                                 },
                                                 "type": "object"
@@ -3175,6 +3175,75 @@
                 ]
             }
         },
+        "/driver/upload-file": {
+            "post": {
+                "tags": [
+                    "Files"
+                ],
+                "summary": "Загрузить файл",
+                "description": "Загрузить файл и связать его с документами водителя аутентифицированного пользователя",
+                "operationId": "uploadFile",
+                "requestBody": {
+                    "description": "Файл для загрузки",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "Файл для загрузки",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "driverDocumentType": {
+                                        "$ref": "#/components/schemas/DriverDocumentType"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Файл успешно загружен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Недопустимый тип файла"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/auth/cars/booking": {
             "post": {
                 "tags": [
@@ -3507,7 +3576,7 @@
                 ]
             }
         },
-        "/cars/brand-park-list": {
+        "/cars/app-data": {
             "post": {
                 "tags": [
                     "Cars"
@@ -3568,75 +3637,6 @@
                         }
                     }
                 }
-            }
-        },
-        "/driver/upload-file": {
-            "post": {
-                "tags": [
-                    "Files"
-                ],
-                "summary": "Загрузить файл",
-                "description": "Загрузить файл и связать его с документами водителя аутентифицированного пользователя",
-                "operationId": "uploadFile",
-                "requestBody": {
-                    "description": "Файл для загрузки",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "file": {
-                                        "description": "Файл для загрузки",
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
-                                    "driverDocumentType": {
-                                        "$ref": "#/components/schemas/DriverDocumentType"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Файл успешно загружен",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "url": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Неверный запрос",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Недопустимый тип файла"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "manager/park": {

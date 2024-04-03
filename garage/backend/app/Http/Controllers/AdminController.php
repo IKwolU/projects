@@ -296,7 +296,7 @@ class AdminController extends Controller
      * Создать парк
      *
      * @OA\Post(
-     *     path="admin/parks",
+     *     path="admin/park",
      *     operationId="createPark",
      *     summary="Создать парк",
      *     tags={"Admin"},

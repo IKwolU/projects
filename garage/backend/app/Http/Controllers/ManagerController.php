@@ -281,9 +281,9 @@ class ManagerController extends Controller
      *                     @OA\Property(property="model", type="string", maxLength=80, description="Модель автомобиля"),
      *                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
      *                     @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
-     *                     @OA\Property(property="car_class", type="array", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",@OA\Items(ref="#/components/schemas/CarClass"))
+     *                     @OA\Property(property="car_class", type="string", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",ref="#/components/schemas/CarClass"),
      *                     @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
-     *                     @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на фотографии автомобиля"),
+     *                     @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на фотографии автомобиля")
      *                 )
      *             )
      *         )
@@ -349,7 +349,7 @@ class ManagerController extends Controller
      *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
      *             @OA\Property(property="fuel_type", type="string", description="Тип топлива",ref="#/components/schemas/FuelType"),
      *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
-     *             @OA\Property(property="car_class", type="array", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",@OA\Items(ref="#/components/schemas/CarClass"))
+     *             @OA\Property(property="car_class", type="string", description="Класс автомобиля (1 - Эконом, 2 - Комфорт, 3 - Комфорт+, 4 - Бизнес)",ref="#/components/schemas/CarClass"),
      *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
      *         )
      *     ),

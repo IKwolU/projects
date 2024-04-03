@@ -12,13 +12,10 @@ import {
   Body5,
   Body6,
   Division3,
-  Schemas,
   IDivisions2,
   DayOfWeek,
   IBody5,
   CarClass,
-  Rent_term,
-  IRent_term3,
   IRent_term,
 } from "./api-client";
 import { cityAtom, userAtom } from "./atoms";
@@ -27,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { DialogFooter } from "@/components/ui/dialog";
-import InputMask from "react-input-mask";
+import PhoneInput from "@/components/ui/phone-input";
 
 import {
   Dialog,
@@ -38,12 +35,7 @@ import {
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
-import {
-  getCarClassDisplayName,
-  getCarClassNumberFromName,
-  getCarClassRussName,
-  getDayOfWeekDisplayName,
-} from "@/lib/utils";
+import { getCarClassDisplayName, getDayOfWeekDisplayName } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -57,19 +49,6 @@ type MainMenuItem = {
   name: string;
   path: string;
 };
-
-function PhoneInput(props: any) {
-  return (
-    <InputMask
-      className="w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-      mask="+7 (999) 999-99-99"
-      value={props.value}
-      onChange={props.onChange}
-      type={"tel"}
-      placeholder={"+7 (999) 123-45-67"}
-    ></InputMask>
-  );
-}
 
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
@@ -116,17 +95,15 @@ export const ParkManager = () => {
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
       const getPark = async () => {
-        try {
-          const parkData: IPark2 = await client.getParkManager();
-          setPark(parkData.park);
-          setParkInfo({
-            ...parkData.park,
-            commission: parkData.park?.commission || 0,
-            about: parkData.park?.about || "",
-            url: parkData.park?.url || "",
-            self_employed_discount: parkData.park?.self_employed_discount || 0,
-          });
-        } catch (error) {}
+        const parkData: IPark2 = await client.getParkManager();
+        setPark(parkData.park);
+        setParkInfo({
+          ...parkData.park,
+          commission: parkData.park?.commission || 0,
+          about: parkData.park?.about || "",
+          url: parkData.park?.url || "",
+          self_employed_discount: parkData.park?.self_employed_discount || 0,
+        });
       };
 
       getPark();
@@ -134,86 +111,76 @@ export const ParkManager = () => {
   }, []);
 
   const createDivision = async ({ ...newDivision }: Division3) => {
-    try {
-      const newDivisionData = await client.createParkDivision(
-        new Body3({
+    const newDivisionData = await client.createParkDivision(
+      new Body3({
+        ...newDivision,
+      })
+    );
+    setPark({
+      ...park,
+
+      divisions: [
+        ...divisions,
+
+        {
           ...newDivision,
-        })
-      );
-      setPark({
-        ...park,
-
-        divisions: [
-          ...divisions,
-
-          {
-            ...newDivision,
-            id: newDivisionData.id,
-          },
-        ],
-      });
-    } catch (error) {}
+          id: newDivisionData.id,
+        },
+      ],
+    });
   };
 
   const createTariff = async ({ ...newTariff }: IBody5) => {
-    try {
-      const newTariffData = await client.createTariff(
-        new Body5({
+    const newTariffData = await client.createTariff(
+      new Body5({
+        ...newTariff,
+      })
+    );
+    setPark({
+      ...park,
+
+      tariffs: [
+        ...tariffs,
+
+        {
           ...newTariff,
-        })
-      );
-      setPark({
-        ...park,
-
-        tariffs: [
-          ...tariffs,
-
-          {
-            ...newTariff,
-            id: newTariffData.id,
-          },
-        ],
-      });
-    } catch (error) {}
+          id: newTariffData.id,
+        },
+      ],
+    });
   };
 
   const upsertRentTerm = async ({ ...newRentTerm }: IRent_term) => {
-    try {
-      const newTariffData = await client.createOrUpdateRentTerm(
-        new Body6({ ...newRentTerm })
-      );
+    const newTariffData = await client.createOrUpdateRentTerm(
+      new Body6({ ...newRentTerm })
+    );
 
-      setPark({
-        ...park,
-
-        rent_terms: [
-          ...rentTerms.filter((rent_term) =>
-            newRentTerm.rent_term_id
-              ? rent_term.id !== newRentTerm.rent_term_id
-              : rent_term
-          ),
-
-          {
-            ...newRentTerm,
-            id: newTariffData.id,
-          },
-        ],
-      });
-    } catch (error) {}
+    setPark({
+      ...park,
+      rent_terms: [
+        ...rentTerms.filter((rent_term) =>
+          newRentTerm.rent_term_id
+            ? rent_term.id !== newRentTerm.rent_term_id
+            : rent_term
+        ),
+        {
+          ...newRentTerm,
+          id: newTariffData.id,
+        },
+      ],
+    });
   };
 
   const updateParkInfo = async () => {
     {
-      try {
-        await client.updateParkInfo(
-          new Body({
-            ...parkInfo![0],
-            self_employed_discount: 0,
-          })
-        );
+      await client.updateParkInfo(
+        new Body({
+          ...parkInfo![0],
+          self_employed_discount: 0,
+        })
+      );
 
-        setPark({ ...park, ...parkInfo![0] });
-      } catch (error) {}
+      setPark({ ...park, ...parkInfo![0] });
     }
   };
 
@@ -257,8 +224,6 @@ export const ParkManager = () => {
       ],
     });
   };
-  const handlePhoneInput = ({ target: { value } }: any) =>
-    setNewDivisionPhone(value);
 
   const divisions = park!.divisions! as Divisions2[];
   const tariffs = park!.tariffs as Tariffs[];
@@ -466,12 +431,8 @@ export const ParkManager = () => {
               <div className="">
                 <h4>Телефон подразделения:</h4>
                 <PhoneInput
-                  className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-                  value={newDivisionPhone}
-                  onChange={handlePhoneInput}
-                  placeholder={"+7 (999) 123-45-67"}
-                  required
-                ></PhoneInput>
+                  onChange={(e) => setNewDivisionPhone(e.target.value)}
+                />
               </div>
               <div className="">
                 <h4>Время работы:</h4>
@@ -655,12 +616,8 @@ export const ParkManager = () => {
               <div className="">
                 <h4>Телефон подразделения:</h4>
                 <PhoneInput
-                  className="w-full h-12 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-                  value={newDivisionPhone}
-                  onChange={handlePhoneInput}
-                  placeholder={"+7 (999) 123-45-67"}
-                  required
-                ></PhoneInput>
+                  onChange={(e) => setNewDivisionPhone(e.target.value)}
+                />
               </div>
               <div className="">
                 <h4>Время работы:</h4>

@@ -6,6 +6,7 @@ import { userAtom } from "./atoms";
 import { useEffect } from "react";
 import Lottie from "react-lottie";
 import dataAnimation from "./assets/hourglass.json";
+import { getFormattedTimerValue } from "@/lib/utils";
 
 const Animation = () => {
   const defaultOptions = {
@@ -66,12 +67,7 @@ export const BookingTimer = () => {
       </div>
       <div className="flex flex-col mb-2 text-lg text-center sm:flex-row sm:items-center sm:gap-2">
         До конца бронирования осталось:{" "}
-        <span>
-          {!!days && `${days}д:`}
-          {(days !== 0 || minutes !== 0 || hours !== 0) &&
-            `${hours}ч:${minutes}м`}
-          {days === 0 && minutes === 0 && hours === 0 && `${seconds}c`}
-        </span>
+        <span>{getFormattedTimerValue(days, hours, minutes, seconds)}</span>
       </div>
       <div className="flex w-full mb-2 space-x-1 max-w-[300px]">
         {window.location.pathname !== "/bookings" && (

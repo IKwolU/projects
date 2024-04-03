@@ -6,7 +6,7 @@ import {
   TransmissionType,
 } from "../../src/api-client";
 import { twMerge } from "tailwind-merge";
-import { format } from "date-fns";
+import { format, formatDuration } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,6 +51,32 @@ export const formatRoubles = (amount: number) =>
 
 export function formatWorkingTime(hours: number, minutes: number) {
   return `${format(new Date(2000, 0, 0, hours, minutes), "HH:mm")}`;
+}
+
+export function getFormattedTimerValue(
+  days: number,
+  hours: number,
+  minutes: number,
+  seconds: number
+) {
+  const formattedDuration = formatDuration(
+    {
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+    },
+    {
+      format: ["days", "hours", "minutes", "seconds"],
+      delimiter: ".",
+    }
+  )
+    .replace(/days?/g, "д")
+    .replace(/hours?/g, "ч")
+    .replace(/minutes?/g, "м")
+    .replace(/seconds?/g, "с")
+    .replace(/\s/g, "");
+  return formattedDuration;
 }
 
 export const getDayOfWeekDisplayName = (day: DayOfWeek) => {

@@ -7,20 +7,7 @@ import { Body8, Body9 } from "./api-client";
 import React from "react";
 import { useTimer } from "react-timer-hook";
 import { useLocation } from "react-router-dom";
-import InputMask from "react-input-mask";
-
-function PhoneInput(props: any) {
-  return (
-    <InputMask
-      className="w-full h-12 p-4 px-3 py-2 mt-1 mb-4 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-      mask="+7 (999) 999-99-99"
-      value={props.value}
-      onChange={props.onChange}
-      type={"tel"}
-      placeholder={"+7 (999) 123-45-67"}
-    ></InputMask>
-  );
-}
+import PhoneInput from "@/components/ui/phone-input";
 
 export const DriverLogin = () => {
   const location = useLocation();
@@ -126,12 +113,7 @@ export const DriverLogin = () => {
 
         <div className="max-w-sm mx-auto">
           <Label className="text-lg">Введите ваш телефон</Label>
-          <PhoneInput
-            className="w-full h-10 p-4 px-3 py-2 mt-1 text-lg bg-white border rounded-md md:mt-2 border-slate-200 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-300"
-            value={phone}
-            onChange={handleInput}
-            placeholder={"+7 (999) 123-45-67"}
-          ></PhoneInput>
+          <PhoneInput onChange={handleInput} />
 
           {codeRequested && (
             <>

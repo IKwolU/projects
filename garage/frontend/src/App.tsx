@@ -130,14 +130,3 @@ const Menu = ({ user }: { user: User }) => (
     )}
   </div>
 );
-
-const ManagerLogin = () => (
-  <>
-    <h1>Manager login page</h1>
-  </>
-);
-const AdminLogin = () => (
-  <>
-    <h1>Admin login page</h1>
-  </>
-);

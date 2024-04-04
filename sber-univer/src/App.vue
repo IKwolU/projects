@@ -110,7 +110,7 @@ const onboardedx = localStorage.getItem("onboarded");
 
 <template>
 
-  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-screen h-screen p-8'">
+  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-full p-8'">
 
     <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 

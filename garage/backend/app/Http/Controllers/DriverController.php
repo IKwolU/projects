@@ -297,7 +297,7 @@ class DriverController extends Controller
         $workingHours = json_decode($car->division->working_hours, true);
 
 
-        $car->division->working_hours = $this->formattedWorkingHours($workingHours);
+        $car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
         $booked = $booking;
         $booked->status = BookingStatus::from($booked->status)->name;
         $booked->start_date = $booked->booked_at;

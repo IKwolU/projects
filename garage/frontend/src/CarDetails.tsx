@@ -34,9 +34,12 @@ import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
 import { useState } from "react";
+import BookingAlert from "./booking-alert";
 
 export const CarDetails = ({ car }: { car: Cars2 }) => {
   const [user, setUser] = useRecoilState(userAtom);
+  const [isBooked, setIsBooked] = useState(false);
+
   const [selectedSchema, setSelectedSchema] = useState(
     car.rent_term!.schemas![0]!.id
   );
@@ -91,7 +94,7 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
         ],
       })
     );
-    return navigate("bookings");
+    setIsBooked(true);
     // } else {
     //   navigate("account");
     // }
@@ -100,6 +103,7 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
 
   return (
     <div className="pb-10">
+      {isBooked && <BookingAlert />}
       {car.variants!.map((x: Variants, i: number) => (
         <div key={i} className="mb-2">
           <div
@@ -257,10 +261,10 @@ export const CarDetails = ({ car }: { car: Cars2 }) => {
                 {!!activeBooking && (
                   <div className="w-1/2 sm:max-w-[250px] relative">
                     <Confirmation
-                      title={`У вас есть активная бронь: {" "}
-                        ${activeBooking.car?.brand}{" "}
+                      title={`У вас есть активная бронь: 
+                        ${activeBooking.car?.brand}
                         ${activeBooking.car?.model}`}
-                      text={`Отменить и забронировать ${car.brand}} ${car.model}
+                      text={`Отменить и забронировать ${car.brand} ${car.model}
                    `}
                       type="green"
                       accept={book}

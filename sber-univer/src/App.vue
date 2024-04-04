@@ -80,7 +80,7 @@ const returnToMap = () => {
 
 const passOnboarding = () => {
   localStorage.setItem("onboarded", "true");
-  visitNearby(1);
+  window.location.reload();
 };
 
 const startTheJourney = (locationId: number = 1) => {
@@ -166,7 +166,7 @@ const onboardedx = localStorage.getItem("onboarded");
               <div v-bind:class="'w-full h-16 absolute bottom-0 bg-gradient-to-t from-white to-white/30'">
               </div>
 
-              <div v-bind:class="'h-44 overflow-y-scroll pb-4'">
+              <div v-bind:class="'max-h-44 overflow-y-scroll pb-4'">
                 <div v-for=" fact  in  activeLocation.facts " :key="fact"
                   v-bind:class="'text-slate-800 border-b border-b-lime-300 mb-5 text-sm pb-1'">
                   {{ fact }}
@@ -199,7 +199,10 @@ const onboardedx = localStorage.getItem("onboarded");
     'py-2': i !== 1,
   }">
                 <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLocId)?.icon"
-                  v-bind:class="'rounded w-8 h-8'" />
+                  v-bind:class="'rounded'" :class="{
+    ' w-8 h-8': i !== 1,
+    ' w-12 h-12': i === 1,
+  }" />
                 <div v-bind:class="'h-8 flex items-center'">
                   <div v-bind:class="'text-xs'">
                     {{ Locations.find((loc: LocationData) => loc.id === nearbyLocId)?.locationName }}

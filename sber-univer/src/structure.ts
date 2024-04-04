@@ -214,9 +214,10 @@ export default [
     coords: { x: 34, y: 24 },
     locationName: "Японский сад",
     timestamps: {
-      "00:16": "japan/0.jpg",
-      "01:21": "japan/1.jpg",
-      "01:27": "japan/1.jpg",
+      "00:00": "japan/0.jpg",
+      "00:16": "japan/1.jpg",
+      "01:21": "japan/2.jpg",
+      "01:27": "japan/3.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/011.%20%D0%AF%D0%BF%D0%BE%D0%BD%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%B0%D0%B4.mp3",
     facts: [

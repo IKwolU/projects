@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "SB Sans Display Semibold";
+  src: url("./assets/fonts/SB\ SANS\ DISPLAY\ SEMIBOLD.OTF") format("otf");
+}
+@font-face {
+  font-family: "SB Sans Display";
+  src: url("assets/fonts/SB SANS DISPLAY SEMIBOLD.OTF") format("otf");
+}
+@font-face {
+  font-family: "SB Sans Text";
+  src: url("assets/fonts/SB SANS TEXT.TTF") format("ttf");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src:  
+    url('assets/fonts/Gilroy-Regular.ttf') format('ttf'),
+    url('assets/fonts/Gilroy-Regular.woff') format('woff'),
+    url('assets/fonts/Gilroy-Regular.woff2') format('woff2'),
+    url('assets/fonts/Gilroy-Regular.svg') format('svg'),
+    url('assets/fonts/Gilroy-Regular.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+ 
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src:  
+    url('assets/fonts/Gilroy-Bold.ttf') format('ttf'),
+    url('assets/fonts/Gilroy-Bold.woff') format('woff'),
+    url('assets/fonts/Gilroy-Bold.woff2') format('woff2'),
+    url('assets/fonts/Gilroy-Bold.svg') format('svg'),
+    url('assets/fonts/Gilroy-Bold.eot') format('embedded-opentype'); 
+}
+
 html,
 body {
   background-color: white;
@@ -10,32 +47,58 @@ body {
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
- 
+  font-family: "Gilroy";
+  line-height: 1.5; 
+  font-weight: 500;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.text-display {
+  font-family: "SB Sans Display";
+}
+.text-regularx {
+  font-family: "SB Sans Text";
+}
+.text-bold {
+  font-family: "Gilroy-Bold"; 
+}
+
+.bg-green {
+  background-color: #4cc98d;
+}
+
+.bg-top {
+  background-image: url("assets/shablon-top.png");
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+.bg {
+  background-color: #eff3ff;
+  background-image: url("assets/shablon.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
 @layer base {
   h1 {
-    @apply mb-1 mb-4 text-xl font-bold;
+    @apply mb-1 mb-4 text-2xl text-bold;
   }
 
   h2 {
-    @apply mb-3 text-base font-semibold;
+    @apply mb-1 mb-3 text-xl text-bold;
   }
 
   h3 {
-    @apply mb-1 text-lg font-bold;
+    @apply mb-1 text-sm mb-3 text-bold;
   }
 
   p {
-    @apply text-sm font-medium;
+    @apply text-sm;
   }
 
   a {

@@ -6,6 +6,9 @@ module.exports = {
     ],
     prefix: "",
     theme: { 
+      fontFamily: {
+        sb: ["SB Sans Text", "sans-serif"],  
+      },
       extend: {
         typography: (theme) => ({
           DEFAULT: {

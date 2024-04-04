@@ -55,7 +55,7 @@ export default {
     <audio-player ref="audioPlayer" @timeupdate="handleTimeUpdate" :audio-list="audio" :show-prev-button="false"
         :show-volume-button="false" :show-next-button="false" 
         :show-playback-rate="false"
-        theme-color="#008c1e" />
+        theme-color="#0DB1DE" />
 
 </template>
 <style></style>

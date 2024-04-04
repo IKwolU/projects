@@ -1,7 +1,7 @@
 export default [
   {
     id: 1,
-    coords: { x: 44, y: 44 },
+    coords: { x: 31, y: 65 },
     locationName: "Главный корпус 1 этаж",
     mapLocationName: "Главный корпус",
     timestamps: {
@@ -77,7 +77,7 @@ export default [
   },
   {
     id: 4,
-    coords: { x: 44, y: 54 },
+    coords: { x: 20, y: 70 },
     locationName: "Галерея",
     timestamps: {
       "01:29": "gallery/0.jpg",
@@ -101,7 +101,7 @@ export default [
   },
   {
     id: 5,
-    coords: { x: 36, y: 80 },
+    coords: { x: 22, y: 80 },
     locationName: "Гостиничные корпуса",
     timestamps: {
       "00:00": "guest/0.jpg",
@@ -117,7 +117,7 @@ export default [
   },
   {
     id: 6,
-    coords: { x: 13, y: 71 },
+    coords: { x: 8, y: 73 },
     locationName: "Лабиринт",
     timestamps: {
       "00:00": "maze/0.jpg",
@@ -139,7 +139,7 @@ export default [
   },
   {
     id: 7,
-    coords: { x: 13, y: 65 },
+    coords: { x: 6, y: 59 },
     locationName: "Центральный парк",
     timestamps: {
       "00:00": "park/0.jpg",
@@ -160,7 +160,7 @@ export default [
   },
   {
     id: 8,
-    coords: { x: 23, y: 41 },
+    coords: { x: 21, y: 41 },
     locationName: "Спортивный комплекс",
     timestamps: {
       "01:14": "sport/0.jpg",
@@ -177,7 +177,7 @@ export default [
   },
   {
     id: 9, 
-    coords: { x: 54, y: 34 },
+    coords: { x: 55, y: 30 },
     locationName: "Корпоративный центр 1 этаж",
     mapLocationName: "Корпоративный центр",
     timestamps: {

@@ -104,7 +104,8 @@ export default [
     coords: { x: 36, y: 80 },
     locationName: "Гостиничные корпуса",
     timestamps: {
-      "00:55": "guest/0.jpg",
+      "00:00": "guest/0.jpg",
+      "00:55": "guest/1.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/005.%20%D0%93%D0%BE%D1%81%D1%82%D0%B8%D0%BD%D0%B8%D1%87%D0%BD%D1%8B%D0%B5%20%D0%BA%D0%BE%D1%80%D0%BF%D1%83%D1%81%D0%B0.mp3",
     facts: [
@@ -119,6 +120,7 @@ export default [
     coords: { x: 13, y: 71 },
     locationName: "Лабиринт",
     timestamps: {
+      "00:00": "maze/0.jpg",
       "03:47": "maze/0.jpg",
     },
     tips: {

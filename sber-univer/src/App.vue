@@ -35,6 +35,8 @@ function getImagePathByDecimalSeconds(seconds: number, imageDict): string {
 type LocationData = typeof Locations[0];
 
 const player = ref()
+
+const onboarded = ref()
 const previewedLocation = ref<LocationData | undefined>()
 const activeLocation = ref<LocationData | undefined>();
 
@@ -42,6 +44,9 @@ const currentImageUrl = ref()
 const blueBubbleExpanded = ref(false)
 
 onMounted(() => {
+  if (onboarded) {
+  }
+
   const urlParams = new URLSearchParams(window.location.search);
   const locationId = urlParams.get('id');
   if (locationId) {
@@ -49,7 +54,7 @@ onMounted(() => {
   }
 });
 
-const handleBlueBubbleClick = () => { 
+const handleBlueBubbleClick = () => {
   blueBubbleExpanded.value = !blueBubbleExpanded.value;
 };
 
@@ -73,6 +78,11 @@ const returnToMap = () => {
   currentImageUrl.value = undefined;
 };
 
+const passOnboarding = () => {
+  localStorage.setItem("onboarded", "true");
+  visitNearby(1);
+};
+
 const startTheJourney = (locationId: number = 1) => {
   const startingPoint = Locations.find(x => x.id === locationId)!;
   activeLocation.value = startingPoint;
@@ -93,91 +103,117 @@ const onTimeChanged = (time: number) => {
   }
 };
 
+
+const onboardedx = localStorage.getItem("onboarded");
+
 </script>
 
 <template>
-  <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full bg-white z-30'">
 
-    <div class="relative w-full h-60 bg-top">
-      <img v-for="(url, time) in activeLocation.timestamps" :key="time" v-bind:src="'assets/' + url" :class="{
+  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-screen h-screen p-16 space-y-4'">
+
+    <img src="/assets/white-logo-sber.svg" v-bind:class="'w-40 pt-[120%]'" />
+
+    <div v-bind:class="'text-2xl text-sb-display-semi-bold'">dadasdasda ad as da s asd asd
+    </div>
+    <div v-bind:class="' '">asd asd asd as dasdasd dasadashbdjasd
+      asdasudaisbdiabd aksdhabshdjbasd asdaasdasda
+    </div>
+
+    <div @click="passOnboarding"
+      v-bind:class="'w-48 bg-green rounded px-8 py-4 text-sb-display-semi-bold text-xl text-center cursor-pointer'">
+      Begin
+    </div>
+  </div>
+
+  <div v-if="onboardedx">
+
+    <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full bg-white z-30'">
+      <div class="relative w-full h-60 bg-top">
+        <img v-for="(url, time) in activeLocation.timestamps" :key="time" v-bind:src="'assets/' + url" :class="{
     'opacity-100 duration-500': currentImageUrl === url,
     'opacity-0 duration-1000': currentImageUrl !== url,
     'absolute top-0 left-0 transition-all w-full': true,
     'h-60 contain': true
   }" />
 
-      <div v-bind:class="'absolute w-full h-60 z-40 bg-top'" :class="{ '': true }"></div>
-      <!-- <img v-bind:src="'assets/shablon-top.png'" v-bind:class="'absolute bottom-0 z-40'" /> -->
-    </div>
+        <div v-bind:class="'absolute w-full h-60 z-40 bg-top'" :class="{ '': true }"></div>
+      </div>
 
-    <!-- <img v-bind:src="'assets/shablon.png'" v-bind:class="'rounded-md absolute top-0 z-40'" /> -->
+      <!-- <img v-bind:src="'assets/shablon.png'" v-bind:class="'rounded-md absolute top-0 z-40'" /> -->
 
-    <div v-bind:class="'px-8 z-50 bg pb-24 pt-12 text-center'" :class="{ '': true }">
+      <div v-bind:class="'px-8 z-50 bg pb-12 pt-12 text-center'" :class="{ '': true }">
 
-      <h1>{{ activeLocation.locationName }}</h1>
+        <h1>{{ activeLocation.locationName }}</h1>
 
-      <div v-bind:class="''">
-        <div v-bind:class="'mb-12'">
-          <AudioPlayer ref="player" v-on:onTimeChanged="onTimeChanged" :track-url="activeLocation.audio" />
-        </div>
-        <!-- <button @click="kek">rrrr</button> -->
+        <div v-bind:class="''">
+          <div v-bind:class="'mb-12'">
+            <AudioPlayer ref="player" v-on:onTimeChanged="onTimeChanged" :track-url="activeLocation.audio" />
+          </div>
+          <!-- <button @click="kek">rrrr</button> -->
 
-        <div v-bind:class="'rounded-xl p-4 pr-6 space-y-2 bg-white text-left'">
-          <h2>Знаете ли вы, что:</h2>
+          <div v-bind:class="'rounded-xl p-4 pr-6 space-y-2 bg-white text-left'">
+            <h2>Знаете ли вы, что:</h2>
 
-          <div v-bind:class="'relative'">
+            <div v-bind:class="'relative'">
 
-            <div v-bind:class="'w-full h-16 absolute bottom-0 bg-gradient-to-t from-white to-white/30'">
-            </div>
-
-            <div v-bind:class="'h-44 overflow-y-scroll pb-4'">
-              <div v-for=" fact  in  activeLocation.facts " :key="fact"
-                v-bind:class="'text-slate-800 border-b border-b-lime-300 mb-5 text-sm pb-1'">
-                {{ fact }}
+              <div v-bind:class="'w-full h-16 absolute bottom-0 bg-gradient-to-t from-white to-white/30'">
               </div>
-            </div>
-          </div>
 
-          <div v-bind:class="'rounded space-y-2'">
-            <h2>Вы на карте:</h2>
-            <img v-bind:src="activeLocation.miniMap" @click="returnToMap" v-bind:class="'rounded-md'" />
-          </div>
-        </div>
-
-
-
-
-        <div v-bind:class="'rounded space-y-2 mt-4'">
-          <div v-bind:class="'flex justify-between w-full'">
-            <h2>Локации рядом:</h2>
-            <span v-if="activeLocation.id !== 1" v-bind:class="'text-sm text-sky-400 underline'"
-              @click="startTheJourney()">К началу экскурсии</span>
-          </div>
-          <div v-bind:class="'flex space-between space-x-2'">
-            <div v-for=" nearbyLocId  in  activeLocation.nearbyLocations " :key="nearbyLocId"
-              @click="visitNearby(nearbyLocId)"
-              v-bind:class="'w-1/3 bg-white p-1 rounded-xl flex flex-col items-center justify-start'">
-              <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLocId)?.icon"
-                v-bind:class="'rounded w-8 h-8'" />
-              <div v-bind:class="'h-8 flex items-center'">
-                <div v-bind:class="'text-xs'">
-                  {{ Locations.find((loc: LocationData) => loc.id === nearbyLocId)?.locationName }}
+              <div v-bind:class="'h-44 overflow-y-scroll pb-4'">
+                <div v-for=" fact  in  activeLocation.facts " :key="fact"
+                  v-bind:class="'text-slate-800 border-b border-b-lime-300 mb-5 text-sm pb-1'">
+                  {{ fact }}
                 </div>
               </div>
+            </div>
 
+            <div v-bind:class="'rounded space-y-2'">
+              <h2>Вы на карте:</h2>
+              <img v-bind:src="activeLocation.miniMap" @click="returnToMap" v-bind:class="'rounded-md'" />
             </div>
           </div>
-        </div>
 
+
+
+
+          <div v-bind:class="'rounded space-y-2 mt-4'">
+            <div v-bind:class="'flex justify-between w-full'">
+              <h2>Локации рядом:</h2>
+              <span v-if="activeLocation.id !== 1" v-bind:class="'text-sm text-sky-400 underline'"
+                @click="startTheJourney()">К началу экскурсии</span>
+            </div>
+            <div v-bind:class="'flex space-between space-x-2 items-center'">
+              <div v-for=" (nearbyLocId, i)  in  activeLocation.nearbyLocations " :key="nearbyLocId"  
+                @click="visitNearby(nearbyLocId)"
+                v-bind:class="'bg-white p-1 rounded-xl flex flex-col items-center justify-start'" :class="{
+    'w-[40%]': i === 1,
+    'w-[30%]': i !== 1,
+    'py-4': i === 1,
+    'py-2': i !== 1,
+  }">
+                <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLocId)?.icon"
+                  v-bind:class="'rounded w-8 h-8'" />
+                <div v-bind:class="'h-8 flex items-center'">
+                  <div v-bind:class="'text-xs'">
+                    {{ Locations.find((loc: LocationData) => loc.id === nearbyLocId)?.locationName }}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
-  <div v-if="!activeLocation">
-    <img src="/assets/main-map.webp" alt="Map Image" style="position: relative; width: 100%;" />
+    <div v-if="!activeLocation" v-bind:class="'relative'">
+      <img src="/assets/white-logo-sber.svg" v-bind:class="'w-52 absolute top-5 left-5'" />
+      <img src="/assets/main-map.webp" style="width: 100%;" />
 
 
-    <div v-for=" bubble  in  Locations.filter(x => !!x.coords) " :key="bubble.locationName"
-      @click="handleBubbleClick(bubble)" :style="{
+      <div v-for=" bubble  in  Locations.filter(x => !!x.coords) " :key="bubble.locationName"
+        @click="handleBubbleClick(bubble)" :style="{
     position: 'absolute',
     left: bubble.coords!.x + '%',
     top: bubble.coords!.y + '%',
@@ -188,28 +224,28 @@ const onTimeChanged = (time: number) => {
     cursor: 'pointer'
   }" v-bind:class="'flex justify-center items-center'">
 
-      <div :class="{
+        <div :class="{
     'absolute top-0 left-0 py-1 pl-14 pr-6 rounded-full bg-green opacity-0 transition-all text-white border-2 border-white': true,
     'h-12 opacity-100 duration-300': previewedLocation?.id === bubble.id,
     'hidden': previewedLocation?.id !== bubble.id,
   }" v-bind:class="'text-center text-sb-display-semi-bold text-sm flex items-center'">
-        {{ bubble.mapLocationName || bubble.locationName }}
-      </div>
+          {{ bubble.mapLocationName || bubble.locationName }}
+        </div>
 
-      <div v-bind:class="'flex justify-center items-center bg-green w-11 h-11 rounded-full relative'">
-        <div v-bind:class="'flex justify-center items-center bg-white w-9 h-9 rounded-full'">
-          <div :class="{
+        <div v-bind:class="'flex justify-center items-center bg-green w-11 h-11 rounded-full relative'">
+          <div v-bind:class="'flex justify-center items-center bg-white w-9 h-9 rounded-full'">
+            <div :class="{
     [`bg-green w-7 h-7 rounded-full flex justify-center
            items-center text-white text-sb-display-bold`]: true
   }">
-            {{ bubble.id }}
+              {{ bubble.id }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
 
-    <div @click="handleBlueBubbleClick" :style="{
+      <div @click="handleBlueBubbleClick" :style="{
     position: 'absolute',
     left: '45%',
     top: '58%',
@@ -220,23 +256,29 @@ const onTimeChanged = (time: number) => {
     cursor: 'pointer'
   }" v-bind:class="'flex justify-center items-center'">
 
-      <div :class="{
+        <div :class="{
     'absolute top-0 left-0 py-1 pl-14 pr-6 rounded-full bg-cyan-400 opacity-0 transition-all text-white border-2 border-white': true,
     'h-12 opacity-100 duration-300': blueBubbleExpanded,
     'hidden': !blueBubbleExpanded,
   }" v-bind:class="'text-center text-sb-display-semi-bold text-sm flex items-center'">Мотивационная тропа
-      </div>
+        </div>
 
-      <div v-bind:class="'flex justify-center items-center bg-cyan-400 w-11 h-11 rounded-full relative'">
-        <div v-bind:class="'flex justify-center items-center bg-white w-9 h-9 rounded-full'">
-          <div :class="{
+        <div v-bind:class="'flex justify-center items-center bg-cyan-400 w-11 h-11 rounded-full relative'">
+          <div v-bind:class="'flex justify-center items-center bg-white w-9 h-9 rounded-full'">
+            <div :class="{
     [`bg-cyan-400 w-7 h-7 rounded-full flex justify-center
            items-center text-white text-sb-display-bold`]: true
   }">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
+      <div v-bind:class="'flex justify-center items-center bg-green p-4'">
+        <img src="/assets/white-logo-sber.svg" v-bind:class="'w-40'" />
+      </div>
+
+    </div>
   </div>
+
 </template>

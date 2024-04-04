@@ -90,6 +90,13 @@ body {
   background-repeat: no-repeat;
 }
 
+.bg-welcome {
+  background-color: #afe9df;
+  background-image: url("assets/welcome.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 @layer base {
   h1 {
     @apply mb-1 mb-4 text-xl text-sb-display-bold;

@@ -1,7 +1,7 @@
 export default [
   {
     id: 1,
-    coords: { x: 22, y: 22 },
+    coords: { x: 44, y: 44 },
     locationName: "Главный корпус 1 этаж",
     mapLocationName: "Главный корпус",
     timestamps: {
@@ -39,10 +39,8 @@ export default [
     icon: "glavkorp/glavkorp.svg",
   },
   {
-    id: 2,
-    coords: { x: 44, y: 44 },
-    locationName: "Главный корпус 2 этаж",
-    ignoreOnMap: true,
+    id: 2, 
+    locationName: "Главный корпус 2 этаж", 
     timestamps: {
       "00:00": "glavkorp/floor2/0.jpg",
       "00:19": "glavkorp/floor2/1.jpg",
@@ -59,10 +57,8 @@ export default [
     icon: "glavkorp/glavkorp.svg",
   },
   {
-    id: 3,
-    coords: { x: 44, y: 44 },
-    locationName: "Главный корпус 3 этаж",
-    ignoreOnMap: true,
+    id: 3, 
+    locationName: "Главный корпус 3 этаж", 
     timestamps: {
       "00:00": "glavkorp/floor3/0.jpg",
       "00:12": "glavkorp/floor3/1.jpg",
@@ -81,7 +77,7 @@ export default [
   },
   {
     id: 4,
-    coords: { x: 44, y: 44 },
+    coords: { x: 44, y: 54 },
     locationName: "Галерея",
     timestamps: {
       "01:29": "gallery/0.jpg",
@@ -105,7 +101,7 @@ export default [
   },
   {
     id: 5,
-    coords: { x: 44, y: 44 },
+    coords: { x: 36, y: 80 },
     locationName: "Гостиничные корпуса",
     timestamps: {
       "00:55": "guest/0.jpg",
@@ -120,7 +116,7 @@ export default [
   },
   {
     id: 6,
-    coords: { x: 44, y: 44 },
+    coords: { x: 13, y: 71 },
     locationName: "Лабиринт",
     timestamps: {
       "03:47": "maze/0.jpg",
@@ -141,7 +137,7 @@ export default [
   },
   {
     id: 7,
-    coords: { x: 44, y: 44 },
+    coords: { x: 13, y: 65 },
     locationName: "Центральный парк",
     timestamps: {
       "00:00": "park/0.jpg",
@@ -162,7 +158,7 @@ export default [
   },
   {
     id: 8,
-    coords: { x: 44, y: 44 },
+    coords: { x: 23, y: 41 },
     locationName: "Спортивный комплекс",
     timestamps: {
       "01:14": "sport/0.jpg",
@@ -178,8 +174,8 @@ export default [
     icon: "sport/sport.svg",
   },
   {
-    id: 9,
-    coords: { x: 44, y: 44 },
+    id: 9, 
+    coords: { x: 54, y: 34 },
     locationName: "Корпоративный центр 1 этаж",
     mapLocationName: "Корпоративный центр",
     timestamps: {
@@ -196,10 +192,8 @@ export default [
     icon: "korpcenter/floor1/korpcenter.svg",
   },
   {
-    id: 10,
-    coords: { x: 44, y: 44 },
-    locationName: "Корпоративный центр 2 этаж",
-    ignoreOnMap: true,
+    id: 10, 
+    locationName: "Корпоративный центр 2 этаж", 
     timestamps: {
       "00:15": "korpcenter/floor2/0.jpg",
       "00:54": "korpcenter/floor2/1.jpg",
@@ -214,7 +208,7 @@ export default [
   },
   {
     id: 11,
-    coords: { x: 44, y: 44 },
+    coords: { x: 34, y: 24 },
     locationName: "Японский сад",
     timestamps: {
       "00:16": "japan/0.jpg",

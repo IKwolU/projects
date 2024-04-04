@@ -35,6 +35,7 @@ function getImagePathByDecimalSeconds(seconds: number, imageDict): string {
 type LocationData = typeof Locations[0];
 
 const player = ref()
+const previewedLocation = ref<LocationData | undefined>()
 const activeLocation = ref<LocationData | undefined>();
 
 const currentImageUrl = ref()
@@ -51,8 +52,17 @@ onMounted(() => {
 });
 
 const handleBubbleClick = (location: LocationData) => {
-  activeLocation.value = location;
-  currentImageUrl.value = Object.values(location.timestamps)[0];
+  if (!previewedLocation.value || previewedLocation.value.id !== location.id) {
+    previewedLocation.value = location;
+    return;
+  }
+
+  if (previewedLocation.value.id === location.id) {
+    activeLocation.value = location;
+    currentImageUrl.value = Object.values(location.timestamps)[0];
+    return;
+  }
+
   // player.value.play()
 };
 
@@ -105,22 +115,25 @@ const onTimeChanged = (time: number) => {
 
         <div v-bind:class="'rounded p-4 space-y-2'">
           <h2>Вы на карте:</h2>
-          <img src="/assets/main-map.jpg" @click="handleMapClick" v-bind:class="'rounded h-32 rotate-90'" />
+          <img src="/assets/main-map.webp" @click="handleMapClick" v-bind:class="'rounded h-32 rotate-90'" />
         </div>
       </div>
 
 
 
 
-      <div v-bind:class="'rounded p-4 space-y-2'">
+      <div v-bind:class="'rounded space-y-2'">
         <div v-bind:class="'flex space-between'">
           <h2>Локации рядом:</h2>
           <div @click="returnToMap">К началу экскурсии</div>
         </div>
-        <div v-for="nearbyLoc in activeLocation.nearbyLocations" :key="nearbyLoc"
-          v-bind:class="'w-1/3 bg-red-300 flex justify-center flex-col items-center'">
-          <img src="/assets/main-map.jpg" @click="handleMapClick" v-bind:class="'rounded h-20'" />
-          <div> {{ Locations.find((loc: LocationData) => loc.id === nearbyLoc)?.locationName }}</div>
+        <div v-bind:class="'flex space-between space-x-2'">
+          <div v-for="nearbyLoc in activeLocation.nearbyLocations" :key="nearbyLoc"
+            v-bind:class="'w-1/3 bg-red-300 flex justify-center flex-col items-center'">
+            <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLoc)?.icon" @click="handleMapClick"
+              v-bind:class="'rounded h-20'" />
+            <div> {{ Locations.find((loc: LocationData) => loc.id === nearbyLoc)?.locationName }}</div>
+          </div>
         </div>
       </div>
 
@@ -129,16 +142,26 @@ const onTimeChanged = (time: number) => {
 
   </div>
   <div>
-    <img src="/assets/main-map.jpg" alt="Map Image" @click="handleMapClick" style="position: relative; width: 100%;" />
-    <div v-for="bubble in Locations" :key="bubble.locationName" @click="handleBubbleClick(bubble)" :style="{
+    <img src="/assets/main-map.webp" alt="Map Image" @click="handleMapClick" style="position: relative; width: 100%;" />
+    <div v-for="bubble in Locations.filter(x => !!x.coords)" :key="bubble.locationName"
+      @click="handleBubbleClick(bubble)" :style="{
     position: 'absolute',
-    left: bubble.coords.x + '%',
-    top: bubble.coords.y + '%',
-    width: '20px',
-    height: '20px',
-    background: 'red',
+    left: bubble.coords!.x + '%',
+    top: bubble.coords!.y + '%',
+    width: '30px',
+    height: '30px',
+    background: 'blue',
     borderRadius: '50%',
     cursor: 'pointer'
-  }"></div>
+  }">
+
+      <div :class="{
+    '-w-2 py-1 px-4 rounded-full bg-blue-200 opacity-0': true,
+    'w-40 opacity-100 transition-all duration-300': previewedLocation?.id === bubble.id,
+  }">
+        {{ bubble.locationName }}
+      </div>
+
+    </div>
   </div>
 </template>

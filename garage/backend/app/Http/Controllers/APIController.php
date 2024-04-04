@@ -100,9 +100,7 @@ class APIController extends Controller
     {
         $apiKey = $request->header('X-API-Key');
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
+
         $validator = Validator::make($request->all(), [
             'url' => 'string',
             'commission' => 'numeric',
@@ -220,9 +218,7 @@ class APIController extends Controller
     {
         $apiKey = $request->header('X-API-Key');
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
+
         $validator = Validator::make($request->all(), [
             'city' => 'required|string|max:250|exists:cities,name',
             'coords' => 'required|string',
@@ -361,9 +357,7 @@ class APIController extends Controller
     {
         $apiKey = $request->header('X-API-Key');
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer',
             'metro' => 'string',
@@ -911,15 +905,12 @@ class APIController extends Controller
         $apiKey = $request->header('X-API-Key');
 
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
 
         $validator = Validator::make($request->all(), [
             'cars' => 'required|array',
             'cars.*.division_id' => 'nullable|integer',
             'cars.*.mileage' => 'required|numeric',
-            'cars.*.license_plate' => 'required|string',
+            'cars.*.license_plate' => 'required|string|unique:cars,license_plate',
             'cars.*.fuel_type' => 'integer|max:1',
             'cars.*.transmission_type' => 'nullable|integer|max:1',
             'cars.*.brand' => [
@@ -981,13 +972,13 @@ class APIController extends Controller
             $car->brand = $carData['brand'] ?? null;
             $car->model = $carData['model'] ?? null;
 
-            if ($carData['class'] && $division) {
+            if ( isset($carData['class']) && $division) {
                 $car->tariff_id = $this->GetTariffId($park->id, $division->city_id, $carData['class']);
             }
 
             $car->year_produced = $carData['year_produced'];
             $car->car_id = $carData['id'];
-            $car->images = $carData['images'] ? json_encode($carData['images']) : null;
+            $car->images = isset($carData['images']) ? json_encode($carData['images']) : null;
             $car->status = 0;
             $car->park_id = $park->id;
             $car->save();
@@ -1132,18 +1123,24 @@ class APIController extends Controller
      *     summary="Обновление информации о машине",
      *     tags={"API"},
      *     security={{"api_key": {}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
-     *             @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
-     *             @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
-     *             @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
-     *             @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
-     *             @OA\Property(property="class", type="integer", nullable=true, description="Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
-     *             @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения машины"),
-     *         )
-     *     ),
+     * @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *         @OA\Property(property="id", type="string", maxLength=20, description="VIN-номер машины"),
+     *         @OA\Property(property="division_id", type="integer", maxLength=250, description="id подразделения"),
+     *         @OA\Property(property="tariff_id", type="integer", description="id тарифа"),
+     *         @OA\Property(property="rent_term_id", type="integer", description="id срока аренды"),
+     *         @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
+     *         @OA\Property(property="license_plate", type="string", description="Госномер автомобиля"),
+     *         @OA\Property(property="fuel_type", type="integer", description="Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)"),
+     *         @OA\Property(property="transmission_type", type="integer", description="Тип трансмиссии"),
+     *         @OA\Property(property="brand", type="string", description="Марка автомобиля"),
+     *         @OA\Property(property="model", type="string", description="Модель автомобиля"),
+     *         @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
+     *         @OA\Property(property="class", type="integer", nullable=true, description="Класс автомобиля (0 - не указан, 1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)"),
+     *         @OA\Property(property="images", type="array", @OA\Items(type="string"), nullable=true, description="Изображения автомобиля"),
+     *     )
+     * ),
      *     @OA\Response(
      *         response=200,
      *         description="Успешное обновление информации о машине",
@@ -1184,17 +1181,38 @@ class APIController extends Controller
     public function updateCar(Request $request)
     {
         $apiKey = $request->header('X-API-Key');
-        // Проверка ключа авторизации
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:20',
-            'division_id' => 'required|integer|exists:divisions,id',
+            'division_id' => 'integer|exists:divisions,id',
+            'tariff_id ' => 'integer|exists:tariffs,id',
+            'rent_term_id  ' => 'integer|exists:rent_terms,id',
             'mileage' => 'numeric',
             'license_plate' => 'string',
             'fuel_type' => 'integer',
+            'transmission_type' => 'integer',
+            'brand' => [
+                'string',
+                'max:50',
+                function ($attribute, $value, $fail) {
+                    $parser = new ParserController();
+                    if (!$parser->parseBrand($value)) {
+                        $fail('Некорректный бренд.');
+                    }
+                },
+            ],
+            'model' => [
+                'string',
+                'max:80',
+                function ($attribute, $value, $fail) {
+                    $parser = new ParserController();
+                    if (!$parser->parseModel($value)) {
+                        $fail('Некорректная модель.');
+                    }
+                },
+            ],
+            'year_produced' => 'integer',
             'class' => [
                 'required',
                 'integer',
@@ -1209,16 +1227,6 @@ class APIController extends Controller
 
         $carId = $request->id;
 
-        $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
-
-        $division = Division::where('id', $request->division_id)->first();
-        if (!$division) {
-            return response()->json(['message' => 'Подразделение не найдено'], 404);
-        }
-
         $car = Car::where('car_id', $carId)
             ->where('park_id', $park->id)
             ->first();
@@ -1226,18 +1234,39 @@ class APIController extends Controller
             return response()->json(['message' => 'Автомобиль не найден'], 404);
         }
 
-        if ($request->class) {
-            $tariff = Tariff::where('class', $request->class)
-            ->where('park_id', $park->id)
-            ->where('city_id', $division->city_id)
-            ->first();
-                if (!$tariff) {
-                    return response()->json(['message' => 'Класса не существует для этого города'], 409);
-                }
-            $car->tariff_id = $tariff->id;
+        if($request->division_id)
+            {$division = Division::where('id', $request->division_id)->first();
+            if (!$division) {
+                return response()->json(['message' => 'Подразделение не найдено'], 404);
+            }
+
+            if ($request->class) {
+                $tariff = Tariff::where('class', $request->class)
+                ->where('park_id', $park->id)
+                ->where('city_id', $division->city_id)
+                ->first();
+                    if (!$tariff) {
+                        return response()->json(['message' => 'Класса не существует для этого города'], 409);
+                    }
+                $car->tariff_id = $tariff->id;
+            }}
+        if ($request->rent_term_id) {
+            $car->rent_term_id = $request->rent_term_id;
+        }
+        if ($request->transmission_type) {
+            $car->transmission_type = $request->transmission_type;
         }
         if ($request->mileage) {
             $car->mileage = $request->mileage;
+        }
+        if ($request->year_produced) {
+            $car->year_produced = $request->year_produced;
+        }
+        if ($request->model) {
+            $car->model = $request->model;
+        }
+        if ($request->brand) {
+            $car->brand = $request->brand;
         }
         if ($request->license_plate) {
             $car->license_plate = $request->license_plate;
@@ -1319,9 +1348,7 @@ class APIController extends Controller
     {
         $apiKey = $request->header('X-API-Key');
         $park = Park::where('API_key', $apiKey)->first();
-        if (!$park) {
-            return response()->json(['message' => 'Неверный ключ авторизации'], 401);
-        }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:20',
             'status' => 'integer|max:1',

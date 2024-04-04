@@ -1166,32 +1166,34 @@ class ManagerController extends Controller
         $cars = [];
         $licenses = [];
         $licenseDates = [];
-        foreach (json_decode($clientCars) as $car) {
-            $formattedCar = [
-                'license_plate' => $car->Number,
-                'division_id' => $this->getDivisionIdByName($car->Department,$divisions),
-                'year_produced' => date("Y", strtotime($car->YearCar)),
-                'mileage' => $car->MileAge,
-                'transmission_type' => $this->getTransmissionTypeByName($car->KPPType),
-                'id' => $car->VIN,
-                'date_sts' => $car->STSIssueDate,
-            ];
-            if (in_array($car->Number, $licenses)) {
-                $index = array_search($car->Number, $licenses);
-                if ($car->STSIssueDate > $licenseDates[$index]) {
-                    unset($cars[$index]);
-                    $licenses[$index] = $car->Number;
-                    $licenseDates[$index] = $car->STSIssueDate;
-                } else {
-                    continue;
-                }
-            } else {
-                $licenses[] = $car->Number;
-                $licenseDates[] = $car->STSIssueDate;
-            }
-            $cars[] = $formattedCar;
-        }
 
+        foreach (json_decode($clientCars) as $car) {
+            if ($car->Activity) {
+                $formattedCar = [
+                    'license_plate' => $car->Number,
+                    'division_id' => $this->getDivisionIdByName($car->Department, $divisions),
+                    'year_produced' => date("Y", strtotime($car->YearCar)),
+                    'mileage' => $car->MileAge,
+                    'transmission_type' => $this->getTransmissionTypeByName($car->KPPType),
+                    'id' => $car->VIN,
+                    'date_sts' => $car->STSIssueDate,
+                ];
+
+                foreach ($cars as $index => $existingCar) {
+                    if ($existingCar['license_plate'] === $car->Number) {
+                        if ($car->STSIssueDate > $existingCar['date_sts']) {
+                            unset($cars[$index]);
+                            $cars[] = $formattedCar;
+                        }
+                        break;
+                    }
+                }
+
+                if (!in_array($car->Number, array_column($cars, 'license_plate'))) {
+                    $cars[] = $formattedCar;
+                }
+            }
+        };
         $request->merge([
             'cars' => $cars
         ]);
@@ -1354,6 +1356,57 @@ class ManagerController extends Controller
         return response()->json(['message' => 'Статус успешно обновлен'], 200);
     }
 
+    /**
+        * Изменение логина и пароля менеджера для связи с клиентом
+        *
+        * Этот метод позволяет изменить логин и пароль менеджера для связи с клиентом
+        *
+        * @OA\Put(
+        *     path="/manager/auth/data",
+        *     operationId="pushAuthDataManager",
+        *     summary="Изменение логина и пароля менеджера для связи с клиентом",
+        *     tags={"Manager"},
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(
+        *             @OA\Property(property="name", type="string", description="Новое имя пользователя 1с"),
+        *             @OA\Property(property="password", type="string", description="Новый пароль пользователя 1с")
+        *         )
+        *     ),
+        *     @OA\Response(
+        *         response=200,
+        *         description="Успешно",
+        *         @OA\JsonContent(
+        *             @OA\Property(property="message", type="string")
+        *         )
+        *     ),
+        *     @OA\Response(
+        *         response=401,
+        *         description="Ошибка аутентификации",
+        *         @OA\JsonContent(
+        *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+        *         )
+        *     ),
+        *     @OA\Response(
+        *         response=500,
+        *         description="Ошибка сервера",
+        *         @OA\JsonContent(
+        *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+        *         )
+        *     )
+        * )
+        *
+        * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+        * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+        */
+    public function pushAuthDataManager(Request $request)  {
+        $user = Auth::guard('sanctum')->user();
+        $user->name = $request->name;
+        $user->password = bcrypt($request->password);
+
+        $user->save();
+
+        return response()->json(['message' => 'Успешно'], 200);
+    }
 
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));

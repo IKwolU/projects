@@ -7,6 +7,7 @@ use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
+use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
 use Illuminate\Http\Request;
@@ -1120,6 +1121,67 @@ class ManagerController extends Controller
         return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
     }
 
+    public function getCarsFromParkServer(Request $request) {
+        $url = Park::where('id', $request->park_id)->select('url')->first()->url;
+        $url .= '/hs/Car/v1/Get';
+
+
+        $user = Auth::guard('sanctum')->user();
+        $username = $user->name;
+        $password = $user->password;
+        $auth = base64_encode($username . ':' . $password);
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Basic ' . $auth
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            return 'Curl error: ' . curl_error($ch);
+        }
+        curl_close($ch);
+
+        $divisions=Division::where('park_id',$request->park_id)->select('id','name')->get();
+
+        $cars = [];
+        $licenses = [];
+        $licenseDates = [];
+        foreach (json_decode($response) as $car) {
+            $formattedCar = [
+                'license_plate' => $car->Number,
+                'division_id' => $this->getDivisionIdByName($car->Department,$divisions),
+                'year_produced' => date("Y", strtotime($car->YearCar)),
+                'mileage' => $car->MileAge,
+                'transmission_type' => $this->getTransmissionTypeByName($car->KPPType),
+                'id' => $car->VIN,
+                'date_sts' => $car->STSIssueDate,
+            ];
+            if (in_array($car->Number, $licenses)) {
+                $index = array_search($car->Number, $licenses);
+                if ($car->STSIssueDate > $licenseDates[$index]) {
+                    unset($cars[$index]);
+                    $licenses[$index] = $car->Number;
+                    $licenseDates[$index] = $car->STSIssueDate;
+                } else {
+                    continue;
+                }
+            } else {
+                $licenses[] = $car->Number;
+                $licenseDates[] = $car->STSIssueDate;
+            }
+            $cars[] = $formattedCar;
+        }
+
+        $request->merge([
+            'cars' => $cars
+        ]);
+
+        return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
+    }
+
     private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
     {
         $subRequest = Request::create($url, $method, $requestData);
@@ -1127,5 +1189,27 @@ class ManagerController extends Controller
         $response = app()->handle($subRequest);
 
         return $response;
+    }
+
+    private function getDivisionIdByName($name, $divisions)
+    {
+        foreach ($divisions as $division) {
+            if ($division->name === $name) {
+                return $division->id;
+            }
+        }
+        return null;
+    }
+
+    private function getTransmissionTypeByName($transmissionType)
+    {
+        if ($transmissionType ==='МКПП') {
+            return 0;
+        }
+        if ($transmissionType ==='АКПП') {
+            return 1;
+        }
+
+        return null;
     }
 }

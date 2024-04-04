@@ -54,4 +54,5 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::put('manager/cars/booking', [ManagerController::class, 'updateCarBookingStatusManager']);
     Route::put('manager/cars/booking/prolongation', [ManagerController::class, 'BookProlongationManager']);
     Route::put('manager/cars/booking/replace', [ManagerController::class, 'BookReplaceManager']);
+    Route::get('manager/cars/load', [ManagerController::class, 'getCarsFromParkServer']);
 });

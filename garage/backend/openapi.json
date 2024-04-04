@@ -4084,7 +4084,7 @@
                 ],
                 "summary": "Показать ключ",
                 "description": "Показать ключ",
-                "operationId": "getParkKey",
+                "operationId": "getParkKeyManager",
                 "responses": {
                     "200": {
                         "description": "Успешный ответ",
@@ -5744,6 +5744,254 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Автомобиль не найден или бронирование не найдено"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/cars/client": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Добавление автомобилей из базы клиента",
+                "description": "Добавление автомобилей из базы клиента\n\nЭтот метод позволяет добавить автомобили из базы клиента",
+                "operationId": "pushCarsFromParkClientManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешное добавление автомобилей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/statuses/client": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Добавление статусов автомобилей из базы клиента",
+                "description": "Добавление статусов автомобилей из базы клиента\n\nЭтот метод позволяет добавить автомобили из базы клиента",
+                "operationId": "pushStatusesFromParkClientManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешное добавление статусов автомобилей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/statuses": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение статусов автомобилей парка",
+                "description": "Получение статусов автомобилей парка\n\nЭтот метод позволяет получить статусы автомобилей парка",
+                "operationId": "getParkStatusesManager",
+                "responses": {
+                    "200": {
+                        "description": "Получение статусов автомобилей парка",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "statuses": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "status_name": {
+                                                        "$ref": "#/components/schemas/CarStatus"
+                                                    },
+                                                    "custom_status_name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Изменение статуса автомобиля парка",
+                "description": "Изменение статуса автомобиля парка\n\nЭтот метод позволяет изменить статус автомобиля парка",
+                "operationId": "changeParkStatusManager",
+                "responses": {
+                    "200": {
+                        "description": "Изменение статуса автомобиля парка",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
                                         }
                                     },
                                     "type": "object"

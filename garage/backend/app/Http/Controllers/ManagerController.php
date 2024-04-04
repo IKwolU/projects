@@ -7,6 +7,7 @@ use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
+use App\Models\Car;
 use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
@@ -1300,7 +1301,7 @@ class ManagerController extends Controller
         * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
         * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
         */
-    public function getParkStatusesManager(Request $request)
+    public function getParkStatusesForCarsManager(Request $request)
     {
         $statuses = Status::where('park_id', $request->park_id)->select('id','status_name','custom_status_name')->get();
         return response()->json(['statuses'=>$statuses], 200);
@@ -1351,6 +1352,40 @@ class ManagerController extends Controller
             ]);
 
         return response()->json(['message' => 'Статус успешно обновлен'], 200);
+    }
+
+
+    public function getCarsCurrentStatusesFromClientManager(Request $request) {
+        $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
+        $statuses = Status::where('park_id', $request->park_id)->pluck('status_value', 'custom_status_name')->all();
+        $cars = Car::where('park_id', $request->park_id)->get();
+
+        foreach ($clientCars as $car) {
+            $carVin = $car->VIN;
+            $carStatus = $car->Status;
+
+            $matchingStatusValue = $statuses[$carStatus] ?? 0;
+
+            $existingCar = $cars->where('car_id', $carVin)->first();
+
+            if ($existingCar && ManagerController::checkCarDataIsFilled($existingCar)) {
+                $existingCar->status = $matchingStatusValue;
+                $existingCar->save();
+            }
+        }
+        return response()->json(['message' => 'Статусы успешно обновлены'], 200);
+    }
+
+    static function checkCarDataIsFilled($car) {
+        $requiredFields = ['division_id', 'park_id', 'tariff_id', 'license_plate', 'mileage', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images'];
+
+        foreach ($requiredFields as $field) {
+            if ($car->$field === null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function callRouteWithApiKey($url, $method, $requestData, $apiKey)

@@ -80,10 +80,11 @@ export default [
     coords: { x: 20, y: 70 },
     locationName: "Галерея",
     timestamps: {
-      "01:29": "gallery/0.jpg",
-      "01:48": "gallery1/1.jpg",
-      "02:26": "gallery1/1.jpg",
-      "02:58": "gallery/1.jpg",
+      "00:00": "gallery/0.jpg",
+      "01:29": "gallery/1.jpg",
+      "01:48": "gallery/2.jpg",
+      "02:26": "gallery/3.jpg",
+      "02:58": "gallery/4.jpg",
     },
     tips: {
       "00:01": "Встаньте лицом к парку и направляйтесь в левую часть галереи",
@@ -121,7 +122,7 @@ export default [
     locationName: "Лабиринт",
     timestamps: {
       "00:00": "maze/0.jpg",
-      "03:47": "maze/0.jpg",
+      "03:47": "maze/1.jpg",
     },
     tips: {
       "03:46":
@@ -143,9 +144,10 @@ export default [
     locationName: "Центральный парк",
     timestamps: {
       "00:00": "park/0.jpg",
-      "02:18": "park/1.jpg",
-      "03:39": "park/1.jpg",
-      "04:25": "park/1.jpg",
+      "00:07": "park/1.jpg",
+      "02:18": "park/2.jpg",
+      "03:39": "park/3.jpg",
+      "04:25": "park/4.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/007.%20%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%BF%D0%B0%D1%80%D0%BA.mp3",
     facts: [
@@ -163,11 +165,12 @@ export default [
     coords: { x: 21, y: 41 },
     locationName: "Спортивный комплекс",
     timestamps: {
-      "01:14": "sport/0.jpg",
-      "01:17": "sport/1.jpg",
-      "01:20": "sport/1.jpg",
-      "01:23": "sport/1.jpg",
-      "01:26": "sport/1.jpg",
+      "00:00": "sport/0.jpg",
+      "01:14": "sport/1.jpg",
+      "01:17": "sport/2.jpg",
+      "01:20": "sport/3.jpg",
+      "01:23": "sport/4.jpg",
+      "01:26": "sport/5.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/008.%20%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.mp3",
     facts: ["Длина бассейна составляет 24,5 метра, вместо стандартных 25."],
@@ -181,9 +184,10 @@ export default [
     locationName: "Корпоративный центр 1 этаж",
     mapLocationName: "Корпоративный центр",
     timestamps: {
-      "00:15": "korpcenter/floor1/0.jpg",
-      "01:05": "korpcenter/floor1/1.jpg",
-      "01:55": "korpcenter/floor1/1.jpg",
+      "00:00": "korpcenter/floor1/0.jpg",
+      "00:15": "korpcenter/floor1/1.jpg",
+      "01:05": "korpcenter/floor1/2.jpg",
+      "01:55": "korpcenter/floor1/3.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/009.%20%D0%9A%D0%BE%D1%80%D0%BF%D0%BE%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9%20%D1%86%D0%B5%D0%BD%D1%82%D1%80.%20%D0%9F%D0%B5%D1%80%D0%B2%D1%8B%D0%B9%20%D1%8D%D1%82%D0%B0%D0%B6.mp3",
     facts: [
@@ -197,9 +201,10 @@ export default [
     id: 10, 
     locationName: "Корпоративный центр 2 этаж", 
     timestamps: {
-      "00:15": "korpcenter/floor2/0.jpg",
-      "00:54": "korpcenter/floor2/1.jpg",
-      "00:59": "korpcenter/floor2/2.jpg",
+      "00:00": "korpcenter/floor2/0.jpg",
+      "00:15": "korpcenter/floor2/1.jpg",
+      "00:54": "korpcenter/floor2/2.jpg",
+      "00:59": "korpcenter/floor2/3.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/010.%20%D0%9A%D0%BE%D1%80%D0%BF%D0%BE%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9%20%D1%86%D0%B5%D0%BD%D1%82%D1%80.%20%D0%92%D1%82%D0%BE%D1%80%D0%BE%D0%B9%20%D1%8D%D1%82%D0%B0%D0%B6.mp3",
     facts: [

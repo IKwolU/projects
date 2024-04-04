@@ -191,7 +191,7 @@ export default [
     ],
     miniMap: "assets/minimap-korpcentr.jpg",
     nearbyLocations: [11, 10, 8],
-    icon: "korpcenter/floor1/korpcenter.svg",
+    icon: "korpcenter/korpcenter.svg",
   },
   {
     id: 10, 
@@ -207,7 +207,7 @@ export default [
     ],
     miniMap: "assets/minimap-korpcentr.jpg",
     nearbyLocations: [8, 11, 9],
-    icon: "korpcenter/floor2/korpcenter.svg",
+    icon: "korpcenter/korpcenter.svg",
   },
   {
     id: 11,

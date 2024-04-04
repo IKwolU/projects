@@ -110,19 +110,25 @@ const onboardedx = localStorage.getItem("onboarded");
 
 <template>
 
-  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-screen h-screen p-16 space-y-4'">
+  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-screen h-screen p-8'">
 
-    <img src="/assets/white-logo-sber.svg" v-bind:class="'w-40 pt-[120%]'" />
+    <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 
-    <div v-bind:class="'text-2xl text-sb-display-semi-bold'">dadasdasda ad as da s asd asd
+    <div v-bind:class="'text-2xl text-sb-display-semi-bold'">Исследуй место
     </div>
-    <div v-bind:class="' '">asd asd asd as dasdasd dasadashbdjasd
-      asdasudaisbdiabd aksdhabshdjbasd asdaasdasda
+    <div v-bind:class="'text-2xl text-sb-display-semi-bold pl-12'">
+      силы и вдохновения
+    </div>
+    <div v-bind:class="'text-lg text-sb-display-semi-bold mt-12 text-right pr-12'">
+      В каждом шаге -
+    </div>
+    <div v-bind:class="'text-lg text-sb-display-semi-bold text-right pr-2'">
+      новое открытие
     </div>
 
     <div @click="passOnboarding"
-      v-bind:class="'w-48 bg-green rounded px-8 py-4 text-sb-display-semi-bold text-xl text-center cursor-pointer'">
-      Begin
+      v-bind:class="'mt-20 bg-lime-400 rounded-xl px-8 py-4 text-sb-display-semi-bold text-xl text-center cursor-pointer'">
+      Начать экскурсию
     </div>
   </div>
 
@@ -184,7 +190,7 @@ const onboardedx = localStorage.getItem("onboarded");
                 @click="startTheJourney()">К началу экскурсии</span>
             </div>
             <div v-bind:class="'flex space-between space-x-2 items-center'">
-              <div v-for=" (nearbyLocId, i)  in  activeLocation.nearbyLocations " :key="nearbyLocId"  
+              <div v-for=" (nearbyLocId, i)  in  activeLocation.nearbyLocations " :key="nearbyLocId"
                 @click="visitNearby(nearbyLocId)"
                 v-bind:class="'bg-white p-1 rounded-xl flex flex-col items-center justify-start'" :class="{
     'w-[40%]': i === 1,

@@ -10,6 +10,7 @@ use App\Enums\UserType;
 use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -230,7 +231,7 @@ class ManagerController extends Controller
      *
      * @OA\Get(
      *     path="manager/park/key",
-     *     operationId="getParkKey",
+     *     operationId="getParkKeyManager",
      *     summary="Показать ключ",
      *     tags={"Manager"},
      *     @OA\Response(
@@ -253,7 +254,7 @@ class ManagerController extends Controller
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом отмены бронирования
      */
 
-    public function getParkKey(Request $request)
+    public function getParkKeyManager(Request $request)
     {
         $key = Park::where('id', $request->park_id)->select('API_key')->first();
         return response()->json($key, 200);
@@ -1121,35 +1122,50 @@ class ManagerController extends Controller
         return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
     }
 
-    public function getCarsFromParkServer(Request $request) {
-        $url = Park::where('id', $request->park_id)->select('url')->first()->url;
-        $url .= '/hs/Car/v1/Get';
-
-
-        $user = Auth::guard('sanctum')->user();
-        $username = $user->name;
-        $password = $user->password;
-        $auth = base64_encode($username . ':' . $password);
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Basic ' . $auth
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            return 'Curl error: ' . curl_error($ch);
-        }
-        curl_close($ch);
+    /**
+     * Добавление автомобилей из базы клиента
+     *
+     * Этот метод позволяет добавить автомобили из базы клиента
+     *
+     * @OA\Post(
+     *     path="/manager/cars/client",
+     *     operationId="pushCarsFromParkClientManager",
+     *     summary="Добавление автомобилей из базы клиента",
+     *     tags={"Manager"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное добавление автомобилей",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function pushCarsFromParkClientManager(Request $request) {
 
         $divisions=Division::where('park_id',$request->park_id)->select('id','name')->get();
-
+        $clientCars= $this->getCarsFromParkClient($request->park_id);
         $cars = [];
         $licenses = [];
         $licenseDates = [];
-        foreach (json_decode($response) as $car) {
+        foreach (json_decode($clientCars) as $car) {
             $formattedCar = [
                 'license_plate' => $car->Number,
                 'division_id' => $this->getDivisionIdByName($car->Department,$divisions),
@@ -1182,6 +1198,161 @@ class ManagerController extends Controller
         return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
     }
 
+    /**
+     * Добавление статусов автомобилей из базы клиента
+     *
+     * Этот метод позволяет добавить автомобили из базы клиента
+     *
+     * @OA\Post(
+     *     path="/manager/statuses/client",
+     *     operationId="pushStatusesFromParkClientManager",
+     *     summary="Добавление статусов автомобилей из базы клиента",
+     *     tags={"Manager"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное добавление статусов автомобилей",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+    public function pushStatusesFromParkClientManager(Request $request) {
+        $clientCars = $this->getCarsFromParkClient($request->park_id);
+        $unicStatuses = [];
+
+        foreach (json_decode($clientCars) as $car) {
+            $status = $car->Status;
+            if (!in_array($status, $unicStatuses) && $status) {
+                $unicStatuses[] = $status;
+            }
+        }
+
+        foreach ($unicStatuses as $status) {
+            Status::firstOrCreate([
+                'park_id' => $request->park_id,
+                'custom_status_name' => $status,
+                'status_name' => CarStatus::Hidden->name,
+                'status_value' => CarStatus::Hidden->value,
+            ]);
+        }
+        return response()->json(['message' => 'Статусы добавлены'], 200);
+    }
+
+    /**
+        * Получение статусов автомобилей парка
+        *
+        * Этот метод позволяет получить статусы автомобилей парка
+        *
+        * @OA\Get(
+        *     path="/manager/statuses",
+        *     operationId="getParkStatusesManager",
+        *     summary="Получение статусов автомобилей парка",
+        *     tags={"Manager"},
+        *     @OA\Response(
+        *         response=200,
+        *         description="Получение статусов автомобилей парка",
+        *         @OA\JsonContent(
+        *             @OA\Property(
+        *                 property="statuses",
+        *                 type="array",
+        *                 @OA\Items(
+        *                     @OA\Property(property="id", type="integer"),
+        *                     @OA\Property(property="status_name", type="string", ref="#/components/schemas/CarStatus"),
+        *                     @OA\Property(property="custom_status_name", type="string")
+        *                 )
+        *             )
+        *         )
+        *     ),
+        *     @OA\Response(
+        *         response=401,
+        *         description="Ошибка аутентификации",
+        *         @OA\JsonContent(
+        *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+        *         )
+        *     ),
+        *     @OA\Response(
+        *         response=500,
+        *         description="Ошибка сервера",
+        *         @OA\JsonContent(
+        *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+        *         )
+        *     )
+        * )
+        *
+        * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+        * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+        */
+    public function getParkStatusesManager(Request $request)
+    {
+        $statuses = Status::where('park_id', $request->park_id)->select('id','status_name','custom_status_name')->get();
+        return response()->json(['statuses'=>$statuses], 200);
+    }
+
+    /**
+         * Изменение статуса автомобиля парка
+         *
+         * Этот метод позволяет изменить статус автомобиля парка
+         *
+         * @OA\Put(
+         *     path="/manager/statuses",
+         *     operationId="changeParkStatusManager",
+         *     summary="Изменение статуса автомобиля парка",
+         *     tags={"Manager"},
+         *     @OA\Response(
+         *         response=200,
+         *         description="Изменение статуса автомобиля парка",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message",type="string",)
+         *         )
+         *     ),
+         *     @OA\Response(
+         *         response=401,
+         *         description="Ошибка аутентификации",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message", type="string", example="Ошибка аутентификации")
+         *         )
+         *     ),
+         *     @OA\Response(
+         *         response=500,
+         *         description="Ошибка сервера",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+         *         )
+         *     )
+         * )
+         *
+         * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления условия аренды для автомобиля
+         * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+         */
+    public function changeParkStatusManager(Request $request)
+    {
+        Status::where('park_id', $request->park_id)->where('id', $request->id)
+            ->update([
+                'status_name' => $request->status_name,
+                'status_value' => CarStatus::{$request->status_name}->value
+            ]);
+
+        return response()->json(['message' => 'Статус успешно обновлен'], 200);
+    }
+
     private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
     {
         $subRequest = Request::create($url, $method, $requestData);
@@ -1211,5 +1382,30 @@ class ManagerController extends Controller
         }
 
         return null;
+    }
+
+    private function getCarsFromParkClient($parkId) {
+        $url = Park::where('id', $parkId)->select('url')->first()->url;
+        $url .= '/hs/Car/v1/Get';
+
+
+        $user = Auth::guard('sanctum')->user();
+        $username = $user->name;
+        $password = $user->password;
+        $auth = base64_encode($username . ':' . $password);
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Basic ' . $auth
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            return 'Curl error: ' . curl_error($ch);
+        }
+        curl_close($ch);
+        return $response;
     }
 }

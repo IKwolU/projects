@@ -40,7 +40,7 @@ Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
 Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::get('manager/park', [ManagerController::class, 'getParkManager']);
-    Route::get('manager/park/key', [ManagerController::class, 'getParkKey']);
+    Route::get('manager/park/key', [ManagerController::class, 'getParkKeyManager']);
     Route::post('manager/cars', [ManagerController::class, 'pushCarsManager']);
     Route::put('manager/cars', [ManagerController::class, 'updateCarManager']);
     Route::put('manager/cars/rent-term', [ManagerController::class, 'updateCarRentTermManager']);
@@ -54,5 +54,8 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::put('manager/cars/booking', [ManagerController::class, 'updateCarBookingStatusManager']);
     Route::put('manager/cars/booking/prolongation', [ManagerController::class, 'BookProlongationManager']);
     Route::put('manager/cars/booking/replace', [ManagerController::class, 'BookReplaceManager']);
-    Route::get('manager/cars/load', [ManagerController::class, 'getCarsFromParkServer']);
+    Route::post('manager/cars/client', [ManagerController::class, 'pushCarsFromParkClientManager']);
+    Route::post('manager/statuses/client', [ManagerController::class, 'pushStatusesFromParkClientManager']);
+    Route::get('manager/statuses', [ManagerController::class, 'getParkStatusesManager']);
+    Route::put('manager/status', [ManagerController::class, 'changeParkStatusManager']);
 });

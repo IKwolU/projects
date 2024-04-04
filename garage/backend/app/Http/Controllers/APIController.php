@@ -917,13 +917,12 @@ class APIController extends Controller
 
         $validator = Validator::make($request->all(), [
             'cars' => 'required|array',
-            'cars.*.division_id' => 'required|integer|exists:divisions,id',
+            'cars.*.division_id' => 'nullable|integer',
             'cars.*.mileage' => 'required|numeric',
             'cars.*.license_plate' => 'required|string',
-            'cars.*.fuel_type' => 'required|integer|max:1',
-            'cars.*.transmission_type' => 'required|integer|max:1',
+            'cars.*.fuel_type' => 'integer|max:1',
+            'cars.*.transmission_type' => 'nullable|integer|max:1',
             'cars.*.brand' => [
-                'required',
                 'string',
                 'max:50',
                 function ($attribute, $value, $fail) {
@@ -934,7 +933,6 @@ class APIController extends Controller
                 },
             ],
             'cars.*.model' => [
-                'required',
                 'string',
                 'max:80',
                 function ($attribute, $value, $fail) {
@@ -945,7 +943,6 @@ class APIController extends Controller
                 },
             ],
             'cars.*.class' => [
-                'required',
                 'integer',
                 'between:0,4',
                 function ($attribute, $value, $fail) use ($park, $request) {
@@ -960,29 +957,38 @@ class APIController extends Controller
                     }
                 },
             ],
-            'cars.*.year_produced' => 'nullable|integer',
+            'cars.*.year_produced' => 'required|nullable|integer',
             'cars.*.id' => 'required|string|max:20|unique:cars,car_id',
-            'cars.*.images' => 'required|array',
+            'cars.*.images' => 'array',
         ]);
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
+
+        $divisions = Division::where('park_id', $park->id)->get()->keyBy('id');
         $cars = $request->input('cars');
-        foreach ($cars as $index => $carData) {
-            $division = Division::where('id', $carData['division_id'])->first();
+
+        foreach ($cars as $carData) {
+            $division = $divisions->get($carData['division_id']);
+
             $car = new Car;
-            $car->division_id = $carData['division_id'];
+            $car->division_id = $carData['division_id'] ?? null;
             $car->mileage = $carData['mileage'];
             $car->license_plate = $carData['license_plate'];
-            $car->fuel_type = $carData['fuel_type'];
-            $car->transmission_type = $carData['transmission_type'];
-            $car->brand = $carData['brand'];
-            $car->model = $carData['model'];
-            $car->tariff_id = $this->GetTariffId($park->id, $division->city_id, $carData['class']);
+            $car->fuel_type = $carData['fuel_type'] ?? null;
+            $car->transmission_type = $carData['transmission_type'] ?? null;
+            $car->brand = $carData['brand'] ?? null;
+            $car->model = $carData['model'] ?? null;
+
+            if ($carData['class'] && $division) {
+                $car->tariff_id = $this->GetTariffId($park->id, $division->city_id, $carData['class']);
+            }
+
             $car->year_produced = $carData['year_produced'];
             $car->car_id = $carData['id'];
-            $car->images = json_encode($carData['images']);
-            $car->status = 1;
+            $car->images = $carData['images'] ? json_encode($carData['images']) : null;
+            $car->status = 0;
             $car->park_id = $park->id;
             $car->save();
         }

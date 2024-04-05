@@ -130,7 +130,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
       </DialogFooter> */}
         <DialogClose asChild className="">
           <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2">
-            <div className="inset-0 flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl max-w-[800px] ">
+            <div className="inset-0 flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
               <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
             </div>
           </div>

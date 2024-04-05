@@ -106,199 +106,359 @@ export const BookingDrawer = () => {
       return 0;
     });
 
+  const navigationLink = (booking: Bookings) => {
+    const link =
+      window.innerWidth < 800
+        ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
+        : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`;
+    return link;
+  };
+
   return (
     <>
       {sortedActiveBookings.map((booking) => (
-        <div
-          className="overflow-y-auto h-[%] bg-white py-2 px-2 my-2 rounded-xl"
-          key={`booking${booking.id}`}
-        >
-          {[
-            { status: BookingStatus.Booked, text: "Текущая бронь" },
-            { status: BookingStatus.RentStart, text: "Текущая аренда" },
-          ].map(({ status, text }) => {
-            return (
-              booking.status === status && (
-                <p key={status} className="mb-2 text-xl font-semibold">
-                  {text}
+        <>
+          <div
+            className="overflow-y-auto h-[%] bg-white py-2 px-2 my-2 rounded-xl lg:hidden"
+            key={`booking${booking.id}`}
+          >
+            {[
+              { status: BookingStatus.Booked, text: "Текущая бронь" },
+              { status: BookingStatus.RentStart, text: "Текущая аренда" },
+            ].map(({ status, text }) => {
+              return (
+                booking.status === status && (
+                  <p key={status} className="mb-2 text-xl font-semibold">
+                    {text}
+                  </p>
+                )
+              );
+            })}
+
+            <div className="flex space-x-3 md:space-x-5">
+              <img
+                className="object-cover w-1/3 h-auto rounded-xl"
+                src={booking.car!.images![0]}
+                alt=""
+              />
+              <div className=" md:space-y-1 md:w-full">
+                <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
+                <Separator />
+                <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
+                <Separator />
+                <p className="text-base">
+                  Адрес:{" "}
+                  <a
+                    href={navigationLink(booking)}
+                    className="text-base text-blue-400 underline active:text-yellow"
+                    target="_blank"
+                  >
+                    {`${booking.car?.division?.address}`}
+                    {/* <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className="px-1 cursor-pointer text-yellow"
+                /> */}
+                  </a>
                 </p>
-              )
-            );
-          })}
+                <Separator />
+                <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
 
-          <div className="flex space-x-3 md:space-x-5">
-            <img
-              className="object-cover w-1/3 h-auto rounded-xl"
-              src={booking.car!.images![0]}
-              alt=""
-            />
-            <div className=" md:space-y-1 md:w-full">
-              <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
-              <Separator />
-              <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
-              <Separator />
-              <p className="text-base">
-                Адрес:{" "}
-                <a
-                  href={
-                    window.innerWidth < 800
-                      ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
-                      : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`
-                  }
-                  className="text-base text-blue-400 underline active:text-yellow"
-                  target="_blank"
-                >
-                  {`${booking.car?.division?.address}`}
-                  {/* <FontAwesomeIcon
-                    icon={faLocationDot}
-                    className="px-1 cursor-pointer text-yellow"
-                  /> */}
-                </a>
-              </p>
-              <Separator />
-              <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
+                <div className="hidden md:block">
+                  {booking.status! !== BookingStatus.RentStart && (
+                    <>
+                      <Separator className="mt-1" />
+                      <div className="flex items-center">
+                        <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
+                          Дата окончания бронирования:
+                        </p>
+                        {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
+                      </div>
+                    </>
+                  )}
+                </div>
 
-              <div className="hidden md:block">
-                {booking.status! !== BookingStatus.RentStart && (
-                  <>
-                    <Separator className="mt-1" />
-                    <div className="flex items-center">
-                      <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
-                        Дата окончания бронирования:
-                      </p>
-                      {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
+                <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:block hidden">
+                  {booking.car!.division!.working_hours!.map((x, i) => (
+                    <div
+                      className="flex flex-col items-start"
+                      key={`time_${i}`}
+                    >
+                      {x}
                     </div>
-                  </>
+                  ))}
+                </div>
+                {booking.status === BookingStatus.Booked && (
+                  <div className="flex-wrap hidden w-1/2 md:flex">
+                    {booking
+                      .rent_term!.schemas!.slice(0, 3)
+                      .map((currentSchema, i) => (
+                        <Badge
+                          key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                          className="flex-col items-start justify-start flex-grow w-1/2 h-full px-2 text-lg font-bold max-w-1/2 text-wrap"
+                          variant="schema"
+                        >
+                          {`${formatRoubles(currentSchema.daily_amount!)}`}
+                          <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
+                        </Badge>
+                      ))}
+                  </div>
                 )}
               </div>
-
-              <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:block hidden">
+            </div>
+            <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap">
+              <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:hidden">
                 {booking.car!.division!.working_hours!.map((x, i) => (
                   <div className="flex flex-col items-start" key={`time_${i}`}>
                     {x}
                   </div>
                 ))}
               </div>
-              {booking.status === BookingStatus.Booked && (
-                <div className="flex-wrap hidden w-1/2 md:flex">
-                  {booking
-                    .rent_term!.schemas!.slice(0, 3)
-                    .map((currentSchema, i) => (
-                      <Badge
-                        key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                        className="flex-col items-start justify-start flex-grow w-1/2 h-full px-2 text-lg font-bold max-w-1/2 text-wrap"
-                        variant="schema"
-                      >
-                        {`${formatRoubles(currentSchema.daily_amount!)}`}
-                        <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
-                      </Badge>
-                    ))}
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap">
-            <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:hidden">
-              {booking.car!.division!.working_hours!.map((x, i) => (
-                <div className="flex flex-col items-start" key={`time_${i}`}>
-                  {x}
-                </div>
-              ))}
-            </div>
-            <Separator className="mb-1 md:hidden" />
-            <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">
-              <Badge variant="card" className="px-0 py-0 bg-grey ">
-                <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                  Депозит{" "}
-                  {formatRoubles(booking.rent_term!.deposit_amount_total!)}
-                </span>
-                <span className="flex items-center h-full px-2 ">
-                  {formatRoubles(booking.rent_term!.deposit_amount_daily!)}
-                  /день
-                </span>
-              </Badge>
-              <Badge variant="card">
-                Комиссия {booking.car!.division!.park!.commission}
-              </Badge>
-              <Badge variant="card">
-                {getFuelTypeDisplayName(booking.car!.fuel_type)}
-              </Badge>
-              <Badge variant="card">
-                {getTransmissionDisplayName(booking.car!.transmission_type)}
-              </Badge>
+              <Separator className="mb-1 md:hidden" />
+              <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">
+                <Badge variant="card" className="px-0 py-0 bg-grey ">
+                  <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                    Депозит{" "}
+                    {formatRoubles(booking.rent_term!.deposit_amount_total!)}
+                  </span>
+                  <span className="flex items-center h-full px-2 ">
+                    {formatRoubles(booking.rent_term!.deposit_amount_daily!)}
+                    /день
+                  </span>
+                </Badge>
+                <Badge variant="card">
+                  Комиссия {booking.car!.division!.park!.commission}
+                </Badge>
+                <Badge variant="card">
+                  {getFuelTypeDisplayName(booking.car!.fuel_type)}
+                </Badge>
+                <Badge variant="card">
+                  {getTransmissionDisplayName(booking.car!.transmission_type)}
+                </Badge>
 
-              {booking.car!.division!.park!.self_employed && (
-                <Badge variant="card">Для самозанятых</Badge>
-              )}
-              {!!booking.rent_term!.is_buyout_possible && (
-                <Badge variant="card">Выкуп автомобиля</Badge>
+                {booking.car!.division!.park!.self_employed && (
+                  <Badge variant="card">Для самозанятых</Badge>
+                )}
+                {!!booking.rent_term!.is_buyout_possible && (
+                  <Badge variant="card">Выкуп автомобиля</Badge>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-1 pb-2 mt-1 mb-1 md:hidden">
+              {booking
+                .rent_term!.schemas!.slice(0, 3)
+                .map((currentSchema, i) => (
+                  <Badge
+                    key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                    className="flex-col items-start justify-start flex-grow h-full px-2 text-lg font-bold text-wrap max-w-[352px]"
+                    variant="schema"
+                  >
+                    {`${formatRoubles(currentSchema.daily_amount!)}`}
+                    <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
+                  </Badge>
+                ))}
+            </div>
+            <div className={"md:hidden"}>
+              {booking.status !== BookingStatus.RentStart && (
+                <>
+                  <Separator className="mt-1" />
+                  <div className="flex items-center">
+                    <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
+                      Дата окончания бронирования:
+                    </p>
+                    {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
+                  </div>
+                </>
               )}
             </div>
-          </div>
-          <div className="flex flex-wrap gap-1 pb-2 mt-1 mb-1 md:hidden">
-            {booking.rent_term!.schemas!.slice(0, 3).map((currentSchema, i) => (
-              <Badge
-                key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                className="flex-col items-start justify-start flex-grow h-full px-2 text-lg font-bold text-wrap max-w-[352px]"
-                variant="schema"
-              >
-                {`${formatRoubles(currentSchema.daily_amount!)}`}
-                <div className="text-xs font-medium text-black">{`${currentSchema.working_days} раб. /${currentSchema.non_working_days} вых.`}</div>
-              </Badge>
-            ))}
-          </div>
-          <div className={"md:hidden"}>
-            {booking.status !== BookingStatus.RentStart && (
-              <>
-                <Separator className="mt-1" />
-                <div className="flex items-center">
-                  <p className="w-1/2 font-semibold md:font-normal md:text-base md:w-fit md:pr-2">
-                    Дата окончания бронирования:
-                  </p>
-                  {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
+            {booking.status === BookingStatus.Booked && (
+              <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3  mx-auto">
+                <div className="w-1/2">
+                  <Confirmation
+                    title="Отмена бронирования. Хотите продолжить?"
+                    type="red"
+                    accept={cancelBooking}
+                    cancel={() => {}}
+                    trigger={
+                      <Button
+                        variant="reject"
+                        className="text-black bg-white border-2 border-grey"
+                      >
+                        Отменить
+                      </Button>
+                    }
+                  />
                 </div>
-              </>
+                <Button
+                  className="w-1/2 font-normal"
+                  onClick={() => {
+                    setIsPhoneClicked(true);
+                  }}
+                >
+                  {isPhoneClicked ? (
+                    <div
+                      onClick={() =>
+                        (window.location.href = `tel:${divisionPhone}`)
+                      }
+                    >
+                      {divisionPhone}
+                    </div>
+                  ) : (
+                    <span>Позвонить в парк</span>
+                  )}
+                </Button>
+              </div>
             )}
           </div>
-          {booking.status === BookingStatus.Booked && (
-            <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3  mx-auto">
-              <div className="w-1/2">
-                <Confirmation
-                  title="Отмена бронирования. Хотите продолжить?"
-                  type="red"
-                  accept={cancelBooking}
-                  cancel={() => {}}
-                  trigger={
-                    <Button
-                      variant="reject"
-                      className="text-black bg-white border-2 border-grey"
-                    >
-                      Отменить
-                    </Button>
-                  }
-                />
-              </div>
-              <Button
-                className="w-1/2 font-normal"
-                onClick={() => {
-                  setIsPhoneClicked(true);
-                }}
-              >
-                {isPhoneClicked ? (
-                  <div
-                    onClick={() =>
-                      (window.location.href = `tel:${divisionPhone}`)
+          <div className="hidden space-x-6 lg:flex">
+            <div className="w-1/2 px-4 py-4 bg-white rounded-xl">
+              <div className="flex items-center justify-between pb-6">
+                {[
+                  { status: BookingStatus.Booked, text: "Текущая бронь" },
+                  { status: BookingStatus.RentStart, text: "Текущая аренда" },
+                ].map(({ status, text }) => {
+                  return (
+                    booking.status === status && (
+                      <h3 key={status} className="mb-2 text-xl text-center">
+                        {text}
+                      </h3>
+                    )
+                  );
+                })}
+                <div className="w-1/2">
+                  <Confirmation
+                    title="Отмена бронирования. Хотите продолжить?"
+                    type="red"
+                    accept={cancelBooking}
+                    cancel={() => {}}
+                    trigger={
+                      <Button
+                        variant="reject"
+                        className="text-black bg-white border-2 border-grey"
+                      >
+                        Отменить
+                      </Button>
                     }
-                  >
-                    {divisionPhone}
-                  </div>
-                ) : (
-                  <span>Позвонить в парк</span>
-                )}
-              </Button>
+                  />
+                </div>
+              </div>
+              <img
+                className="object-cover h-auto rounded-xl"
+                src={booking.car!.images![0]}
+                alt=""
+              />
             </div>
-          )}
-        </div>
+            <div className="w-1/2 space-y-2">
+              <div className="px-4 py-2 pb-4 bg-white rounded-xl">
+                <h4 className="font-semibold">Детали бронирования</h4>
+                {booking.status === BookingStatus.RentStart && (
+                  <div className="items-center ">
+                    <p className="pt-1 leading-4">
+                      {format(booking.end_date!, "dd.MM.yyyy HH:mm")}
+                    </p>
+                    <p className="pr-2 text-sm w-fit text-pale">
+                      Дата окончания бронирования
+                    </p>
+                  </div>
+                )}
+                {[
+                  {
+                    text: "Парк",
+                    content: booking.car!.division!.park!.park_name,
+                    type: "park",
+                  },
+                  {
+                    text: "Адрес",
+                    content: "",
+                    type: "address",
+                  },
+                  { text: "Телефон", content: divisionPhone, type: "phone" },
+                  {
+                    text: "Дата окончания бронирования",
+                    content: format(booking.end_date!, "dd.MM.yyyy HH:mm"),
+                    type: "time",
+                  },
+                  {
+                    text: "Сумма бронирования",
+                    content: formatRoubles(
+                      booking.rent_term!.schemas![0]!.daily_amount!
+                    ),
+                    type: "price",
+                  },
+                  {
+                    text: "Депозит",
+                    content: formatRoubles(
+                      booking.rent_term!.deposit_amount_total!
+                    ),
+                    type: "deposit",
+                  },
+                ].map((x) => (
+                  <>
+                    {!(
+                      booking.status === BookingStatus.RentStart &&
+                      x.type === "time"
+                    ) && (
+                      <>
+                        <Separator className="my-3" />
+                        <div className="flex justify-between">
+                          <p>{x.text}</p>
+                          {x.type !== "address" && <p>{x.content}</p>}
+                          {x.type === "address" && (
+                            <a
+                              href={navigationLink(booking)}
+                              className="text-base text-blue-400 underline active:text-yellow"
+                              target="_blank"
+                            >
+                              {booking.car!.division!.address}
+                            </a>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ))}
+              </div>
+              <div className="px-4 py-2 pb-6 space-y-6 bg-white rounded-xl">
+                <h4 className="font-semibold">
+                  Благодарим за бронирование автомобиля!
+                </h4>
+                <p>
+                  Нажмите здесь, чтобы узнать маршрут до пункта проката, или
+                  нажмите на кнопку для звонка, если хотите связаться с нами.
+                </p>
+                <div className="flex items-center justify-between space-x-2">
+                  <Button variant="reject" className="w-1/2 font-normal">
+                    <a
+                      href={navigationLink(booking)}
+                      className="w-full text-base text-black"
+                      target="_blank"
+                    >
+                      Узнать маршрут
+                    </a>
+                  </Button>
+
+                  <Button
+                    className="w-1/2 font-normal"
+                    onClick={() => {
+                      setIsPhoneClicked(true);
+                    }}
+                  >
+                    {isPhoneClicked ? (
+                      <div
+                        onClick={() =>
+                          (window.location.href = `tel:${divisionPhone}`)
+                        }
+                      >
+                        {divisionPhone}
+                      </div>
+                    ) : (
+                      <span>Позвонить в парк</span>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       ))}
 
       {sortedTimeOverBookings.length > 0 && (

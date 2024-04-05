@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import Lottie from "react-lottie";
 import dataAnimation from "./assets/hourglass.json";
 import { getFormattedTimerValue } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
 
 const Animation = () => {
   const defaultOptions = {
@@ -25,6 +26,7 @@ export default Animation;
 
 export const BookingTimer = () => {
   const [user, setUser] = useRecoilState(userAtom);
+  const location = useLocation();
 
   const activeBooking = user?.bookings!.find(
     (x) => x.status === BookingStatus.Booked
@@ -69,9 +71,15 @@ export const BookingTimer = () => {
         До конца бронирования осталось:{" "}
         <span>{getFormattedTimerValue(days, hours, minutes, seconds)}</span>
       </div>
-      <div className="flex w-full mb-2 space-x-1 max-w-[300px]">
-        {window.location.pathname !== "/bookings" && (
-          <Button className="w-full">Подробнее</Button>
+      <div className="flex w-full mb-2 space-x-1">
+        {location.pathname !== "/bookings" && (
+          <Button className="w-full  max-w-[300px] mx-auto">Подробнее</Button>
+        )}
+        {location.pathname === "/bookings" && (
+          <p className="w-full text-center">
+            Нажмите здесь, чтобы узнать маршрут до пункта проката, или нажмите
+            на кнопку для звонка, если хотите связаться с нами.
+          </p>
         )}
       </div>
     </div>

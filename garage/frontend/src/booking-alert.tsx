@@ -20,8 +20,8 @@ const BookingAlert = () => {
           Ваша машина была успешно забронирована. Вы можете ознакомиться с
           подробностями бронирования, нажав на кнопку ниже.
         </p>
-        <Button onClick={handleClick} className="mt-10 w-60">
-          Смотреть бронирвание
+        <Button onClick={handleClick} className="w-64 mt-10">
+          Информация о бронировании
         </Button>
       </div>
     </div>

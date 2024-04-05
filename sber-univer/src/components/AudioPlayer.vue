@@ -53,9 +53,15 @@ export default {
 </script>
 <template>
     <audio-player ref="audioPlayer" @timeupdate="handleTimeUpdate" :audio-list="audio" :show-prev-button="false"
-        :show-volume-button="false" :show-next-button="false" 
-        :show-playback-rate="false"
-        theme-color="#0DB1DE" />
+        :show-volume-button="false" :show-next-button="false" :show-playback-rate="false" theme-color="#0DB1DE">
+
+        <template #play-start>
+    <img src="/assets/play.png" v-bind:class="'w-8 m-0.5'" />
+        </template>
+        <!-- <template #play-pause>
+    <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
+        </template> -->
+    </audio-player>
 
 </template>
 <style></style>

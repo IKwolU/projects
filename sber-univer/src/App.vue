@@ -7,7 +7,7 @@ import Locations from './structure.ts';
 
 function getDisplayValueByDecimalSeconds(seconds: number): string {
   const totalMinutes = Math.floor(seconds / 60);
-  const secondsAsInt = Math.round(seconds) % 60;
+  const secondsAsInt = Math.floor(seconds) % 60;
   // Convert decimal seconds to hours and minutes
   const timeThingy = new Date(2000, 0, 1, 0, totalMinutes, secondsAsInt);
   return format(timeThingy, 'mm:ss');
@@ -27,8 +27,10 @@ function getLocationImageBySeconds(seconds: number, valueDict): string {
     if (times[i] > time) {
       break;
     }
+    
     nearestTime = times[i];
   }
+  
 
   return valueDict[nearestTime];
 }
@@ -69,8 +71,6 @@ const handleBubbleClick = (location: LocationData) => {
     currentImageUrl.value = Object.values(location.timestamps)[0];
     return;
   }
-
-  // player.value.play()
 };
 
 const returnToMap = () => {
@@ -95,14 +95,12 @@ const visitNearby = (nearbyLocId: number) => {
 };
 
 const onTimeChanged = (time: number) => {
-  // const modal = ref<InstanceType<typeof AudioPlayer> | null>(null);
-  // player.value.pause()
   const relevantImageUrl = getLocationImageBySeconds(time, activeLocation.value!.timestamps);
   if (relevantImageUrl !== currentImageUrl.value) {
     currentImageUrl.value = relevantImageUrl;
   }
 
-  const possibleTip = activeLocation!.value?.tips[getDisplayValueByDecimalSeconds(time) as any];
+  const possibleTip = activeLocation!.value?.tips[getDisplayValueByDecimalSeconds(time)];
   if (possibleTip && !seenTips.includes(possibleTip)) {
     seenTips.push(possibleTip);
     player.value.pause();

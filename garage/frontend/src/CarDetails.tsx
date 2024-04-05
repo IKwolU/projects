@@ -310,7 +310,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
           </div>
         ))}
       </div>
-      <div className="py-6">
+      <div className="hidden py-6 lg:block">
         {car.variants!.map((variant, index) => (
           <div key={index} className="mb-10">
             {(!index || showVariants) && (

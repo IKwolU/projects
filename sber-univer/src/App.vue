@@ -13,7 +13,7 @@ function getDisplayValueByDecimalSeconds(seconds: number): string {
   return format(timeThingy, 'mm:ss');
 } 
 
-function getLocationImageBySeconds(seconds: number, valueDict): string {
+function getLocationImageBySeconds(seconds: number, valueDict: any): string {
   const times = Object.keys(valueDict);
 
   const time = getDisplayValueByDecimalSeconds(seconds)
@@ -100,7 +100,7 @@ const onTimeChanged = (time: number) => {
     currentImageUrl.value = relevantImageUrl;
   }
 
-  const possibleTip = activeLocation!.value?.tips[getDisplayValueByDecimalSeconds(time)];
+  const possibleTip = (activeLocation!.value?.tips as any)[getDisplayValueByDecimalSeconds(time)];
   if (possibleTip && !seenTips.includes(possibleTip)) {
     seenTips.push(possibleTip);
     player.value.pause();

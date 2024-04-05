@@ -187,7 +187,7 @@ export default [
   {
     id: 9,
     displayId: 7,
-    coords: { x: 55, y: 28 },
+    coords: { x: 50, y: 28 },
     locationName: "Корпоративный центр 1 этаж",
     mapLocationName: "Корпоративный центр",
     timestamps: {

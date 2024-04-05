@@ -118,8 +118,8 @@ const onboarded = localStorage.getItem("onboarded");
 </script>
 
 <template>
-
-  <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full p-8'">
+<div  v-bind:class="'flex justify-center max-w-[437px]'">
+  <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full max-w-[437px] p-8'">
 
     <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 
@@ -143,9 +143,9 @@ const onboarded = localStorage.getItem("onboarded");
 
   <div v-if="onboarded">
 
-    <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full bg-white z-30'">
+    <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full max-w-[437px] bg-white z-30'">
  
-      <div v-if="interruptor" v-bind:class="'absolute w-full h-full pt-[60%] bg-black/60 z-[100]'">
+      <div v-if="interruptor" v-bind:class="'absolute w-full max-w-[437px] h-full pt-[60%] bg-black/60 z-[100]'">
 
         <div v-bind:class="'p-8 rounded-xl bg-white mx-8'">
 
@@ -316,5 +316,5 @@ const onboarded = localStorage.getItem("onboarded");
 
     </div>
   </div>
-
+</div>
 </template>

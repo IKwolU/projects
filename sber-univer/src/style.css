@@ -77,7 +77,7 @@ body {
 }
 
 .bg-top {
-  background-image: url("assets/shablon-top.png");
+  background-image: url("/assets/shablon-top.png");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -85,14 +85,14 @@ body {
 
 .bg {
   background-color: #eff3ff;
-  background-image: url("assets/shablon.jpg");
+  background-image: url("/assets/shablon.jpg");
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .bg-welcome {
   background-color: #aae4e6;
-  background-image: url("assets/welcome.jpg");
+  background-image: url("/assets/welcome.jpg");
   background-size: contain;
   background-repeat: no-repeat;
 }

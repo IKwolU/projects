@@ -286,7 +286,7 @@ const onboarded = localStorage.getItem("onboarded");
       <div @click="handleBlueBubbleClick" :style="{
     position: 'absolute',
     left: '45%',
-    top: '58%',
+    top: '55%',
     width: '48px',
     height: '48px',
     background: 'white',

@@ -959,25 +959,49 @@
                                         "type": "integer",
                                         "maxLength": 250
                                     },
+                                    "tariff_id": {
+                                        "description": "id тарифа",
+                                        "type": "integer"
+                                    },
+                                    "rent_term_id": {
+                                        "description": "id срока аренды",
+                                        "type": "integer"
+                                    },
                                     "mileage": {
                                         "description": "Пробег автомобиля",
                                         "type": "number"
-                                    },
-                                    "fuel_type": {
-                                        "description": "Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)",
-                                        "type": "integer"
                                     },
                                     "license_plate": {
                                         "description": "Госномер автомобиля",
                                         "type": "string"
                                     },
+                                    "fuel_type": {
+                                        "description": "Вид топлива (1 - метан, 2 - пропан, 0 - бензин, 3 - электро)",
+                                        "type": "integer"
+                                    },
+                                    "transmission_type": {
+                                        "description": "Тип трансмиссии",
+                                        "type": "integer"
+                                    },
+                                    "brand": {
+                                        "description": "Марка автомобиля",
+                                        "type": "string"
+                                    },
+                                    "model": {
+                                        "description": "Модель автомобиля",
+                                        "type": "string"
+                                    },
+                                    "year_produced": {
+                                        "description": "Год выпуска автомобиля",
+                                        "type": "integer"
+                                    },
                                     "class": {
-                                        "description": "Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
+                                        "description": "Класс автомобиля (0 - не указан, 1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес)",
                                         "type": "integer",
                                         "nullable": true
                                     },
                                     "images": {
-                                        "description": "Изображения машины",
+                                        "description": "Изображения автомобиля",
                                         "type": "array",
                                         "items": {
                                             "type": "string"
@@ -3024,6 +3048,10 @@
                                                         "description": "Модель автомобиля",
                                                         "type": "string"
                                                     },
+                                                    "commission": {
+                                                        "description": "Комиссия парка",
+                                                        "type": "number"
+                                                    },
                                                     "vin": {
                                                         "description": "VIN автомобиля",
                                                         "type": "string"
@@ -3063,6 +3091,10 @@
                                                                 "vin": {
                                                                     "description": "VIN автомобиля",
                                                                     "type": "string"
+                                                                },
+                                                                "mileage": {
+                                                                    "description": "Пробег",
+                                                                    "type": "number"
                                                                 }
                                                             },
                                                             "type": "object"
@@ -3078,10 +3110,6 @@
                                                     "about": {
                                                         "description": "Описание парка",
                                                         "type": "string"
-                                                    },
-                                                    "commission": {
-                                                        "description": "Комиссия",
-                                                        "type": "number"
                                                     },
                                                     "city": {
                                                         "type": "string"
@@ -5970,6 +5998,84 @@
                 "responses": {
                     "200": {
                         "description": "Изменение статуса автомобиля парка",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/auth/data": {
+            "put": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Изменение логина и пароля менеджера для связи с клиентом",
+                "description": "Изменение логина и пароля менеджера для связи с клиентом\n\nЭтот метод позволяет изменить логин и пароль менеджера для связи с клиентом",
+                "operationId": "pushAuthDataManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Новое имя пользователя 1с",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Новый пароль пользователя 1с",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
                         "content": {
                             "application/json": {
                                 "schema": {

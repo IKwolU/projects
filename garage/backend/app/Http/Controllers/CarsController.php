@@ -70,6 +70,7 @@ class CarsController extends Controller
      *                 @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
      *                 @OA\Property(property="brand", type="string", description="Марка автомобиля"),
      *                 @OA\Property(property="model", type="string", description="Модель автомобиля"),
+     *                 @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *                 @OA\Property(property="vin", type="string", description="VIN автомобиля"),
      *                 @OA\Property(property="year_produced", type="integer", description="Год производства"),
      *                 @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
@@ -79,7 +80,8 @@ class CarsController extends Controller
      *                         type="object",
      *                         @OA\Property(property="id", type="integer"),
      *                         @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
-     *                         @OA\Property(property="vin", type="string", description="VIN автомобиля")
+     *                         @OA\Property(property="vin", type="string", description="VIN автомобиля"),
+     *                         @OA\Property(property="mileage", type="number", description="Пробег")
      *                     )),
      *                 @OA\Property(
      *                     property="working_hours",
@@ -88,7 +90,6 @@ class CarsController extends Controller
      *     @OA\Items(type="string")
      * ),
      *                 @OA\Property(property="about", type="string", description="Описание парка"),
-     *                 @OA\Property(property="commission", type="number", description="Комиссия"),
      *                 @OA\Property(property="city", type="string"),
      *                 @OA\Property(property="division", type="object", description="Данные о подразделении",
      *                     @OA\Property(property="address", type="string", description="Адрес"),
@@ -284,6 +285,7 @@ class CarsController extends Controller
                 'cars.year_produced',
                 'cars.car_id',
                 'cars.images',
+                'cars.mileage',
             );
 
         $carsQuery->orderBy(function ($query) use ($sorting) {
@@ -333,7 +335,8 @@ class CarsController extends Controller
                 return [
                     'id' => $similarCar->id,
                     'images' => json_decode($similarCar->images),
-                    'vin'=>$similarCar->car_id
+                    'vin'=>$similarCar->car_id,
+                    'mileage'=>$similarCar->mileage
                 ];
             })->values()->all();}
             $formattedCars = [];

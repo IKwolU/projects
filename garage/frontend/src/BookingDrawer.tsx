@@ -106,11 +106,11 @@ export const BookingDrawer = () => {
       return 0;
     });
 
-  const navigationLink = (booking: Bookings) => {
+  const navigationLink = (address: string) => {
     const link =
       window.innerWidth < 800
-        ? `yandexnavi://map_search?text=${booking.car?.division?.address}`
-        : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${booking.car?.division?.address}`;
+        ? `yandexnavi://map_search?text=${address}`
+        : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${address}`;
     return link;
   };
 
@@ -149,7 +149,7 @@ export const BookingDrawer = () => {
                 <p className="text-base">
                   Адрес:{" "}
                   <a
-                    href={navigationLink(booking)}
+                    href={navigationLink(booking.car!.division!.address!)}
                     className="text-base text-blue-400 underline active:text-yellow"
                     target="_blank"
                   >
@@ -311,20 +311,25 @@ export const BookingDrawer = () => {
           </div>
           <div className="hidden space-x-6 lg:flex">
             <div className="w-1/2 px-4 py-4 bg-white rounded-xl">
-              <div className="flex items-center justify-between pb-6">
-                {[
-                  { status: BookingStatus.Booked, text: "Текущая бронь" },
-                  { status: BookingStatus.RentStart, text: "Текущая аренда" },
-                ].map(({ status, text }) => {
-                  return (
-                    booking.status === status && (
-                      <h3 key={status} className="mb-2 text-xl text-center">
-                        {text}
-                      </h3>
-                    )
-                  );
-                })}
-                <div className="w-1/2">
+              {[
+                { status: BookingStatus.Booked, text: "Текущая бронь" },
+                { status: BookingStatus.RentStart, text: "Текущая аренда" },
+              ].map(({ status, text }) => {
+                return (
+                  booking.status === status && (
+                    <h3 key={status} className="mb-2 text-xl text-center">
+                      {text}
+                    </h3>
+                  )
+                );
+              })}
+              <img
+                className="object-cover h-auto rounded-xl"
+                src={booking.car!.images![0]}
+                alt=""
+              />
+              <div className="flex items-center justify-between pt-4">
+                <div className="w-1/2 mx-auto">
                   <Confirmation
                     title="Отмена бронирования. Хотите продолжить?"
                     type="red"
@@ -341,11 +346,6 @@ export const BookingDrawer = () => {
                   />
                 </div>
               </div>
-              <img
-                className="object-cover h-auto rounded-xl"
-                src={booking.car!.images![0]}
-                alt=""
-              />
             </div>
             <div className="w-1/2 space-y-2">
               <div className="px-4 py-2 pb-4 bg-white rounded-xl">
@@ -392,19 +392,21 @@ export const BookingDrawer = () => {
                     type: "deposit",
                   },
                 ].map((x) => (
-                  <>
+                  <div key={x.type}>
                     {!(
                       booking.status === BookingStatus.RentStart &&
                       x.type === "time"
                     ) && (
                       <>
-                        <Separator className="my-3" />
+                        <Separator className="my-[15px]" />
                         <div className="flex justify-between">
                           <p>{x.text}</p>
                           {x.type !== "address" && <p>{x.content}</p>}
                           {x.type === "address" && (
                             <a
-                              href={navigationLink(booking)}
+                              href={navigationLink(
+                                booking.car!.division!.address!
+                              )}
                               className="text-base text-blue-400 underline active:text-yellow"
                               target="_blank"
                             >
@@ -414,7 +416,7 @@ export const BookingDrawer = () => {
                         </div>
                       </>
                     )}
-                  </>
+                  </div>
                 ))}
               </div>
               <div className="px-4 py-2 pb-6 space-y-6 bg-white rounded-xl">
@@ -428,7 +430,7 @@ export const BookingDrawer = () => {
                 <div className="flex items-center justify-between space-x-2">
                   <Button variant="reject" className="w-1/2 font-normal">
                     <a
-                      href={navigationLink(booking)}
+                      href={navigationLink(booking.car!.division!.address!)}
                       className="w-full text-base text-black"
                       target="_blank"
                     >

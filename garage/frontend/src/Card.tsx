@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Cars2 } from "./api-client";
+import { Cars3, Schemas3 } from "./api-client";
 import {
   formatRoubles,
   getFuelTypeDisplayName,
@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
-export const Card = ({ car }: { car: Cars2 }) => {
-  const currentSchemas = car.rent_term!.schemas!.sort(
+export const Card = ({ car }: { car: Cars3 }) => {
+  const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a, b) => a.daily_amount! - b.daily_amount!
   );
 
@@ -117,7 +119,7 @@ export const Card = ({ car }: { car: Cars2 }) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-8">
+      <DialogContent className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-8 lg:max-w-full">
         {/* <DialogHeader>
         <DialogTitle></DialogTitle> */}
         {/* <DialogDescription>DialogDescription</DialogDescription> */}
@@ -129,9 +131,22 @@ export const Card = ({ car }: { car: Cars2 }) => {
         </DialogClose>
       </DialogFooter> */}
         <DialogClose asChild className="">
-          <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2">
-            <div className="inset-0 flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
-              <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
+          <div>
+            <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
+              <div className="inset-0 flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
+                <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
+              </div>
+            </div>
+            <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
+              <div className="flex justify-center max-w-[1104px] mx-auto ">
+                <div className="relative w-32 h-full bg-white">
+                  <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
+                    <div className="flex items-center justify-center w-16 h-16 border-4 border-black rounded-full">
+                      <FontAwesomeIcon className="h-10" icon={faChevronLeft} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </DialogClose>

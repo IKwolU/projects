@@ -4,15 +4,19 @@ import AudioPlayer from './components/AudioPlayer.vue'
 import { format } from 'date-fns';
 import Locations from './structure.ts';
 
-function getImagePathByDecimalSeconds(seconds: number, imageDict): string {
+
+function getDisplayValueByDecimalSeconds(seconds: number): string {
   const totalMinutes = Math.floor(seconds / 60);
   const secondsAsInt = Math.round(seconds) % 60;
   // Convert decimal seconds to hours and minutes
   const timeThingy = new Date(2000, 0, 1, 0, totalMinutes, secondsAsInt);
-  const time = format(timeThingy, 'mm:ss');
+  return format(timeThingy, 'mm:ss');
+} 
 
-  // Get the keys (times) from the image dictionary
-  const times = Object.keys(imageDict);
+function getLocationImageBySeconds(seconds: number, valueDict): string {
+  const times = Object.keys(valueDict);
+
+  const time = getDisplayValueByDecimalSeconds(seconds)
 
   // Sort the times in ascending order
   times.sort();
@@ -26,17 +30,16 @@ function getImagePathByDecimalSeconds(seconds: number, imageDict): string {
     nearestTime = times[i];
   }
 
-  // Get the image path corresponding to the nearest time
-  const imagePath = imageDict[nearestTime];
-
-  return imagePath;
+  return valueDict[nearestTime];
 }
 
 type LocationData = typeof Locations[0];
 
+const seenTips: string[] = [];
+
+const interruptor = ref<string | undefined>()
 const player = ref()
 
-const onboarded = ref()
 const previewedLocation = ref<LocationData | undefined>()
 const activeLocation = ref<LocationData | undefined>();
 
@@ -44,9 +47,6 @@ const currentImageUrl = ref()
 const blueBubbleExpanded = ref(false)
 
 onMounted(() => {
-  if (onboarded) {
-  }
-
   const urlParams = new URLSearchParams(window.location.search);
   const locationId = urlParams.get('id');
   if (locationId) {
@@ -97,20 +97,31 @@ const visitNearby = (nearbyLocId: number) => {
 const onTimeChanged = (time: number) => {
   // const modal = ref<InstanceType<typeof AudioPlayer> | null>(null);
   // player.value.pause()
-  const relevantImageUrl = getImagePathByDecimalSeconds(time, activeLocation.value!.timestamps);
+  const relevantImageUrl = getLocationImageBySeconds(time, activeLocation.value!.timestamps);
   if (relevantImageUrl !== currentImageUrl.value) {
     currentImageUrl.value = relevantImageUrl;
   }
+
+  const possibleTip = activeLocation!.value?.tips[getDisplayValueByDecimalSeconds(time) as any];
+  if (possibleTip && !seenTips.includes(possibleTip)) {
+    seenTips.push(possibleTip);
+    player.value.pause();
+    interruptor.value = possibleTip;
+  }
 };
 
+const closeTip = () => {
+  interruptor.value = undefined;
+  player.value.play();
+};
 
-const onboardedx = localStorage.getItem("onboarded");
+const onboarded = localStorage.getItem("onboarded");
 
 </script>
 
 <template>
 
-  <div v-if="!onboardedx" v-bind:class="'absolute z-40 bg-welcome w-full p-8'">
+  <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full p-8'">
 
     <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 
@@ -132,9 +143,27 @@ const onboardedx = localStorage.getItem("onboarded");
     </div>
   </div>
 
-  <div v-if="onboardedx">
+  <div v-if="onboarded">
 
     <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full bg-white z-30'">
+ 
+      <div v-if="interruptor" v-bind:class="'absolute w-full h-full pt-[60%] bg-black/60 z-[100]'">
+
+        <div v-bind:class="'p-8 rounded-xl bg-white mx-8'">
+
+
+        <div class="text-sb-display-semi-bold text-center text-lg"> {{ interruptor }}</div>
+
+        <div @click="closeTip"
+          v-bind:class="'mt-12 bg-lime-400 rounded-xl px-8 py-4 text-sb-display-semi-bold text-дп text-center cursor-pointer'">
+ 
+          ОК
+        </div>
+      </div>
+
+      </div>
+
+
       <div class="relative w-full h-60 bg-top">
         <img v-for="(url, time) in activeLocation.timestamps" :key="time" v-bind:src="'assets/' + url" :class="{
     'opacity-100 duration-500': currentImageUrl === url,
@@ -184,10 +213,10 @@ const onboardedx = localStorage.getItem("onboarded");
 
 
           <div v-bind:class="'rounded space-y-2 mt-4'">
-            <div v-bind:class="'flex justify-between w-full'">
+            <div v-bind:class="'flex justify-between w-full items-center'">
               <h2>Локации рядом:</h2>
-              <span v-if="activeLocation.id !== 1" v-bind:class="'text-sm text-sky-400 underline'"
-                @click="startTheJourney()">К началу экскурсии</span>
+              <div v-if="activeLocation.id !== 1" v-bind:class="'h-7 text-sm text-sky-400 underline'"
+                @click="startTheJourney()">К началу экскурсии</div>
             </div>
             <div v-bind:class="'flex space-between space-x-2 items-center'">
               <div v-for=" (nearbyLocId, i)  in  activeLocation.nearbyLocations " :key="nearbyLocId"
@@ -198,8 +227,8 @@ const onboardedx = localStorage.getItem("onboarded");
     'py-4': i === 1,
     'py-2': i !== 1,
   }">
-                <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLocId)?.icon"
-                  v-bind:class="'rounded'" :class="{
+                <img v-bind:src="'/assets/' + Locations.find(x => x.id === nearbyLocId)?.icon" v-bind:class="'rounded'"
+                  :class="{
     ' w-8 h-8': i !== 1,
     ' w-12 h-12': i === 1,
   }" />

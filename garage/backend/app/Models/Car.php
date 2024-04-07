@@ -9,7 +9,7 @@ class Car extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['division_id', 'tariff_id', 'mileage', 'license_plate', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images', 'booking_time', 'user_booked_id', 'status'];
+    protected $fillable = ['division_id', 'tariff_id', 'mileage', 'license_plate', 'old_custom_status_id', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images', 'booking_time', 'user_booked_id', 'status'];
 
     public function division()
     {
@@ -26,5 +26,9 @@ class Car extends Model
     public function booking()
     {
         return $this->hasMany(Booking::class);
+    }
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

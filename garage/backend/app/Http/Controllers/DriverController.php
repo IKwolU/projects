@@ -17,6 +17,7 @@ use App\Models\DriverDoc;
 use App\Models\Park;
 use App\Models\RentTerm;
 use App\Models\Schema;
+use App\Models\Status;
 use App\Services\FileService;
 use Carbon\Carbon;
 
@@ -291,11 +292,17 @@ class DriverController extends Controller
         $booking->driver_id = $driver->id;
         $booking->save();
 
+        $customStatusBooked = Status::where('status_value', CarStatus::Booked->value)->where('park_id', $car->park_id)->first();
+        if ($customStatusBooked) {
+            if ($car->custom_status_id) {
+                $car->old_custom_status_id = $car->custom_status_id;
+            }
+            $car->custom_status_id = $customStatusBooked->id;
+        }
         $car->status = CarStatus::Booked->value;
         $car->save();
 
         $workingHours = json_decode($car->division->working_hours, true);
-
 
         $car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
         $booked = $booking;
@@ -448,6 +455,11 @@ class DriverController extends Controller
         $booking->booked_until = Carbon::now()->toIso8601ZuluString();
         $booking->status = BookingStatus::UnBooked->value;
         $booking->save();
+
+        $customStatusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
+        if ($customStatusAvailable) {
+            $car->custom_status_id = $customStatusAvailable->id;
+        }
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
         $api = new APIController;

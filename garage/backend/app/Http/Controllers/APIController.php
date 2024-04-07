@@ -1633,10 +1633,20 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
             }
             $booking->car_id = $newCar->id;
             $booking->save();
+
             $car->status = CarStatus::AvailableForBooking->value;
+            $customStatusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
+            $car->custom_status_id = $customStatusAvailable->id;
             $car->save();
+
             $newCar->status = CarStatus::Booked->value;
+            $customStatusBooked = Status::where('status_value', CarStatus::Booked->value)->where('park_id', $car->park_id)->first();
+            if ($car->custom_status_id) {
+                $car->old_custom_status_id = $car->custom_status_id;
+            }
+            $car->custom_status_id = $customStatusBooked->id;
             $car->save();
+
             return response()->json(['message' => 'Замена авто прошла успешно'], 200);
 
     }
@@ -1779,45 +1789,38 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом изменения статуса бронирования
      */
 
-     public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null)
-     {
-         $booking = Booking::with('car', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
-             ->find($booking_id);
-
-         if ($booking) {
-             $car = $booking->car;
-             $user = $booking->driver->user;
-             $park = $car->division->park;
-             $apiKey = $park->API_key;
-             $url = $park->url;
-
-            //  if ($url !== null) {
-            //      $client = new Client();
-            //      $response = $client->put($url, [
-            //          'headers' => [
-            //              'X-API-Key' => $apiKey,
-            //          ],
-            //          'json' => [
-            //              'is_booked' => $is_booked,
-            //              'car_id' => $car->car_id,
-            //              'driver_name' => $user->name,
-            //              'phone' => $user->phone,
-            //              'schema' => $schema,
-            //          ],
-            //          'http_errors' => false,
-            //      ]);
-
-            //      $statusCode = $response->getStatusCode();
-
-            //      if ($statusCode === 204) {
-            //          // Handle success response
-            //      } else {
-            //          // Handle other status codes
-            //      }
-            //  }
-         }
-     }
-
+    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null)
+    {
+        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
+            ->find($booking_id);
+        // if ($booking) {
+        //     $car = $booking->car;
+        //     $user = $booking->driver->user;
+        //     $park = $car->division->park;
+        //     $apiKey = $park->API_key;
+        //     $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
+        //     $customStatusName = $car->status->custom_status_name;
+        //     $tocken = $park->status_api_tocken;
+        //     if ($url !== null) {
+        //         $client = new Client();
+        //         $response = $client->post($url, [
+        //             'headers' => [
+        //                 'Authorization' => 'Bearer'.$tocken,
+        //             ],
+        //             'json' => [
+        //                 'vehicleNumber' => $car->license_plate,
+        //                 'comment' => $user->name,
+        //                 'phone' => $user->phone,
+        //             ],
+        //             'http_errors' => false,
+        //             ]);
+        //         $statusCode = $response->getStatusCode();
+        //         if ($statusCode === 500) {
+        //             $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+        //         }
+        //     }
+        // }
+    }
 
 
 

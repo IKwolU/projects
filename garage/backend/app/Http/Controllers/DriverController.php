@@ -294,10 +294,10 @@ class DriverController extends Controller
 
         $customStatusBooked = Status::where('status_value', CarStatus::Booked->value)->where('park_id', $car->park_id)->first();
         if ($customStatusBooked) {
-            if ($car->custom_status_id) {
-                $car->old_custom_status_id = $car->custom_status_id;
+            if ($car->status_id) {
+                $car->old_status_id = $car->status_id;
             }
-            $car->custom_status_id = $customStatusBooked->id;
+            $car->status_id = $customStatusBooked->id;
         }
         $car->status = CarStatus::Booked->value;
         $car->save();
@@ -458,7 +458,7 @@ class DriverController extends Controller
 
         $customStatusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
         if ($customStatusAvailable) {
-            $car->custom_status_id = $customStatusAvailable->id;
+            $car->status_id = $customStatusAvailable->id;
         }
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();

@@ -24,7 +24,8 @@ return new class extends Migration
             $table->string('license_plate');
             $table->string('model');
             $table->integer('year_produced');
-            $table->integer('old_custom_status_id');
+            $table->integer('old_status_id');
+            $table->integer('status_id');
             $table->string('car_id');
             $table->text('images');
             $table->boolean('status');

@@ -1635,18 +1635,18 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
             $booking->save();
 
             $car->status = CarStatus::AvailableForBooking->value;
-            $customStatusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
+            $statusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
             if ($customStatusAvailable) {
-                $car->custom_status_id = $customStatusAvailable->id;
+                $car->status_id = $statusAvailable->id;
             }
             $car->save();
 
             $newCar->status = CarStatus::Booked->value;
-            $customStatusBooked = Status::where('status_value', CarStatus::Booked->value)->where('park_id', $car->park_id)->first();
-            if ($car->custom_status_id) {
-                $car->old_custom_status_id = $car->custom_status_id;
+            $satusBooked = Status::where('status_value', CarStatus::Booked->value)->where('park_id', $car->park_id)->first();
+            if ($car->status_id) {
+                $car->old_status_id = $car->status_id;
             }
-            $car->custom_status_id = $customStatusBooked->id;
+            $car->status_id = $customStatusBooked->id;
             $car->save();
 
             return response()->json(['message' => 'Замена авто прошла успешно'], 200);

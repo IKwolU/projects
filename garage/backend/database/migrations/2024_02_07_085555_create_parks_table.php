@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('url');
             $table->float('commission');
             $table->integer('booking_window');
+            $table->integer('status_api_tocken');
             $table->string('park_name');
             $table->integer('self_employed_discount');
             $table->text('about');

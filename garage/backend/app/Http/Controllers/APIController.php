@@ -1636,7 +1636,9 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
 
             $car->status = CarStatus::AvailableForBooking->value;
             $customStatusAvailable = Status::where('status_value', CarStatus::AvailableForBooking->value)->where('park_id', $car->park_id)->first();
-            $car->custom_status_id = $customStatusAvailable->id;
+            if ($customStatusAvailable) {
+                $car->custom_status_id = $customStatusAvailable->id;
+            }
             $car->save();
 
             $newCar->status = CarStatus::Booked->value;

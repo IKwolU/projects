@@ -22,6 +22,10 @@ class Park extends Model
     {
         return $this->hasMany(Tariff::class);
     }
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
     public function managers()
     {
         return $this->hasMany(Manager::class);

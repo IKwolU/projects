@@ -3722,6 +3722,128 @@
                                                         "description": "Скидка парка для самозанятых",
                                                         "type": "number"
                                                     },
+                                                    "cars": {
+                                                        "description": "Список автомобилей в отделении",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "id автомобиля",
+                                                                    "type": "integer"
+                                                                },
+                                                                "tariff_id": {
+                                                                    "description": "id тарифа",
+                                                                    "type": "integer"
+                                                                },
+                                                                "mileage": {
+                                                                    "description": "Пробег автомобиля",
+                                                                    "type": "number"
+                                                                },
+                                                                "license_plate": {
+                                                                    "description": "Государственный номер автомобиля",
+                                                                    "type": "string"
+                                                                },
+                                                                "rent_term_id": {
+                                                                    "description": "id условия аренды",
+                                                                    "type": "integer"
+                                                                },
+                                                                "fuel_type": {
+                                                                    "$ref": "#/components/schemas/FuelType"
+                                                                },
+                                                                "transmission_type": {
+                                                                    "$ref": "#/components/schemas/TransmissionType"
+                                                                },
+                                                                "brand": {
+                                                                    "description": "Марка автомобиля",
+                                                                    "type": "string"
+                                                                },
+                                                                "model": {
+                                                                    "description": "Модель автомобиля",
+                                                                    "type": "string"
+                                                                },
+                                                                "year_produced": {
+                                                                    "description": "Год выпуска автомобиля",
+                                                                    "type": "integer"
+                                                                },
+                                                                "vin": {
+                                                                    "description": "vin автомобиля",
+                                                                    "type": "string"
+                                                                },
+                                                                "images": {
+                                                                    "description": "Ссылки на изображения автомобиля",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "status": {
+                                                                    "$ref": "#/components/schemas/CarStatus"
+                                                                },
+                                                                "created_at": {
+                                                                    "description": "Дата создания записи об автомобиле",
+                                                                    "type": "string"
+                                                                },
+                                                                "updated_at": {
+                                                                    "description": "Последнее обновление записи об автомобиле",
+                                                                    "type": "string"
+                                                                },
+                                                                "booking": {
+                                                                    "description": "Список бронирований для данного автомобиля",
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "description": "id бронирования",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "status": {
+                                                                                "description": "статус бронирования",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "schema_id": {
+                                                                                "description": "id схемы",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "car_id": {
+                                                                                "description": "id автомобиля",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "driver_id": {
+                                                                                "description": "id водителя",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "booked_at": {
+                                                                                "description": "дата и время начала бронирования",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            },
+                                                                            "booked_until": {
+                                                                                "description": "дата и время окончания бронирования",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            },
+                                                                            "park_id": {
+                                                                                "description": "id парка",
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "created_at": {
+                                                                                "description": "дата создания записи",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            },
+                                                                            "updated_at": {
+                                                                                "description": "дата последнего обновления записи",
+                                                                                "type": "string",
+                                                                                "format": "datetime"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
                                                     "divisions": {
                                                         "type": "array",
                                                         "items": {
@@ -3805,128 +3927,6 @@
                                                                 "city": {
                                                                     "description": "Город, в котором находится отделение",
                                                                     "type": "string"
-                                                                },
-                                                                "cars": {
-                                                                    "description": "Список автомобилей в отделении",
-                                                                    "type": "array",
-                                                                    "items": {
-                                                                        "properties": {
-                                                                            "id": {
-                                                                                "description": "id автомобиля",
-                                                                                "type": "integer"
-                                                                            },
-                                                                            "tariff_id": {
-                                                                                "description": "id тарифа",
-                                                                                "type": "integer"
-                                                                            },
-                                                                            "mileage": {
-                                                                                "description": "Пробег автомобиля",
-                                                                                "type": "number"
-                                                                            },
-                                                                            "license_plate": {
-                                                                                "description": "Государственный номер автомобиля",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "rent_term_id": {
-                                                                                "description": "id условия аренды",
-                                                                                "type": "integer"
-                                                                            },
-                                                                            "fuel_type": {
-                                                                                "$ref": "#/components/schemas/FuelType"
-                                                                            },
-                                                                            "transmission_type": {
-                                                                                "$ref": "#/components/schemas/TransmissionType"
-                                                                            },
-                                                                            "brand": {
-                                                                                "description": "Марка автомобиля",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "model": {
-                                                                                "description": "Модель автомобиля",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "year_produced": {
-                                                                                "description": "Год выпуска автомобиля",
-                                                                                "type": "integer"
-                                                                            },
-                                                                            "vin": {
-                                                                                "description": "vin автомобиля",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "images": {
-                                                                                "description": "Ссылки на изображения автомобиля",
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "type": "string"
-                                                                                }
-                                                                            },
-                                                                            "status": {
-                                                                                "$ref": "#/components/schemas/CarStatus"
-                                                                            },
-                                                                            "created_at": {
-                                                                                "description": "Дата создания записи об автомобиле",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "updated_at": {
-                                                                                "description": "Последнее обновление записи об автомобиле",
-                                                                                "type": "string"
-                                                                            },
-                                                                            "booking": {
-                                                                                "description": "Список бронирований для данного автомобиля",
-                                                                                "type": "array",
-                                                                                "items": {
-                                                                                    "properties": {
-                                                                                        "id": {
-                                                                                            "description": "id бронирования",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "status": {
-                                                                                            "description": "статус бронирования",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "schema_id": {
-                                                                                            "description": "id схемы",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "car_id": {
-                                                                                            "description": "id автомобиля",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "driver_id": {
-                                                                                            "description": "id водителя",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "booked_at": {
-                                                                                            "description": "дата и время начала бронирования",
-                                                                                            "type": "string",
-                                                                                            "format": "datetime"
-                                                                                        },
-                                                                                        "booked_until": {
-                                                                                            "description": "дата и время окончания бронирования",
-                                                                                            "type": "string",
-                                                                                            "format": "datetime"
-                                                                                        },
-                                                                                        "park_id": {
-                                                                                            "description": "id парка",
-                                                                                            "type": "integer"
-                                                                                        },
-                                                                                        "created_at": {
-                                                                                            "description": "дата создания записи",
-                                                                                            "type": "string",
-                                                                                            "format": "datetime"
-                                                                                        },
-                                                                                        "updated_at": {
-                                                                                            "description": "дата последнего обновления записи",
-                                                                                            "type": "string",
-                                                                                            "format": "datetime"
-                                                                                        }
-                                                                                    },
-                                                                                    "type": "object"
-                                                                                }
-                                                                            }
-                                                                        },
-                                                                        "type": "object"
-                                                                    }
                                                                 }
                                                             },
                                                             "type": "object"

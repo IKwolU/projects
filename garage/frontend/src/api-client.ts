@@ -14815,6 +14815,8 @@ export class Park2 implements IPark2 {
     updated_at?: string;
     /** Скидка парка для самозанятых */
     self_employed_discount?: number;
+    /** Список автомобилей в отделении */
+    cars?: Cars4[];
     divisions?: Divisions2[];
     /** Список тарифов аренды */
     rent_terms?: Rent_terms[];
@@ -14847,6 +14849,11 @@ export class Park2 implements IPark2 {
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
             this.self_employed_discount = _data["self_employed_discount"];
+            if (Array.isArray(_data["cars"])) {
+                this.cars = [] as any;
+                for (let item of _data["cars"])
+                    this.cars!.push(Cars4.fromJS(item));
+            }
             if (Array.isArray(_data["divisions"])) {
                 this.divisions = [] as any;
                 for (let item of _data["divisions"])
@@ -14887,6 +14894,11 @@ export class Park2 implements IPark2 {
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
         data["self_employed_discount"] = this.self_employed_discount;
+        if (Array.isArray(this.cars)) {
+            data["cars"] = [];
+            for (let item of this.cars)
+                data["cars"].push(item.toJSON());
+        }
         if (Array.isArray(this.divisions)) {
             data["divisions"] = [];
             for (let item of this.divisions)
@@ -14925,6 +14937,8 @@ export interface IPark2 {
     updated_at?: string;
     /** Скидка парка для самозанятых */
     self_employed_discount?: number;
+    /** Список автомобилей в отделении */
+    cars?: Cars4[];
     divisions?: Divisions2[];
     /** Список тарифов аренды */
     rent_terms?: Rent_terms[];
@@ -15462,7 +15476,7 @@ export class Divisions implements IDivisions {
     /** Город, в котором находится отделение */
     city?: string;
     /** Список автомобилей в отделении */
-    cars?: Cars4[];
+    cars?: Cars5[];
 
     [key: string]: any;
 
@@ -15499,7 +15513,7 @@ export class Divisions implements IDivisions {
             if (Array.isArray(_data["cars"])) {
                 this.cars = [] as any;
                 for (let item of _data["cars"])
-                    this.cars!.push(Cars4.fromJS(item));
+                    this.cars!.push(Cars5.fromJS(item));
             }
         }
     }
@@ -15565,7 +15579,7 @@ export interface IDivisions {
     /** Город, в котором находится отделение */
     city?: string;
     /** Список автомобилей в отделении */
-    cars?: Cars4[];
+    cars?: Cars5[];
 
     [key: string]: any;
 }
@@ -16140,6 +16154,156 @@ export interface IRent_term2 {
     [key: string]: any;
 }
 
+export class Cars4 implements ICars4 {
+    /** id автомобиля */
+    id?: number;
+    /** id тарифа */
+    tariff_id?: number;
+    /** Пробег автомобиля */
+    mileage?: number;
+    /** Государственный номер автомобиля */
+    license_plate?: string;
+    /** id условия аренды */
+    rent_term_id?: number;
+    fuel_type?: FuelType;
+    transmission_type?: TransmissionType;
+    /** Марка автомобиля */
+    brand?: string;
+    /** Модель автомобиля */
+    model?: string;
+    /** Год выпуска автомобиля */
+    year_produced?: number;
+    /** vin автомобиля */
+    vin?: string;
+    /** Ссылки на изображения автомобиля */
+    images?: string[];
+    status?: CarStatus;
+    /** Дата создания записи об автомобиле */
+    created_at?: string;
+    /** Последнее обновление записи об автомобиле */
+    updated_at?: string;
+    /** Список бронирований для данного автомобиля */
+    booking?: Booking2[];
+
+    [key: string]: any;
+
+    constructor(data?: ICars4) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.tariff_id = _data["tariff_id"];
+            this.mileage = _data["mileage"];
+            this.license_plate = _data["license_plate"];
+            this.rent_term_id = _data["rent_term_id"];
+            this.fuel_type = _data["fuel_type"];
+            this.transmission_type = _data["transmission_type"];
+            this.brand = _data["brand"];
+            this.model = _data["model"];
+            this.year_produced = _data["year_produced"];
+            this.vin = _data["vin"];
+            if (Array.isArray(_data["images"])) {
+                this.images = [] as any;
+                for (let item of _data["images"])
+                    this.images!.push(item);
+            }
+            this.status = _data["status"];
+            this.created_at = _data["created_at"];
+            this.updated_at = _data["updated_at"];
+            if (Array.isArray(_data["booking"])) {
+                this.booking = [] as any;
+                for (let item of _data["booking"])
+                    this.booking!.push(Booking2.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Cars4 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Cars4();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["tariff_id"] = this.tariff_id;
+        data["mileage"] = this.mileage;
+        data["license_plate"] = this.license_plate;
+        data["rent_term_id"] = this.rent_term_id;
+        data["fuel_type"] = this.fuel_type;
+        data["transmission_type"] = this.transmission_type;
+        data["brand"] = this.brand;
+        data["model"] = this.model;
+        data["year_produced"] = this.year_produced;
+        data["vin"] = this.vin;
+        if (Array.isArray(this.images)) {
+            data["images"] = [];
+            for (let item of this.images)
+                data["images"].push(item);
+        }
+        data["status"] = this.status;
+        data["created_at"] = this.created_at;
+        data["updated_at"] = this.updated_at;
+        if (Array.isArray(this.booking)) {
+            data["booking"] = [];
+            for (let item of this.booking)
+                data["booking"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface ICars4 {
+    /** id автомобиля */
+    id?: number;
+    /** id тарифа */
+    tariff_id?: number;
+    /** Пробег автомобиля */
+    mileage?: number;
+    /** Государственный номер автомобиля */
+    license_plate?: string;
+    /** id условия аренды */
+    rent_term_id?: number;
+    fuel_type?: FuelType;
+    transmission_type?: TransmissionType;
+    /** Марка автомобиля */
+    brand?: string;
+    /** Модель автомобиля */
+    model?: string;
+    /** Год выпуска автомобиля */
+    year_produced?: number;
+    /** vin автомобиля */
+    vin?: string;
+    /** Ссылки на изображения автомобиля */
+    images?: string[];
+    status?: CarStatus;
+    /** Дата создания записи об автомобиле */
+    created_at?: string;
+    /** Последнее обновление записи об автомобиле */
+    updated_at?: string;
+    /** Список бронирований для данного автомобиля */
+    booking?: Booking2[];
+
+    [key: string]: any;
+}
+
 /** Список подразделений в парке */
 export class Divisions2 implements IDivisions2 {
     /** id отделения */
@@ -16164,8 +16328,6 @@ export class Divisions2 implements IDivisions2 {
     phone?: string;
     /** Город, в котором находится отделение */
     city?: string;
-    /** Список автомобилей в отделении */
-    cars?: Cars5[];
 
     [key: string]: any;
 
@@ -16199,11 +16361,6 @@ export class Divisions2 implements IDivisions2 {
             this.name = _data["name"];
             this.phone = _data["phone"];
             this.city = _data["city"];
-            if (Array.isArray(_data["cars"])) {
-                this.cars = [] as any;
-                for (let item of _data["cars"])
-                    this.cars!.push(Cars5.fromJS(item));
-            }
         }
     }
 
@@ -16235,11 +16392,6 @@ export class Divisions2 implements IDivisions2 {
         data["name"] = this.name;
         data["phone"] = this.phone;
         data["city"] = this.city;
-        if (Array.isArray(this.cars)) {
-            data["cars"] = [];
-            for (let item of this.cars)
-                data["cars"].push(item.toJSON());
-        }
         return data;
     }
 }
@@ -16268,8 +16420,6 @@ export interface IDivisions2 {
     phone?: string;
     /** Город, в котором находится отделение */
     city?: string;
-    /** Список автомобилей в отделении */
-    cars?: Cars5[];
 
     [key: string]: any;
 }
@@ -16564,7 +16714,7 @@ export interface IWorking_hours5 {
     [key: string]: any;
 }
 
-export class Cars4 implements ICars4 {
+export class Cars5 implements ICars5 {
     /** id автомобиля */
     id?: number;
     /** id тарифа */
@@ -16593,11 +16743,11 @@ export class Cars4 implements ICars4 {
     /** Последнее обновление записи об автомобиле */
     updated_at?: string;
     /** Список бронирований для данного автомобиля */
-    booking?: Booking2[];
+    booking?: Booking3[];
 
     [key: string]: any;
 
-    constructor(data?: ICars4) {
+    constructor(data?: ICars5) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -16634,14 +16784,14 @@ export class Cars4 implements ICars4 {
             if (Array.isArray(_data["booking"])) {
                 this.booking = [] as any;
                 for (let item of _data["booking"])
-                    this.booking!.push(Booking2.fromJS(item));
+                    this.booking!.push(Booking3.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): Cars4 {
+    static fromJS(data: any): Cars5 {
         data = typeof data === 'object' ? data : {};
-        let result = new Cars4();
+        let result = new Cars5();
         result.init(data);
         return result;
     }
@@ -16680,7 +16830,7 @@ export class Cars4 implements ICars4 {
     }
 }
 
-export interface ICars4 {
+export interface ICars5 {
     /** id автомобиля */
     id?: number;
     /** id тарифа */
@@ -16709,7 +16859,7 @@ export interface ICars4 {
     /** Последнее обновление записи об автомобиле */
     updated_at?: string;
     /** Список бронирований для данного автомобиля */
-    booking?: Booking2[];
+    booking?: Booking3[];
 
     [key: string]: any;
 }
@@ -17074,6 +17224,110 @@ export interface ISchemas5 {
     [key: string]: any;
 }
 
+export class Booking2 implements IBooking2 {
+    /** id бронирования */
+    id?: number;
+    /** статус бронирования */
+    status?: number;
+    /** id схемы */
+    schema_id?: number;
+    /** id автомобиля */
+    car_id?: number;
+    /** id водителя */
+    driver_id?: number;
+    /** дата и время начала бронирования */
+    booked_at?: string;
+    /** дата и время окончания бронирования */
+    booked_until?: string;
+    /** id парка */
+    park_id?: number;
+    /** дата создания записи */
+    created_at?: string;
+    /** дата последнего обновления записи */
+    updated_at?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IBooking2) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.status = _data["status"];
+            this.schema_id = _data["schema_id"];
+            this.car_id = _data["car_id"];
+            this.driver_id = _data["driver_id"];
+            this.booked_at = _data["booked_at"];
+            this.booked_until = _data["booked_until"];
+            this.park_id = _data["park_id"];
+            this.created_at = _data["created_at"];
+            this.updated_at = _data["updated_at"];
+        }
+    }
+
+    static fromJS(data: any): Booking2 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Booking2();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["status"] = this.status;
+        data["schema_id"] = this.schema_id;
+        data["car_id"] = this.car_id;
+        data["driver_id"] = this.driver_id;
+        data["booked_at"] = this.booked_at;
+        data["booked_until"] = this.booked_until;
+        data["park_id"] = this.park_id;
+        data["created_at"] = this.created_at;
+        data["updated_at"] = this.updated_at;
+        return data;
+    }
+}
+
+export interface IBooking2 {
+    /** id бронирования */
+    id?: number;
+    /** статус бронирования */
+    status?: number;
+    /** id схемы */
+    schema_id?: number;
+    /** id автомобиля */
+    car_id?: number;
+    /** id водителя */
+    driver_id?: number;
+    /** дата и время начала бронирования */
+    booked_at?: string;
+    /** дата и время окончания бронирования */
+    booked_until?: string;
+    /** id парка */
+    park_id?: number;
+    /** дата создания записи */
+    created_at?: string;
+    /** дата последнего обновления записи */
+    updated_at?: string;
+
+    [key: string]: any;
+}
+
 export class Working_hours6 implements IWorking_hours6 {
     /** День недели */
     day?: string;
@@ -17128,156 +17382,6 @@ export interface IWorking_hours6 {
     day?: string;
     end?: End6;
     start?: Start6;
-
-    [key: string]: any;
-}
-
-export class Cars5 implements ICars5 {
-    /** id автомобиля */
-    id?: number;
-    /** id тарифа */
-    tariff_id?: number;
-    /** Пробег автомобиля */
-    mileage?: number;
-    /** Государственный номер автомобиля */
-    license_plate?: string;
-    /** id условия аренды */
-    rent_term_id?: number;
-    fuel_type?: FuelType;
-    transmission_type?: TransmissionType;
-    /** Марка автомобиля */
-    brand?: string;
-    /** Модель автомобиля */
-    model?: string;
-    /** Год выпуска автомобиля */
-    year_produced?: number;
-    /** vin автомобиля */
-    vin?: string;
-    /** Ссылки на изображения автомобиля */
-    images?: string[];
-    status?: CarStatus;
-    /** Дата создания записи об автомобиле */
-    created_at?: string;
-    /** Последнее обновление записи об автомобиле */
-    updated_at?: string;
-    /** Список бронирований для данного автомобиля */
-    booking?: Booking3[];
-
-    [key: string]: any;
-
-    constructor(data?: ICars5) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.id = _data["id"];
-            this.tariff_id = _data["tariff_id"];
-            this.mileage = _data["mileage"];
-            this.license_plate = _data["license_plate"];
-            this.rent_term_id = _data["rent_term_id"];
-            this.fuel_type = _data["fuel_type"];
-            this.transmission_type = _data["transmission_type"];
-            this.brand = _data["brand"];
-            this.model = _data["model"];
-            this.year_produced = _data["year_produced"];
-            this.vin = _data["vin"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"])
-                    this.images!.push(item);
-            }
-            this.status = _data["status"];
-            this.created_at = _data["created_at"];
-            this.updated_at = _data["updated_at"];
-            if (Array.isArray(_data["booking"])) {
-                this.booking = [] as any;
-                for (let item of _data["booking"])
-                    this.booking!.push(Booking3.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Cars5 {
-        data = typeof data === 'object' ? data : {};
-        let result = new Cars5();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property))
-                data[property] = this[property];
-        }
-        data["id"] = this.id;
-        data["tariff_id"] = this.tariff_id;
-        data["mileage"] = this.mileage;
-        data["license_plate"] = this.license_plate;
-        data["rent_term_id"] = this.rent_term_id;
-        data["fuel_type"] = this.fuel_type;
-        data["transmission_type"] = this.transmission_type;
-        data["brand"] = this.brand;
-        data["model"] = this.model;
-        data["year_produced"] = this.year_produced;
-        data["vin"] = this.vin;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item);
-        }
-        data["status"] = this.status;
-        data["created_at"] = this.created_at;
-        data["updated_at"] = this.updated_at;
-        if (Array.isArray(this.booking)) {
-            data["booking"] = [];
-            for (let item of this.booking)
-                data["booking"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface ICars5 {
-    /** id автомобиля */
-    id?: number;
-    /** id тарифа */
-    tariff_id?: number;
-    /** Пробег автомобиля */
-    mileage?: number;
-    /** Государственный номер автомобиля */
-    license_plate?: string;
-    /** id условия аренды */
-    rent_term_id?: number;
-    fuel_type?: FuelType;
-    transmission_type?: TransmissionType;
-    /** Марка автомобиля */
-    brand?: string;
-    /** Модель автомобиля */
-    model?: string;
-    /** Год выпуска автомобиля */
-    year_produced?: number;
-    /** vin автомобиля */
-    vin?: string;
-    /** Ссылки на изображения автомобиля */
-    images?: string[];
-    status?: CarStatus;
-    /** Дата создания записи об автомобиле */
-    created_at?: string;
-    /** Последнее обновление записи об автомобиле */
-    updated_at?: string;
-    /** Список бронирований для данного автомобиля */
-    booking?: Booking3[];
 
     [key: string]: any;
 }
@@ -17474,7 +17578,7 @@ export interface IStart5 {
     [key: string]: any;
 }
 
-export class Booking2 implements IBooking2 {
+export class Booking3 implements IBooking3 {
     /** id бронирования */
     id?: number;
     /** статус бронирования */
@@ -17498,7 +17602,7 @@ export class Booking2 implements IBooking2 {
 
     [key: string]: any;
 
-    constructor(data?: IBooking2) {
+    constructor(data?: IBooking3) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -17526,9 +17630,9 @@ export class Booking2 implements IBooking2 {
         }
     }
 
-    static fromJS(data: any): Booking2 {
+    static fromJS(data: any): Booking3 {
         data = typeof data === 'object' ? data : {};
-        let result = new Booking2();
+        let result = new Booking3();
         result.init(data);
         return result;
     }
@@ -17553,7 +17657,7 @@ export class Booking2 implements IBooking2 {
     }
 }
 
-export interface IBooking2 {
+export interface IBooking3 {
     /** id бронирования */
     id?: number;
     /** статус бронирования */
@@ -17878,110 +17982,6 @@ export interface IStart6 {
     hours?: number;
     /** Минуты начала */
     minutes?: number;
-
-    [key: string]: any;
-}
-
-export class Booking3 implements IBooking3 {
-    /** id бронирования */
-    id?: number;
-    /** статус бронирования */
-    status?: number;
-    /** id схемы */
-    schema_id?: number;
-    /** id автомобиля */
-    car_id?: number;
-    /** id водителя */
-    driver_id?: number;
-    /** дата и время начала бронирования */
-    booked_at?: string;
-    /** дата и время окончания бронирования */
-    booked_until?: string;
-    /** id парка */
-    park_id?: number;
-    /** дата создания записи */
-    created_at?: string;
-    /** дата последнего обновления записи */
-    updated_at?: string;
-
-    [key: string]: any;
-
-    constructor(data?: IBooking3) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.id = _data["id"];
-            this.status = _data["status"];
-            this.schema_id = _data["schema_id"];
-            this.car_id = _data["car_id"];
-            this.driver_id = _data["driver_id"];
-            this.booked_at = _data["booked_at"];
-            this.booked_until = _data["booked_until"];
-            this.park_id = _data["park_id"];
-            this.created_at = _data["created_at"];
-            this.updated_at = _data["updated_at"];
-        }
-    }
-
-    static fromJS(data: any): Booking3 {
-        data = typeof data === 'object' ? data : {};
-        let result = new Booking3();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property))
-                data[property] = this[property];
-        }
-        data["id"] = this.id;
-        data["status"] = this.status;
-        data["schema_id"] = this.schema_id;
-        data["car_id"] = this.car_id;
-        data["driver_id"] = this.driver_id;
-        data["booked_at"] = this.booked_at;
-        data["booked_until"] = this.booked_until;
-        data["park_id"] = this.park_id;
-        data["created_at"] = this.created_at;
-        data["updated_at"] = this.updated_at;
-        return data;
-    }
-}
-
-export interface IBooking3 {
-    /** id бронирования */
-    id?: number;
-    /** статус бронирования */
-    status?: number;
-    /** id схемы */
-    schema_id?: number;
-    /** id автомобиля */
-    car_id?: number;
-    /** id водителя */
-    driver_id?: number;
-    /** дата и время начала бронирования */
-    booked_at?: string;
-    /** дата и время окончания бронирования */
-    booked_until?: string;
-    /** id парка */
-    park_id?: number;
-    /** дата создания записи */
-    created_at?: string;
-    /** дата последнего обновления записи */
-    updated_at?: string;
 
     [key: string]: any;
 }

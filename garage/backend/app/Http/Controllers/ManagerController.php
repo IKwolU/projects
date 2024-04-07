@@ -43,42 +43,6 @@ class ManagerController extends Controller
      *                     @OA\Property(property="created_at", type="string", description="Дата создания парка"),
      *                     @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо парка"),
      *                     @OA\Property(property="self_employed_discount", type="number", description="Скидка парка для самозанятых"),
-     *                     @OA\Property(
-     *                         property="divisions",
-     *                         type="array",
-     *                         @OA\Items(
-     *                             type="object",
-     *                             @OA\Property(property="id", type="integer", description="id отделения"),
-     *                             @OA\Property(property="coords", type="string", description="Координаты отделения"),
-     *                             @OA\Property(property="address", type="string", description="Адрес отделения"),
-     *                             @OA\Property(property="metro", type="string", description="Станция метро ближайшая к отделению"),
-     *                             @OA\Property(
-     *                                 property="working_hours",
-     *                                 type="array",
-     *                                 @OA\Items(
-     *                                     type="object",
-     *                                     @OA\Property(property="day", type="string", description="День недели"),
-     *                                     @OA\Property(
-     *                                         property="end",
-     *                                         type="object",
-     *                                         @OA\Property(property="hours", type="integer", description="Час окончания"),
-     *                                         @OA\Property(property="minutes", type="integer", description="Минуты окончания")
-     *                                     ),
-     *                                     @OA\Property(
-     *                                         property="start",
-     *                                         type="object",
-     *                                         @OA\Property(property="hours", type="integer", description="Час начала"),
-     *                                         @OA\Property(property="minutes", type="integer", description="Минуты начала")
-     *                                     )
-     *                                 ),
-     *                                 description="Рабочие часы отделения"
-     *                             ),
-     *                             @OA\Property(property="timezone_difference", type="integer", description="Разница во времени"),
-     *                             @OA\Property(property="created_at", type="string", description="Дата создания отделения"),
-     *                             @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо отделения"),
-     *                             @OA\Property(property="name", type="string", description="Название отделения"),
-     *                             @OA\Property(property="phone", type="string", description="Телефон отделения"),
-     *                             @OA\Property(property="city", type="string", description="Город, в котором находится отделение"),
      *                             @OA\Property(
      *                                 property="cars",
      *                                 type="array",
@@ -122,6 +86,42 @@ class ManagerController extends Controller
      *                                          )
      *                                 )
      *                             ),
+     *                     @OA\Property(
+     *                         property="divisions",
+     *                         type="array",
+     *                         @OA\Items(
+     *                             type="object",
+     *                             @OA\Property(property="id", type="integer", description="id отделения"),
+     *                             @OA\Property(property="coords", type="string", description="Координаты отделения"),
+     *                             @OA\Property(property="address", type="string", description="Адрес отделения"),
+     *                             @OA\Property(property="metro", type="string", description="Станция метро ближайшая к отделению"),
+     *                             @OA\Property(
+     *                                 property="working_hours",
+     *                                 type="array",
+     *                                 @OA\Items(
+     *                                     type="object",
+     *                                     @OA\Property(property="day", type="string", description="День недели"),
+     *                                     @OA\Property(
+     *                                         property="end",
+     *                                         type="object",
+     *                                         @OA\Property(property="hours", type="integer", description="Час окончания"),
+     *                                         @OA\Property(property="minutes", type="integer", description="Минуты окончания")
+     *                                     ),
+     *                                     @OA\Property(
+     *                                         property="start",
+     *                                         type="object",
+     *                                         @OA\Property(property="hours", type="integer", description="Час начала"),
+     *                                         @OA\Property(property="minutes", type="integer", description="Минуты начала")
+     *                                     )
+     *                                 ),
+     *                                 description="Рабочие часы отделения"
+     *                             ),
+     *                             @OA\Property(property="timezone_difference", type="integer", description="Разница во времени"),
+     *                             @OA\Property(property="created_at", type="string", description="Дата создания отделения"),
+     *                             @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо отделения"),
+     *                             @OA\Property(property="name", type="string", description="Название отделения"),
+     *                             @OA\Property(property="phone", type="string", description="Телефон отделения"),
+     *                             @OA\Property(property="city", type="string", description="Город, в котором находится отделение"),
      *                         description="Список подразделений в парке"
      *                     )
      *                 ),
@@ -192,7 +192,7 @@ class ManagerController extends Controller
     public function getParkManager(Request $request)
     {
 
-        $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'divisions.cars', 'divisions.cars.booking')->first();
+        $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'cars', 'divisions.cars.booking')->first();
 
         unset($park->API_key);
         foreach ($park->divisions as $division) {
@@ -201,14 +201,14 @@ class ManagerController extends Controller
             unset($division->city, $division->park_id, $division->city_id);
 
             $division->city = $city;
-            foreach ($division->cars as $car) {
-                $car->images = json_decode($car->images);
-                $car->fuel_type = FuelType::from($car->fuel_type)->name;
-                $car->transmission_type = TransmissionType::from($car->transmission_type)->name;
-                $car->status = CarStatus::from($car->status)->name;
-                $car->vin = $car->car_id;
-                unset($car->division_id, $car->park_id, $car->forbidden_republic_ids, $car->car_id);
-            }
+        }
+        foreach ($park->cars as $car) {
+            $car->images = json_decode($car->images);
+            $car->fuel_type = FuelType::from($car->fuel_type)->name;
+            $car->transmission_type = TransmissionType::from($car->transmission_type)->name;
+            $car->status = CarStatus::from($car->status)->name;
+            $car->vin = $car->car_id;
+            unset($car->division_id, $car->park_id, $car->forbidden_republic_ids, $car->car_id);
         }
         foreach ($park->rent_terms as $rent_term) {
             unset($rent_term->park_id);

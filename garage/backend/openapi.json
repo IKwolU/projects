@@ -3735,6 +3735,10 @@
                                                                     "description": "id тарифа",
                                                                     "type": "integer"
                                                                 },
+                                                                "division_id": {
+                                                                    "description": "id Подразделения",
+                                                                    "type": "integer"
+                                                                },
                                                                 "mileage": {
                                                                     "description": "Пробег автомобиля",
                                                                     "type": "number"

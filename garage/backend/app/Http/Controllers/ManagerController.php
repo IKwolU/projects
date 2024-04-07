@@ -51,6 +51,7 @@ class ManagerController extends Controller
      *                                     type="object",
      *                                     @OA\Property(property="id", type="integer", description="id автомобиля"),
      *                                     @OA\Property(property="tariff_id", type="integer", description="id тарифа"),
+     *                                     @OA\Property(property="division_id", type="integer", description="id Подразделения"),
      *                                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
      *                                     @OA\Property(property="license_plate", type="string", description="Государственный номер автомобиля"),
      *                                     @OA\Property(property="rent_term_id", type="integer", description="id условия аренды"),
@@ -208,7 +209,7 @@ class ManagerController extends Controller
             $car->transmission_type = TransmissionType::from($car->transmission_type)->name;
             $car->status = CarStatus::from($car->status)->name;
             $car->vin = $car->car_id;
-            unset($car->division_id, $car->park_id, $car->forbidden_republic_ids, $car->car_id);
+            unset($car->park_id, $car->forbidden_republic_ids, $car->car_id);
         }
         foreach ($park->rent_terms as $rent_term) {
             unset($rent_term->park_id);

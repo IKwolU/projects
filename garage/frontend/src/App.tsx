@@ -60,9 +60,6 @@ function App() {
             <Menu user={user} />
             {/* <span className="font-bold text-md text-gray"></span> */}
           </div>
-          <div className="flex items-center w-full p-4 my-4 text-white bg-black h-14 bg-opacity-85 rounded-2xl">
-            Сервис аренды автомобилей
-          </div>
           <Link to="bookings">
             <BookingTimer />
           </Link>
@@ -85,18 +82,19 @@ export default App;
 //   window.location.href = "/";
 // };
 
+
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex justify-between w-full space-x-4  sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1104px]">
+  <div className="flex justify-between w-full space-x-4 p-4 my-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1104px]  text-white bg-black h-14 bg-opacity-85 rounded-2xl">
     <Link to="/" className="md:grow">
-      <div className="flex items-center text-sm font-semibold tracking-widest cursor-pointer sm:text-xl ">
-        BeeBeep
+      <div className="flex items-end tracking-widest cursor-pointer">
+      <div className="text-sm font-semibold sm:text-xl mr-2"> BeeBeep </div> <div className="font-regular sm:text-lg"> - cервис аренды автомобилей </div>
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
     </Link>
     {/* <Link className="hover:text-yellow" to="/">
       <FontAwesomeIcon icon={faTaxi} className="h-4 sm:h-5" />
     </Link>{" "} */}
-    {user && (
+    {/* {user && (
       <Link
         className="flex items-center hover:text-yellow"
         to={user ? "account" : "login/driver"}
@@ -107,14 +105,14 @@ const Menu = ({ user }: { user: User }) => (
         />
         <div className="hidden text-xl cursor-pointer md:block">Кабинет</div>
       </Link>
-    )}
+    )} */}
     {user && (
       <Link className="flex items-center hover:text-yellow" to="bookings">
         <FontAwesomeIcon
           icon={faClockRotateLeft}
           className="h-4 cursor-pointer sm:h-5 md:hidden"
         />
-        <div className="hidden text-xl cursor-pointer md:block">Бронь</div>
+        <div className="hidden text-xl cursor-pointer md:block">Моё бронирование</div>
       </Link>
     )}
     <div className="flex items-center cursor-pointer md:ml-auto md:flex md:justify-end md:w-44">

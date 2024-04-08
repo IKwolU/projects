@@ -252,16 +252,16 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div
                 className={
                   car.variants!.length === 1
-                    ? `fixed bottom-14 left-0 flex justify-center w-full px-4 space-x-2 z-[52]`
+                    ? ""
                     : ""
                 }
               >
-                <div className="flex justify-center h-16 w-full max-w-[800px] px-0 py-2 space-x-2 bg-white  inset-x-0 mx-auto sm:px-40">
+                <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40">
                   <Select
                     onValueChange={(value) => setSelectedSchema(Number(value))}
                     defaultValue={`${schemas![0].id}`}
                   >
-                    <SelectTrigger className="w-1/2 h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5 ">
+                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5 ">
                       <SelectValue placeholder="Схема аренды" />
                     </SelectTrigger>
                     <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
@@ -279,16 +279,14 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   </Select>
 
                   {!activeBooking && (
-                    <div className="w-1/2 sm:max-w-[250px] relative">
                       <Confirmation
                         title={`Забронировать ${car.brand} ${car.model}?`}
                         type="green"
                         accept={book}
                         cancel={() => {}}
-                        trigger={<Button className="">Забронировать</Button>}
+                        trigger={<Button>Забронировать</Button>}
                       />
-                    </div>
-                  )}
+                                      )}
                   {!!activeBooking && (
                     <div className="w-1/2 sm:max-w-[250px] relative">
                       <Confirmation

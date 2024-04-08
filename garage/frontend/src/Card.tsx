@@ -133,7 +133,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         <DialogClose asChild className="">
           <div>
             <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
-              <div className="inset-0 flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
+              <div className="flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
                 <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
               </div>
             </div>

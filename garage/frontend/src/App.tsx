@@ -15,8 +15,8 @@ import { YMInitializer } from "react-yandex-metrika";
 
 import {
   faArrowRightFromBracket,
+  faArrowRightToBracket,
   faClockRotateLeft,
-  faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -139,7 +139,7 @@ const Menu = ({ user }: { user: User }) => (
     {!user && (
       <Link className="flex items-center hover:text-yellow" to="login/driver">
         <FontAwesomeIcon
-          icon={faRightToBracket}
+          icon={faArrowRightToBracket}
           className="h-4 cursor-pointer sm:h-5"
         />
       </Link>

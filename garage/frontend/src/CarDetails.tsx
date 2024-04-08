@@ -131,6 +131,11 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
     return link;
   };
 
+  const handleTariffChange = (value: string) => {
+    setSelectedSchema(Number(value));
+    ym("reachGoal", "select_tarif", 96683881);
+  };
+
   return (
     <>
       {isBooked && <BookingAlert />}
@@ -254,7 +259,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div className={car.variants!.length === 1 ? "" : ""}>
                 <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40">
                   <Select
-                    onValueChange={(value) => setSelectedSchema(Number(value))}
+                    onValueChange={(value) => handleTariffChange(value)}
                     defaultValue={`${schemas![0].id}`}
                   >
                     <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
@@ -266,9 +271,6 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                           className="mb-1 border rounded-xl border-zinc-300 "
                           key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
                           value={`${currentSchema.id}`}
-                          onClick={() =>
-                            ym("reachGoal", "select_tarif", 96683881)
-                          }
                         >
                           {`${formatRoubles(currentSchema.daily_amount!)}`}
                           <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>

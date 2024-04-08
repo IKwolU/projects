@@ -20,7 +20,7 @@ import ym from "react-yandex-metrika";
 
 export const Card = ({ car }: { car: Cars3 }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
-    (a, b) => a.daily_amount! - b.daily_amount!
+    (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
 
   return (
@@ -40,7 +40,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
               </div>
             )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden">
-              {car.images?.map((x, i) => (
+              {car.images?.map((x: string, i: number) => (
                 <img
                   alt=""
                   key={`${x}${i}`}

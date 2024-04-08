@@ -9,7 +9,7 @@ import {
   Body15,
   Brands,
   CarClass,
-  Cars2,
+  Cars3,
   FuelType,
   IBrands,
   Schemas,
@@ -104,7 +104,7 @@ export const Finder = () => {
     onMap: false,
   });
 
-  const [cars, setCars] = useState<Cars2[]>([]);
+  const [cars, setCars] = useState<Cars3[]>([]);
   const [activeFilter, setActiveFilter] = useState<ActiveFilter | null>(null);
   const [brands, setBrands] = useState<IBrands>({ name: "", models: [] });
   const [parksName, setParksName] = useState<string[]>([]);
@@ -758,9 +758,9 @@ export const Finder = () => {
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
         {!filters.onMap && (
           <div className="flex flex-wrap gap-2 md:justify-start ">
-            {cars.map((car) => {
-              return <Card key={car.id} car={car} />;
-            })}
+            {cars.map((car) => (
+              <Card key={car.id} car={car} />
+            ))}
           </div>
         )}
         <div className={filters.onMap ? "block" : "hidden"}>

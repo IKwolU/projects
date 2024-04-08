@@ -17,7 +17,6 @@ import {
   faArrowRightFromBracket,
   faClockRotateLeft,
   faRightToBracket,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -99,7 +98,7 @@ const Menu = ({ user }: { user: User }) => (
     <Link to="/" className="md:grow">
       <div className="flex items-end tracking-widest cursor-pointer">
         <div className="mr-2 text-sm font-semibold sm:text-xl"> BeeBeep </div>{" "}
-        <div className="font-regular sm:text-lg">
+        <div className="hidden font-regular sm:text-lg lg:block">
           {" "}
           - cервис аренды автомобилей{" "}
         </div>

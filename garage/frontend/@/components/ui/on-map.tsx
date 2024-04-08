@@ -7,7 +7,7 @@ import {
   ZoomControl,
   Clusterer,
 } from "@pbe/react-yandex-maps";
-import { Cars2 } from "src/api-client";
+import { Cars3 } from "src/api-client";
 import { useRecoilValue } from "recoil";
 import { cityAtom } from "../../../src/atoms";
 import citiesCoords from "../../../../backend/public/cities_coords.json";
@@ -15,7 +15,7 @@ import { Card } from "../../../src/Card";
 import { Button } from "./button";
 
 interface OnMapProps {
-  cars: Cars2[];
+  cars: Cars3[];
 }
 interface CityCoords {
   city_ru: string;
@@ -31,7 +31,7 @@ interface CityCoords {
 const OnMap = ({ cars }: OnMapProps) => {
   const city = useRecoilValue(cityAtom);
   const [isClicked, setIsClicked] = useState(false);
-  const [clickedCars, setClickedCars] = useState<Cars2[]>([]);
+  const [clickedCars, setClickedCars] = useState<Cars3[]>([]);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
 
@@ -121,7 +121,11 @@ const OnMap = ({ cars }: OnMapProps) => {
           <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[764px] p-4 mx-auto overflow-y-auto pb-16">
             <div className="flex flex-wrap gap-2 md:justify-start ">
               {clickedCars.map((car) => {
-                return <Card key={car.id} car={car} />;
+                return (
+                  <div className="" key={car.id}>
+                    <Card car={car} />
+                  </div>
+                );
               })}
             </div>
           </div>

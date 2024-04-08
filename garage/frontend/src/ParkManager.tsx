@@ -17,6 +17,7 @@ import {
   IBody5,
   CarClass,
   IRent_term,
+  IBody3,
 } from "./api-client";
 import { cityAtom, userAtom } from "./atoms";
 import { client } from "./backend";
@@ -56,7 +57,7 @@ export const ParkManager = () => {
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
   const [newDivisionPhone, setNewDivisionPhone] = useState("");
-  const [newDivision, setNewDivision] = useState<IDivisions2>({
+  const [newDivision, setNewDivision] = useState<IBody3>({
     city: city,
     coords: "",
     address: "",
@@ -110,7 +111,7 @@ export const ParkManager = () => {
     }
   }, []);
 
-  const createDivision = async ({ ...newDivision }: Division3) => {
+  const createDivision = async ({ ...newDivision }: IBody3) => {
     const newDivisionData = await client.createParkDivision(
       new Body3({
         ...newDivision,
@@ -121,7 +122,6 @@ export const ParkManager = () => {
 
       divisions: [
         ...divisions,
-
         {
           ...newDivision,
           id: newDivisionData.id,
@@ -191,28 +191,28 @@ export const ParkManager = () => {
     return <></>;
   }
 
-  const handleInputNewDivisionChange = (e, param) => {
+  const handleInputNewDivisionChange = (e: any, param: any) => {
     setNewDivision({
       ...newDivision,
       [param]: e.target.value,
     });
   };
 
-  const handleInputNewTariffChange = (e, param) => {
+  const handleInputNewTariffChange = (e: any, param: any) => {
     setNewTariff({
       ...newTariff,
       [param]: e.target.value,
     });
   };
 
-  const handleInputNewRentTermChange = (e, param) => {
+  const handleInputNewRentTermChange = (e: any, param: any) => {
     setNewRentTerm({
       ...newRentTerm,
       [param]: e.target.value,
     });
   };
 
-  const handleInputNewRentTermSchemaChange = (e, param, id) => {
+  const handleInputNewRentTermSchemaChange = (e: any, param: any, id: any) => {
     const currentSchema = newRentTerm.schemas!.find(
       (schema) => schema.id === id
     );

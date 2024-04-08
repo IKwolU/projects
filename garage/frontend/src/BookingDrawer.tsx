@@ -79,7 +79,7 @@ export const BookingDrawer = () => {
         ],
       })
     );
-    ym("96683881", "reachGoal", "tobook_tc_cancel");
+    ym("reachGoal", "tobook_tc_cancel", 96683881);
   };
 
   const sortedActiveBookings = [...bookings]

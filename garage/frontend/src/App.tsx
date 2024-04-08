@@ -11,6 +11,7 @@ import { Admin } from "./Admin";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { YMInitializer } from "react-yandex-metrika";
 
 import {
   faArrowRightFromBracket,
@@ -43,6 +44,16 @@ function App() {
   }, []);
   return (
     <>
+      <YMInitializer
+        accounts={[96683881]}
+        options={{
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true,
+          webvisor: true,
+          ecommerce: "dataLayer",
+        }}
+      />
       {user?.user_type === UserType.Manager && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
           <ParkManager />

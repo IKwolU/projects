@@ -47,11 +47,12 @@ export const DriverLogin = () => {
       );
 
       localStorage.setItem("token", loginData.token!);
+
       if (loginData.register) {
-        ym("96683881", "reachGoal", "registr_completed");
+        ym("reachGoal", "registr_completed", 96683881);
       }
       if (!loginData.register) {
-        ym("96683881", "reachGoal", "avtorization");
+        ym("reachGoal", "avtorization", 96683881);
       }
 
       window.location.href = "/";

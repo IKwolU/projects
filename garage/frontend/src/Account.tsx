@@ -115,12 +115,12 @@ export const Account = ({ user }: { user: User }) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
-    ym("96683881", "reachGoal", "refferal_link");
+    ym("reachGoal", "refferal_link", 96683881);
   };
 
   const handleFileUpload = (fileList: FileList, type: DriverDocumentType) => {
     onFileSelected(fileList[0], type);
-    ym("96683881", "reachGoal", "document_send");
+    ym("reachGoal", "document_send", 96683881);
   };
 
   return (

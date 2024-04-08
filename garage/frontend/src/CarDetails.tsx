@@ -115,7 +115,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         ],
       })
     );
-    ym("96683881", "reachGoal", "tobook_tc");
+    ym("reachGoal", "tobook_tc", 96683881);
     setIsBooked(true);
     // } else {
     //   navigate("account");
@@ -133,7 +133,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
 
   const handleSchemaChange = (value: string) => {
     setSelectedSchema(Number(value));
-    ym("96683881", "reachGoal", "select_tarif");
+    ym("reachGoal", "select_tarif", 96683881);
   };
 
   return (

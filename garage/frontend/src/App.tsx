@@ -22,6 +22,7 @@ import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
 import { BookingDrawer } from "./BookingDrawer";
 import { BookingTimer } from "./BookingTimer";
+import Confirmation from "@/components/ui/confirmation";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -143,11 +144,18 @@ const Menu = ({ user }: { user: User }) => (
       </Link>
     )}
     {user && (
-      <Link className="flex items-center hover:text-yellow" to="bookings">
-        <FontAwesomeIcon
-          icon={faArrowRightFromBracket}
-          className="h-4 cursor-pointer sm:h-5"
-          onClick={LogoutHandler}
+      <Link className="flex items-center text-black" to="bookings">
+        <Confirmation
+          accept={() => LogoutHandler}
+          cancel={() => {}}
+          title="Выйти из аккаунта?"
+          trigger={
+            <FontAwesomeIcon
+              icon={faArrowRightFromBracket}
+              className="h-4 text-white cursor-pointer sm:h-5 hover:text-yellow"
+            />
+          }
+          type="red"
         />
       </Link>
     )}

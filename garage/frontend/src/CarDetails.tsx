@@ -131,11 +131,6 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
     return link;
   };
 
-  const handleSchemaChange = (value: string) => {
-    setSelectedSchema(Number(value));
-    ym("reachGoal", "select_tarif", 96683881);
-  };
-
   return (
     <>
       {isBooked && <BookingAlert />}
@@ -259,10 +254,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div className={car.variants!.length === 1 ? "" : ""}>
                 <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40">
                   <Select
-                    onValueChange={(value) => handleSchemaChange(value)}
+                    onValueChange={(value) => setSelectedSchema(Number(value))}
                     defaultValue={`${schemas![0].id}`}
                   >
-                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5 ">
+                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5" onClick={()=>ym("reachGoal", "select_tarif", 96683881)}>
                       <SelectValue placeholder="Схема аренды" />
                     </SelectTrigger>
                     <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">

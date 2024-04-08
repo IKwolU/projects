@@ -5,7 +5,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { client } from "./backend";
 import { Finder } from "./Finder";
 import { Account } from "./Account";
-import { ParkManager } from "./ParkManager";
+// import { ParkManager } from "./ParkManager";
 import { DriverLogin } from "./DriverLogin";
 import { Admin } from "./Admin";
 import { useRecoilState } from "recoil";
@@ -56,7 +56,7 @@ function App() {
       />
       {user?.user_type === UserType.Manager && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1104px]">
-          <ParkManager />
+          {/* <ParkManager /> */}
         </div>
       )}
       {user?.user_type === UserType.Admin && (
@@ -88,6 +88,7 @@ function App() {
 }
 
 export default App;
+
 const LogoutHandler = () => {
   client.logout();
   localStorage.clear();
@@ -146,7 +147,7 @@ const Menu = ({ user }: { user: User }) => (
     {user && (
       <div className="flex items-center text-black">
         <Confirmation
-          accept={() => LogoutHandler}
+          accept={LogoutHandler}
           cancel={() => {}}
           title="Выйти из аккаунта?"
           trigger={

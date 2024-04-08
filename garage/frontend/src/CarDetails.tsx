@@ -257,7 +257,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     onValueChange={(value) => setSelectedSchema(Number(value))}
                     defaultValue={`${schemas![0].id}`}
                   >
-                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5" onClick={()=>ym("reachGoal", "select_tarif", 96683881)}>
+                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
                       <SelectValue placeholder="Схема аренды" />
                     </SelectTrigger>
                     <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
@@ -266,6 +266,9 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                           className="mb-1 border rounded-xl border-zinc-300 "
                           key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
                           value={`${currentSchema.id}`}
+                          onClick={() =>
+                            ym("reachGoal", "select_tarif", 96683881)
+                          }
                         >
                           {`${formatRoubles(currentSchema.daily_amount!)}`}
                           <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>

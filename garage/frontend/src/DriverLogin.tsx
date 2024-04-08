@@ -8,6 +8,7 @@ import React from "react";
 import { useTimer } from "react-timer-hook";
 import { useLocation } from "react-router-dom";
 import PhoneInput from "@/components/ui/phone-input";
+import ym from "react-yandex-metrika";
 
 export const DriverLogin = () => {
   const location = useLocation();
@@ -41,11 +42,17 @@ export const DriverLogin = () => {
 
   const login = async () => {
     try {
-      const access_token = await client.loginOrRegister(
+      const loginData = await client.loginOrRegister(
         new Body8({ phone, code, referral_code: referralCode })
       );
 
-      localStorage.setItem("token", access_token!);
+      localStorage.setItem("token", loginData.token!);
+      if (loginData.register) {
+        ym("96683881", "reachGoal", "registr_completed");
+      }
+      if (!loginData.register) {
+        ym("96683881", "reachGoal", "avtorization");
+      }
 
       window.location.href = "/";
     } catch (error) {

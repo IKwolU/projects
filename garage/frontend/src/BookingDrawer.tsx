@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
+import ym from "react-yandex-metrika";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
@@ -78,6 +79,7 @@ export const BookingDrawer = () => {
         ],
       })
     );
+    ym(96683881, "reachGoal", "tobook_tc_cancel");
   };
 
   const sortedActiveBookings = [...bookings]

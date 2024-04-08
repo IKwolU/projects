@@ -45,6 +45,7 @@
     "react-slick": "^0.30.2",
     "react-timer-hook": "^3.0.7",
     "react-transition-group": "^4.4.5",
+    "react-yandex-metrika": "^2.6.0",
     "recoil": "^0.7.7",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.2.1",

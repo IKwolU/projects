@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import QRCode from "qrcode.react";
 import Confirmation from "@/components/ui/confirmation";
+import ym from "react-yandex-metrika";
 
 export const Account = ({ user }: { user: User }) => {
   const setUser = useSetRecoilState(userAtom);
@@ -114,6 +115,12 @@ export const Account = ({ user }: { user: User }) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
+    ym("96683881", "reachGoal", "refferal_link");
+  };
+
+  const handleFileUpload = (fileList: FileList, type: DriverDocumentType) => {
+    onFileSelected(fileList[0], type);
+    ym("96683881", "reachGoal", "document_send");
   };
 
   return (
@@ -227,7 +234,7 @@ export const Account = ({ user }: { user: User }) => {
                 <div className="flex justify-center text-center md:text-xl">
                   <FileInput
                     title="Загрузить"
-                    onChange={(fileList) => onFileSelected(fileList[0], type)}
+                    onChange={(fileList) => handleFileUpload(fileList, type)}
                   />
                 </div>
               </div>

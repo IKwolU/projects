@@ -16,6 +16,7 @@ import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import ym from "react-yandex-metrika";
 
 export const Card = ({ car }: { car: Cars3 }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
@@ -25,7 +26,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="relative max-w-[352px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
+        <div className="relative max-w-[352px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0" onClick={()=>ym("96683881",'reachGoal','click_card')}>
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
               {car.park_name}

@@ -39,6 +39,7 @@ import BookingAlert from "./booking-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import ym from "react-yandex-metrika";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -114,6 +115,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         ],
       })
     );
+    ym("96683881", "reachGoal", "tobook_tc");
     setIsBooked(true);
     // } else {
     //   navigate("account");
@@ -127,6 +129,11 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         ? `yandexnavi://map_search?text=${address}`
         : `https://yandex.ru/maps/?rtext=${userCoordinates.latitude},${userCoordinates.longitude}~${address}`;
     return link;
+  };
+
+  const handleSchemaChange = (value: string) => {
+    setSelectedSchema(Number(value));
+    ym("96683881", "reachGoal", "select_tarif");
   };
 
   return (
@@ -249,16 +256,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     </Badge>
                   ))}
               </div>
-              <div
-                className={
-                  car.variants!.length === 1
-                    ? ""
-                    : ""
-                }
-              >
+              <div className={car.variants!.length === 1 ? "" : ""}>
                 <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40">
                   <Select
-                    onValueChange={(value) => setSelectedSchema(Number(value))}
+                    onValueChange={(value) => handleSchemaChange(value)}
                     defaultValue={`${schemas![0].id}`}
                   >
                     <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5 ">
@@ -279,14 +280,14 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   </Select>
 
                   {!activeBooking && (
-                      <Confirmation
-                        title={`Забронировать ${car.brand} ${car.model}?`}
-                        type="green"
-                        accept={book}
-                        cancel={() => {}}
-                        trigger={<Button>Забронировать</Button>}
-                      />
-                                      )}
+                    <Confirmation
+                      title={`Забронировать ${car.brand} ${car.model}?`}
+                      type="green"
+                      accept={book}
+                      cancel={() => {}}
+                      trigger={<Button>Забронировать</Button>}
+                    />
+                  )}
                   {!!activeBooking && (
                     <div className="w-1/2 sm:max-w-[250px] relative">
                       <Confirmation

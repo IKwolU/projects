@@ -267,12 +267,10 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Успешная аутентификация или регистрация",
-     *     @OA\MediaType(
-     *         mediaType="text/plain",
-     *         @OA\Schema(
-     *             type="string",
-     *             example="Success"
-     *         ))
+     *     @OA\JsonContent(
+     *             @OA\Property(property="register", type="boolean", description="Регистрация?"),
+     *             @OA\Property(property="token", type="string", description="Токен")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -294,8 +292,10 @@ class AuthController extends Controller
             'api_key' => 'string'
         ]);
         $user = $this->phoneCodeAuthentication($request->phone, $request->code);
+        $register = false;
         if ($user) {
             if ($user->user_status === null) {
+                $register = true;
                 $user->user_status = UserStatus::DocumentsNotUploaded->value;
                 $user->avatar = "users/default.png";
                 $user->user_type = UserType::Driver->value;
@@ -327,7 +327,7 @@ class AuthController extends Controller
                 $manager->save();
             }
             $token = $user->createToken('auth_token')->plainTextToken;
-            return $token;
+            return response()->json(['token' => $token, 'register' => $register], 200);
         }
         return response()->json(null, 401);
     }

@@ -2786,10 +2786,19 @@
                     "200": {
                         "description": "Успешная аутентификация или регистрация",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "example": "Success"
+                                    "properties": {
+                                        "register": {
+                                            "description": "Регистрация?",
+                                            "type": "boolean"
+                                        },
+                                        "token": {
+                                            "description": "Токен",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }

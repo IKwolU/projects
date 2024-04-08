@@ -13,6 +13,7 @@ import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
+  faArrowRightFromBracket,
   faClockRotateLeft,
   faRightToBracket,
   faUser,
@@ -76,18 +77,21 @@ function App() {
 }
 
 export default App;
-// const LogoutHandler = () => {
-//   client.logout();
-//   localStorage.clear();
-//   window.location.href = "/";
-// };
-
+const LogoutHandler = () => {
+  client.logout();
+  localStorage.clear();
+  window.location.href = "/";
+};
 
 const Menu = ({ user }: { user: User }) => (
   <div className="flex justify-between w-full space-x-4 p-4 my-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1104px]  text-white bg-black h-14 bg-opacity-85 rounded-2xl">
     <Link to="/" className="md:grow">
       <div className="flex items-end tracking-widest cursor-pointer">
-      <div className="text-sm font-semibold sm:text-xl mr-2"> BeeBeep </div> <div className="font-regular sm:text-lg"> - cервис аренды автомобилей </div>
+        <div className="mr-2 text-sm font-semibold sm:text-xl"> BeeBeep </div>{" "}
+        <div className="font-regular sm:text-lg">
+          {" "}
+          - cервис аренды автомобилей{" "}
+        </div>
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
     </Link>
@@ -112,7 +116,9 @@ const Menu = ({ user }: { user: User }) => (
           icon={faClockRotateLeft}
           className="h-4 cursor-pointer sm:h-5 md:hidden"
         />
-        <div className="hidden text-xl cursor-pointer md:block">Моё бронирование</div>
+        <div className="hidden text-xl cursor-pointer md:block">
+          Моё бронирование
+        </div>
       </Link>
     )}
     <div className="flex items-center cursor-pointer md:ml-auto md:flex md:justify-end md:w-44">
@@ -123,6 +129,15 @@ const Menu = ({ user }: { user: User }) => (
         <FontAwesomeIcon
           icon={faRightToBracket}
           className="h-4 cursor-pointer sm:h-5"
+        />
+      </Link>
+    )}
+    {user && (
+      <Link className="flex items-center hover:text-yellow" to="bookings">
+        <FontAwesomeIcon
+          icon={faArrowRightFromBracket}
+          className="h-4 cursor-pointer sm:h-5"
+          onClick={LogoutHandler}
         />
       </Link>
     )}

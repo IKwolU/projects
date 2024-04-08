@@ -144,7 +144,7 @@ const Menu = ({ user }: { user: User }) => (
       </Link>
     )}
     {user && (
-      <Link className="flex items-center text-black" to="bookings">
+      <div className="flex items-center text-black">
         <Confirmation
           accept={() => LogoutHandler}
           cancel={() => {}}
@@ -157,7 +157,7 @@ const Menu = ({ user }: { user: User }) => (
           }
           type="red"
         />
-      </Link>
+      </div>
     )}
   </div>
 );

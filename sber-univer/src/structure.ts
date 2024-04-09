@@ -124,6 +124,7 @@ export default [
     displayId: 4,
     coords: { x: 5, y: 63 },
     locationName: "Лабиринт",
+    pauseOnTip: true,
     timestamps: {
       "00:00": "maze/0.jpg",
       "03:47": "maze/1.jpg",
@@ -177,6 +178,7 @@ export default [
       "01:20": "sport/3.jpg",
       "01:23": "sport/4.jpg",
       "01:26": "sport/5.jpg",
+      "01:34": "sport/6.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/008.%20%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.mp3",
     facts: ["Длина бассейна составляет 24,5 метра, вместо стандартных 25."],

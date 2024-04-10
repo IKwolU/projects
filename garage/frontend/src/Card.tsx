@@ -144,15 +144,15 @@ export const Card = ({ car }: { car: Cars3 }) => {
           <div>
             <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
               <div className="flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
-                <Button className="sm:max-w-[250px] mx-auto">Назад</Button>
+                <Button variant='outline' full className="sm:max-w-[250px] mx-auto">Назад</Button>
               </div>
             </div>
             <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
               <div className="flex justify-center max-w-[1208px] mx-auto ">
                 <div className="relative w-32 h-full bg-white">
                   <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
-                    <div className="flex items-center justify-center w-16 h-16 border-4 border-black rounded-full">
-                      <FontAwesomeIcon className="h-10" icon={faChevronLeft} />
+                    <div className="flex items-center justify-center w-16 h-16 border-4 border-gray rounded-full">
+                      <FontAwesomeIcon className="h-10 text-gray" icon={faChevronLeft} />
                     </div>
                   </div>
                 </div>

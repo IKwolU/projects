@@ -11,6 +11,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-yellow text-black w-full hover:bg-darkyellow dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+        black:
+          "bg-black text-white hover:bg-slate-600 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 h-10 px-12 font-semibold",
         reject:
           "bg-white text-white hover:bg-pale dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90 w-full border-2 border-grey",
         outline:
@@ -30,6 +32,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   onAsyncClick?: () => Promise<void | (() => void)>;
+  full?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -40,6 +43,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       type = "button",
       asChild = false,
       onAsyncClick,
+      full,
       ...props
     },
     ref
@@ -67,7 +71,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, className }))}
+        className={`${cn(buttonVariants({ variant, className }))} ${full ? 'w-full' :''}`}
         ref={ref}
         {...props}
         onClick={handler}

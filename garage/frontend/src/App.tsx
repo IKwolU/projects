@@ -35,6 +35,7 @@ import {
 import { cn } from "@/lib/utils";
 import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
 import { Command, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -80,10 +81,10 @@ function App() {
       )}
       {(!user || user.user_type === UserType.Driver) && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
-          <div className="flex justify-end py-2">
+          <div className="flex justify-end items-end my-2">
             <FontAwesomeIcon
               icon={faLocationDot}
-              className="h-4 mr-2 sm:h-5 text-gray"
+              className="h-4 mr-2 sm:h-5 text-gray mb-0.5"
             />
             <CityPicker />
           </div>
@@ -119,7 +120,7 @@ const Menu = ({ user }: { user: User }) => (
   <div className="flex items-center justify-between w-full space-x-4 my-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1208px] h-14 bg-opacity-85 rounded-2xl">
     <Link to="/" className="md:grow">
       <div className="flex flex-col md:flex-row md:items-end">
-        <div className="text-sm font-bold sm:text-3xl mr-6"> BeeBeep </div>{" "}
+        <div className="text-2xl font-bold sm:text-3xl mr-6"> BeeBeep </div>{" "}
         <div className="font-regular sm:text-lg">
           {" "}
           cервис аренды автомобилей{" "}
@@ -147,7 +148,7 @@ const Menu = ({ user }: { user: User }) => (
         <PopoverTrigger asChild>
           <FontAwesomeIcon icon={faBars} className="h-6 cursor-pointer " />
         </PopoverTrigger>
-        <PopoverContent className="w-64 space-y-4">
+        <PopoverContent className="w-64 space-y-4 mx-4">
           <Link className="flex items-center hover:text-yellow" to="bookings">
             Моё бронирование
           </Link>
@@ -203,10 +204,13 @@ const Menu = ({ user }: { user: User }) => (
     )}
     {!user && (
       <Link className="flex items-center hover:text-yellow" to="login/driver">
-        <FontAwesomeIcon
-          icon={faArrowRightToBracket}
-          className="h-4 cursor-pointer sm:h-5"
-        />
+        <Button variant='black'>
+          <FontAwesomeIcon
+            icon={faArrowRightToBracket}
+            className="h-4 cursor-pointer text-white sm:h-5 mr-2"
+          />
+          Войти
+        </Button>
       </Link>
     )}
   </div>

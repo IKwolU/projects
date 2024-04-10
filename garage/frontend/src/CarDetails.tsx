@@ -257,12 +257,12 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   ))}
               </div>
               <div className={car.variants!.length === 1 ? "" : ""}>
-                <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40">
+                <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40 space-x-2">
                   <Select
                     onValueChange={(value) => handleTariffChange(value)}
                     defaultValue={`${schemas![0].id}`}
                   >
-                    <SelectTrigger className="h-auto pb-1 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
+                    <SelectTrigger className="h-12 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
                       <SelectValue placeholder="Схема аренды" />
                     </SelectTrigger>
                     <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">

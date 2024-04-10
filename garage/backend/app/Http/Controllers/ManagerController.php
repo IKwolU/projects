@@ -1504,7 +1504,7 @@ class ManagerController extends Controller
  *
  * @OA\Post(
  *     path="/manager/cars/division",
- *     operationId="assignCarsToDivision",
+ *     operationId="assignCarsToDivisionManager",
  *     summary="Привязка группе автомобилей division_id",
  *     tags={"Manager"},
  *     @OA\RequestBody(
@@ -1548,7 +1548,7 @@ class ManagerController extends Controller
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-public function assignCarsToDivision(Request $request) {
+public function assignCarsToDivisionManager(Request $request) {
     $request->validate([
         'division_id' => 'required|integer',
         'car_ids' => 'required|array',
@@ -1582,7 +1582,7 @@ public function assignCarsToDivision(Request $request) {
  *
  * @OA\Post(
  *     path="/manager/cars/tariff",
- *     operationId="assignCarsToTariff",
+ *     operationId="assignCarsToTariffManager",
  *     summary="Привязка группе автомобилей тарифа",
  *     tags={"Manager"},
  *     @OA\RequestBody(
@@ -1626,7 +1626,7 @@ public function assignCarsToDivision(Request $request) {
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к тарифу
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-public function assignCarsToTariff(Request $request) {
+public function assignCarsToTariffManager(Request $request) {
     $request->validate([
         'tariff_id' => 'required|integer',
         'car_ids' => 'required|array',
@@ -1661,7 +1661,7 @@ public function assignCarsToTariff(Request $request) {
  *
  * @OA\Post(
  *     path="/manager/cars/rent-term",
- *     operationId="assignCarsToRentTerm",
+ *     operationId="assignCarsToRentTermManager",
  *     summary="Привязка группе автомобилей rent_term",
  *     tags={"Manager"},
  *     @OA\RequestBody(
@@ -1705,7 +1705,7 @@ public function assignCarsToTariff(Request $request) {
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-public function assignCarsToRentTerm(Request $request) {
+public function assignCarsToRentTermManager(Request $request) {
     $request->validate([
         'rent_term_id' => 'required|integer',
         'car_ids' => 'required|array',

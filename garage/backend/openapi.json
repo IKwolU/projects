@@ -4552,6 +4552,85 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Привязка группе автомобилей rent_term",
+                "description": "Привязка группе автомобилей rent_term\n\nМетод для привязки группе автомобилей к сроку аренды rent_term_id",
+                "operationId": "assignCarsToRentTerm",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "rent_term_id": {
+                                        "description": "Идентификатор срока аренды",
+                                        "type": "integer"
+                                    },
+                                    "car_ids": {
+                                        "description": "Идентификаторы автомобилей",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Укажите rent_term_id и car_ids"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/manager/cars/status": {
@@ -6111,6 +6190,255 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Ошибка аутентификации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/cars/photos": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Добавление фотографий автомобилям",
+                "description": "Добавление фотографий автомобилям\n\nМетод для добавления фотографий к массиву автомобилей",
+                "operationId": "pushPhotosToCarsManager",
+                "requestBody": {
+                    "description": "Файлы для загрузки",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "Файлы для загрузки",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "ids": {
+                                        "description": "Идентификаторы автомобилей",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Загрузите ровно 3 фото"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/cars/division": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Привязка группе автомобилей division_id",
+                "description": "Привязка группе автомобилей division_id\n\nМетод для привязки группе автомобилей division_id",
+                "operationId": "assignCarsToDivision",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "division_id": {
+                                        "description": "Идентификатор division",
+                                        "type": "integer"
+                                    },
+                                    "car_ids": {
+                                        "description": "Идентификаторы автомобилей",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Укажите division_id и car_ids"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/cars/tariff": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Привязка группе автомобилей тарифа",
+                "description": "Привязка группе автомобилей тарифа\n\nМетод для привязки группе автомобилей к тарифа",
+                "operationId": "assignCarsToTariff",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "tariff_id": {
+                                        "description": "Идентификатор тарифа",
+                                        "type": "integer"
+                                    },
+                                    "car_ids": {
+                                        "description": "Идентификаторы автомобилей",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Укажите tariff_id и car_ids"
                                         }
                                     },
                                     "type": "object"

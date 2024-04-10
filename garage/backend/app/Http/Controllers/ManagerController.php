@@ -11,9 +11,13 @@ use App\Models\Car;
 use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
+use App\Models\RentTerm;
 use App\Models\Status;
+use App\Models\Tariff;
+use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ManagerController extends Controller
 {
@@ -1408,6 +1412,326 @@ class ManagerController extends Controller
 
         return response()->json(['message' => 'Успешно'], 200);
     }
+
+    /**
+         * Добавление фотографий автомобилям
+         *
+         * Метод для добавления фотографий к массиву автомобилей
+         *
+         * @OA\Post(
+         *     path="/manager/cars/photos",
+         *     operationId="pushPhotosToCarsManager",
+         *     summary="Добавление фотографий автомобилям",
+         *     tags={"Manager"},
+         *     @OA\RequestBody(
+         *         required=true,
+         *         description="Файлы для загрузки",
+         *         @OA\MediaType(
+         *             mediaType="multipart/form-data",
+         *             @OA\Schema(
+         *                 type="object",
+         *                 @OA\Property(
+         *                     property="file",
+         *                     description="Файлы для загрузки",
+         *                     type="array",
+         *                     @OA\Items(type="string", format="binary")
+         *                 ),
+         *                 @OA\Property(
+         *                     property="ids",
+         *                     description="Идентификаторы автомобилей",
+         *                     type="array",
+         *                     @OA\Items(type="integer")
+         *                 ),
+         *             ),
+         *         ),
+         *     ),
+         *     @OA\Response(
+         *         response=200,
+         *         description="Успешно",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message", type="string")
+         *         )
+         *     ),
+         *     @OA\Response(
+         *         response=400,
+         *         description="Неверный запрос",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message", type="string", example="Загрузите ровно 3 фото")
+         *         )
+         *     ),
+         *     @OA\Response(
+         *         response=500,
+         *         description="Ошибка сервера",
+         *         @OA\JsonContent(
+         *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+         *         )
+         *     )
+         * )
+         *
+         * @param \Illuminate\Http\Request $request Объект запроса с данными для загрузки фотографий
+         * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+         */
+
+         public function pushPhotosToCarsManager(Request $request) {
+            $request->validate([
+                'ids' => 'required|array',
+                'ids.*' => 'required|integer',
+                'file.*' => 'required|image|mimes:png,jpg,jpeg|max:7168',
+            ]);
+            if ($request->hasFile('file') && count($request->file('file')) < 3) {
+                return response()->json(['message' => 'Загрузите ровно 3 фото'], 400);
+            }
+            $cars = Car::whereIn('id', $request->ids)->get();
+            $fileService = new FileService;
+            $images = [];
+            foreach ($request->file('file') as $file) {
+                $name = uuid_create(UUID_TYPE_RANDOM);
+                $fileService->saveFile($file, $name);
+                $imageUrl = "https://api.beebeep.ru/uploads/" . $name;
+                $images[] = stripslashes($imageUrl);
+            }
+            foreach ($cars as $car) {
+                $imagesJson = json_encode($images, JSON_UNESCAPED_SLASHES);
+                DB::statement("UPDATE cars SET images = '$imagesJson' WHERE id = $car->id");
+            }
+            return response()->json(['message' => 'Success'], 200);
+        }
+
+    /**
+ * Привязка группе автомобилей division_id
+ *
+ * Метод для привязки группе автомобилей division_id
+ *
+ * @OA\Post(
+ *     path="/manager/cars/division",
+ *     operationId="assignCarsToDivision",
+ *     summary="Привязка группе автомобилей division_id",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *                 @OA\Property(
+ *                     property="division_id",
+ *                     description="Идентификатор division",
+ *                     type="integer"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="car_ids",
+ *                     description="Идентификаторы автомобилей",
+ *                     type="array",
+ *                     @OA\Items(type="integer")
+ *                 )
+ *                 ),
+ *         ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите division_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function assignCarsToDivision(Request $request) {
+    $request->validate([
+        'division_id' => 'required|integer',
+        'car_ids' => 'required|array',
+        'car_ids.*' => 'required|integer',
+    ]);
+
+    $divisionId = $request->input('division_id');
+    $carIds = $request->input('car_ids');
+    $division = Division::where('park_id', $request->park_id)->where('id', $request->division_id)->first();
+    if (!$division) {
+        return response()->json(['message' => 'Division not found'], 400);
+    }
+
+    $cars = Car::whereIn('id', $carIds)->get();
+    if ($cars->count() !== count($carIds)) {
+        return response()->json(['message' => 'One or more cars not found'], 400);
+    }
+
+    foreach ($cars as $car) {
+        $car->division_id = $divisionId;
+        $car->save();
+    }
+
+    return response()->json(['message' => 'Cars assigned to division successfully'], 200);
+}
+
+/**
+ * Привязка группе автомобилей тарифа
+ *
+ * Метод для привязки группе автомобилей к тарифа
+ *
+ * @OA\Post(
+ *     path="/manager/cars/tariff",
+ *     operationId="assignCarsToTariff",
+ *     summary="Привязка группе автомобилей тарифа",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *                 @OA\Property(
+ *                     property="tariff_id",
+ *                     description="Идентификатор тарифа",
+ *                     type="integer"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="car_ids",
+ *                     description="Идентификаторы автомобилей",
+ *                     type="array",
+ *                     @OA\Items(type="integer")
+ *                 ),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите tariff_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к тарифу
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function assignCarsToTariff(Request $request) {
+    $request->validate([
+        'tariff_id' => 'required|integer',
+        'car_ids' => 'required|array',
+        'car_ids.*' => 'required|integer',
+    ]);
+
+    $tariffId = $request->input('tariff_id');
+    $carIds = $request->input('car_ids');
+
+    $tariff = Tariff::find($tariffId);
+    if (!$tariff) {
+        return response()->json(['message' => 'Tariff not found'], 400);
+    }
+
+    $cars = Car::whereIn('id', $carIds)->get();
+    if ($cars->count() !== count($carIds)) {
+        return response()->json(['message' => 'One or more cars not found'], 400);
+    }
+
+    foreach ($cars as $car) {
+        $car->tariff_id = $tariffId;
+        $car->save();
+    }
+
+    return response()->json(['message' => 'Cars assigned to tariff successfully'], 200);
+}
+
+/**
+ * Привязка группе автомобилей rent_term
+ *
+ * Метод для привязки группе автомобилей к сроку аренды rent_term_id
+ *
+ * @OA\Post(
+ *     path="/manager/cars/rent-term",
+ *     operationId="assignCarsToRentTerm",
+ *     summary="Привязка группе автомобилей rent_term",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="rent_term_id",
+ *                 description="Идентификатор срока аренды",
+ *                 type="integer"
+ *             ),
+ *             @OA\Property(
+ *                 property="car_ids",
+ *                 description="Идентификаторы автомобилей",
+ *                 type="array",
+ *                     @OA\Items(type="integer")
+ *             ),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function assignCarsToRentTerm(Request $request) {
+    $request->validate([
+        'rent_term_id' => 'required|integer',
+        'car_ids' => 'required|array',
+        'car_ids.*' => 'required|integer',
+    ]);
+
+    $rentTermId = $request->input('rent_term_id');
+    $carIds = $request->input('car_ids');
+
+    $rentTerm = RentTerm::find($rentTermId);
+    if (!$rentTerm) {
+        return response()->json(['message' => 'Rent term not found'], 400);
+    }
+
+    $cars = Car::whereIn('id', $carIds)->get();
+    if ($cars->count() !== count($carIds)) {
+        return response()->json(['message' => 'One or more cars not found'], 400);
+    }
+
+    foreach ($cars as $car) {
+        $car->rent_term_id = $rentTermId;
+        $car->save();
+    }
+
+    return response()->json(['message' => 'Cars assigned to rent term successfully'], 200);
+}
 
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));

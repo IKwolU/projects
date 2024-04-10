@@ -1912,10 +1912,67 @@ export class Client {
     }
 
     /**
+     * Привязка группе автомобилей rent_term
+     * @param body (optional) 
+     * @return Успешно
+     */
+    assignCarsToRentTerm(body: Body25 | undefined): Promise<Anonymous107> {
+        let url_ = this.baseUrl + "/manager/cars/rent-term";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAssignCarsToRentTerm(_response);
+        });
+    }
+
+    protected processAssignCarsToRentTerm(response: Response): Promise<Anonymous107> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous107.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = Anonymous108.fromJS(resultData400);
+            return throwException("\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous109.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous107>(null as any);
+    }
+
+    /**
      * Обновление статуса допуска к бронированию
      * @return Успешное обновление статуса автомобиля
      */
-    updateCarStatusManager(body: Body25): Promise<Anonymous107> {
+    updateCarStatusManager(body: Body26): Promise<Anonymous110> {
         let url_ = this.baseUrl + "/manager/cars/status";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1935,42 +1992,42 @@ export class Client {
         });
     }
 
-    protected processUpdateCarStatusManager(response: Response): Promise<Anonymous107> {
+    protected processUpdateCarStatusManager(response: Response): Promise<Anonymous110> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous107.fromJS(resultData200);
+            result200 = Anonymous110.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous108.fromJS(resultData401);
+            result401 = Anonymous111.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous109.fromJS(resultData500);
+            result500 = Anonymous112.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous110.fromJS(resultData400);
+            result400 = Anonymous113.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status === 409) {
             return response.text().then((_responseText) => {
             let result409: any = null;
             let resultData409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result409 = Anonymous111.fromJS(resultData409);
+            result409 = Anonymous114.fromJS(resultData409);
             return throwException("\u041a\u043e\u043d\u0444\u043b\u0438\u043a\u0442", status, _responseText, _headers, result409);
             });
         } else if (status !== 200 && status !== 204) {
@@ -1978,14 +2035,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous107>(null as any);
+        return Promise.resolve<Anonymous110>(null as any);
     }
 
     /**
      * Создание или обновление условий аренды
      * @return Успешное создание или обновление условий аренды
      */
-    createOrUpdateRentTermManager(body: Body26): Promise<Anonymous112> {
+    createOrUpdateRentTermManager(body: Body27): Promise<Anonymous115> {
         let url_ = this.baseUrl + "/manager/parks/rent-terms";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2005,42 +2062,42 @@ export class Client {
         });
     }
 
-    protected processCreateOrUpdateRentTermManager(response: Response): Promise<Anonymous112> {
+    protected processCreateOrUpdateRentTermManager(response: Response): Promise<Anonymous115> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous112.fromJS(resultData200);
+            result200 = Anonymous115.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous113.fromJS(resultData401);
+            result401 = Anonymous116.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 422) {
             return response.text().then((_responseText) => {
             let result422: any = null;
             let resultData422 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result422 = Anonymous114.fromJS(resultData422);
+            result422 = Anonymous117.fromJS(resultData422);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result422);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous115.fromJS(resultData404);
+            result404 = Anonymous118.fromJS(resultData404);
             return throwException("\u041f\u0430\u0440\u043a \u0441 \u0443\u043a\u0430\u0437\u0430\u043d\u043d\u044b\u043c API \u043a\u043b\u044e\u0447\u043e\u043c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous116.fromJS(resultData500);
+            result500 = Anonymous119.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2048,14 +2105,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous112>(null as any);
+        return Promise.resolve<Anonymous115>(null as any);
     }
 
     /**
      * Обновление подразделения парка
      * @return Успешное обновление подразделения
      */
-    updateParkDivisionManager(body: Body27): Promise<Anonymous117> {
+    updateParkDivisionManager(body: Body28): Promise<Anonymous120> {
         let url_ = this.baseUrl + "/manager/parks/division";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2075,35 +2132,35 @@ export class Client {
         });
     }
 
-    protected processUpdateParkDivisionManager(response: Response): Promise<Anonymous117> {
+    protected processUpdateParkDivisionManager(response: Response): Promise<Anonymous120> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous117.fromJS(resultData200);
+            result200 = Anonymous120.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous118.fromJS(resultData401);
+            result401 = Anonymous121.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous119.fromJS(resultData400);
+            result400 = Anonymous122.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous120.fromJS(resultData404);
+            result404 = Anonymous123.fromJS(resultData404);
             return throwException("\u041f\u043e\u0434\u0440\u0430\u0437\u0434\u0435\u043b\u0435\u043d\u0438\u0435 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", status, _responseText, _headers, result404);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2111,14 +2168,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous117>(null as any);
+        return Promise.resolve<Anonymous120>(null as any);
     }
 
     /**
      * Создание подразделения парка
      * @return Успешное создание подразделения
      */
-    createParkDivisionManager(body: Body28): Promise<Anonymous121> {
+    createParkDivisionManager(body: Body29): Promise<Anonymous124> {
         let url_ = this.baseUrl + "/manager/parks/division";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2138,28 +2195,28 @@ export class Client {
         });
     }
 
-    protected processCreateParkDivisionManager(response: Response): Promise<Anonymous121> {
+    protected processCreateParkDivisionManager(response: Response): Promise<Anonymous124> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous121.fromJS(resultData200);
+            result200 = Anonymous124.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous122.fromJS(resultData401);
+            result401 = Anonymous125.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous123.fromJS(resultData400);
+            result400 = Anonymous126.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2167,14 +2224,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous121>(null as any);
+        return Promise.resolve<Anonymous124>(null as any);
     }
 
     /**
      * Обновление требований к кандидатам
      * @return Успешное обновление тарифа
      */
-    updateTariffManager(body: Body29): Promise<Anonymous124> {
+    updateTariffManager(body: Body30): Promise<Anonymous127> {
         let url_ = this.baseUrl + "/manager/parks/tariff";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2194,35 +2251,35 @@ export class Client {
         });
     }
 
-    protected processUpdateTariffManager(response: Response): Promise<Anonymous124> {
+    protected processUpdateTariffManager(response: Response): Promise<Anonymous127> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous124.fromJS(resultData200);
+            result200 = Anonymous127.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous125.fromJS(resultData401);
+            result401 = Anonymous128.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous126.fromJS(resultData404);
+            result404 = Anonymous129.fromJS(resultData404);
             return throwException("\u041f\u0430\u0440\u043a \u0441 \u0443\u043a\u0430\u0437\u0430\u043d\u043d\u044b\u043c API \u043a\u043b\u044e\u0447\u043e\u043c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous127.fromJS(resultData500);
+            result500 = Anonymous130.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2230,14 +2287,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous124>(null as any);
+        return Promise.resolve<Anonymous127>(null as any);
     }
 
     /**
      * Требования к кандидатам
      * @return Успешное создание  тарифа
      */
-    createTariffManager(body: Body30): Promise<Anonymous128> {
+    createTariffManager(body: Body31): Promise<Anonymous131> {
         let url_ = this.baseUrl + "/manager/parks/tariff";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2257,42 +2314,42 @@ export class Client {
         });
     }
 
-    protected processCreateTariffManager(response: Response): Promise<Anonymous128> {
+    protected processCreateTariffManager(response: Response): Promise<Anonymous131> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous128.fromJS(resultData200);
+            result200 = Anonymous131.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous129.fromJS(resultData401);
+            result401 = Anonymous132.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous130.fromJS(resultData404);
+            result404 = Anonymous133.fromJS(resultData404);
             return throwException("\u041f\u0430\u0440\u043a \u0441 \u0443\u043a\u0430\u0437\u0430\u043d\u043d\u044b\u043c API \u043a\u043b\u044e\u0447\u043e\u043c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 409) {
             return response.text().then((_responseText) => {
             let result409: any = null;
             let resultData409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result409 = Anonymous131.fromJS(resultData409);
+            result409 = Anonymous134.fromJS(resultData409);
             return throwException("\u0412 \u044d\u0442\u043e\u043c \u0433\u043e\u0440\u043e\u0434\u0435 \u0443\u0436\u0435 \u0435\u0441\u0442\u044c \u0442\u0430\u043a\u043e\u0439 \u0442\u0430\u0440\u0438\u0444", status, _responseText, _headers, result409);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous132.fromJS(resultData500);
+            result500 = Anonymous135.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2300,14 +2357,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous128>(null as any);
+        return Promise.resolve<Anonymous131>(null as any);
     }
 
     /**
      * Обновление статуса брони автомобиля
      * @return Успешное обновление статуса брони автомобиля
      */
-    updateCarBookingStatusManager(body: Body31): Promise<Anonymous133> {
+    updateCarBookingStatusManager(body: Body32): Promise<Anonymous136> {
         let url_ = this.baseUrl + "/manager/cars/booking";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2327,42 +2384,42 @@ export class Client {
         });
     }
 
-    protected processUpdateCarBookingStatusManager(response: Response): Promise<Anonymous133> {
+    protected processUpdateCarBookingStatusManager(response: Response): Promise<Anonymous136> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous133.fromJS(resultData200);
+            result200 = Anonymous136.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous134.fromJS(resultData401);
+            result401 = Anonymous137.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous135.fromJS(resultData400);
+            result400 = Anonymous138.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous136.fromJS(resultData404);
+            result404 = Anonymous139.fromJS(resultData404);
             return throwException("\u0410\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous137.fromJS(resultData500);
+            result500 = Anonymous140.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2370,14 +2427,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous133>(null as any);
+        return Promise.resolve<Anonymous136>(null as any);
     }
 
     /**
      * Пролонгация брони автомобиля
      * @return Бронь продлена на hours ч.
      */
-    bookProlongationManager(body: Body32): Promise<Anonymous138> {
+    bookProlongationManager(body: Body33): Promise<Anonymous141> {
         let url_ = this.baseUrl + "/manager/cars/booking/prolongation";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2397,42 +2454,42 @@ export class Client {
         });
     }
 
-    protected processBookProlongationManager(response: Response): Promise<Anonymous138> {
+    protected processBookProlongationManager(response: Response): Promise<Anonymous141> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous138.fromJS(resultData200);
+            result200 = Anonymous141.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous139.fromJS(resultData401);
+            result401 = Anonymous142.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous140.fromJS(resultData400);
+            result400 = Anonymous143.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous141.fromJS(resultData404);
+            result404 = Anonymous144.fromJS(resultData404);
             return throwException("\u0410\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous142.fromJS(resultData500);
+            result500 = Anonymous145.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2440,14 +2497,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous138>(null as any);
+        return Promise.resolve<Anonymous141>(null as any);
     }
 
     /**
      * Замена забронированного авто
      * @return Замена авто прошла успешно
      */
-    bookReplaceManager(body: Body33): Promise<Anonymous143> {
+    bookReplaceManager(body: Body34): Promise<Anonymous146> {
         let url_ = this.baseUrl + "/manager/cars/booking/replace";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2467,42 +2524,42 @@ export class Client {
         });
     }
 
-    protected processBookReplaceManager(response: Response): Promise<Anonymous143> {
+    protected processBookReplaceManager(response: Response): Promise<Anonymous146> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous143.fromJS(resultData200);
+            result200 = Anonymous146.fromJS(resultData200);
             return result200;
             });
         } else if (status === 401) {
             return response.text().then((_responseText) => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous144.fromJS(resultData401);
+            result401 = Anonymous147.fromJS(resultData401);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
             });
         } else if (status === 400) {
             return response.text().then((_responseText) => {
             let result400: any = null;
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = Anonymous145.fromJS(resultData400);
+            result400 = Anonymous148.fromJS(resultData400);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0438 \u0432\u0430\u043b\u0438\u0434\u0430\u0446\u0438\u0438", status, _responseText, _headers, result400);
             });
         } else if (status === 404) {
             return response.text().then((_responseText) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = Anonymous146.fromJS(resultData404);
+            result404 = Anonymous149.fromJS(resultData404);
             return throwException("\u0410\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
             let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous147.fromJS(resultData500);
+            result500 = Anonymous150.fromJS(resultData500);
             return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
             });
         } else if (status !== 200 && status !== 204) {
@@ -2510,14 +2567,14 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<Anonymous143>(null as any);
+        return Promise.resolve<Anonymous146>(null as any);
     }
 
     /**
      * Добавление автомобилей из базы клиента
      * @return Успешное добавление автомобилей
      */
-    pushCarsFromParkClientManager(): Promise<Anonymous148> {
+    pushCarsFromParkClientManager(): Promise<Anonymous151> {
         let url_ = this.baseUrl + "/manager/cars/client";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2533,59 +2590,7 @@ export class Client {
         });
     }
 
-    protected processPushCarsFromParkClientManager(response: Response): Promise<Anonymous148> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Anonymous148.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result401 = Anonymous149.fromJS(resultData401);
-            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
-            });
-        } else if (status === 500) {
-            return response.text().then((_responseText) => {
-            let result500: any = null;
-            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result500 = Anonymous150.fromJS(resultData500);
-            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<Anonymous148>(null as any);
-    }
-
-    /**
-     * Добавление статусов автомобилей из базы клиента
-     * @return Успешное добавление статусов автомобилей
-     */
-    pushStatusesFromParkClientManager(): Promise<Anonymous151> {
-        let url_ = this.baseUrl + "/manager/statuses/client";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processPushStatusesFromParkClientManager(_response);
-        });
-    }
-
-    protected processPushStatusesFromParkClientManager(response: Response): Promise<Anonymous151> {
+    protected processPushCarsFromParkClientManager(response: Response): Promise<Anonymous151> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2618,26 +2623,26 @@ export class Client {
     }
 
     /**
-     * Получение статусов автомобилей парка
-     * @return Получение статусов автомобилей парка
+     * Добавление статусов автомобилей из базы клиента
+     * @return Успешное добавление статусов автомобилей
      */
-    getParkStatusesManager(): Promise<Anonymous154> {
-        let url_ = this.baseUrl + "/manager/statuses";
+    pushStatusesFromParkClientManager(): Promise<Anonymous154> {
+        let url_ = this.baseUrl + "/manager/statuses/client";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetParkStatusesManager(_response);
+            return this.processPushStatusesFromParkClientManager(_response);
         });
     }
 
-    protected processGetParkStatusesManager(response: Response): Promise<Anonymous154> {
+    protected processPushStatusesFromParkClientManager(response: Response): Promise<Anonymous154> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2670,26 +2675,26 @@ export class Client {
     }
 
     /**
-     * Изменение статуса автомобиля парка
-     * @return Изменение статуса автомобиля парка
+     * Получение статусов автомобилей парка
+     * @return Получение статусов автомобилей парка
      */
-    changeParkStatusManager(): Promise<Anonymous157> {
+    getParkStatusesManager(): Promise<Anonymous157> {
         let url_ = this.baseUrl + "/manager/statuses";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "PUT",
+            method: "GET",
             headers: {
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processChangeParkStatusManager(_response);
+            return this.processGetParkStatusesManager(_response);
         });
     }
 
-    protected processChangeParkStatusManager(response: Response): Promise<Anonymous157> {
+    protected processGetParkStatusesManager(response: Response): Promise<Anonymous157> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2722,31 +2727,26 @@ export class Client {
     }
 
     /**
-     * Изменение логина и пароля менеджера для связи с клиентом
-     * @param body (optional) 
-     * @return Успешно
+     * Изменение статуса автомобиля парка
+     * @return Изменение статуса автомобиля парка
      */
-    pushAuthDataManager(body: Body34 | undefined): Promise<Anonymous160> {
-        let url_ = this.baseUrl + "/manager/auth/data";
+    changeParkStatusManager(): Promise<Anonymous160> {
+        let url_ = this.baseUrl + "/manager/statuses";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: RequestInit = {
-            body: content_,
             method: "PUT",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processPushAuthDataManager(_response);
+            return this.processChangeParkStatusManager(_response);
         });
     }
 
-    protected processPushAuthDataManager(response: Response): Promise<Anonymous160> {
+    protected processChangeParkStatusManager(response: Response): Promise<Anonymous160> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2776,6 +2776,242 @@ export class Client {
             });
         }
         return Promise.resolve<Anonymous160>(null as any);
+    }
+
+    /**
+     * Изменение логина и пароля менеджера для связи с клиентом
+     * @param body (optional) 
+     * @return Успешно
+     */
+    pushAuthDataManager(body: Body35 | undefined): Promise<Anonymous163> {
+        let url_ = this.baseUrl + "/manager/auth/data";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processPushAuthDataManager(_response);
+        });
+    }
+
+    protected processPushAuthDataManager(response: Response): Promise<Anonymous163> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous163.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = Anonymous164.fromJS(resultData401);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0430\u0443\u0442\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438", status, _responseText, _headers, result401);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous165.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous163>(null as any);
+    }
+
+    /**
+     * Добавление фотографий автомобилям
+     * @param file (optional) Файлы для загрузки
+     * @param ids (optional) Идентификаторы автомобилей
+     * @return Успешно
+     */
+    pushPhotosToCarsManager(file: FileParameter[] | undefined, ids: number[] | undefined): Promise<Anonymous166> {
+        let url_ = this.baseUrl + "/manager/cars/photos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            file.forEach(item_ => content_.append("file", item_.data, item_.fileName ? item_.fileName : "file") );
+        if (ids === null || ids === undefined)
+            throw new Error("The parameter 'ids' cannot be null.");
+        else
+            ids.forEach(item_ => content_.append("ids", item_.toString()));
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processPushPhotosToCarsManager(_response);
+        });
+    }
+
+    protected processPushPhotosToCarsManager(response: Response): Promise<Anonymous166> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous166.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = Anonymous167.fromJS(resultData400);
+            return throwException("\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous168.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous166>(null as any);
+    }
+
+    /**
+     * Привязка группе автомобилей division_id
+     * @param body (optional) 
+     * @return Успешно
+     */
+    assignCarsToDivision(body: Body36 | undefined): Promise<Anonymous169> {
+        let url_ = this.baseUrl + "/manager/cars/division";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAssignCarsToDivision(_response);
+        });
+    }
+
+    protected processAssignCarsToDivision(response: Response): Promise<Anonymous169> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous169.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = Anonymous170.fromJS(resultData400);
+            return throwException("\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous171.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous169>(null as any);
+    }
+
+    /**
+     * Привязка группе автомобилей тарифа
+     * @param body (optional) 
+     * @return Успешно
+     */
+    assignCarsToTariff(body: Body37 | undefined): Promise<Anonymous172> {
+        let url_ = this.baseUrl + "/manager/cars/tariff";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAssignCarsToTariff(_response);
+        });
+    }
+
+    protected processAssignCarsToTariff(response: Response): Promise<Anonymous172> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous172.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = Anonymous173.fromJS(resultData400);
+            return throwException("\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0437\u0430\u043f\u0440\u043e\u0441", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = Anonymous174.fromJS(resultData500);
+            return throwException("\u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous172>(null as any);
     }
 }
 
@@ -4694,13 +4930,77 @@ export interface IBody24 {
 }
 
 export class Body25 implements IBody25 {
+    /** Идентификатор срока аренды */
+    rent_term_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
+
+    [key: string]: any;
+
+    constructor(data?: IBody25) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.rent_term_id = _data["rent_term_id"];
+            if (Array.isArray(_data["car_ids"])) {
+                this.car_ids = [] as any;
+                for (let item of _data["car_ids"])
+                    this.car_ids!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Body25 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body25();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["rent_term_id"] = this.rent_term_id;
+        if (Array.isArray(this.car_ids)) {
+            data["car_ids"] = [];
+            for (let item of this.car_ids)
+                data["car_ids"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IBody25 {
+    /** Идентификатор срока аренды */
+    rent_term_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
+
+    [key: string]: any;
+}
+
+export class Body26 implements IBody26 {
     /** VIN-номер автомобиля */
     id?: string;
     status?: CarStatus;
 
     [key: string]: any;
 
-    constructor(data?: IBody25) {
+    constructor(data?: IBody26) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4720,9 +5020,9 @@ export class Body25 implements IBody25 {
         }
     }
 
-    static fromJS(data: any): Body25 {
+    static fromJS(data: any): Body26 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body25();
+        let result = new Body26();
         result.init(data);
         return result;
     }
@@ -4739,7 +5039,7 @@ export class Body25 implements IBody25 {
     }
 }
 
-export interface IBody25 {
+export interface IBody26 {
     /** VIN-номер автомобиля */
     id?: string;
     status?: CarStatus;
@@ -4747,7 +5047,7 @@ export interface IBody25 {
     [key: string]: any;
 }
 
-export class Body26 implements IBody26 {
+export class Body27 implements IBody27 {
     /** Идентификатор существующего условия аренды (для обновления) */
     rent_term_id?: number | undefined;
     /** Сумма ежедневного залога */
@@ -4765,7 +5065,7 @@ export class Body26 implements IBody26 {
 
     [key: string]: any;
 
-    constructor(data?: IBody26) {
+    constructor(data?: IBody27) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4794,9 +5094,9 @@ export class Body26 implements IBody26 {
         }
     }
 
-    static fromJS(data: any): Body26 {
+    static fromJS(data: any): Body27 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body26();
+        let result = new Body27();
         result.init(data);
         return result;
     }
@@ -4822,7 +5122,7 @@ export class Body26 implements IBody26 {
     }
 }
 
-export interface IBody26 {
+export interface IBody27 {
     /** Идентификатор существующего условия аренды (для обновления) */
     rent_term_id?: number | undefined;
     /** Сумма ежедневного залога */
@@ -4841,7 +5141,7 @@ export interface IBody26 {
     [key: string]: any;
 }
 
-export class Body27 implements IBody27 {
+export class Body28 implements IBody28 {
     /** Идентификатор подразделения */
     id?: number;
     /** Координаты подразделения */
@@ -4861,7 +5161,7 @@ export class Body27 implements IBody27 {
 
     [key: string]: any;
 
-    constructor(data?: IBody27) {
+    constructor(data?: IBody28) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4891,9 +5191,9 @@ export class Body27 implements IBody27 {
         }
     }
 
-    static fromJS(data: any): Body27 {
+    static fromJS(data: any): Body28 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body27();
+        let result = new Body28();
         result.init(data);
         return result;
     }
@@ -4920,7 +5220,7 @@ export class Body27 implements IBody27 {
     }
 }
 
-export interface IBody27 {
+export interface IBody28 {
     /** Идентификатор подразделения */
     id?: number;
     /** Координаты подразделения */
@@ -4941,7 +5241,7 @@ export interface IBody27 {
     [key: string]: any;
 }
 
-export class Body28 implements IBody28 {
+export class Body29 implements IBody29 {
     /** Город подразделения */
     city?: string;
     /** Координаты подразделения */
@@ -4961,7 +5261,7 @@ export class Body28 implements IBody28 {
 
     [key: string]: any;
 
-    constructor(data?: IBody28) {
+    constructor(data?: IBody29) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -4991,9 +5291,9 @@ export class Body28 implements IBody28 {
         }
     }
 
-    static fromJS(data: any): Body28 {
+    static fromJS(data: any): Body29 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body28();
+        let result = new Body29();
         result.init(data);
         return result;
     }
@@ -5020,7 +5320,7 @@ export class Body28 implements IBody28 {
     }
 }
 
-export interface IBody28 {
+export interface IBody29 {
     /** Город подразделения */
     city?: string;
     /** Координаты подразделения */
@@ -5041,7 +5341,7 @@ export interface IBody28 {
     [key: string]: any;
 }
 
-export class Body29 implements IBody29 {
+export class Body30 implements IBody30 {
     /** id тарифа */
     id?: number;
     /** Участие в ДТП, true/false */
@@ -5063,7 +5363,7 @@ export class Body29 implements IBody29 {
 
     [key: string]: any;
 
-    constructor(data?: IBody29) {
+    constructor(data?: IBody30) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5090,9 +5390,9 @@ export class Body29 implements IBody29 {
         }
     }
 
-    static fromJS(data: any): Body29 {
+    static fromJS(data: any): Body30 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body29();
+        let result = new Body30();
         result.init(data);
         return result;
     }
@@ -5116,7 +5416,7 @@ export class Body29 implements IBody29 {
     }
 }
 
-export interface IBody29 {
+export interface IBody30 {
     /** id тарифа */
     id?: number;
     /** Участие в ДТП, true/false */
@@ -5139,7 +5439,7 @@ export interface IBody29 {
     [key: string]: any;
 }
 
-export class Body30 implements IBody30 {
+export class Body31 implements IBody31 {
     /** Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес) */
     class?: CarClass | undefined;
     /** Город тарифа */
@@ -5163,7 +5463,7 @@ export class Body30 implements IBody30 {
 
     [key: string]: any;
 
-    constructor(data?: IBody30) {
+    constructor(data?: IBody31) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5195,9 +5495,9 @@ export class Body30 implements IBody30 {
         }
     }
 
-    static fromJS(data: any): Body30 {
+    static fromJS(data: any): Body31 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body30();
+        let result = new Body31();
         result.init(data);
         return result;
     }
@@ -5226,7 +5526,7 @@ export class Body30 implements IBody30 {
     }
 }
 
-export interface IBody30 {
+export interface IBody31 {
     /** Тариф машины (1 - эконом, 2 - комфорт, 3 - комфорт+, 4 - бизнес) */
     class?: CarClass | undefined;
     /** Город тарифа */
@@ -5251,65 +5551,10 @@ export interface IBody30 {
     [key: string]: any;
 }
 
-export class Body31 implements IBody31 {
-    /** VIN-номер автомобиля */
-    vin?: string;
-    status?: BookingStatus;
-
-    [key: string]: any;
-
-    constructor(data?: IBody31) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.vin = _data["vin"];
-            this.status = _data["status"];
-        }
-    }
-
-    static fromJS(data: any): Body31 {
-        data = typeof data === 'object' ? data : {};
-        let result = new Body31();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property))
-                data[property] = this[property];
-        }
-        data["vin"] = this.vin;
-        data["status"] = this.status;
-        return data;
-    }
-}
-
-export interface IBody31 {
-    /** VIN-номер автомобиля */
-    vin?: string;
-    status?: BookingStatus;
-
-    [key: string]: any;
-}
-
 export class Body32 implements IBody32 {
     /** VIN-номер автомобиля */
     vin?: string;
-    /** Время в часах, на которое нужно продлить бронь */
-    hours?: number;
+    status?: BookingStatus;
 
     [key: string]: any;
 
@@ -5329,7 +5574,7 @@ export class Body32 implements IBody32 {
                     this[property] = _data[property];
             }
             this.vin = _data["vin"];
-            this.hours = _data["hours"];
+            this.status = _data["status"];
         }
     }
 
@@ -5347,7 +5592,7 @@ export class Body32 implements IBody32 {
                 data[property] = this[property];
         }
         data["vin"] = this.vin;
-        data["hours"] = this.hours;
+        data["status"] = this.status;
         return data;
     }
 }
@@ -5355,17 +5600,16 @@ export class Body32 implements IBody32 {
 export interface IBody32 {
     /** VIN-номер автомобиля */
     vin?: string;
-    /** Время в часах, на которое нужно продлить бронь */
-    hours?: number;
+    status?: BookingStatus;
 
     [key: string]: any;
 }
 
 export class Body33 implements IBody33 {
-    /** VIN-номер текущего автомобиля */
+    /** VIN-номер автомобиля */
     vin?: string;
-    /** VIN-номер нового автомобиля */
-    new_vin?: string;
+    /** Время в часах, на которое нужно продлить бронь */
+    hours?: number;
 
     [key: string]: any;
 
@@ -5385,7 +5629,7 @@ export class Body33 implements IBody33 {
                     this[property] = _data[property];
             }
             this.vin = _data["vin"];
-            this.new_vin = _data["new_vin"];
+            this.hours = _data["hours"];
         }
     }
 
@@ -5403,12 +5647,68 @@ export class Body33 implements IBody33 {
                 data[property] = this[property];
         }
         data["vin"] = this.vin;
-        data["new_vin"] = this.new_vin;
+        data["hours"] = this.hours;
         return data;
     }
 }
 
 export interface IBody33 {
+    /** VIN-номер автомобиля */
+    vin?: string;
+    /** Время в часах, на которое нужно продлить бронь */
+    hours?: number;
+
+    [key: string]: any;
+}
+
+export class Body34 implements IBody34 {
+    /** VIN-номер текущего автомобиля */
+    vin?: string;
+    /** VIN-номер нового автомобиля */
+    new_vin?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IBody34) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.vin = _data["vin"];
+            this.new_vin = _data["new_vin"];
+        }
+    }
+
+    static fromJS(data: any): Body34 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body34();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["vin"] = this.vin;
+        data["new_vin"] = this.new_vin;
+        return data;
+    }
+}
+
+export interface IBody34 {
     /** VIN-номер текущего автомобиля */
     vin?: string;
     /** VIN-номер нового автомобиля */
@@ -5417,7 +5717,7 @@ export interface IBody33 {
     [key: string]: any;
 }
 
-export class Body34 implements IBody34 {
+export class Body35 implements IBody35 {
     /** Новое имя пользователя 1с */
     name?: string;
     /** Новый пароль пользователя 1с */
@@ -5425,7 +5725,7 @@ export class Body34 implements IBody34 {
 
     [key: string]: any;
 
-    constructor(data?: IBody34) {
+    constructor(data?: IBody35) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5445,9 +5745,9 @@ export class Body34 implements IBody34 {
         }
     }
 
-    static fromJS(data: any): Body34 {
+    static fromJS(data: any): Body35 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body34();
+        let result = new Body35();
         result.init(data);
         return result;
     }
@@ -5464,11 +5764,139 @@ export class Body34 implements IBody34 {
     }
 }
 
-export interface IBody34 {
+export interface IBody35 {
     /** Новое имя пользователя 1с */
     name?: string;
     /** Новый пароль пользователя 1с */
     password?: string;
+
+    [key: string]: any;
+}
+
+export class Body36 implements IBody36 {
+    /** Идентификатор division */
+    division_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
+
+    [key: string]: any;
+
+    constructor(data?: IBody36) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.division_id = _data["division_id"];
+            if (Array.isArray(_data["car_ids"])) {
+                this.car_ids = [] as any;
+                for (let item of _data["car_ids"])
+                    this.car_ids!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Body36 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body36();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["division_id"] = this.division_id;
+        if (Array.isArray(this.car_ids)) {
+            data["car_ids"] = [];
+            for (let item of this.car_ids)
+                data["car_ids"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IBody36 {
+    /** Идентификатор division */
+    division_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
+
+    [key: string]: any;
+}
+
+export class Body37 implements IBody37 {
+    /** Идентификатор тарифа */
+    tariff_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
+
+    [key: string]: any;
+
+    constructor(data?: IBody37) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.tariff_id = _data["tariff_id"];
+            if (Array.isArray(_data["car_ids"])) {
+                this.car_ids = [] as any;
+                for (let item of _data["car_ids"])
+                    this.car_ids!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Body37 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body37();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["tariff_id"] = this.tariff_id;
+        if (Array.isArray(this.car_ids)) {
+            data["car_ids"] = [];
+            for (let item of this.car_ids)
+                data["car_ids"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IBody37 {
+    /** Идентификатор тарифа */
+    tariff_id?: number;
+    /** Идентификаторы автомобилей */
+    car_ids?: number[];
 
     [key: string]: any;
 }
@@ -10854,7 +11282,7 @@ export interface IAnonymous109 {
 }
 
 export class Anonymous110 implements IAnonymous110 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 
@@ -10873,7 +11301,7 @@ export class Anonymous110 implements IAnonymous110 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.errors = _data["errors"];
+            this.message = _data["message"];
         }
     }
 
@@ -10890,13 +11318,13 @@ export class Anonymous110 implements IAnonymous110 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["errors"] = this.errors;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous110 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 }
@@ -10951,7 +11379,6 @@ export interface IAnonymous111 {
 
 export class Anonymous112 implements IAnonymous112 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 
@@ -10971,7 +11398,6 @@ export class Anonymous112 implements IAnonymous112 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
-            this.id = _data["id"];
         }
     }
 
@@ -10989,20 +11415,18 @@ export class Anonymous112 implements IAnonymous112 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
-        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous112 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 }
 
 export class Anonymous113 implements IAnonymous113 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -11021,7 +11445,7 @@ export class Anonymous113 implements IAnonymous113 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -11038,19 +11462,19 @@ export class Anonymous113 implements IAnonymous113 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous113 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
 
 export class Anonymous114 implements IAnonymous114 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 
@@ -11069,7 +11493,7 @@ export class Anonymous114 implements IAnonymous114 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.errors = _data["errors"];
+            this.message = _data["message"];
         }
     }
 
@@ -11086,19 +11510,20 @@ export class Anonymous114 implements IAnonymous114 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["errors"] = this.errors;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous114 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 }
 
 export class Anonymous115 implements IAnonymous115 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 
@@ -11118,6 +11543,7 @@ export class Anonymous115 implements IAnonymous115 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.id = _data["id"];
         }
     }
 
@@ -11135,12 +11561,14 @@ export class Anonymous115 implements IAnonymous115 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous115 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 }
@@ -11194,7 +11622,7 @@ export interface IAnonymous116 {
 }
 
 export class Anonymous117 implements IAnonymous117 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -11213,7 +11641,7 @@ export class Anonymous117 implements IAnonymous117 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -11230,13 +11658,13 @@ export class Anonymous117 implements IAnonymous117 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous117 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
@@ -11291,7 +11719,6 @@ export interface IAnonymous118 {
 
 export class Anonymous119 implements IAnonymous119 {
     message?: string;
-    errors?: any;
 
     [key: string]: any;
 
@@ -11311,7 +11738,6 @@ export class Anonymous119 implements IAnonymous119 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
-            this.errors = _data["errors"];
         }
     }
 
@@ -11329,14 +11755,12 @@ export class Anonymous119 implements IAnonymous119 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
-        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous119 {
     message?: string;
-    errors?: any;
 
     [key: string]: any;
 }
@@ -11391,7 +11815,6 @@ export interface IAnonymous120 {
 
 export class Anonymous121 implements IAnonymous121 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 
@@ -11411,7 +11834,6 @@ export class Anonymous121 implements IAnonymous121 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
-            this.id = _data["id"];
         }
     }
 
@@ -11429,20 +11851,19 @@ export class Anonymous121 implements IAnonymous121 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
-        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous121 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 }
 
 export class Anonymous122 implements IAnonymous122 {
     message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -11462,6 +11883,7 @@ export class Anonymous122 implements IAnonymous122 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -11479,19 +11901,20 @@ export class Anonymous122 implements IAnonymous122 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous122 {
     message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
 
 export class Anonymous123 implements IAnonymous123 {
     message?: string;
-    errors?: any;
 
     [key: string]: any;
 
@@ -11511,7 +11934,6 @@ export class Anonymous123 implements IAnonymous123 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
-            this.errors = _data["errors"];
         }
     }
 
@@ -11529,20 +11951,19 @@ export class Anonymous123 implements IAnonymous123 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
-        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous123 {
     message?: string;
-    errors?: any;
 
     [key: string]: any;
 }
 
 export class Anonymous124 implements IAnonymous124 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 
@@ -11562,6 +11983,7 @@ export class Anonymous124 implements IAnonymous124 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.id = _data["id"];
         }
     }
 
@@ -11579,12 +12001,14 @@ export class Anonymous124 implements IAnonymous124 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous124 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 }
@@ -11639,6 +12063,7 @@ export interface IAnonymous125 {
 
 export class Anonymous126 implements IAnonymous126 {
     message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -11658,6 +12083,7 @@ export class Anonymous126 implements IAnonymous126 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -11675,12 +12101,14 @@ export class Anonymous126 implements IAnonymous126 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous126 {
     message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
@@ -11735,7 +12163,6 @@ export interface IAnonymous127 {
 
 export class Anonymous128 implements IAnonymous128 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 
@@ -11755,7 +12182,6 @@ export class Anonymous128 implements IAnonymous128 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
-            this.id = _data["id"];
         }
     }
 
@@ -11773,14 +12199,12 @@ export class Anonymous128 implements IAnonymous128 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
-        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous128 {
     message?: string;
-    id?: number;
 
     [key: string]: any;
 }
@@ -11883,6 +12307,7 @@ export interface IAnonymous130 {
 
 export class Anonymous131 implements IAnonymous131 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 
@@ -11902,6 +12327,7 @@ export class Anonymous131 implements IAnonymous131 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.id = _data["id"];
         }
     }
 
@@ -11919,12 +12345,14 @@ export class Anonymous131 implements IAnonymous131 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous131 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 }
@@ -12074,7 +12502,7 @@ export interface IAnonymous134 {
 }
 
 export class Anonymous135 implements IAnonymous135 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 
@@ -12093,7 +12521,7 @@ export class Anonymous135 implements IAnonymous135 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.errors = _data["errors"];
+            this.message = _data["message"];
         }
     }
 
@@ -12110,13 +12538,13 @@ export class Anonymous135 implements IAnonymous135 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["errors"] = this.errors;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous135 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 }
@@ -12218,7 +12646,7 @@ export interface IAnonymous137 {
 }
 
 export class Anonymous138 implements IAnonymous138 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -12237,7 +12665,7 @@ export class Anonymous138 implements IAnonymous138 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -12254,13 +12682,13 @@ export class Anonymous138 implements IAnonymous138 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous138 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
@@ -12314,7 +12742,7 @@ export interface IAnonymous139 {
 }
 
 export class Anonymous140 implements IAnonymous140 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 
@@ -12333,7 +12761,7 @@ export class Anonymous140 implements IAnonymous140 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.errors = _data["errors"];
+            this.message = _data["message"];
         }
     }
 
@@ -12350,13 +12778,13 @@ export class Anonymous140 implements IAnonymous140 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["errors"] = this.errors;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous140 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 }
@@ -12458,7 +12886,7 @@ export interface IAnonymous142 {
 }
 
 export class Anonymous143 implements IAnonymous143 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -12477,7 +12905,7 @@ export class Anonymous143 implements IAnonymous143 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -12494,13 +12922,13 @@ export class Anonymous143 implements IAnonymous143 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous143 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
@@ -12554,7 +12982,7 @@ export interface IAnonymous144 {
 }
 
 export class Anonymous145 implements IAnonymous145 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 
@@ -12573,7 +13001,7 @@ export class Anonymous145 implements IAnonymous145 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.errors = _data["errors"];
+            this.message = _data["message"];
         }
     }
 
@@ -12590,13 +13018,13 @@ export class Anonymous145 implements IAnonymous145 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["errors"] = this.errors;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous145 {
-    errors?: any;
+    message?: string;
 
     [key: string]: any;
 }
@@ -12698,7 +13126,7 @@ export interface IAnonymous147 {
 }
 
 export class Anonymous148 implements IAnonymous148 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 
@@ -12717,7 +13145,7 @@ export class Anonymous148 implements IAnonymous148 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.errors = _data["errors"];
         }
     }
 
@@ -12734,13 +13162,13 @@ export class Anonymous148 implements IAnonymous148 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["errors"] = this.errors;
         return data;
     }
 }
 
 export interface IAnonymous148 {
-    message?: string;
+    errors?: any;
 
     [key: string]: any;
 }
@@ -12986,7 +13414,7 @@ export interface IAnonymous153 {
 }
 
 export class Anonymous154 implements IAnonymous154 {
-    statuses?: Statuses[];
+    message?: string;
 
     [key: string]: any;
 
@@ -13005,11 +13433,7 @@ export class Anonymous154 implements IAnonymous154 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            if (Array.isArray(_data["statuses"])) {
-                this.statuses = [] as any;
-                for (let item of _data["statuses"])
-                    this.statuses!.push(Statuses.fromJS(item));
-            }
+            this.message = _data["message"];
         }
     }
 
@@ -13026,17 +13450,13 @@ export class Anonymous154 implements IAnonymous154 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        if (Array.isArray(this.statuses)) {
-            data["statuses"] = [];
-            for (let item of this.statuses)
-                data["statuses"].push(item.toJSON());
-        }
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous154 {
-    statuses?: Statuses[];
+    message?: string;
 
     [key: string]: any;
 }
@@ -13138,7 +13558,7 @@ export interface IAnonymous156 {
 }
 
 export class Anonymous157 implements IAnonymous157 {
-    message?: string;
+    statuses?: Statuses[];
 
     [key: string]: any;
 
@@ -13157,7 +13577,11 @@ export class Anonymous157 implements IAnonymous157 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            if (Array.isArray(_data["statuses"])) {
+                this.statuses = [] as any;
+                for (let item of _data["statuses"])
+                    this.statuses!.push(Statuses.fromJS(item));
+            }
         }
     }
 
@@ -13174,13 +13598,17 @@ export class Anonymous157 implements IAnonymous157 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        if (Array.isArray(this.statuses)) {
+            data["statuses"] = [];
+            for (let item of this.statuses)
+                data["statuses"].push(item.toJSON());
+        }
         return data;
     }
 }
 
 export interface IAnonymous157 {
-    message?: string;
+    statuses?: Statuses[];
 
     [key: string]: any;
 }
@@ -13420,6 +13848,582 @@ export class Anonymous162 implements IAnonymous162 {
 }
 
 export interface IAnonymous162 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous163 implements IAnonymous163 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous163) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous163 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous163();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous163 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous164 implements IAnonymous164 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous164) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous164 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous164();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous164 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous165 implements IAnonymous165 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous165) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous165 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous165();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous165 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous166 implements IAnonymous166 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous166) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous166 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous166();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous166 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous167 implements IAnonymous167 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous167) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous167 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous167();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous167 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous168 implements IAnonymous168 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous168) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous168 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous168();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous168 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous169 implements IAnonymous169 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous169) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous169 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous169();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous169 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous170 implements IAnonymous170 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous170) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous170 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous170();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous170 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous171 implements IAnonymous171 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous171) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous171 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous171();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous171 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous172 implements IAnonymous172 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous172) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous172 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous172();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous172 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous173 implements IAnonymous173 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous173) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous173 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous173();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous173 {
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous174 implements IAnonymous174 {
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous174) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous174 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous174();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous174 {
     message?: string;
 
     [key: string]: any;

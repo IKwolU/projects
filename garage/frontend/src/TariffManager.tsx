@@ -19,7 +19,7 @@ import {
   IRent_term,
   IBody3,
 } from "./api-client";
-import { cityAtom, parkAtom, userAtom } from "./atoms";
+import { cityAtom, userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -44,7 +44,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DivisionManager } from "./DivisionManager";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -55,7 +54,7 @@ type MainMenuItem = {
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [city] = useRecoilState(cityAtom);
-  const [park, setPark] = useRecoilState(parkAtom);
+  const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
   const [newDivisionPhone, setNewDivisionPhone] = useState("");
   const [newDivision, setNewDivision] = useState<IBody3>({
@@ -112,6 +111,66 @@ export const ParkManager = () => {
     }
   }, []);
 
+  const createDivision = async ({ ...newDivision }: IBody3) => {
+    const newDivisionData = await client.createParkDivision(
+      new Body3({
+        ...newDivision,
+      })
+    );
+    setPark({
+      ...park,
+
+      divisions: [
+        ...divisions,
+        {
+          ...newDivision,
+          id: newDivisionData.id,
+        },
+      ],
+    });
+  };
+
+  const createTariff = async ({ ...newTariff }: IBody5) => {
+    const newTariffData = await client.createTariff(
+      new Body5({
+        ...newTariff,
+      })
+    );
+    setPark({
+      ...park,
+
+      tariffs: [
+        ...tariffs,
+
+        {
+          ...newTariff,
+          id: newTariffData.id,
+        },
+      ],
+    });
+  };
+
+  const upsertRentTerm = async ({ ...newRentTerm }: IRent_term) => {
+    const newTariffData = await client.createOrUpdateRentTerm(
+      new Body6({ ...newRentTerm })
+    );
+
+    setPark({
+      ...park,
+      rent_terms: [
+        ...rentTerms.filter((rent_term) =>
+          newRentTerm.rent_term_id
+            ? rent_term.id !== newRentTerm.rent_term_id
+            : rent_term
+        ),
+        {
+          ...newRentTerm,
+          id: newTariffData.id,
+        },
+      ],
+    });
+  };
+
   const updateParkInfo = async () => {
     {
       await client.updateParkInfo(
@@ -131,6 +190,63 @@ export const ParkManager = () => {
   if (!park || !parkInfo) {
     return <></>;
   }
+
+  const handleInputNewDivisionChange = (e: any, param: any) => {
+    setNewDivision({
+      ...newDivision,
+      [param]: e.target.value,
+    });
+  };
+
+  const handleInputNewTariffChange = (e: any, param: any) => {
+    setNewTariff({
+      ...newTariff,
+      [param]: e.target.value,
+    });
+  };
+
+  const handleInputNewRentTermChange = (e: any, param: any) => {
+    setNewRentTerm({
+      ...newRentTerm,
+      [param]: e.target.value,
+    });
+  };
+
+  const handleInputNewRentTermSchemaChange = (e: any, param: any, id: any) => {
+    const currentSchema = newRentTerm.schemas!.find(
+      (schema) => schema.id === id
+    );
+    setNewRentTerm({
+      ...newRentTerm,
+      schemas: [
+        ...newRentTerm.schemas!.filter((schema) => schema.id !== id),
+        { ...currentSchema!, [param]: e.target.value },
+      ],
+    });
+  };
+
+  const divisions = park!.divisions! as Divisions2[];
+  const tariffs = park!.tariffs as Tariffs[];
+  const rentTerms = park!.rent_terms as IRent_terms[];
+
+  const selectedDivision =
+    selectedVariant.name === "division"
+      ? (divisions.find(
+          (division) => division.id === selectedVariant.id
+        ) as Divisions2)
+      : null;
+
+  const selectedRentTerm =
+    selectedVariant.name === "rent_term"
+      ? (rentTerms.find(
+          (rentTerm) => rentTerm.id === selectedVariant.id
+        ) as IRent_terms)
+      : null;
+
+  const selectedTariff =
+    selectedVariant.name === "tariff"
+      ? (tariffs.find((tariff) => tariff.id === selectedVariant.id) as Tariffs)
+      : null;
 
   const Info = () => {
     return (
@@ -222,6 +338,415 @@ export const ParkManager = () => {
           <Button onClick={updateParkInfo}>Применить изменения</Button>
         </div>
       </div>
+    );
+  };
+
+  const Divisions = () => {
+    return (
+      <>
+        <div className="">Подразделения</div>
+
+        <div className="flex space-x-1">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            <div className="flex items-center justify-between space-x-2">
+              {divisions.length === 0 && (
+                <div className="">
+                  <div className="">Подразделений еще нет</div>
+                </div>
+              )}
+              {divisions.map((x, i) => (
+                <div className="" key={`division_${i}`}>
+                  <div className="">{x.address}</div>
+                </div>
+              ))}
+            </div>
+            {selectedVariant.name !== "newDivision" && (
+              <Button
+                className="w-64 text-lg"
+                onClick={() =>
+                  setSelectedVariant({ name: "newDivision", id: 0 })
+                }
+              >
+                Создать
+              </Button>
+            )}
+          </div>
+          {selectedVariant.name === "newDivision" && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">Создание подразделения</h3>
+              <div className="">
+                <h4>Город подразделения:</h4>
+                <div className="p-2 cursor-pointer bg-grey rounded-xl w-fit">
+                  <CityPicker />
+                </div>
+              </div>
+              {[
+                {
+                  title: "Координаты подразделения",
+                  type: "text",
+                  placeholder: "00.000, 00.000",
+                  param: "coords",
+                  value: "",
+                },
+                {
+                  title: "Адрес подразделения",
+                  type: "text",
+                  placeholder: "г. Москва, ул. ...",
+                  param: "address",
+                  value: newDivision.address || "",
+                },
+                {
+                  title: "Ближайшее метро, если есть",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "metro",
+                  value: newDivision.metro || "",
+                },
+                {
+                  title: "Название подразделения",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "name",
+                  value: newDivision.name || "",
+                },
+                {
+                  title: "Часовой пояс",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "timezone_difference",
+                  value: newDivision.timezone_difference || 3,
+                },
+              ].map((input, index) => (
+                <div key={`input_${index}`} className="">
+                  <h4>{input.title}:</h4>
+                  <Input
+                    onChange={(e) =>
+                      handleInputNewDivisionChange(e, input.param)
+                    }
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
+              <div className="">
+                <h4>Телефон подразделения:</h4>
+                <PhoneInput
+                  onChange={(e) => setNewDivisionPhone(e.target.value)}
+                />
+              </div>
+              <div className="">
+                <h4>Время работы:</h4>
+                <div className="flex flex-wrap">
+                  {Object.keys(DayOfWeek).map((x) => {
+                    return (
+                      <div className="flex flex-col items-start w-1/2" key={x}>
+                        <div className="w-80">
+                          <p className="capitalize">
+                            {getDayOfWeekDisplayName(x as any)}:
+                          </p>
+                          <div className="flex items-center space-x-2">
+                            <p>Начало:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                          <div className="flex items-center space-x-2 space-y-1">
+                            <p>Конец:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                        </div>
+                        <Separator className="my-2" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <Confirmation
+                accept={() => createDivision}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Создать подразделение?"}
+                type="green"
+              />
+            </div>
+          )}
+          {selectedDivision && (
+            <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+              <h3 className="my-4">
+                Изменение подразделения {selectedDivision.name}
+              </h3>
+              {[
+                {
+                  title: "Координаты подразделения",
+                  type: "text",
+                  placeholder: "00.000, 00.000",
+                  param: "coords",
+                  value: "",
+                },
+                {
+                  title: "Адрес подразделения",
+                  type: "text",
+                  placeholder: "г. Москва, ул. ...",
+                  param: "address",
+                  value: newDivision.address || "",
+                },
+                {
+                  title: "Ближайшее метро, если есть",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "metro",
+                  value: newDivision.metro || "",
+                },
+                {
+                  title: "Название подразделения",
+                  type: "text",
+                  placeholder: "Введите значение",
+                  param: "name",
+                  value: newDivision.name || "",
+                },
+                {
+                  title: "Часовой пояс",
+                  type: "number",
+                  placeholder: "Введите значение",
+                  param: "timezone_difference",
+                  value: newDivision.timezone_difference || 3,
+                },
+              ].map((input, index) => (
+                <div key={`input_${index}`} className="">
+                  <h4>{input.title}:</h4>
+                  <Input
+                    onChange={(e) =>
+                      handleInputNewDivisionChange(e, input.param)
+                    }
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                </div>
+              ))}
+              <div className="">
+                <h4>Телефон подразделения:</h4>
+                <PhoneInput
+                  onChange={(e) => setNewDivisionPhone(e.target.value)}
+                />
+              </div>
+              <div className="">
+                <h4>Время работы:</h4>
+                <div className="flex flex-wrap">
+                  {Object.keys(DayOfWeek).map((x) => {
+                    return (
+                      <div className="flex flex-col items-start w-1/2" key={x}>
+                        <div className="w-80">
+                          <p className="capitalize">
+                            {getDayOfWeekDisplayName(x as any)}:
+                          </p>
+                          <div className="flex items-center space-x-2">
+                            <p>Начало:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          start: {
+                                            ...item.start,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                          <div className="flex items-center space-x-2 space-y-1">
+                            <p>Конец:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            hours: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="ч"
+                            ></Input>
+                            <p>:</p>
+                            <Input
+                              className="w-10 p-0 m-0 text-center"
+                              onChange={(e) =>
+                                setNewDivision((prevDivision) => ({
+                                  ...prevDivision,
+                                  working_hours:
+                                    prevDivision!.working_hours!.map((item) => {
+                                      if (item.day === x) {
+                                        return {
+                                          ...item,
+                                          end: {
+                                            ...item.end,
+                                            minutes: e.target.value,
+                                          },
+                                        };
+                                      }
+                                      return item;
+                                    }),
+                                }))
+                              }
+                              type="number"
+                              placeholder="м"
+                            ></Input>
+                          </div>
+                        </div>
+                        <Separator className="my-2" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* <Confirmation
+                accept={() => createDivision}
+                cancel={() => {}}
+                trigger={<Button className="w-60">Применить</Button>}
+                title={"Обновить подразделение?"}
+                type="green"
+              /> */}
+            </div>
+          )}
+        </div>
+      </>
     );
   };
 
@@ -654,7 +1179,7 @@ export const ParkManager = () => {
       <Routes>
         <Route path="/*" element={<Navigate to="/info" replace={true} />} />
         <Route path={`/info`} element={<Info />} />
-        <Route path={`/divisions`} element={<DivisionManager />} />
+        <Route path={`/divisions`} element={<Divisions />} />
         <Route path={`/rent_terms`} element={<RentTerms />} />
         <Route path={`/tariffs`} element={<Tariffs />} />
         <Route path={`/cars`} element={<Cars />} />

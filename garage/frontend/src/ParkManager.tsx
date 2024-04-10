@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { DivisionManager } from "./DivisionManager";
+import { RentTermManager } from "./RentTermManager";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -187,9 +188,9 @@ export const ParkManager = () => {
         <Route path="/*" element={<Navigate to="/info" replace={true} />} />
         <Route path={`/info`} element={<Info />} />
         <Route path={`/divisions`} element={<DivisionManager />} />
-        {/* <Route path={`/rent_terms`} element={<RentTerms />} />
-        <Route path={`/tariffs`} element={<Tariffs />} />
-        <Route path={`/cars`} element={<Cars />} /> */}
+        <Route path={`/rent_terms`} element={<RentTermManager />} />
+        {/* <Route path={`/tariffs`} element={<Tariffs />} />
+        <Route path={`/cars`} element={<Cars />} />  */}
       </Routes>
     </>
   );

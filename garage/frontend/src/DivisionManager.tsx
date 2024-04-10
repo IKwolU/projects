@@ -32,6 +32,7 @@ export const DivisionManager = () => {
       end: new End2({ hours: 0, minutes: 0 }),
     }),
   ]);
+  const [nonWorkingDay, setNonWorkingDay] = useState([""]);
   const [newDivision, setNewDivision] = useState<IBody3>({
     city: city,
     coords: "",
@@ -55,7 +56,9 @@ export const DivisionManager = () => {
         name: newDivision.name,
         phone: newDivisionPhone,
         timezone_difference: newDivision.timezone_difference,
-        working_hours: workingHours,
+        working_hours: workingHours.filter(
+          (item) => !nonWorkingDay.includes(item!.day!)
+        ),
       })
     );
     setPark({
@@ -176,16 +179,20 @@ export const DivisionManager = () => {
               <h4>Время работы:</h4>
               <div className="flex flex-wrap">
                 {Object.keys(DayOfWeek).map((x) => {
-                  const value = DayOfWeek[x as keyof typeof DayOfWeek];
+                  const day = DayOfWeek[x as keyof typeof DayOfWeek];
                   let item = workingHours.find(
-                    (workingHour) => workingHour.day === value
+                    (workingHour) => workingHour.day === day
                   );
                   if (!item) {
                     item = new Working_hours2({
-                      day: value,
-                      end: new Start2({
+                      day: day,
+                      start: new Start2({
                         minutes: 0,
-                        hours: 0,
+                        hours: 10,
+                      }),
+                      end: new End2({
+                        minutes: 0,
+                        hours: 22,
                       }),
                     });
                     setWorkingHours([...workingHours, item]);
@@ -197,99 +204,127 @@ export const DivisionManager = () => {
                         <p className="capitalize">
                           {getDayOfWeekDisplayName(x as any)}:
                         </p>
+                        {!nonWorkingDay.includes(day) && (
+                          <div className="">
+                            <div className="flex items-center space-x-2">
+                              <p>Начало:</p>
+                              <Input
+                                className="w-10 p-0 m-0 text-center"
+                                onChange={(e) => {
+                                  return setWorkingHours([
+                                    ...workingHours!.filter(
+                                      (workingHour) => workingHour.day !== day
+                                    ),
+                                    new Working_hours2({
+                                      ...item!,
+                                      end: new Start2({
+                                        minutes: item?.end?.minutes || 0,
+                                        hours: Number(e.target.value),
+                                      }),
+                                    }),
+                                  ]);
+                                }}
+                                value={item!.start!.hours}
+                                type="number"
+                                placeholder="ч"
+                              ></Input>
+                              <p>:</p>
+                              <Input
+                                className="w-10 p-0 m-0 text-center"
+                                value={item!.start!.minutes}
+                                onChange={(e) => {
+                                  const item = workingHours!.find(
+                                    (workingHour) => workingHour.day === day
+                                  );
+                                  return setWorkingHours([
+                                    ...workingHours!.filter(
+                                      (workingHour) => workingHour.day !== day
+                                    ),
+                                    new Working_hours2({
+                                      ...item!,
+                                      end: new Start2({
+                                        minutes: Number(e.target.value),
+                                        hours: item!.end?.hours || 0,
+                                      }),
+                                    }),
+                                  ]);
+                                }}
+                                type="number"
+                                placeholder="м"
+                              ></Input>
+                            </div>
+                            <div className="flex items-center space-x-2 space-y-1">
+                              <p>Конец:</p>
+                              <Input
+                                className="w-10 p-0 m-0 text-center"
+                                onChange={(e) => {
+                                  const item = workingHours!.find(
+                                    (workingHour) => workingHour.day === day
+                                  );
+                                  return setWorkingHours([
+                                    ...workingHours!.filter(
+                                      (workingHour) => workingHour.day !== day
+                                    ),
+                                    new Working_hours2({
+                                      ...item!,
+                                      end: new End2({
+                                        minutes: item!.end?.minutes || 0,
+                                        hours: Number(e.target.value),
+                                      }),
+                                    }),
+                                  ]);
+                                }}
+                                value={item!.end!.hours}
+                                type="number"
+                                placeholder="ч"
+                              ></Input>
+                              <p>:</p>
+                              <Input
+                                className="w-10 p-0 m-0 text-center"
+                                onChange={(e) => {
+                                  const item = workingHours!.find(
+                                    (workingHour) => workingHour.day === day
+                                  );
+                                  return setWorkingHours([
+                                    ...workingHours!.filter(
+                                      (workingHour) => workingHour.day !== day
+                                    ),
+                                    new Working_hours2({
+                                      ...item!,
+                                      end: new End2({
+                                        minutes: Number(e.target.value),
+                                        hours: item?.end?.minutes || 0,
+                                      }),
+                                    }),
+                                  ]);
+                                }}
+                                value={item!.start!.minutes}
+                                type="number"
+                                placeholder="м"
+                              ></Input>
+                            </div>
+                          </div>
+                        )}
                         <div className="flex items-center space-x-2">
-                          <p>Начало:</p>
+                          <p className="w-fit">Выходной</p>
                           <Input
-                            className="w-10 p-0 m-0 text-center"
-                            onChange={(e) => {
-                              return setWorkingHours([
-                                ...workingHours!.filter(
-                                  (workingHour) => workingHour.day !== value
-                                ),
-                                new Working_hours2({
-                                  ...item!,
-                                  end: new Start2({
-                                    minutes: item?.end?.minutes || 0,
-                                    hours: Number(e.target.value),
-                                  }),
-                                }),
-                              ]);
-                            }}
-                            value={item!.start!.hours}
-                            type="number"
-                            placeholder="ч"
-                          ></Input>
-                          <p>:</p>
-                          <Input
-                            className="w-10 p-0 m-0 text-center"
-                            onChange={(e) => {
-                              const item = workingHours!.find(
-                                (workingHour) => workingHour.day === value
-                              );
-                              return setWorkingHours([
-                                ...workingHours!.filter(
-                                  (workingHour) => workingHour.day !== value
-                                ),
-                                new Working_hours2({
-                                  ...item!,
-                                  end: new Start2({
-                                    minutes: Number(e.target.value),
-                                    hours: item!.end?.hours || 0,
-                                  }),
-                                }),
-                              ]);
-                            }}
-                            type="number"
-                            placeholder="м"
-                          ></Input>
-                        </div>
-                        <div className="flex items-center space-x-2 space-y-1">
-                          <p>Конец:</p>
-                          <Input
-                            className="w-10 p-0 m-0 text-center"
-                            onChange={(e) => {
-                              const item = workingHours!.find(
-                                (workingHour) => workingHour.day === value
-                              );
-                              return setWorkingHours([
-                                ...workingHours!.filter(
-                                  (workingHour) => workingHour.day !== value
-                                ),
-                                new Working_hours2({
-                                  ...item!,
-                                  end: new End2({
-                                    minutes: item!.end?.minutes || 0,
-                                    hours: Number(e.target.value),
-                                  }),
-                                }),
-                              ]);
-                            }}
-                            type="number"
-                            placeholder="ч"
-                          ></Input>
-                          <p>:</p>
-                          <Input
-                            className="w-10 p-0 m-0 text-center"
-                            onChange={(e) => {
-                              const item = workingHours!.find(
-                                (workingHour) => workingHour.day === value
-                              );
-                              return setWorkingHours([
-                                ...workingHours!.filter(
-                                  (workingHour) => workingHour.day !== value
-                                ),
-                                new Working_hours2({
-                                  ...item!,
-                                  end: new End2({
-                                    minutes: Number(e.target.value),
-                                    hours: item?.end?.minutes || 0,
-                                  }),
-                                }),
-                              ]);
-                            }}
-                            type="number"
-                            placeholder="м"
-                          ></Input>
+                            className="w-4 m-0"
+                            type="checkbox"
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setNonWorkingDay([
+                                    ...nonWorkingDay.filter(
+                                      (value) => value !== day
+                                    ),
+                                    day,
+                                  ])
+                                : setNonWorkingDay([
+                                    ...nonWorkingDay.filter(
+                                      (value) => value !== day
+                                    ),
+                                  ])
+                            }
+                          />
                         </div>
                       </div>
                       <Separator className="my-2" />

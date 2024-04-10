@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { DivisionManager } from "./DivisionManager";
 import { RentTermManager } from "./RentTermManager";
+import { TariffManager } from "./TariffManager";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -189,8 +190,8 @@ export const ParkManager = () => {
         <Route path={`/info`} element={<Info />} />
         <Route path={`/divisions`} element={<DivisionManager />} />
         <Route path={`/rent_terms`} element={<RentTermManager />} />
-        {/* <Route path={`/tariffs`} element={<Tariffs />} />
-        <Route path={`/cars`} element={<Cars />} />  */}
+        <Route path={`/tariffs`} element={<TariffManager />} />
+        {/*<Route path={`/cars`} element={<Cars />} />  */}
       </Routes>
     </>
   );

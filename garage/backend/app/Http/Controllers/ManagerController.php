@@ -402,8 +402,7 @@ class ManagerController extends Controller
     public function updateCarManager(Request $request)
     {
         $request->merge([
-            'fuel_type'=>FuelType::{$request->fuel_type}->value,
-            'class'=>CarClass::{$request->car_class}->value
+            'fuel_type'=>FuelType::{$request->fuel_type}->value
         ]);
         return $this->callRouteWithApiKey('/cars', 'PUT', $request->all(), $request->key);
     }
@@ -772,7 +771,9 @@ class ManagerController extends Controller
      */
     public function createTariffManager(Request $request)
     {
-        $request->class=CarClass::{$car->class}->value;
+        $request->merge([
+            'class'=>CarClass::{$request->class}->value
+        ]);
         return $this->callRouteWithApiKey('/parks/tariff', 'POST', $request->all(), $request->key);
     }
 
@@ -989,7 +990,12 @@ class ManagerController extends Controller
      */
     public function updateCarBookingStatusManager(Request $request)
     {
-        $request->merge(['car_id' => $request->vin ]);
+
+        $request->merge([
+            'car_id' => $request->vin,
+            'class' => CarClass::{$request->class}->value
+     ]);
+
         return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
     }
 

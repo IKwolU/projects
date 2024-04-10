@@ -1487,7 +1487,7 @@ class ManagerController extends Controller
             foreach ($request->file('file') as $file) {
                 $name = uuid_create(UUID_TYPE_RANDOM);
                 $fileService->saveFile($file, $name);
-                $imageUrl = "https://api.beebeep.ru/uploads/" . $name;
+                $imageUrl = config('app.url') . "uploads/" . $name;
                 $images[] = stripslashes($imageUrl);
             }
             foreach ($cars as $car) {

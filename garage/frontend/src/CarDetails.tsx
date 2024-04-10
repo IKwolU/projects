@@ -313,7 +313,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         {car.variants!.map((variant, index) => (
           <div key={index} className="mb-10">
             {(!index || showVariants) && (
-              <div className="justify-between hidden lg:flex max-w-[1104px] inset-0 mx-auto 2xl:pl-0 pl-44 xl space-x-8 ">
+              <div className="justify-between hidden lg:flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0 pl-44 xl space-x-8 ">
                 <div className="w-1/3 space-y-2">
                   <div className="px-4 py-6 bg-white shadow-xl rounded-xl">
                     <h3 className="text-center">

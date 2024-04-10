@@ -10,12 +10,22 @@ import { client } from "./backend";
 import { DriverDocumentType, User, UserStatus } from "./api-client";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "./atoms";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import QRCode from "qrcode.react";
+import Confirmation from "@/components/ui/confirmation";
+import ym from "react-yandex-metrika";
 
 export const Account = ({ user }: { user: User }) => {
-  // lol wtf ejection
-  if (!user) {
-    return <></>;
-  }
+  const setUser = useSetRecoilState(userAtom);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const [docs] = useState<
     {
@@ -52,9 +62,11 @@ export const Account = ({ user }: { user: User }) => {
       placeholderImg: backPassport,
     },
   ]);
-
-  const setUser = useSetRecoilState(userAtom);
-
+  // lol wtf ejection
+  if (!user) {
+    return <></>;
+  }
+  const referralLink = `https://gar77.ru/login/driver?code=${user.referral_info?.referral_code}`;
   const requiredDocumentCount = docs.length;
   const uploadedDocumentCount = user.docs?.filter((x) => !!x.url).length || 0;
 
@@ -86,16 +98,93 @@ export const Account = ({ user }: { user: User }) => {
   };
 
   const logout = async () => {
-    try {
-      await client.logout();
-    } catch (error) {}
+    await client.logout();
 
     localStorage.clear();
     window.location.href = "/";
   };
 
+  const deleteUser = async () => {
+    await client.deleteUser();
+    await logout();
+  };
+
+  const handleShowQRCode = () => {
+    setShowQRCode(true);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(referralLink);
+    ym("reachGoal", "refferal_link", 96683881);
+  };
+
+  const handleFileUpload = (fileList: FileList, type: DriverDocumentType) => {
+    onFileSelected(fileList[0], type);
+    ym("reachGoal", "document_send", 96683881);
+  };
+
   return (
     <>
+      {!!user.referral_info && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="flex justify-center w-full mt-4">
+              <Button className="sm:max-w-[512px] mx-auto inset-0">
+                Реферальная программа
+              </Button>
+            </div>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[800px]">
+            <DialogHeader>
+              <DialogTitle className="mx-auto text-black">
+                Реферальная программа
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col space-y-3 text-xl">
+              <div className="flex justify-center space-x-2 text-xl">
+                <span>Заработано баллов:</span>
+                <span>{user.referral_info?.coins}</span>
+              </div>
+              <div className="mx-auto text-center">
+                Ваша реферальная ссылка:{" "}
+                <div className="font-semibold">{referralLink}</div>
+              </div>
+              <a
+                href="#"
+                onClick={() => {
+                  handleCopy();
+                }}
+                className="mx-auto sm:max-w-[250px] w-full"
+              >
+                <Button>Копировать</Button>
+              </a>
+              {showQRCode ? (
+                <div className="flex justify-center w-full mx-auto max-w-96">
+                  <QRCode
+                    value={referralLink}
+                    className="w-full mx-auto max-w-96"
+                    size={300}
+                  />
+                </div>
+              ) : (
+                <Button
+                  className="mx-auto sm:max-w-[250px]"
+                  onClick={handleShowQRCode}
+                >
+                  Показать QR-код
+                </Button>
+              )}
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <div className="fixed bottom-0 left-0 flex w-full p-2">
+                  <Button className="mx-auto max-w-[250px]">Назад</Button>
+                </div>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
       <div className="mx-auto w-80 sm:w-full sm:mx-0">
         <h1 className="mt-8 text-center md:text-2xl">
           Подтвердите свою личность
@@ -142,18 +231,49 @@ export const Account = ({ user }: { user: User }) => {
                   src={actualUrl}
                   alt=""
                 />
-                <div className="text-center md:text-xl">
+                <div className="flex justify-center text-center md:text-xl">
                   <FileInput
                     title="Загрузить"
-                    onChange={(fileList) => onFileSelected(fileList[0], type)}
+                    onChange={(fileList) => handleFileUpload(fileList, type)}
                   />
                 </div>
               </div>
             );
           })}
         </div>
-        <div className="my-8 text-center max-w-[320px] mx-auto">
-          <Button variant="reject" className="md:text-xl" onClick={logout}>
+        <div className="flex justify-center mx-auto my-8 space-x-2 text-center">
+          <div className="max-w-[320px] w-full">
+            <Confirmation
+              accept={deleteUser}
+              cancel={() => {}}
+              title={"Начать удаление?"}
+              type="red"
+              trigger={
+                <Confirmation
+                  accept={() => {}}
+                  cancel={() => {}}
+                  title={
+                    "При удалении аккаунта будет стерта вся информация пользователя, Вы уверены?"
+                  }
+                  type="red"
+                  trigger={
+                    <Button
+                      variant="reject"
+                      className="text-black md:text-xl max-w-[320px]"
+                      onClick={() => {}}
+                    >
+                      Удалить аккаунт
+                    </Button>
+                  }
+                />
+              }
+            />
+          </div>
+          <Button
+            variant="reject"
+            className="text-black md:text-xl max-w-[320px]"
+            onClick={logout}
+          >
             Выйти из приложения
           </Button>
         </div>

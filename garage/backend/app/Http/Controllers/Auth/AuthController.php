@@ -23,8 +23,15 @@ use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Enums\CarClass;
 use App\Enums\TransmissionType;
+use App\Enums\ReferralStatus;
 use App\Enums\FuelType;
+use App\Http\Controllers\CarsController;
+use App\Models\Referral;
+use App\Models\Manager;
+use App\Models\Park;
+use App\Services\RewardService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -53,6 +60,14 @@ class AuthController extends Controller
      *             @OA\Property(property="email", type="string", nullable=true, description="Email пользователя"),
      *             @OA\Property(property="user_type", type="string", description="Тип пользователя"),
      *             @OA\Property(property="city_name", type="string", description="Название города"),
+     *             @OA\Property(
+     *                 property="referral_info",
+     *                 type="object",
+     *                 description="Данные по реферральной программе",
+     *                     @OA\Property(property="referral_code", type="string", description="код для рефферальной ссылки"),
+     *                     @OA\Property(property="status", type="string", description="Статус реферральной программы" ,ref="#/components/schemas/ReferralStatus"),
+     *                     @OA\Property(property="coins", type="integer", description="Количесство заработанных монет")
+     *             ),
      *             @OA\Property(
      *                 property="docs",
      *                 type="array",
@@ -115,24 +130,7 @@ class AuthController extends Controller
      *                 property="working_hours",
      *                 type="array",
      *                 description="Расписание работы парка",
-     *                 @OA\Items(
-     *                     type="object",
-     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
-     *                     @OA\Property(
-     *                         property="start",
-     *                         type="object",
-     *                         description="Время начала работы",
-     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *                     ),
-     *                     @OA\Property(
-     *                         property="end",
-     *                         type="object",
-     *                         description="Время окончания работы",
-     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
-     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
-     *                     )
-     *                 )
+     *                 @OA\Items(type="string")
      *             ),
      *                             @OA\Property(
      *                                 property="park",
@@ -172,6 +170,7 @@ class AuthController extends Controller
         $user->user_type = UserType::from($user->user_type)->name;
         $user->user_status = UserStatus::from($user->user_status)->name;
         $driver = Driver::where('user_id', $user->id)->with('city')->first();
+        $referral = Referral::where('user_id', $user->id)->select('referral_code', 'status', 'coins')->first();
         $driverDocs = DriverDoc::where('driver_id', $driver->id)->first(['image_licence_front', 'image_licence_back', 'image_pasport_front', 'image_pasport_address', 'image_fase_and_pasport']);
         $docs = [];
         foreach ($driverDocs->toArray() as $key => $value) {
@@ -203,7 +202,7 @@ class AuthController extends Controller
                     ->select('deposit_amount_daily', 'deposit_amount_total', 'minimum_period_days', 'is_buyout_possible', 'id')
                     ->first();
                 $workingHours = json_decode($booking->car->division->working_hours, true);
-                $booking->car->division->working_hours = $workingHours;
+                $booking->car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
                 unset(
                     $booking->created_at,
                     $booking->updated_at,
@@ -241,7 +240,7 @@ class AuthController extends Controller
             }
         }
 
-
+        $user->referral_info = $referral;
         $user->docs = $docs;
         $user->bookings = $bookings ? $bookings : null;
         unset($user->id, $user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
@@ -259,18 +258,19 @@ class AuthController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="phone", type="string", example="1234567890", description="Номер телефона пользователя"),
-     *             @OA\Property(property="code", type="integer", example=1234, description="Код аутентификации")
+     *             @OA\Property(property="code", type="integer",  description="Код аутентификации"),
+     *             @OA\Property(property="type", type="string",  description="Тип пользователя", ref="#/components/schemas/UserType"),
+     *             @OA\Property(property="api_key", type="string",  description="Ключ"),
+     *             @OA\Property(property="referral_code", type="string", description="Код пригласившего")
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Успешная аутентификация или регистрация",
-     *     @OA\MediaType(
-     *         mediaType="text/plain",
-     *         @OA\Schema(
-     *             type="string",
-     *             example="Success"
-     *         ))
+     *     @OA\JsonContent(
+     *             @OA\Property(property="register", type="boolean", description="Регистрация?"),
+     *             @OA\Property(property="token", type="string", description="Токен")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -289,21 +289,45 @@ class AuthController extends Controller
         $request->validate([
             'phone' => 'required|string',
             'code' => 'required|integer',
+            'api_key' => 'string'
         ]);
         $user = $this->phoneCodeAuthentication($request->phone, $request->code);
+        $register = false;
         if ($user) {
             if ($user->user_status === null) {
+                $register = true;
                 $user->user_status = UserStatus::DocumentsNotUploaded->value;
                 $user->avatar = "users/default.png";
                 $user->user_type = UserType::Driver->value;
             }
+
             $user->code = null;
             $user->save();
-            $driver = Driver::firstOrCreate(['user_id' => $user->id]);
-            $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
-            $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
+
+            $referral = Referral::firstOrCreate(['user_id' => $user->id]);
+            if (!$referral->referral_code) {
+                $referral->referral_code = Str::random(20);
+                if ($request->referral_code) {
+                    $referral->status = ReferralStatus::Invited->name;
+                    $referral->invited_id = Referral::where('referral_code', $request->referral_code)->with('user')->first()->user->id;
+                } else {
+                    $referral->status = ReferralStatus::NoInvited->name;
+                }
+                $referral->save();
+            }
+
+            if ($request->type === UserType::Driver->name) {
+                $driver = Driver::firstOrCreate(['user_id' => $user->id]);
+                $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
+                $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
+            }
+            if ($request->type === UserType::Manager->name) {
+                $manager = Manager::firstOrCreate(['user_id' => $user->id]);
+                $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
+                $manager->save();
+            }
             $token = $user->createToken('auth_token')->plainTextToken;
-            return $token;
+            return response()->json(['token' => $token, 'register' => $register], 200);
         }
         return response()->json(null, 401);
     }
@@ -391,7 +415,7 @@ class AuthController extends Controller
         $response = Http::get('https://sms.ru/sms/send', [
             'api_id' => 'AFA267B8-9272-4CEB-CE8B-7EE807275EA9',
             'to' => $phone,
-            'msg' => 'Проверочный код: ' . $code,
+            'msg' => 'Код для входа в BeeBeep: ' . $code,
             'json' => 1
         ]);
         // $response = true;
@@ -453,7 +477,9 @@ class AuthController extends Controller
         if (Storage::exists($folderPath)) {
             Storage::deleteDirectory($folderPath);
         }
-
+        $referral = Referral::where('user_id', $user->id)->first();
+        $referral->user_id = 1;
+        $referral->save();
         // Удаление записей о пользователе и водителе
         $user->delete();
         if ($driver) {

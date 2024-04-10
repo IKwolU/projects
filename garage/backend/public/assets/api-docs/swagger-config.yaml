@@ -2,3 +2,4 @@
 url: "https://petstore.swagger.io/v2/swagger.json"
 dom_id: "#swagger-ui"
 validatorUrl: "https://validator.swagger.io/validator"
+

@@ -197,8 +197,7 @@ return [
                     'name' => 'Authorization', // The name of the header or query parameter to be used.
                     'in' => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
-                */
-            ],
+                */],
             'security' => [
                 /*
                  * Examples of Securities
@@ -211,8 +210,7 @@ return [
                     ],
 
                     'passport' => []
-                    */
-                ],
+                    */],
             ],
         ],
 
@@ -244,7 +242,27 @@ return [
          * 'method' (sort by HTTP method).
          * Default is the order returned by the server unchanged.
         */
-        'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null),
+        'operationsSorter' => function ($path1, $path2) {
+            // Здесь вы можете реализовать свой собственный алгоритм сортировки
+            // Например, если вы хотите сортировать по заданному порядку, вы можете
+            // создать массив с порядком и сравнить пути с ним
+            $order = [
+                '/parks',
+                '/parks/division',
+                '/parks/tariff',
+                '/parks/rent-terms',
+                '/cars',
+                '/cars/rent-term',
+                '/cars/status',
+                '/cars/booking',
+                '/URL_АДРЕС_ПАРКА/cars/outbound/status',
+            ];
+
+            $index1 = array_search($path1, $order);
+            $index2 = array_search($path2, $order);
+
+            return $index1 <=> $index2;
+        },
 
         /*
          * Pass the validatorUrl parameter to SwaggerUi init on the JS side.

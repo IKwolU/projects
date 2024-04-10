@@ -29,17 +29,17 @@
 @font-face {
   font-family: 'Gilroyx';
   src: local('Gilroy'),
-  url('assets/fonts/Gilroy-Black.ttf') format('ttf'),
-  url('assets/fonts/Gilroy-Black.woff') format('woff'),
-  url('assets/fonts/Gilroy-Black.woff2') format('woff2'),
-  url('assets/fonts/Gilroy-Black.eot') format('embedded-opentype');
+    url('assets/fonts/Gilroy-Black.ttf') format('ttf'),
+    url('assets/fonts/Gilroy-Black.woff') format('woff'),
+    url('assets/fonts/Gilroy-Black.woff2') format('woff2'),
+    url('assets/fonts/Gilroy-Black.eot') format('embedded-opentype');
   font-weight: 900;
   font-style: normal;
 }
 
 @layer base {
   h1 {
-    @apply mb-1 mb-4 text-xl font-bold text-black;
+    @apply mb-1 mb-4 text-xl font-semibold text-black;
   }
 
   h2 {
@@ -47,7 +47,7 @@
   }
 
   h3 {
-    @apply mb-1 text-lg font-bold;
+    @apply mb-1 text-lg font-semibold;
   }
 
   p {
@@ -58,8 +58,9 @@
     @apply text-sm font-medium;
   }
 }
+
 .font-black {
-    font-family: 'Gilroyx', sans-serif;
+  font-family: 'Gilroyx', sans-serif;
 }
 
 :root {

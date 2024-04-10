@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
 use Illuminate\Support\Facades\URL;
+use TCG\Voyager\Facades\Voyager;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +36,8 @@ Route::middleware('api.key')->post('/parks/tariff', [APIController::class, 'crea
 Route::middleware('api.key')->put('/parks/tariff', [APIController::class, 'updateTariff']);
 Route::middleware('api.key')->put('/parks/division', [APIController::class, 'updateParkDivision']);
 Route::middleware('api.key')->put('/cars/booking', [APIController::class, 'updateCarBookingStatus']);
+Route::middleware('api.key')->put('/cars/booking/prolongation', [APIController::class, 'BookProlongation']);
+Route::middleware('api.key')->put('/cars/booking/replace', [APIController::class, 'BookReplace']);
 
 Route::get('/documentation', function () {
     return view('swagger.docs');

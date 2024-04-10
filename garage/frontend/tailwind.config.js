@@ -25,12 +25,14 @@ module.exports = {
       }),
       colors: {
         red: "#ff4930",
-        yellow: "#fbbf24",
+        yellow: "#fce003",
+        darkyellow: "#fcd003",
         black: "#0c0a09",
         gray: "#1f2937",
         pale: "#D9D9D9",
         grey: "#e8e7e6",
         white: "#ffffff",
+        lightgrey: "#f5f4f2",
       },
       keyframes: {
         "accordion-down": {

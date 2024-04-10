@@ -4,10 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Body8, Body9 } from "./api-client";
-import React, { ChangeEvent } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
 import { useTimer } from "react-timer-hook";
+import { useLocation } from "react-router-dom";
+import PhoneInput from "@/components/ui/phone-input";
+import ym from "react-yandex-metrika";
+
 export const DriverLogin = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const referralCode = searchParams.get("code");
+
   const CODE_LENGTH = 4;
 
   const [codeRequested, setRequested] = useState(false);
@@ -17,13 +24,10 @@ export const DriverLogin = () => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState(0);
 
-  const inputRef = useRef(null);
-
-  const location = useLocation();
+  const inputRef = useRef<any>(null);
 
   const getCode = async () => {
     const time = new Date();
-
     codeAttempts < 3
       ? time.setSeconds(time.getSeconds() + 60)
       : time.setSeconds(time.getSeconds() + 300);
@@ -38,11 +42,18 @@ export const DriverLogin = () => {
 
   const login = async () => {
     try {
-      const access_token = await client.loginOrRegister(
-        new Body8({ phone, code })
+      const loginData = await client.loginOrRegister(
+        new Body8({ phone, code, referral_code: referralCode })
       );
 
-      localStorage.setItem("token", access_token!);
+      localStorage.setItem("token", loginData.token!);
+
+      if (loginData.register) {
+        ym("reachGoal", "registr_completed", 96683881);
+      }
+      if (!loginData.register) {
+        ym("reachGoal", "avtorization", 96683881);
+      }
 
       window.location.href = "/";
     } catch (error) {
@@ -83,8 +94,8 @@ export const DriverLogin = () => {
   const handleFocus = () => {
     if (inputRef.current) {
       setTimeout(() => {
-        inputRef.current.setSelectionRange(0, 0);
-        inputRef.current.click();
+        inputRef!.current!.setSelectionRange(0, 0);
+        inputRef!.current!.click();
       }, 300);
     }
   };
@@ -99,54 +110,18 @@ export const DriverLogin = () => {
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setCode(parseInt(e.target.value));
 
-  const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value.replace(/\D/g, "");
-    let formattedPhone = "+";
-
-    if (input.length > 0) {
-      if (input[0] === "7") {
-        formattedPhone += "7";
-      } else {
-        formattedPhone += "7";
-      }
-    }
-
-    if (input.length > 1) {
-      formattedPhone += ` (${input.substring(1, 4)}`;
-    }
-
-    if (input.length > 4) {
-      formattedPhone += `) ${input.substring(4, 7)}`;
-    }
-
-    if (input.length > 7) {
-      formattedPhone += `-${input.substring(7, 9)}`;
-    }
-
-    if (input.length > 9) {
-      formattedPhone += `-${input.substring(9, 11)}`;
-    }
-    setPhone(formattedPhone);
-  };
+  const handleInput = ({ target: { value } }: any) => setPhone(value);
 
   return (
     <>
       <div className="mx-auto w-80 sm:w-full">
         <h2 className="my-10 text-xl text-center">
-          Зарегистрируйтесь или войдите в личный кабинет.
+          Зарегистрируйтесь или войдите в личный кабинет
         </h2>
 
         <div className="max-w-sm mx-auto">
           <Label className="text-lg">Введите ваш телефон</Label>
-          <Input
-            type="tel"
-            pattern="[0-9]{1} [0-9]{3} [0-9]{3}-[0-9]{2}-[0-9]{2}"
-            className="h-12 p-4 mt-1 text-lg md:mt-2"
-            onChange={handlePhoneChange}
-            value={phone}
-            placeholder="+7 (999) 123-45-67"
-            autoComplete="tel-national"
-          />
+          <PhoneInput onChange={handleInput} />
 
           {codeRequested && (
             <>
@@ -180,7 +155,7 @@ export const DriverLogin = () => {
             )}
             {codeRequested && !(!!minutes || !!seconds) && (
               <Button
-                className="text-lg"
+                className="text-lg text-black"
                 variant={"reject"}
                 onAsyncClick={getCode}
               >
@@ -188,7 +163,7 @@ export const DriverLogin = () => {
               </Button>
             )}
             {(!!minutes || !!seconds) && (
-              <Button className="text-lg bg-grey active:bg-grey hover:bg-grey">
+              <Button className="text-base bg-lightgrey active:bg-lightgrey hover:bg-lightgrey">
                 Повторная отправка через: ({`${minutes}:${seconds}`})
               </Button>
             )}
@@ -204,9 +179,9 @@ export const DriverLogin = () => {
           </div>
 
           {codeRequested && (
-            <div className="my-4 text-lg text-center">
+            <div className="flex flex-col my-4 text-base text-center">
               Нажимая &laquo;Войти&raquo; вы соглашаетесь с{" "}
-              <a className="text-lg text-blue-800 underline" href="kwol.ru">
+              <a className="text-base text-blue-800 underline" href="kwol.ru">
                 условиями договора
               </a>
             </div>

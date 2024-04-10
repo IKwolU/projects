@@ -20,8 +20,12 @@ return new class extends Migration
             $table->integer('fuel_type');
             $table->integer('transmission_type');
             $table->string('brand');
+            $table->number('mileage');
+            $table->string('license_plate');
             $table->string('model');
             $table->integer('year_produced');
+            $table->integer('old_status_id');
+            $table->integer('status_id');
             $table->string('car_id');
             $table->text('images');
             $table->boolean('status');

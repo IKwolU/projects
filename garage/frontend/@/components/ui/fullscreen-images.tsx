@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,19 +28,19 @@ const FullScreenImages = ({
     slidesToScroll: 1,
     arrows: false,
     initialSlide: fullscreenIndex,
-    beforeChange: (current, next) => {
-      setActiveIndex(next);
+    beforeChange: () => {
       isTransitioning.current = true;
     },
-    afterChange: () => {
+    afterChange: (current: any) => {
       isTransitioning.current = false;
+      setActiveIndex(current);
     },
   };
 
   const handlePaginationClick = (index: number) => {
-    setActiveIndex(index);
-    if (sliderRef.current) {
+    if (sliderRef.current && index !== activeIndex) {
       sliderRef.current.slickGoTo(index);
+      setActiveIndex(index);
       isTransitioning.current = true;
     }
   };
@@ -52,12 +52,15 @@ const FullScreenImages = ({
           <div className="relative flex flex-col justify-center h-full m-auto">
             <Slider ref={sliderRef} {...settings}>
               {images.map((image, index) => (
-                <div className="md:h-screen md:w-screen" key={index}>
+                <div
+                  className="flex items-center content-center h-96 md:h-screen md:w-screen"
+                  key={index}
+                >
                   <img
                     onClick={() => setIsOpen(false)}
                     src={image}
                     alt={`Slide ${index}`}
-                    className="object-contain h-auto m-auto sm:min-w-full md:h-screen md:w-screen"
+                    className="object-contain h-full m-auto sm:min-w-full md:h-screen md:w-screen"
                   />
                 </div>
               ))}
@@ -66,7 +69,7 @@ const FullScreenImages = ({
               {images.map((x, i) => (
                 <div
                   key={`image_${i}`}
-                  className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${
+                  className={`w-full flex items-center bg-white rounded-xl transition-all h-24 ${
                     i === activeIndex
                       ? "shadow border-2 border-yellow"
                       : "scale-90"
@@ -84,7 +87,7 @@ const FullScreenImages = ({
             <div className="fixed bottom-0 flex w-full p-2">
               {" "}
               <Button
-                className="mx-auto max-w-[250px]"
+                className="mx-auto sm:max-w-[250px]"
                 onClick={() => setIsOpen(false)}
               >
                 Назад

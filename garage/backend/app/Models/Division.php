@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Division extends Model
 {
     use HasFactory;
-    protected $fillable = ['park_id', 'city_id', 'coords', 'address'];
+    protected $fillable = ['park_id', 'city_id', 'coords', 'address', 'metro'];
 
     public function park()
     {
@@ -18,5 +18,9 @@ class Division extends Model
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
     }
 }

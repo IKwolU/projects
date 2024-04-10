@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Button } from "./button";
 import FullScreenImages from "@/components/ui/fullscreen-images";
 
 interface SliderImagesProps {
@@ -10,10 +9,12 @@ interface SliderImagesProps {
   classImages: string;
   classPaginationImages: string;
   openIsAffordable: boolean;
+  type: "click" | "hover";
 }
 
 const SliderImages = ({
   images,
+  type,
   classImages,
   classPaginationImages,
   openIsAffordable = false,
@@ -26,24 +27,24 @@ const SliderImages = ({
   const settings = {
     dots: false,
     infinite: true,
-    speed: 300,
+    speed: type === "click" ? 500 : 0,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    beforeChange: (current, next) => {
-      setActiveIndex(next);
+    beforeChange: () => {
       isTransitioning.current = true;
     },
-    afterChange: (current) => {
+    afterChange: (current: any) => {
       setFullscreenIndex(current);
+      setActiveIndex(current);
       isTransitioning.current = false;
     },
   };
 
-  const handlePaginationClick = (index: number) => {
-    setActiveIndex(index);
-    if (sliderRef.current) {
+  const handlePaginationMouseEnterOrClick = (index: number) => {
+    if (sliderRef.current && index !== activeIndex) {
       sliderRef.current.slickGoTo(index);
+      setActiveIndex(index);
       isTransitioning.current = true;
     }
   };
@@ -51,6 +52,9 @@ const SliderImages = ({
   return (
     <>
       <div className={`relative h-64 sm:h-80 ${classImages}`}>
+        {type === "click" && (
+          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 md:h-32 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
+        )}
         {!openIsAffordable && (
           <Slider ref={sliderRef} {...settings}>
             {images.map((image, index) => (
@@ -68,7 +72,7 @@ const SliderImages = ({
           trigger={
             openIsAffordable ? (
               <Slider ref={sliderRef} {...settings}>
-                {images.map((image, index) => (
+                {images.slice(0, 3).map((image, index) => (
                   <div key={index}>
                     <img
                       src={image}
@@ -86,27 +90,50 @@ const SliderImages = ({
           images={images}
         />
         <div
-          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 ${classPaginationImages}`}
+          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 ${classPaginationImages} ${
+            type === "hover" && "h-full"
+          }`}
         >
-          {images.map((x, i) => (
-            <div
-              key={`image_${i}`}
-              className={`w-full flex items-center bg-white rounded-xl transition-all h-14 ${
-                i === activeIndex ? "shadow border-2 border-yellow" : "scale-90"
-              } `}
-              onClick={() => handlePaginationClick(i)}
-              onMouseEnter={() => handlePaginationClick(i)}
-              style={{
-                cursor: isTransitioning.current ? "default" : "default",
-              }}
-            >
-              <img
-                className="object-cover w-full h-full rounded-xl"
-                src={x}
-                alt=""
-              />
+          {type === "click" &&
+            images.slice(0, 3).map((x, i) => (
+              <div
+                key={`image_${i}`}
+                className={`w-full flex items-center cursor-pointer bg-white rounded-xl transition-all h-14 sm:h-28 lg:h-24  ${
+                  i === activeIndex
+                    ? "shadow border-2 border-yellow"
+                    : "scale-90"
+                } `}
+                onClick={() => handlePaginationMouseEnterOrClick(i)}
+                style={{
+                  cursor: isTransitioning.current ? "default" : "default",
+                }}
+              >
+                <img
+                  className="object-cover w-full h-full cursor-pointer rounded-xl "
+                  src={x}
+                  alt=""
+                />
+              </div>
+            ))}
+          {type === "hover" && (
+            <div className="flex w-full h-full max-h-full p-3 transition-opacity opacity-0 hover:opacity-100 ">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={`image_${i}`}
+                  className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10  `}
+                  onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
+                >
+                  <div
+                    className={`w-full rounded-xl h-1 ${
+                      i === activeIndex
+                        ? "shadow  bg-white"
+                        : "scale-90 bg-black bg-opacity-45"
+                    }`}
+                  ></div>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </div>
     </>

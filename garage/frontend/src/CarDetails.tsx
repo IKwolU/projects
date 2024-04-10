@@ -453,11 +453,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             />
                             {car.division!.address!}
                           </a>
-                  <Separator className="my-3" />
-                  <div className="">
-                    <p className="text-base mb-4">Телефон</p>
-                    <p>{car.division!.phone}</p>
-                  </div>
+                          <div className="">
+                            <p className="text-base mt-4 mb-2">Телефон</p>
+                            <p>{car.division!.phone}</p>
+                          </div>
                         </div>
                         <div className="text-base mb-2">
                           <div className="mb-2 text-base">График работы </div>
@@ -471,37 +470,36 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             </div>
                           ))}
                         </div>
-                        
                       </div>
+                      <Separator className="my-4" />
+                      <Collapsible>
+                        <CollapsibleTrigger className="flex justify-between w-full mb-2 focus:outline-none md:text-lg">
+                          <p >О парке</p>
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <div className="mb-2 text-sm text-gray-700 md:text-base">
+                            {car.about}
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                      {car.variants!.length > 1 && !index && (
+                        <div className="">
+                          <Separator className="my-3" />
+                          <div className="flex justify-end">
+                            <Button
+                              onClick={() => setShowVariants(!showVariants)}
+                              className="w-64"
+                            >
+                              {!showVariants &&
+                                `Смотреть похожие: ${car.variants!.length - 1}`}
+                              {showVariants && "Скрыть похожие"}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <Separator className="my-3" />
-                  <Collapsible>
-                    <CollapsibleTrigger className="flex justify-between w-full mb-2 focus:outline-none md:text-lg">
-                      <p>О парке</p>
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <div className="mb-2 text-sm text-gray-700 md:text-base">
-                        {car.about}
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-                  {car.variants!.length > 1 && !index && (
-                    <div className="">
-                      <Separator className="my-3" />
-                      <div className="flex justify-end">
-                        <Button
-                          onClick={() => setShowVariants(!showVariants)}
-                          className="w-64"
-                        >
-                          {!showVariants &&
-                            `Смотреть похожие: ${car.variants!.length - 1}`}
-                          {showVariants && "Скрыть похожие"}
-                        </Button>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             )}

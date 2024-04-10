@@ -330,7 +330,14 @@ export const BookingDrawer = () => {
                 src={booking.car!.images![0]}
                 alt=""
               />
-              <div className="flex items-center justify-between pt-4">
+              <div className="flex flex-col items-center justify-between pt-4">
+                <div className="pl-1 my-2 text-lg md:text-xl md:mb-4 text-center">
+                  <h1>
+                    {`${booking.car!.brand} ${booking.car!.model}`}{" "}
+                    {booking.car!.year_produced}
+                  </h1>
+                </div>
+
                 <div className="w-1/2 mx-auto">
                   <Confirmation
                     title="Отмена бронирования. Хотите продолжить?"

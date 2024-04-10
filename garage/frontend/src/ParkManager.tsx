@@ -10,6 +10,7 @@ import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { DivisionManager } from "./DivisionManager";
 import { RentTermManager } from "./RentTermManager";
 import { TariffManager } from "./TariffManager";
+import { CarsManager } from "./CarsManager";
 
 type VariantItem = { name: string; id: number | null };
 type MainMenuItem = {
@@ -191,7 +192,7 @@ export const ParkManager = () => {
         <Route path={`/divisions`} element={<DivisionManager />} />
         <Route path={`/rent_terms`} element={<RentTermManager />} />
         <Route path={`/tariffs`} element={<TariffManager />} />
-        {/*<Route path={`/cars`} element={<Cars />} />  */}
+        <Route path={`/cars`} element={<CarsManager />} />
       </Routes>
     </>
   );

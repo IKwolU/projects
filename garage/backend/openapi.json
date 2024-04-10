@@ -4559,7 +4559,7 @@
                 ],
                 "summary": "Привязка группе автомобилей rent_term",
                 "description": "Привязка группе автомобилей rent_term\n\nМетод для привязки группе автомобилей к сроку аренды rent_term_id",
-                "operationId": "assignCarsToRentTerm",
+                "operationId": "assignCarsToRentTermManager",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -6310,7 +6310,7 @@
                 ],
                 "summary": "Привязка группе автомобилей division_id",
                 "description": "Привязка группе автомобилей division_id\n\nМетод для привязки группе автомобилей division_id",
-                "operationId": "assignCarsToDivision",
+                "operationId": "assignCarsToDivisionManager",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -6391,7 +6391,7 @@
                 ],
                 "summary": "Привязка группе автомобилей тарифа",
                 "description": "Привязка группе автомобилей тарифа\n\nМетод для привязки группе автомобилей к тарифа",
-                "operationId": "assignCarsToTariff",
+                "operationId": "assignCarsToTariffManager",
                 "requestBody": {
                     "content": {
                         "application/json": {

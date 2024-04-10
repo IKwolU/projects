@@ -1916,7 +1916,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    assignCarsToRentTerm(body: Body25 | undefined): Promise<Anonymous107> {
+    assignCarsToRentTermManager(body: Body25 | undefined): Promise<Anonymous107> {
         let url_ = this.baseUrl + "/manager/cars/rent-term";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1932,11 +1932,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAssignCarsToRentTerm(_response);
+            return this.processAssignCarsToRentTermManager(_response);
         });
     }
 
-    protected processAssignCarsToRentTerm(response: Response): Promise<Anonymous107> {
+    protected processAssignCarsToRentTermManager(response: Response): Promise<Anonymous107> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2905,7 +2905,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    assignCarsToDivision(body: Body36 | undefined): Promise<Anonymous169> {
+    assignCarsToDivisionManager(body: Body36 | undefined): Promise<Anonymous169> {
         let url_ = this.baseUrl + "/manager/cars/division";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2921,11 +2921,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAssignCarsToDivision(_response);
+            return this.processAssignCarsToDivisionManager(_response);
         });
     }
 
-    protected processAssignCarsToDivision(response: Response): Promise<Anonymous169> {
+    protected processAssignCarsToDivisionManager(response: Response): Promise<Anonymous169> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -2962,7 +2962,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    assignCarsToTariff(body: Body37 | undefined): Promise<Anonymous172> {
+    assignCarsToTariffManager(body: Body37 | undefined): Promise<Anonymous172> {
         let url_ = this.baseUrl + "/manager/cars/tariff";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2978,11 +2978,11 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAssignCarsToTariff(_response);
+            return this.processAssignCarsToTariffManager(_response);
         });
     }
 
-    protected processAssignCarsToTariff(response: Response): Promise<Anonymous172> {
+    protected processAssignCarsToTariffManager(response: Response): Promise<Anonymous172> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {

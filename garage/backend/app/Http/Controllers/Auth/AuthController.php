@@ -316,12 +316,12 @@ class AuthController extends Controller
                 $referral->save();
             }
 
-            if ($request->type === UserType::Driver->name) {
+            if ($user->user_type === UserType::Driver->value) {
                 $driver = Driver::firstOrCreate(['user_id' => $user->id]);
                 $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
                 $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
             }
-            if ($request->type === UserType::Manager->name) {
+            if ($user->user_type === UserType::Manager->value) {
                 $manager = Manager::firstOrCreate(['user_id' => $user->id]);
                 $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
                 $manager->save();

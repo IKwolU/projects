@@ -16,8 +16,10 @@ import { YMInitializer } from "react-yandex-metrika";
 import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
-  faBars, 
-  faLocationDot, 
+  faBars,
+  faClockRotateLeft,
+  faLocationDot,
+  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -29,7 +31,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"; 
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
+import { Command, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function App() {
@@ -113,7 +118,7 @@ const LogoutHandler = () => {
 
 const Menu = ({ user }: { user: User }) => (
   <div className="flex items-center justify-between w-full space-x-4 my-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1208px] h-14 bg-opacity-85 rounded-2xl">
-    <Link to="/" className="md:grow">
+    <Link to="/" className="md:grow">;
       <div className="flex flex-col md:flex-row md:items-end">
         <div className="text-2xl font-bold sm:text-3xl mr-6"> BeeBeep </div>{" "}
         <div className="font-regular sm:text-lg">

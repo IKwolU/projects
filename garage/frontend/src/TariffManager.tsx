@@ -16,7 +16,7 @@ export const TariffManager = () => {
   // const [selectedId, setSelectedId] = useState(0);
 
   const [newTariff, setNewTariff] = useState({
-    class: CarClass.Business,
+    class: CarClass.Economy,
     city: city,
     has_caused_accident: false,
     experience: 0,
@@ -29,13 +29,16 @@ export const TariffManager = () => {
   });
 
   const createTariff = async () => {
+    let criminal_ids = newTariff.criminal_ids as any;
+    criminal_ids = criminal_ids.split(",").map((x: any) => Number(x));
     try {
       await client.createTariffManager(
         new Body32({
           ...newTariff!,
+          criminal_ids: criminal_ids as any,
         })
       );
-      window.location.href = "/tariff";
+      // window.location.href = "/tariff";
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -152,7 +155,7 @@ export const TariffManager = () => {
               type: "checkbox",
               placeholder: "г. Москва, ул. ...",
               param: "has_caused_accident",
-              value: newTariff.has_caused_accident || false,
+              value: false,
             },
             {
               title: "Максимально количество штртафов",
@@ -166,7 +169,7 @@ export const TariffManager = () => {
               type: "checkbox",
               placeholder: "Введите значение",
               param: "abandoned_car",
-              value: newTariff.abandoned_car || false,
+              value: false,
             },
             {
               title: "Минимальный скоринг",
@@ -180,7 +183,7 @@ export const TariffManager = () => {
               type: "checkbox",
               placeholder: "Введите значение",
               param: "is_north_caucasus",
-              value: newTariff.is_north_caucasus || false,
+              value: false,
             },
             {
               title: "Запрещенные статьи",
@@ -208,7 +211,9 @@ export const TariffManager = () => {
               <Input
                 className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
                 onChange={(e) =>
-                  handleInputNewTariffChange(e.target.value, input.param)
+                  input.type === "checkbox"
+                    ? handleInputNewTariffChange(e.target.checked, input.param)
+                    : handleInputNewTariffChange(e.target.value, input.param)
                 }
                 type={input.type}
                 placeholder={input.placeholder}

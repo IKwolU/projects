@@ -1549,13 +1549,12 @@ class ManagerController extends Controller
                 'file.*' => 'required|image|mimes:png,jpg,jpeg|max:7168',
             ]);
             $idsString = $request->ids;
-$ids = explode(',', $idsString);
-$ids = array_map('intval', $ids);
+            $ids = explode(',', $idsString);
+            $ids = array_map('intval', $ids);
 
             $cars = Car::whereIn('id', $ids)->get();
             $fileService = new FileService;
             $images = [];
-            dd($request->file('file'));
             foreach ($request->file('file') as $file) {
                 $name = uuid_create(UUID_TYPE_RANDOM);
                 $fileService->saveFile($file, $name);

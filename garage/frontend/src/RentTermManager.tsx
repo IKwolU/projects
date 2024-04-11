@@ -19,12 +19,12 @@ export const RentTermManager = () => {
     name: undefined,
     minimum_period_days: undefined,
     schemas: [
-      {
+      new Schemas({
         id: 0,
         daily_amount: 0,
         non_working_days: 0,
         working_days: 0,
-      },
+      }),
     ],
   });
 
@@ -32,6 +32,8 @@ export const RentTermManager = () => {
 
   const upsertRentTerm = async () => {
     try {
+      console.log(newRentTerm.schemas);
+
       await client.createOrUpdateRentTermManager(
         new Body6({
           rent_term_id: selected?.id || undefined,
@@ -42,7 +44,7 @@ export const RentTermManager = () => {
           name: newRentTerm.name || selected?.name,
           minimum_period_days:
             newRentTerm.minimum_period_days || selected?.minimum_period_days,
-          schemas: [new Schemas(selectedSchemasList)],
+          schemas: newRentTerm.schemas,
         })
       );
       window.location.href = "/rent_terms";
@@ -104,7 +106,7 @@ export const RentTermManager = () => {
       ...newRentTerm,
       schemas: [
         ...newRentTerm.schemas!.filter((schema) => schema.id !== id),
-        { ...currentSchema!, [param]: value },
+        new Schemas({ ...currentSchema!, [param]: value }),
       ],
     });
   };
@@ -115,12 +117,9 @@ export const RentTermManager = () => {
     (rentTerm) => rentTerm.id === selectedId
   ) as Rent_terms;
 
-  const selectedSchemasList =
-    selectedId > 0 ? selected.schemas : newRentTerm.schemas;
-
   const AddSchema = () => {
-    if (selectedSchemasList && selectedSchemasList.length > 0) {
-      const lastSchema = selectedSchemasList[selectedSchemasList.length - 1];
+    if (newRentTerm.schemas && newRentTerm.schemas.length > 0) {
+      const lastSchema = newRentTerm.schemas[newRentTerm.schemas.length - 1];
       const newId = lastSchema!.id! + 1;
       const newSchema = {
         id: newId,
@@ -128,10 +127,10 @@ export const RentTermManager = () => {
         non_working_days: 0,
         working_days: 0,
       };
-      if (selectedSchemasList.length < 10) {
+      if (newRentTerm.schemas.length < 10) {
         setNewRentTerm({
           ...newRentTerm,
-          schemas: [...selectedSchemasList, new Schemas(newSchema)] as any,
+          schemas: [...newRentTerm.schemas, new Schemas(newSchema)] as any,
         });
       }
     }
@@ -236,14 +235,14 @@ export const RentTermManager = () => {
           ))}
           <div className="flex items-center justify-between space-x-2">
             <h4>Схемы аренды:</h4>
-            {selectedSchemasList!.length < 10 && (
+            {newRentTerm.schemas!.length < 10 && (
               <Button className="w-1/2" onClick={AddSchema}>
                 Добавить схему аренды
               </Button>
             )}
           </div>
           <div className="">
-            {selectedSchemasList!.map((schema, i) => (
+            {newRentTerm.schemas!.map((schema, i) => (
               <div
                 key={`schema_${i}`}
                 className="p-4 my-1 border border-grey rounded-xl"
@@ -264,7 +263,7 @@ export const RentTermManager = () => {
                     value: schema.non_working_days || 0,
                   },
                   {
-                    title: `Не рабочих дней ${schema?.non_working_days || ""}`,
+                    title: `Нерабочих дней ${schema?.non_working_days || ""}`,
                     type: "number",
                     placeholder: "Введите значение",
                     param: "working_days",

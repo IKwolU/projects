@@ -257,18 +257,22 @@ export const DivisionManager = () => {
                             <Input
                               className="w-10 p-0 m-0 text-center"
                               onChange={(e) => {
-                                return setWorkingHours([
-                                  ...workingHours!.filter(
-                                    (workingHour) => workingHour.day !== day
-                                  ),
-                                  new Working_hours2({
-                                    ...item!,
-                                    end: new Start2({
-                                      minutes: item?.end?.minutes || 0,
-                                      hours: Number(e.target.value),
-                                    }),
-                                  }),
-                                ]);
+                                const updatedWorkingHours = workingHours.map(
+                                  (workingHour) => {
+                                    if (workingHour.day === day) {
+                                      return new Working_hours2({
+                                        ...workingHour,
+                                        start: new Start2({
+                                          minutes:
+                                            workingHour.start?.minutes || 0,
+                                          hours: Number(e.target.value),
+                                        }),
+                                      });
+                                    }
+                                    return workingHour;
+                                  }
+                                );
+                                setWorkingHours(updatedWorkingHours);
                               }}
                               value={item!.start!.hours}
                               type="number"
@@ -279,21 +283,21 @@ export const DivisionManager = () => {
                               className="w-10 p-0 m-0 text-center"
                               value={item!.start!.minutes}
                               onChange={(e) => {
-                                const item = workingHours!.find(
-                                  (workingHour) => workingHour.day === day
+                                const updatedWorkingHours = workingHours.map(
+                                  (workingHour) => {
+                                    if (workingHour.day === day) {
+                                      return new Working_hours2({
+                                        ...workingHour,
+                                        start: new Start2({
+                                          minutes: Number(e.target.value),
+                                          hours: workingHour.start?.hours || 0,
+                                        }),
+                                      });
+                                    }
+                                    return workingHour;
+                                  }
                                 );
-                                return setWorkingHours([
-                                  ...workingHours!.filter(
-                                    (workingHour) => workingHour.day !== day
-                                  ),
-                                  new Working_hours2({
-                                    ...item!,
-                                    end: new Start2({
-                                      minutes: Number(e.target.value),
-                                      hours: item!.end?.hours || 0,
-                                    }),
-                                  }),
-                                ]);
+                                setWorkingHours(updatedWorkingHours);
                               }}
                               type="number"
                               placeholder="м"
@@ -304,21 +308,21 @@ export const DivisionManager = () => {
                             <Input
                               className="w-10 p-0 m-0 text-center"
                               onChange={(e) => {
-                                const item = workingHours!.find(
-                                  (workingHour) => workingHour.day === day
+                                const updatedWorkingHours = workingHours.map(
+                                  (workingHour) => {
+                                    if (workingHour.day === day) {
+                                      return new Working_hours2({
+                                        ...workingHour,
+                                        end: new End2({
+                                          minutes: workingHour.end?.hours || 0,
+                                          hours: Number(e.target.value),
+                                        }),
+                                      });
+                                    }
+                                    return workingHour;
+                                  }
                                 );
-                                return setWorkingHours([
-                                  ...workingHours!.filter(
-                                    (workingHour) => workingHour.day !== day
-                                  ),
-                                  new Working_hours2({
-                                    ...item!,
-                                    end: new End2({
-                                      minutes: item!.end?.minutes || 0,
-                                      hours: Number(e.target.value),
-                                    }),
-                                  }),
-                                ]);
+                                setWorkingHours(updatedWorkingHours);
                               }}
                               value={item!.end!.hours}
                               type="number"
@@ -328,23 +332,23 @@ export const DivisionManager = () => {
                             <Input
                               className="w-10 p-0 m-0 text-center"
                               onChange={(e) => {
-                                const item = workingHours!.find(
-                                  (workingHour) => workingHour.day === day
+                                const updatedWorkingHours = workingHours.map(
+                                  (workingHour) => {
+                                    if (workingHour.day === day) {
+                                      return new Working_hours2({
+                                        ...workingHour,
+                                        end: new End2({
+                                          minutes: Number(e.target.value),
+                                          hours: workingHour.end?.hours || 0,
+                                        }),
+                                      });
+                                    }
+                                    return workingHour;
+                                  }
                                 );
-                                return setWorkingHours([
-                                  ...workingHours!.filter(
-                                    (workingHour) => workingHour.day !== day
-                                  ),
-                                  new Working_hours2({
-                                    ...item!,
-                                    end: new End2({
-                                      minutes: Number(e.target.value),
-                                      hours: item?.end?.minutes || 0,
-                                    }),
-                                  }),
-                                ]);
+                                setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item!.start!.minutes}
+                              value={item!.end!.minutes}
                               type="number"
                               placeholder="м"
                             ></Input>

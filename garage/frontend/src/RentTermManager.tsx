@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  IRent_terms,
-  Body6,
-  Rent_terms,
-  Schemas,
-  Schemas6,
-} from "./api-client";
+import { Body6, Rent_terms, Schemas } from "./api-client";
 import { parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -15,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import Confirmation from "@/components/ui/confirmation";
 
 export const RentTermManager = () => {
-  const [park, setPark] = useRecoilState(parkAtom);
+  const [park] = useRecoilState(parkAtom);
 
   const [newRentTerm, setNewRentTerm] = useState({
     rent_term_id: undefined,
@@ -37,7 +31,7 @@ export const RentTermManager = () => {
   const [selectedId, setSelectedId] = useState(0);
 
   const upsertRentTerm = async () => {
-    const newRentTermData = await client.createOrUpdateRentTermManager(
+    await client.createOrUpdateRentTermManager(
       new Body6({
         rent_term_id: selected?.id || undefined,
         deposit_amount_daily: newRentTerm.deposit_amount_daily,
@@ -47,7 +41,7 @@ export const RentTermManager = () => {
         name: newRentTerm.name || selected?.name,
         minimum_period_days:
           newRentTerm.minimum_period_days || selected?.minimum_period_days,
-        schemas: new Schemas(selectedSchemasList),
+        schemas: [new Schemas(selectedSchemasList)],
       })
     );
 
@@ -126,7 +120,7 @@ export const RentTermManager = () => {
       if (selectedSchemasList.length < 10) {
         setNewRentTerm({
           ...newRentTerm,
-          schemas: [...selectedSchemasList, newSchema],
+          schemas: [...selectedSchemasList, new Schemas(newSchema)] as any,
         });
       }
     }
@@ -277,7 +271,7 @@ export const RentTermManager = () => {
                         handleInputNewRentTermSchemaChange(
                           e.target.value,
                           input.param,
-                          schema.id
+                          schema.id!
                         )
                       }
                       type={input.type}

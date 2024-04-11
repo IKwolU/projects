@@ -15801,6 +15801,8 @@ export interface IUsers {
 export class User implements IUser {
     /** Статус пользователя */
     user_status?: string;
+    /** id пользователя */
+    id?: number;
     /** Номер телефона пользователя */
     phone?: string;
     /** Имя пользователя */
@@ -15836,6 +15838,7 @@ export class User implements IUser {
                     this[property] = _data[property];
             }
             this.user_status = _data["user_status"];
+            this.id = _data["id"];
             this.phone = _data["phone"];
             this.name = _data["name"];
             this.email = _data["email"];
@@ -15869,6 +15872,7 @@ export class User implements IUser {
                 data[property] = this[property];
         }
         data["user_status"] = this.user_status;
+        data["id"] = this.id;
         data["phone"] = this.phone;
         data["name"] = this.name;
         data["email"] = this.email;
@@ -15892,6 +15896,8 @@ export class User implements IUser {
 export interface IUser {
     /** Статус пользователя */
     user_status?: string;
+    /** id пользователя */
+    id?: number;
     /** Номер телефона пользователя */
     phone?: string;
     /** Имя пользователя */

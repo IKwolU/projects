@@ -2472,6 +2472,10 @@
                                                     "description": "Статус пользователя",
                                                     "type": "string"
                                                 },
+                                                "id": {
+                                                    "description": "id пользователя",
+                                                    "type": "integer"
+                                                },
                                                 "phone": {
                                                     "description": "Номер телефона пользователя",
                                                     "type": "string"

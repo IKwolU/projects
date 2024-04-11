@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2, Body, IBody5, IBody3 } from "./api-client";
+import { UserType, IPark2, Body } from "./api-client";
 import { parkAtom, userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";

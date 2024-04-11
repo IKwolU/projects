@@ -2,15 +2,7 @@ import { useRecoilState } from "recoil";
 import { parkAtom } from "./atoms";
 
 import { Separator } from "@/components/ui/separator";
-import {
-  Body25,
-  Body36,
-  Body37,
-  CarStatus,
-  Cars2,
-  Cars4,
-  FileParameter,
-} from "./api-client";
+import { Body25, Body36, Body37, CarStatus, Cars4 } from "./api-client";
 import { useState } from "react";
 import SliderImages from "@/components/ui/slider-images";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
@@ -22,10 +14,10 @@ import Confirmation from "@/components/ui/confirmation";
 import FileInput from "@/components/ui/file-input";
 
 export const CarsManager = () => {
-  const [park, setPark] = useRecoilState(parkAtom);
+  const [park] = useRecoilState(parkAtom);
   const [selected, setSelected] = useState<Cars4>();
   const [ids, setIds] = useState<number[]>([]);
-  const [showFullInfo, setShowFullInfo] = useState(false);
+  // const [showFullInfo, setShowFullInfo] = useState(false);
 
   const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
@@ -274,7 +266,7 @@ export const CarsManager = () => {
                 .filter((x) => !excludedFields.includes(x))
                 .some((value) => value === null);
 
-              const showed = showFullInfo || infoIsFull;
+              // const showed = showFullInfo || infoIsFull;
 
               const hidden = car.status === CarStatus.Hidden;
 

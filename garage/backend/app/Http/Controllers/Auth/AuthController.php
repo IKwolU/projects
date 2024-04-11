@@ -55,6 +55,7 @@ class AuthController extends Controller
      *             type="object",
      *             description="Данные пользователя",
      *             @OA\Property(property="user_status", type="string", description="Статус пользователя"),
+     *             @OA\Property(property="id", type="integer", description="id пользователя"),
      *             @OA\Property(property="phone", type="string", description="Номер телефона пользователя"),
      *             @OA\Property(property="name", type="string", nullable=true, description="Имя пользователя"),
      *             @OA\Property(property="email", type="string", nullable=true, description="Email пользователя"),
@@ -243,7 +244,7 @@ class AuthController extends Controller
         $user->referral_info = $referral;
         $user->docs = $docs;
         $user->bookings = $bookings ? $bookings : null;
-        unset($user->id, $user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
+        unset($user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
         return response()->json(['user' => $user]);
     }
     /**
@@ -321,11 +322,11 @@ class AuthController extends Controller
                 $driverSpecification = DriverSpecification::firstOrCreate(['driver_id' => $driver->id]);
                 $driverDocs = DriverDoc::firstOrCreate(['driver_id' => $driver->id]);
             }
-            if ($user->user_type === UserType::Manager->value) {
-                $manager = Manager::firstOrCreate(['user_id' => $user->id]);
-                $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
-                $manager->save();
-            }
+            // if ($user->user_type === UserType::Manager->value) {
+            //     $manager = Manager::firstOrCreate(['user_id' => $user->id]);
+            //     $manager->park_id = Park::where('api_key', $request->api_key)->first()->id;
+            //     $manager->save();
+            // }
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json(['token' => $token, 'register' => $register], 200);
         }

@@ -115,7 +115,9 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         ],
       })
     );
-    ym("reachGoal", "tobook_tc", 96683881);
+    ym("reachGoal", "tobook_tc", 96683881, {
+      userId: user.id,
+    });
     setIsBooked(true);
     // } else {
     //   navigate("account");
@@ -439,7 +441,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         Название парка: {car.park_name}
                       </div>
                       <Separator className="my-2" />
-                      <div className="flex justify-between items-start">
+                      <div className="flex items-start justify-between">
                         <div>
                           Адрес парка:
                           <a
@@ -454,11 +456,11 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             {car.division!.address!}
                           </a>
                           <div className="">
-                            <p className="text-base mt-4 mb-2">Телефон</p>
+                            <p className="mt-4 mb-2 text-base">Телефон</p>
                             <p>{car.division!.phone}</p>
                           </div>
                         </div>
-                        <div className="text-base mb-2">
+                        <div className="mb-2 text-base">
                           <div className="mb-2 text-base">График работы </div>
                           {car.working_hours?.map((x, i) => (
                             <div
@@ -474,7 +476,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       <Separator className="my-4" />
                       <Collapsible>
                         <CollapsibleTrigger className="flex justify-between w-full mb-2 focus:outline-none md:text-lg">
-                          <p >О парке</p>
+                          <p>О парке</p>
                           <FontAwesomeIcon icon={faChevronDown} />
                         </CollapsibleTrigger>
                         <CollapsibleContent>

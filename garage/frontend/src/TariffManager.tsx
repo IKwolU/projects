@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Body5, IBody5, CarClass, Tariffs, Body31 } from "./api-client";
-import { cityAtom, parkAtom, userAtom } from "./atoms";
+import { CarClass, Tariffs, Body32 } from "./api-client";
+import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,18 +9,11 @@ import { Input } from "@/components/ui/input";
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
 import { getCarClassDisplayName } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export const TariffManager = () => {
   const [city] = useRecoilState(cityAtom);
-  const [park, setPark] = useRecoilState(parkAtom);
-  const [selectedId, setSelectedId] = useState(0);
+  const [park] = useRecoilState(parkAtom);
+  // const [selectedId, setSelectedId] = useState(0);
 
   const [newTariff, setNewTariff] = useState({
     class: CarClass.Business,
@@ -36,9 +29,9 @@ export const TariffManager = () => {
   });
 
   const createTariff = async () => {
-    const newTariffData = await client.createTariffManager(
-      new Body31({
-        ...newTariff,
+    await client.createTariffManager(
+      new Body32({
+        ...newTariff!,
       })
     );
     window.location.href = "/tariff";
@@ -67,7 +60,7 @@ export const TariffManager = () => {
 
   const tariffs = park!.tariffs;
 
-  const selected = tariffs!.find((tariff) => tariff.id === selectedId);
+  // const selected = tariffs!.find((tariff) => tariff.id === selectedId);
 
   if (!tariffs) {
     return <></>;
@@ -93,7 +86,8 @@ export const TariffManager = () => {
               </div>
             ))}
           </div>
-          <Button className="w-64 text-lg" onClick={() => setSelectedId(0)}>
+          <Button className="w-64 text-lg">
+            {/* <Button className="w-64 text-lg" onClick={() => setSelectedId(0)}> */}
             Создать
           </Button>
         </div>
@@ -110,7 +104,12 @@ export const TariffManager = () => {
               name=""
               className="px-6 py-2 bg-grey rounded-xl"
               id=""
-              onChange={(value) => setNewTariff({ ...newTariff, class: value })}
+              onChange={(e) =>
+                setNewTariff({
+                  ...newTariff,
+                  class: e.target.value as CarClass,
+                })
+              }
             >
               {Object.keys(CarClass).map((x) => (
                 <option value={x} key={x}>
@@ -196,7 +195,9 @@ export const TariffManager = () => {
               <h4>{input.title}:</h4>
               <Input
                 className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
-                onChange={(e) => handleInputNewTariffChange(e, input.param)}
+                onChange={(e) =>
+                  handleInputNewTariffChange(e.target.value, input.param)
+                }
                 type={input.type}
                 placeholder={input.placeholder}
               ></Input>

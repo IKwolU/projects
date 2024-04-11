@@ -16,10 +16,8 @@ import { YMInitializer } from "react-yandex-metrika";
 import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
-  faBars,
-  faClockRotateLeft,
-  faLocationDot,
-  faPhoneVolume,
+  faBars, 
+  faLocationDot, 
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -31,10 +29,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
-import { Command, Check } from "lucide-react";
+} from "@/components/ui/popover"; 
 import { Button } from "@/components/ui/button";
 
 function App() {

@@ -10,9 +10,7 @@ import {
   Cars,
   Body3,
   Body5,
-  Body6,
-  Division3,
-  IDivisions2,
+  Body6, 
   DayOfWeek,
   IBody5,
   CarClass,
@@ -56,7 +54,7 @@ export const ParkManager = () => {
   const [city] = useRecoilState(cityAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
-  const [newDivisionPhone, setNewDivisionPhone] = useState("");
+  const [_, setNewDivisionPhone] = useState("");
   const [newDivision, setNewDivision] = useState<IBody3>({
     city: city,
     coords: "",
@@ -125,7 +123,7 @@ export const ParkManager = () => {
         {
           ...newDivision,
           id: newDivisionData.id,
-        },
+        } as Divisions2,
       ],
     });
   };
@@ -145,7 +143,7 @@ export const ParkManager = () => {
         {
           ...newTariff,
           id: newTariffData.id,
-        },
+        } as Tariffs,
       ],
     });
   };
@@ -162,7 +160,7 @@ export const ParkManager = () => {
           newRentTerm.rent_term_id
             ? rent_term.id !== newRentTerm.rent_term_id
             : rent_term
-        ),
+        ) as any,
         {
           ...newRentTerm,
           id: newTariffData.id,

@@ -2841,7 +2841,7 @@ export class Client {
      * @param ids (optional) Идентификаторы автомобилей
      * @return Успешно
      */
-    pushPhotosToCarsManager(file: FileParameter[] | undefined, ids: number[] | undefined): Promise<Anonymous166> {
+    pushPhotosToCarsManager(file: FileParameter[] | undefined, ids: string | undefined): Promise<Anonymous166> {
         let url_ = this.baseUrl + "/manager/cars/photos";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2849,11 +2849,11 @@ export class Client {
         if (file === null || file === undefined)
             throw new Error("The parameter 'file' cannot be null.");
         else
-            file.forEach(item_ => content_.append("file", item_.data, item_.fileName ? item_.fileName : "file") );
+            file.forEach(item_ => content_.append("file[]", item_.data, item_.fileName ? item_.fileName : "file[]") );
         if (ids === null || ids === undefined)
             throw new Error("The parameter 'ids' cannot be null.");
         else
-            ids.forEach(item_ => content_.append("ids", item_.toString()));
+            content_.append("ids", ids.toString());
 
         let options_: RequestInit = {
             body: content_,

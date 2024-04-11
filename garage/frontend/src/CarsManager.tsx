@@ -2,7 +2,15 @@ import { useRecoilState } from "recoil";
 import { parkAtom } from "./atoms";
 
 import { Separator } from "@/components/ui/separator";
-import { Body25, Body36, Body37, CarStatus, Cars2, Cars4 } from "./api-client";
+import {
+  Body25,
+  Body36,
+  Body37,
+  CarStatus,
+  Cars2,
+  Cars4,
+  FileParameter,
+} from "./api-client";
 import { useState } from "react";
 import SliderImages from "@/components/ui/slider-images";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
@@ -11,11 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
+import FileInput from "@/components/ui/file-input";
 
 export const CarsManager = () => {
   const [park, setPark] = useRecoilState(parkAtom);
   const [selected, setSelected] = useState<Cars4>();
   const [ids, setIds] = useState<number[]>([]);
+
+  const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
     park.divisions![0]?.id || undefined
   );
@@ -60,6 +71,21 @@ export const CarsManager = () => {
     window.location.href = "/cars";
   };
 
+  const getStatuses = async () => {
+    await client.pushStatusesFromParkClientManager();
+    window.location.href = "/cars";
+  };
+
+  const addPhotosToCars = async () => {
+    const fileParameters = photos.map((file) => ({
+      data: file,
+      fileName: "any",
+    }));
+    const stringIds = ids.join(",");
+    await client.pushPhotosToCarsManager(fileParameters, stringIds);
+    window.location.href = "/cars";
+  };
+
   const handleCheckboxes = (state: boolean, id: number) => {
     if (state) {
       setIds([...ids.filter((x) => x !== id), id]);
@@ -89,7 +115,7 @@ export const CarsManager = () => {
             { type: "division", text: "Привязать подразделение" },
             { type: "tariff", text: "Привязать тариф" },
             { type: "rent_term", text: "Привязать условия аренды" },
-            { type: "ptotos", text: "Загрузить фото" },
+            { type: "photos", text: "Загрузить фото" },
           ].map((x) => (
             <Button
               key={x.type}
@@ -99,6 +125,9 @@ export const CarsManager = () => {
               {x.text}
             </Button>
           ))}
+          <Button variant={"manager"} onAsyncClick={() => getStatuses()}>
+            Обновить статусы
+          </Button>
         </div>
       </div>
 
@@ -174,13 +203,62 @@ export const CarsManager = () => {
         </div>
       )}
 
+      {assignedType === "photos" && (
+        <div className="w-full p-2 my-8 space-y-4 bg-white rounded-xl">
+          Фото:
+          <div className="flex flex-wrap gap-2 ">
+            {photos?.map((file, index) => (
+              <div className="relative">
+                <img
+                  className="object-contain h-64 w-80 rounded-xl bg-grey"
+                  key={index}
+                  src={URL.createObjectURL(file)}
+                  alt={`Image ${index}`}
+                />
+                <div
+                  onClick={() =>
+                    setPhotos([...photos.filter((x) => x !== file)])
+                  }
+                  className="absolute p-2 bg-white rounded-lg cursor-pointer top-1 right-1"
+                >
+                  Отмена
+                </div>
+              </div>
+            ))}
+          </div>
+          {photos.length < 3 && (
+            <FileInput
+              title="Загрузить"
+              onChange={(fileList) => setPhotos([...photos, fileList[0]])}
+            />
+          )}
+          {photos.length === 3 && (
+            <Confirmation
+              accept={() => addPhotosToCars()}
+              cancel={() => {}}
+              title="Привязапь фото"
+              trigger={<Button variant={"manager"}>Привязать</Button>}
+              type="green"
+            />
+          )}
+        </div>
+      )}
+
       <div className="flex space-x-1">
         <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
           <div className="flex flex-col items-center justify-between gap-1">
             {sortedCars!.map((car) => {
-              const infoIsFull = Object.values(car).some(
-                (value) => value === null
-              );
+              const excludedFields = [
+                "status_id",
+                "old_status_id",
+                "created_at",
+                "updated_at",
+              ];
+
+              const infoIsFull = Object.values(car)
+                .filter((x) => !excludedFields.includes(x))
+                .some((value) => value === null);
+
               const hidden = car.status === CarStatus.Hidden;
 
               return (
@@ -213,7 +291,7 @@ export const CarsManager = () => {
                         className="flex w-6 m-0"
                         type="checkbox"
                         onChange={(e) =>
-                          handleCheckboxes(e.target.checked, car.id)
+                          handleCheckboxes(e.target.checked, car!.id!)
                         }
                       ></Input>
                     </div>

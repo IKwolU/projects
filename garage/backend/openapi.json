@@ -6231,7 +6231,7 @@
                         "multipart/form-data": {
                             "schema": {
                                 "properties": {
-                                    "file": {
+                                    "file[]": {
                                         "description": "Файлы для загрузки",
                                         "type": "array",
                                         "items": {
@@ -6241,10 +6241,7 @@
                                     },
                                     "ids": {
                                         "description": "Идентификаторы автомобилей",
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer"
-                                        }
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

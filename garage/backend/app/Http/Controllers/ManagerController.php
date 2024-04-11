@@ -1429,28 +1429,27 @@ class ManagerController extends Controller
          *     operationId="pushPhotosToCarsManager",
          *     summary="Добавление фотографий автомобилям",
          *     tags={"Manager"},
-         *     @OA\RequestBody(
-         *         required=true,
-         *         description="Файлы для загрузки",
-         *         @OA\MediaType(
-         *             mediaType="multipart/form-data",
-         *             @OA\Schema(
-         *                 type="object",
-         *                 @OA\Property(
-         *                     property="file",
-         *                     description="Файлы для загрузки",
-         *                     type="array",
-         *                     @OA\Items(type="string", format="binary")
-         *                 ),
-         *                 @OA\Property(
-         *                     property="ids",
-         *                     description="Идентификаторы автомобилей",
-         *                     type="array",
-         *                     @OA\Items(type="integer")
-         *                 ),
-         *             ),
-         *         ),
-         *     ),
+        * @OA\RequestBody(
+        *     required=true,
+        *     description="Файлы для загрузки",
+        *     @OA\MediaType(
+        *         mediaType="multipart/form-data",
+        *         @OA\Schema(
+        *             type="object",
+        *             @OA\Property(
+        *                 property="file[]",
+        *                 description="Файлы для загрузки",
+        *                 type="array",
+        *                 @OA\Items(type="string", format="binary")
+        *             ),
+        *             @OA\Property(
+        *                 property="ids",
+        *                 description="Идентификаторы автомобилей",
+        *                 type="string",
+        *             )
+        *         )
+        *     )
+        * ),
          *     @OA\Response(
          *         response=200,
          *         description="Успешно",
@@ -1480,16 +1479,17 @@ class ManagerController extends Controller
 
          public function pushPhotosToCarsManager(Request $request) {
             $request->validate([
-                'ids' => 'required|array',
-                'ids.*' => 'required|integer',
+                'ids' => 'string',
                 'file.*' => 'required|image|mimes:png,jpg,jpeg|max:7168',
             ]);
-            if ($request->hasFile('file') && count($request->file('file')) < 3) {
-                return response()->json(['message' => 'Загрузите ровно 3 фото'], 400);
-            }
-            $cars = Car::whereIn('id', $request->ids)->get();
+            $idsString = $request->ids;
+$ids = explode(',', $idsString);
+$ids = array_map('intval', $ids);
+
+            $cars = Car::whereIn('id', $ids)->get();
             $fileService = new FileService;
             $images = [];
+            dd($request->file('file'));
             foreach ($request->file('file') as $file) {
                 $name = uuid_create(UUID_TYPE_RANDOM);
                 $fileService->saveFile($file, $name);

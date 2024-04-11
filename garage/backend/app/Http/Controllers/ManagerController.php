@@ -1386,10 +1386,16 @@ class ManagerController extends Controller
          * Этот метод позволяет изменить статус автомобиля парка
          *
          * @OA\Put(
-         *     path="/manager/statuses",
+         *     path="/manager/status",
          *     operationId="changeParkStatusManager",
          *     summary="Изменение статуса автомобиля парка",
          *     tags={"Manager"},
+          *     @OA\RequestBody(
+        *         @OA\JsonContent(
+        *             @OA\Property(property="id", type="number", description="Id статуса"),
+        *             @OA\Property(property="status_name", type="string", description="Значение статуса")
+        *         )
+        *     ),
          *     @OA\Response(
          *         response=200,
          *         description="Изменение статуса автомобиля парка",

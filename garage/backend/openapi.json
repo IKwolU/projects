@@ -6198,7 +6198,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/manager/status": {
             "put": {
                 "tags": [
                     "Manager"
@@ -6206,6 +6208,25 @@
                 "summary": "Изменение статуса автомобиля парка",
                 "description": "Изменение статуса автомобиля парка\n\nЭтот метод позволяет изменить статус автомобиля парка",
                 "operationId": "changeParkStatusManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "Id статуса",
+                                        "type": "number"
+                                    },
+                                    "status_name": {
+                                        "description": "Значение статуса",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Изменение статуса автомобиля парка",

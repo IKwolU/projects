@@ -25,6 +25,7 @@ export const CarsManager = () => {
   const [park, setPark] = useRecoilState(parkAtom);
   const [selected, setSelected] = useState<Cars4>();
   const [ids, setIds] = useState<number[]>([]);
+  const [showFullInfo, setShowFullInfo] = useState(false);
 
   const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
@@ -73,6 +74,11 @@ export const CarsManager = () => {
 
   const getStatuses = async () => {
     await client.pushStatusesFromParkClientManager();
+    window.location.href = "/cars";
+  };
+
+  const getCars = async () => {
+    await client.pushCarsFromParkClientManager();
     window.location.href = "/cars";
   };
 
@@ -127,6 +133,9 @@ export const CarsManager = () => {
           ))}
           <Button variant={"manager"} onAsyncClick={() => getStatuses()}>
             Обновить статусы
+          </Button>
+          <Button variant={"manager"} onAsyncClick={() => getCars()}>
+            Обновить авто
           </Button>
         </div>
       </div>
@@ -232,7 +241,7 @@ export const CarsManager = () => {
               onChange={(fileList) => setPhotos([...photos, fileList[0]])}
             />
           )}
-          {photos.length === 3 && (
+          {photos.length >= 1 && (
             <Confirmation
               accept={() => addPhotosToCars()}
               cancel={() => {}}
@@ -247,6 +256,12 @@ export const CarsManager = () => {
       <div className="flex space-x-1">
         <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
           <div className="flex flex-col items-center justify-between gap-1">
+            {/* <Button
+              variant={"manager"}
+              onClick={() => setShowFullInfo(!showFullInfo)}
+            >
+              Скрыть заполненные
+            </Button> */}
             {sortedCars!.map((car) => {
               const excludedFields = [
                 "status_id",
@@ -258,6 +273,8 @@ export const CarsManager = () => {
               const infoIsFull = Object.values(car)
                 .filter((x) => !excludedFields.includes(x))
                 .some((value) => value === null);
+
+              const showed = showFullInfo || infoIsFull;
 
               const hidden = car.status === CarStatus.Hidden;
 

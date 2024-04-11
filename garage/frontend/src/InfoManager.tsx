@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 
-export const Info = () => {
+export const InfoManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useRecoilState(parkAtom);
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();

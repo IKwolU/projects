@@ -2784,15 +2784,20 @@ export class Client {
 
     /**
      * Изменение статуса автомобиля парка
+     * @param body (optional) 
      * @return Изменение статуса автомобиля парка
      */
-    changeParkStatusManager(): Promise<Anonymous163> {
-        let url_ = this.baseUrl + "/manager/statuses";
+    changeParkStatusManager(body: Body36 | undefined): Promise<Anonymous163> {
+        let url_ = this.baseUrl + "/manager/status";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
+            body: content_,
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -2839,7 +2844,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    pushAuthDataManager(body: Body36 | undefined): Promise<Anonymous166> {
+    pushAuthDataManager(body: Body37 | undefined): Promise<Anonymous166> {
         let url_ = this.baseUrl + "/manager/auth/data";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2961,7 +2966,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    assignCarsToDivisionManager(body: Body37 | undefined): Promise<Anonymous172> {
+    assignCarsToDivisionManager(body: Body38 | undefined): Promise<Anonymous172> {
         let url_ = this.baseUrl + "/manager/cars/division";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3018,7 +3023,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    assignCarsToTariffManager(body: Body38 | undefined): Promise<Anonymous175> {
+    assignCarsToTariffManager(body: Body39 | undefined): Promise<Anonymous175> {
         let url_ = this.baseUrl + "/manager/cars/tariff";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5854,6 +5859,62 @@ export interface IBody35 {
 }
 
 export class Body36 implements IBody36 {
+    /** Id статуса */
+    id?: number;
+    /** Значение статуса */
+    status_name?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IBody36) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.status_name = _data["status_name"];
+        }
+    }
+
+    static fromJS(data: any): Body36 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body36();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["status_name"] = this.status_name;
+        return data;
+    }
+}
+
+export interface IBody36 {
+    /** Id статуса */
+    id?: number;
+    /** Значение статуса */
+    status_name?: string;
+
+    [key: string]: any;
+}
+
+export class Body37 implements IBody37 {
     /** Новое имя пользователя 1с */
     name?: string;
     /** Новый пароль пользователя 1с */
@@ -5861,7 +5922,7 @@ export class Body36 implements IBody36 {
 
     [key: string]: any;
 
-    constructor(data?: IBody36) {
+    constructor(data?: IBody37) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5881,9 +5942,9 @@ export class Body36 implements IBody36 {
         }
     }
 
-    static fromJS(data: any): Body36 {
+    static fromJS(data: any): Body37 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body36();
+        let result = new Body37();
         result.init(data);
         return result;
     }
@@ -5900,7 +5961,7 @@ export class Body36 implements IBody36 {
     }
 }
 
-export interface IBody36 {
+export interface IBody37 {
     /** Новое имя пользователя 1с */
     name?: string;
     /** Новый пароль пользователя 1с */
@@ -5909,7 +5970,7 @@ export interface IBody36 {
     [key: string]: any;
 }
 
-export class Body37 implements IBody37 {
+export class Body38 implements IBody38 {
     /** Идентификатор division */
     division_id?: number;
     /** Идентификаторы автомобилей */
@@ -5917,7 +5978,7 @@ export class Body37 implements IBody37 {
 
     [key: string]: any;
 
-    constructor(data?: IBody37) {
+    constructor(data?: IBody38) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5941,9 +6002,9 @@ export class Body37 implements IBody37 {
         }
     }
 
-    static fromJS(data: any): Body37 {
+    static fromJS(data: any): Body38 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body37();
+        let result = new Body38();
         result.init(data);
         return result;
     }
@@ -5964,7 +6025,7 @@ export class Body37 implements IBody37 {
     }
 }
 
-export interface IBody37 {
+export interface IBody38 {
     /** Идентификатор division */
     division_id?: number;
     /** Идентификаторы автомобилей */
@@ -5973,7 +6034,7 @@ export interface IBody37 {
     [key: string]: any;
 }
 
-export class Body38 implements IBody38 {
+export class Body39 implements IBody39 {
     /** Идентификатор тарифа */
     tariff_id?: number;
     /** Идентификаторы автомобилей */
@@ -5981,7 +6042,7 @@ export class Body38 implements IBody38 {
 
     [key: string]: any;
 
-    constructor(data?: IBody38) {
+    constructor(data?: IBody39) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6005,9 +6066,9 @@ export class Body38 implements IBody38 {
         }
     }
 
-    static fromJS(data: any): Body38 {
+    static fromJS(data: any): Body39 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body38();
+        let result = new Body39();
         result.init(data);
         return result;
     }
@@ -6028,7 +6089,7 @@ export class Body38 implements IBody38 {
     }
 }
 
-export interface IBody38 {
+export interface IBody39 {
     /** Идентификатор тарифа */
     tariff_id?: number;
     /** Идентификаторы автомобилей */

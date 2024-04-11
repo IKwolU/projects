@@ -8,7 +8,8 @@ import { DivisionManager } from "./DivisionManager";
 import { RentTermManager } from "./RentTermManager";
 import { TariffManager } from "./TariffManager";
 import { CarsManager } from "./CarsManager";
-import { Info } from "./InfoManager";
+import { InfoManager } from "./InfoManager";
+import { StatusesManager } from "./StatusesManager";
 
 type MainMenuItem = {
   name: string;
@@ -51,6 +52,7 @@ export const ParkManager = () => {
               { name: "Условия аренды", path: "/rent_terms" },
               { name: "Тарифы", path: "/tariffs" },
               { name: "Автомобили", path: "/cars" },
+              { name: "Статусы", path: "/statuses" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="">
                 <Link
@@ -70,11 +72,12 @@ export const ParkManager = () => {
 
       <Routes>
         <Route path="/*" element={<Navigate to="/info" replace={true} />} />
-        <Route path={`/info`} element={<Info />} />
+        <Route path={`/info`} element={<InfoManager />} />
         <Route path={`/divisions`} element={<DivisionManager />} />
         <Route path={`/rent_terms`} element={<RentTermManager />} />
         <Route path={`/tariffs`} element={<TariffManager />} />
         <Route path={`/cars`} element={<CarsManager />} />
+        <Route path={`/statuses`} element={<StatusesManager />} />
       </Routes>
     </>
   );

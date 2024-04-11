@@ -132,7 +132,7 @@ export const CarsManager = () => {
             </Button>
           ))}
           <Button variant={"manager"} onAsyncClick={() => getStatuses()}>
-            Обновить статусы
+            Обновить статусы авто
           </Button>
           <Button variant={"manager"} onAsyncClick={() => getCars()}>
             Обновить авто

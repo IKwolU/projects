@@ -55,7 +55,7 @@ export const StatusesManager = () => {
           variant={"manager"}
           onAsyncClick={getStatusesClient}
         >
-          Загрузить статусы
+          Загрузить статусы сервера
         </Button>
         {sortedStatuses?.map((x) => (
           <div>

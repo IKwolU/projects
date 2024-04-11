@@ -17,28 +17,64 @@ export const StatusesManager = () => {
   }, []);
 
   const getStatuses = async () => {
-    const data = await client.getParkStatusesManager();
-    if (data.statuses) {
-      setStatuses(data.statuses);
+    try {
+      const data = await client.getParkStatusesManager();
+      if (data.statuses) {
+        setStatuses(data.statuses);
+      }
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
     }
   };
 
   const changeStatusValue = async (value: CarStatus, id: number) => {
-    await client.changeParkStatusManager(
-      new Body36({ id: id, status_name: value })
-    );
-    setStatuses([
-      ...statuses!.filter((x) => x.id !== id),
-      new Statuses({
-        ...statuses!.find((x) => x.id === id),
-        status_name: value,
-      }),
-    ]);
+    try {
+      await client.changeParkStatusManager(
+        new Body36({ id: id, status_name: value })
+      );
+      setStatuses([
+        ...statuses!.filter((x) => x.id !== id),
+        new Statuses({
+          ...statuses!.find((x) => x.id === id),
+          status_name: value,
+        }),
+      ]);
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const getStatusesClient = async () => {
-    await client.pushStatusesFromParkClientManager();
-    getStatuses();
+    try {
+      await client.pushStatusesFromParkClientManager();
+      getStatuses();
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const sortedStatuses = [...statuses!].sort((a, b) => {

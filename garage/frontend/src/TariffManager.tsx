@@ -29,12 +29,24 @@ export const TariffManager = () => {
   });
 
   const createTariff = async () => {
-    await client.createTariffManager(
-      new Body32({
-        ...newTariff!,
-      })
-    );
-    window.location.href = "/tariff";
+    try {
+      await client.createTariffManager(
+        new Body32({
+          ...newTariff!,
+        })
+      );
+      window.location.href = "/tariff";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
     // setPark({
     //   ...park,
 

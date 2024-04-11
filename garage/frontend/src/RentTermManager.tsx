@@ -31,21 +31,32 @@ export const RentTermManager = () => {
   const [selectedId, setSelectedId] = useState(0);
 
   const upsertRentTerm = async () => {
-    await client.createOrUpdateRentTermManager(
-      new Body6({
-        rent_term_id: selected?.id || undefined,
-        deposit_amount_daily: newRentTerm.deposit_amount_daily,
-        deposit_amount_total: newRentTerm.deposit_amount_total,
-        is_buyout_possible:
-          newRentTerm.is_buyout_possible || !!selected?.is_buyout_possible,
-        name: newRentTerm.name || selected?.name,
-        minimum_period_days:
-          newRentTerm.minimum_period_days || selected?.minimum_period_days,
-        schemas: [new Schemas(selectedSchemasList)],
-      })
-    );
-
-    window.location.href = "/rent_terms";
+    try {
+      await client.createOrUpdateRentTermManager(
+        new Body6({
+          rent_term_id: selected?.id || undefined,
+          deposit_amount_daily: newRentTerm.deposit_amount_daily,
+          deposit_amount_total: newRentTerm.deposit_amount_total,
+          is_buyout_possible:
+            newRentTerm.is_buyout_possible || !!selected?.is_buyout_possible,
+          name: newRentTerm.name || selected?.name,
+          minimum_period_days:
+            newRentTerm.minimum_period_days || selected?.minimum_period_days,
+          schemas: [new Schemas(selectedSchemasList)],
+        })
+      );
+      window.location.href = "/rent_terms";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
 
     // const upsertedRentTerm = {
     //   rent_term_id: newRentTermData.rent_term_id,
@@ -287,7 +298,7 @@ export const RentTermManager = () => {
             accept={upsertRentTerm}
             cancel={() => {}}
             trigger={<Button className="w-60">Применить</Button>}
-            title={"Создать подразделение?"}
+            title={"Создать условие аренды?"}
             type="green"
           />
         </div>

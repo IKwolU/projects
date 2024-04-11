@@ -48,66 +48,89 @@ export const DivisionManager = () => {
   const divisions = park!.divisions!;
 
   const createDivision = async () => {
-    const newDivisionData = await client.createParkDivisionManager(
-      new Body3({
-        city: newDivision.city,
-        address: newDivision.address,
-        coords: newDivision.coords,
-        metro: newDivision.metro,
-        name: newDivision.name,
-        phone: newDivisionPhone,
-        timezone_difference: newDivision.timezone_difference,
-        working_hours: workingHours.filter(
-          (item) => !nonWorkingDay.includes(item!.day!)
-        ),
-      })
-    );
-    setPark({
-      ...park,
-      divisions: [
-        ...divisions,
-        new Divisions2({
-          ...newDivision,
-          id: newDivisionData.id,
+    try {
+      const newDivisionData = await client.createParkDivisionManager(
+        new Body3({
+          city: newDivision.city,
+          address: newDivision.address,
+          coords: newDivision.coords,
+          metro: newDivision.metro,
+          name: newDivision.name,
           phone: newDivisionPhone,
-        }),
-      ],
-    });
+          timezone_difference: newDivision.timezone_difference,
+          working_hours: workingHours.filter(
+            (item) => !nonWorkingDay.includes(item!.day!)
+          ),
+        })
+      );
+      setPark({
+        ...park,
+        divisions: [
+          ...divisions,
+          new Divisions2({
+            ...newDivision,
+            id: newDivisionData.id,
+            phone: newDivisionPhone,
+          }),
+        ],
+      });
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
-
   const updateDivision = async () => {
-    await client.updateParkDivisionManager(
-      new Body28({
-        id: selected.id,
-        city: newDivision.city || undefined,
-        address: newDivision.address || undefined,
-        coords: newDivision.coords || undefined,
-        metro: newDivision.metro || undefined,
-        name: selected.name,
-        phone: newDivisionPhone || undefined,
-        timezone_difference: newDivision.timezone_difference || undefined,
-        working_hours: workingHours.filter(
-          (item) => !nonWorkingDay.includes(item!.day!)
-        ),
-      })
-    );
-    setPark({
-      ...park,
-      divisions: [
-        ...divisions.filter((x) => x.id !== selected.id),
-        new Divisions2({
-          ...selected,
-          city: newDivision.city || selected.city,
-          address: newDivision.address || selected.address,
-          coords: newDivision.coords || selected.coords,
-          metro: newDivision.metro || selected.metro,
+    try {
+      await client.updateParkDivisionManager(
+        new Body28({
+          id: selected.id,
+          city: newDivision.city || undefined,
+          address: newDivision.address || undefined,
+          coords: newDivision.coords || undefined,
+          metro: newDivision.metro || undefined,
           name: selected.name,
-          phone: newDivisionPhone || selected.phone,
-          timezone_difference:
-            newDivision.timezone_difference || selected.timezone_difference,
-        }),
-      ],
-    });
+          phone: newDivisionPhone || undefined,
+          timezone_difference: newDivision.timezone_difference || undefined,
+          working_hours: workingHours.filter(
+            (item) => !nonWorkingDay.includes(item!.day!)
+          ),
+        })
+      );
+      setPark({
+        ...park,
+        divisions: [
+          ...divisions.filter((x) => x.id !== selected.id),
+          new Divisions2({
+            ...selected,
+            city: newDivision.city || selected.city,
+            address: newDivision.address || selected.address,
+            coords: newDivision.coords || selected.coords,
+            metro: newDivision.metro || selected.metro,
+            name: selected.name,
+            phone: newDivisionPhone || selected.phone,
+            timezone_difference:
+              newDivision.timezone_difference || selected.timezone_difference,
+          }),
+        ],
+      });
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const handleInputNewDivisionChange = (

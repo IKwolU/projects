@@ -44,34 +44,94 @@ export const CarsManager = () => {
   });
 
   const addDivisionToCars = async () => {
-    await client.assignCarsToDivisionManager(
-      new Body36({ division_id: divisionId, car_ids: ids })
-    );
-    window.location.href = "/cars";
+    try {
+      await client.assignCarsToDivisionManager(
+        new Body36({ division_id: divisionId, car_ids: ids })
+      );
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const addTariffToCars = async () => {
-    await client.assignCarsToTariffManager(
-      new Body37({ tariff_id: tariffId, car_ids: ids })
-    );
-    window.location.href = "/cars";
+    try {
+      await client.assignCarsToTariffManager(
+        new Body37({ tariff_id: tariffId, car_ids: ids })
+      );
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const addRentTermToCars = async () => {
-    await client.assignCarsToRentTermManager(
-      new Body25({ rent_term_id: rentTermId, car_ids: ids })
-    );
-    window.location.href = "/cars";
+    try {
+      await client.assignCarsToRentTermManager(
+        new Body25({ rent_term_id: rentTermId, car_ids: ids })
+      );
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const getStatuses = async () => {
-    await client.pushStatusesFromParkClientManager();
-    window.location.href = "/cars";
+    try {
+      await client.pushStatusesFromParkClientManager();
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const getCars = async () => {
-    await client.pushCarsFromParkClientManager();
-    window.location.href = "/cars";
+    try {
+      await client.pushCarsFromParkClientManager();
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const addPhotosToCars = async () => {
@@ -80,8 +140,20 @@ export const CarsManager = () => {
       fileName: "any",
     }));
     const stringIds = ids.join(",");
-    await client.pushPhotosToCarsManager(fileParameters, stringIds);
-    window.location.href = "/cars";
+    try {
+      await client.pushPhotosToCarsManager(fileParameters, stringIds);
+      window.location.href = "/cars";
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const handleCheckboxes = (state: boolean, id: number) => {

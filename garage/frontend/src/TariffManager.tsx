@@ -220,7 +220,7 @@ export const TariffManager = () => {
             accept={() => createTariff()}
             cancel={() => {}}
             trigger={<Button className="w-60">Применить</Button>}
-            title={"Создать подразделение?"}
+            title={"Создать тариф?"}
             type="green"
           />
         </div>

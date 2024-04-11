@@ -221,7 +221,7 @@ export const CarsManager = () => {
           <Confirmation
             accept={addDivisionToCars}
             cancel={() => {}}
-            title="Привязапь подразделение"
+            title="Привязать подразделение"
             trigger={<Button variant={"manager"}>Привязать</Button>}
             type="green"
           />

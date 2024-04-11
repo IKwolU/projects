@@ -4161,6 +4161,125 @@
                 }
             }
         },
+        "manager/parks": {
+            "put": {
+                "tags": [
+                    "API"
+                ],
+                "summary": "Обновление информации о парке",
+                "description": "Обновление информации о парке\n\nЭтот метод позволяет обновлять информацию о парке.",
+                "operationId": "updateParkInfoManager",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "url": {
+                                        "description": "URL парка",
+                                        "type": "string"
+                                    },
+                                    "commission": {
+                                        "description": "Комиссия",
+                                        "type": "number"
+                                    },
+                                    "park_name": {
+                                        "description": "Название парка",
+                                        "type": "string"
+                                    },
+                                    "booking_window": {
+                                        "description": "Срок на который можно забронировать авто, в часах",
+                                        "type": "number"
+                                    },
+                                    "about": {
+                                        "description": "Описание парка",
+                                        "type": "string"
+                                    },
+                                    "self_employed_discount": {
+                                        "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешное обновление информации о парке",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Парк обновлен"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка аутентификации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Неверный ключ авторизации"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка валидации"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "url": [
+                                                    "Поле url должно быть строкой."
+                                                ],
+                                                "commission": [
+                                                    "Поле commission должно быть числом."
+                                                ],
+                                                "park_name": [
+                                                    "Поле park_name должно быть строкой."
+                                                ],
+                                                "about": [
+                                                    "Поле about должно быть строкой."
+                                                ],
+                                                "working_hours": [
+                                                    "Поле working_hours должно быть в формате JSON."
+                                                ],
+                                                "phone": [
+                                                    "Поле phone должно быть строкой."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/manager/cars": {
             "put": {
                 "tags": [

@@ -266,6 +266,66 @@ class ManagerController extends Controller
         return response()->json($key, 200);
     }
 
+
+/**
+     * Обновление информации о парке
+     *
+     * Этот метод позволяет обновлять информацию о парке.
+     *
+     * @OA\Put(
+     *     path="manager/parks",
+     *     operationId="updateParkInfoManager",
+     *     summary="Обновление информации о парке",
+     *     tags={"API"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="url", type="string", description="URL парка"),
+     *             @OA\Property(property="commission", type="number", description="Комиссия"),
+     *             @OA\Property(property="park_name", type="string", description="Название парка"),
+     *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
+     *             @OA\Property(property="about", type="string", description="Описание парка"),
+     *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
+     *     )),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешное обновление информации о парке",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Парк обновлен")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Ошибка аутентификации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Неверный ключ авторизации")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ошибки валидации",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ошибка валидации"),
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "url": {"Поле url должно быть строкой."},
+     *                 "commission": {"Поле commission должно быть числом."},
+     *                 "park_name": {"Поле park_name должно быть строкой."},
+     *                 "about": {"Поле about должно быть строкой."},
+     *                 "working_hours": {"Поле working_hours должно быть в формате JSON."},
+     *                 "phone": {"Поле phone должно быть строкой."},
+     *             })
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса с данными для обновления информации о парке
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+     */
+
+    public function updateParkInfoManager(Request $request)
+    {
+        return $this->callRouteWithApiKey('/parks', 'PUT', $request->all(), $request->key);
+    }
     /**
      * Добавить несколько автомобилей
      *

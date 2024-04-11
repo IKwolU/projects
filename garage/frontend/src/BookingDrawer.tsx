@@ -144,7 +144,7 @@ export const BookingDrawer = () => {
                 alt=""
               />
               <div className=" md:space-y-1 md:w-full">
-                <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
+                <p className="text-base">{`${booking.car?.brand} ${booking.car?.model} ${booking.car?.year_produced}`}</p>
                 <Separator />
                 <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
                 <Separator />
@@ -325,11 +325,14 @@ export const BookingDrawer = () => {
                   )
                 );
               })}
-              <img
-                className="object-cover h-auto rounded-xl"
-                src={booking.car!.images![0]}
-                alt=""
-              />
+              <div className="h-[364px] flex items-center justify-center">
+                <img
+                  className="object-contain rounded-xl h-full"
+                  src={booking.car!.images![0]}
+                  alt=""
+                />
+              </div>
+
               <div className="flex flex-col items-center justify-between pt-4">
                 <div className="pl-1 my-2 text-lg md:text-xl md:mb-4 text-center">
                   <h1>
@@ -358,7 +361,7 @@ export const BookingDrawer = () => {
             </div>
             <div className="w-1/2 space-y-2">
               <div className="px-4 py-2 pb-4 bg-white rounded-xl">
-                <h4 className="font-semibold">Детали бронирования</h4>
+                <h4 className="font-semibold mt-3">Детали бронирования</h4>
                 {booking.status === BookingStatus.RentStart && (
                   <div className="items-center ">
                     <p className="pt-1 leading-4">
@@ -503,7 +506,7 @@ export const BookingDrawer = () => {
                         alt=""
                       />
                       <div className=" md:space-y-1 md:w-full">
-                        <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
+                        <p className="text-base">{`${booking.car?.brand} ${booking.car?.model} ${booking.car?.year_produced}`}</p>
                         <Separator />
                         <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
                         <Separator />
@@ -541,7 +544,7 @@ export const BookingDrawer = () => {
       {sortedCancelBookings.length > 0 && (
         <div className="overflow-y-auto h-[%] bg-white py-2 px-2 my-2 rounded-xl">
           <div
-            className="mb-2 text-xl font-semibold"
+            className="mb-2 text-xl font-semibold cursor-pointer"
             onClick={() => setIsCancelBookings(!isOpenedCancelBookings)}
           >
             Отмененная бронь: {sortedCancelBookings.length}
@@ -557,7 +560,7 @@ export const BookingDrawer = () => {
                       alt=""
                     />
                     <div className=" md:space-y-1 md:w-full">
-                      <p className="text-base">{`${booking.car?.brand} ${booking.car?.model}`}</p>
+                      <p className="text-base">{`${booking.car?.brand} ${booking.car?.model} ${booking.car?.year_produced}`}</p>
                       <Separator />
                       <p className="text-base">{`Парк: ${booking.car?.division?.park?.park_name}`}</p>
                       <Separator />

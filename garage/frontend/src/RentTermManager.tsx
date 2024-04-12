@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import Confirmation from "@/components/ui/confirmation";
 
 export const RentTermManager = () => {
-  const [park] = useRecoilState(parkAtom);
+  const [park, setPark] = useRecoilState(parkAtom);
 
   const [newRentTerm, setNewRentTerm] = useState({
     rent_term_id: undefined,
@@ -32,9 +32,7 @@ export const RentTermManager = () => {
 
   const upsertRentTerm = async () => {
     try {
-      console.log(newRentTerm.schemas);
-
-      await client.createOrUpdateRentTermManager(
+      const newRentTermData = await client.createOrUpdateRentTermManager(
         new Body6({
           rent_term_id: selected?.id || undefined,
           deposit_amount_daily: newRentTerm.deposit_amount_daily,
@@ -47,7 +45,28 @@ export const RentTermManager = () => {
           schemas: newRentTerm.schemas,
         })
       );
-      window.location.href = "/rent_terms";
+
+      const upsertedRentTerm = {
+        rent_term_id: newRentTermData.rent_term_id,
+        is_buyout_possible: newRentTerm.is_buyout_possible,
+        name: newRentTerm.name,
+        minimum_period_days: newRentTerm.is_buyout_possible,
+        schemas: [new Schemas(newRentTerm.schemas)],
+        id: newRentTermData.id,
+        deposit_amount_daily: newRentTerm.deposit_amount_daily,
+      };
+      setSelectedId(-1);
+      setPark({
+        ...park,
+        rent_terms: [
+          ...rentTerms!.filter((rentTerm) =>
+            newRentTerm.rent_term_id
+              ? rentTerm.id !== newRentTerm.rent_term_id
+              : rentTerm
+          ),
+          new Rent_terms(upsertedRentTerm),
+        ],
+      });
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -59,28 +78,6 @@ export const RentTermManager = () => {
         alert("An error occurred: " + error.message);
       }
     }
-
-    // const upsertedRentTerm = {
-    //   rent_term_id: newRentTermData.rent_term_id,
-    //   is_buyout_possible: newRentTerm.is_buyout_possible,
-    //   name: newRentTerm,
-    //   minimum_period_days: newRentTerm.is_buyout_possible,
-    //   schemas: new Schemas(newRentTerm.schemas),
-    //   id: newRentTermData.id,
-    //   deposit_amount_daily: newRentTerm.deposit_amount_daily,
-    // };
-
-    // setPark({
-    //   ...park,
-    //   rent_terms: [
-    //     ...rentTerms!.filter((rentTerm) =>
-    //       newRentTerm.rent_term_id
-    //         ? rentTerm.id !== newRentTerm.rent_term_id
-    //         : rentTerm
-    //     ),
-    //     new Rent_terms(upsertedRentTerm),
-    //   ],
-    // });
   };
 
   const handleInputNewRentTermChange = (

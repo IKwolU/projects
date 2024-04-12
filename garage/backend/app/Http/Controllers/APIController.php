@@ -25,9 +25,11 @@ use Carbon\Carbon;
 use App\Http\Controllers\ParserController;
 use App\Models\Referral;
 use App\Models\Schema;
+use App\Models\Status;
 use App\Rules\WorkingHoursRule;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 
 /**
@@ -1791,8 +1793,9 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом изменения статуса бронирования
      */
 
-    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null)
+    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
     {
+        $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
             ->find($booking_id);
         if ($booking) {
@@ -1800,56 +1803,33 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
             $user = $booking->driver->user;
             $park = $car->division->park;
             $apiKey = $park->API_key;
-
+            $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
-            $customStatusName = $car->status->custom_status_name;
-            $tocken = $park->status_api_tocken;
-            if ($url !== null) {
-                $client = new Client();
-                $response = $client->post($url, [
-                    'headers' => [
-                        'Authorization' => 'Bearer'.$tocken,
-                    ],
-                    'json' => [
-                        'vehicleNumber' => $car->license_plate,
-                        'comment' => $user->name,
-                        'phone' => $user->phone,
-                    ],
-                    'http_errors' => false,
-                    ]);
+            $customStatusName = $CarStatus->custom_status_name;
+            $token = $park->status_api_tocken;
+            $response = Http::withToken($token)->post($url, [
+                'vehicleNumber' => $car->license_plate,
+                'comment' => '',
+                'phone' => $user->phone,
+            ]);
                 $statusCode = $response->getStatusCode();
                 if ($statusCode === 500) {
-                    $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
-                }
-            }
 
-           if ($is_booked) {
-            $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
-            $customStatusName = $car->status->custom_status_name;
-            $tocken = $park->status_api_tocken;
-            if ($secondUrl !== null) {
-                $client = new Client();
-                $response = $client->post($secondUrl, [
-                    'headers' => [
-                        'Authorization' => 'Bearer'.$tocken,
-                    ],
-                    'json' => [
-                        'message' => 'Бронь',
-                    ],
-                    'http_errors' => false,
-                    ]);
-                $statusCode = $response->getStatusCode();
-                if ($statusCode === 500) {
-                    $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+                    if ($count<5) {
+                        $count++;
+                        $repeat=true;
+                    }
                 }
+            if ($is_booked && !$count) {
+                $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
+                $response = Http::withToken($token)->post($secondUrl, [
+                    'message' => 'Бронь',
+                ]);
+                $statusCode = $response->getStatusCode();
             }
-           }
+            if ($repeat) {
+            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+            }
         }
     }
-
-
-
-
-
-
 }

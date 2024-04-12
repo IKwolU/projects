@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { CarClass, Tariffs, Body32 } from "./api-client";
+import { CarClass, Tariffs, Body32, IPark2 } from "./api-client";
 import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { getCarClassDisplayName } from "@/lib/utils";
 
 export const TariffManager = () => {
   const [city] = useRecoilState(cityAtom);
-  const [park] = useRecoilState(parkAtom);
+  const [park, setPark] = useRecoilState(parkAtom);
   // const [selectedId, setSelectedId] = useState(0);
 
   const [newTariff, setNewTariff] = useState({
@@ -28,6 +28,11 @@ export const TariffManager = () => {
     alcohol: false,
   });
 
+  const getPark = async () => {
+    const parkData: IPark2 = await client.getParkManager();
+    setPark(parkData.park);
+  };
+
   const createTariff = async () => {
     let criminal_ids = newTariff.criminal_ids as any;
     criminal_ids = criminal_ids.split(",").map((x: any) => Number(x));
@@ -38,7 +43,7 @@ export const TariffManager = () => {
           criminal_ids: criminal_ids as any,
         })
       );
-      // window.location.href = "/tariff";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(

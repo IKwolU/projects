@@ -14,6 +14,7 @@ use App\Models\Park;
 use App\Models\RentTerm;
 use App\Models\Status;
 use App\Models\Tariff;
+use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,7 @@ class ManagerController extends Controller
      *                                     @OA\Property(property="model", type="string", description="Модель автомобиля"),
      *                                     @OA\Property(property="year_produced", type="integer", description="Год выпуска автомобиля"),
      *                                     @OA\Property(property="vin", type="string", description="vin автомобиля"),
+     *                                     @OA\Property(property="status_id", type="integer", description="status_id автомобиля"),
      *                                     @OA\Property(property="images", type="array", description="Ссылки на изображения автомобиля",
      *                                         @OA\Items(type="string")
      *                                     ),
@@ -1853,7 +1855,7 @@ public function assignCarsToRentTermManager(Request $request) {
             $carStatus = $car->Status;
             $existingCar = $cars->where('car_id', $carVin)->first();
 
-            if ($existingCar && $controller->checkCarDataIsFilled($existingCar)) {
+            if ($existingCar && $this->checkCarDataIsFilled($existingCar)) {
                 $matchingStatusValue = null;
                 $matchingStatusId = null;
                 foreach ($statuses as $status) {
@@ -1893,7 +1895,6 @@ public function assignCarsToRentTermManager(Request $request) {
 
     static function checkCarDataIsFilled($car) {
         $requiredFields = ['division_id', 'park_id', 'tariff_id', 'license_plate', 'mileage', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images'];
-
         foreach ($requiredFields as $field) {
             if ($car->$field === null) {
                 return false;
@@ -1903,14 +1904,14 @@ public function assignCarsToRentTermManager(Request $request) {
         return true;
     }
 
-    private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
-    {
-        $subRequest = Request::create($url, $method, $requestData);
-        $subRequest->headers->set('X-API-key', $apiKey);
-        $response = app()->handle($subRequest);
 
-        return $response;
-    }
+     private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
+     {
+         $subRequest = Request::create($url, $method, $requestData);
+         $subRequest->headers->set('X-API-key', $apiKey);
+         $response = app()->handle($subRequest);
+         return $response;
+     }
 
     private function getDivisionIdByName($name, $divisions)
     {
@@ -1934,7 +1935,7 @@ public function assignCarsToRentTermManager(Request $request) {
         return null;
     }
 
-    private function getCarsFromParkClient($parkId) {
+     private function getCarsFromParkClient($parkId) {
         $url = Park::where('id', $parkId)->select('url')->first()->url;
         $url .= '/hs/Car/v1/Get';
 
@@ -1957,5 +1958,5 @@ public function assignCarsToRentTermManager(Request $request) {
         }
         curl_close($ch);
         return $response;
-    }
+     }
 }

@@ -2,8 +2,15 @@ import { useRecoilState } from "recoil";
 import { parkAtom } from "./atoms";
 
 import { Separator } from "@/components/ui/separator";
-import { Body25, Body36, Body37, CarStatus, Cars4 } from "./api-client";
-import { useState } from "react";
+import {
+  Body25,
+  Body36,
+  Body37,
+  CarStatus,
+  Cars4,
+  Statuses,
+} from "./api-client";
+import { useEffect, useState } from "react";
 import SliderImages from "@/components/ui/slider-images";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,11 +21,11 @@ import Confirmation from "@/components/ui/confirmation";
 import FileInput from "@/components/ui/file-input";
 
 export const CarsManager = () => {
-  const [park] = useRecoilState(parkAtom);
+  const [park, setPark] = useRecoilState(parkAtom);
   const [selected, setSelected] = useState<Cars4>();
   const [ids, setIds] = useState<number[]>([]);
-  const [showFullInfo, setShowFullInfo] = useState(false);
-
+  const [showFullInfo, setShowFullInfo] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
     park.divisions![0]?.id || undefined
@@ -30,6 +37,7 @@ export const CarsManager = () => {
     park.rent_terms![0]?.id || undefined
   );
   const [assignedType, setAssignedType] = useState<string | undefined>();
+  const [statuses, setStatuses] = useState<Statuses[]>([]);
 
   const sortedCars = [...park.cars!].sort((a, b) => {
     if (a.brand === b.brand) {
@@ -43,12 +51,46 @@ export const CarsManager = () => {
     return 0;
   });
 
+  const SearchedSortedCars = sortedCars.filter(
+    (car: Cars4) =>
+      car.license_plate!.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      car.model!.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      car.brand!.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getPark = async () => {
+    const parkData: IPark2 = await client.getParkManager();
+    setPark(parkData.park);
+  };
+
+  useEffect(() => {
+    const getStatuses = async () => {
+      try {
+        const data = await client.getParkStatusesManager();
+        if (data.statuses) {
+          setStatuses(data.statuses);
+        }
+      } catch (error: any) {
+        if (error.errors) {
+          const errorMessages = Object.values(error.errors).flatMap(
+            (errorArray) => errorArray
+          );
+          const errorMessage = errorMessages.join("\n");
+          alert("An error occurred:\n" + errorMessage);
+        } else {
+          alert("An error occurred: " + error.message);
+        }
+      }
+    };
+    getStatuses();
+  }, []);
+
   const addDivisionToCars = async () => {
     try {
       await client.assignCarsToDivisionManager(
         new Body36({ division_id: divisionId, car_ids: ids })
       );
-      window.location.href = "/cars";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -67,7 +109,7 @@ export const CarsManager = () => {
       await client.assignCarsToTariffManager(
         new Body37({ tariff_id: tariffId, car_ids: ids })
       );
-      window.location.href = "/cars";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -86,7 +128,7 @@ export const CarsManager = () => {
       await client.assignCarsToRentTermManager(
         new Body25({ rent_term_id: rentTermId, car_ids: ids })
       );
-      window.location.href = "/cars";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -102,13 +144,13 @@ export const CarsManager = () => {
 
   const getStatuses = async () => {
     await client.getCarsCurrentStatusesFromClientManager();
-    window.location.href = "/cars";
+    getPark();
   };
 
   const getCars = async () => {
     try {
       await client.pushCarsFromParkClientManager();
-      window.location.href = "/cars";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -130,7 +172,7 @@ export const CarsManager = () => {
     const stringIds = ids.join(",");
     try {
       await client.pushPhotosToCarsManager(fileParameters, stringIds);
-      window.location.href = "/cars";
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -193,9 +235,10 @@ export const CarsManager = () => {
       </div>
 
       {assignedType === "division" && (
-        <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
           Подразделение:
           <select
+            className="p-1 m-1 border-2 border-grey rounded-xl"
             name=""
             id=""
             onChange={(e) => setDivisionId(Number(e.target.value))}
@@ -217,9 +260,10 @@ export const CarsManager = () => {
       )}
 
       {assignedType === "tariff" && (
-        <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
           Тариф:
           <select
+            className="p-1 m-1 border-2 border-grey rounded-xl"
             name=""
             id=""
             onChange={(e) => setTariffId(Number(e.target.value))}
@@ -241,9 +285,10 @@ export const CarsManager = () => {
       )}
 
       {assignedType === "rent_term" && (
-        <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
           Тариф:
           <select
+            className="p-1 m-1 border-2 border-grey rounded-xl"
             name=""
             id=""
             onChange={(e) => setRentTermId(Number(e.target.value))}
@@ -306,7 +351,7 @@ export const CarsManager = () => {
       )}
 
       <div className="flex space-x-1">
-        <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
+        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
           <div className="flex flex-col items-center justify-between gap-1">
             <Button
               variant={"manager"}
@@ -314,7 +359,13 @@ export const CarsManager = () => {
             >
               {showFullInfo ? "Скрыть заполненные" : "Показать все авто"}
             </Button>
-            {sortedCars!.map((car) => {
+            <Input
+              className="my-1"
+              placeholder="Модель, марка, г/н"
+              type="text"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            ></Input>
+            {SearchedSortedCars!.map((car) => {
               const excludedFields = [
                 "status_id",
                 "old_status_id",
@@ -327,6 +378,10 @@ export const CarsManager = () => {
                 .some((key) => car[key] === null);
 
               const hidden = car.status === CarStatus.Hidden;
+
+              const status =
+                statuses.find((status) => status.id === car.status_id)
+                  ?.custom_status_name || "без статуса";
 
               return (
                 <>
@@ -353,7 +408,8 @@ export const CarsManager = () => {
                               }`}
                               onClick={() => setSelected(car!)}
                             >
-                              {car.brand} {car.model} {car.license_plate}
+                              {car.brand} {car.model} {car.license_plate} -{" "}
+                              {status}
                             </div>
                           </div>
                           <Input
@@ -375,7 +431,7 @@ export const CarsManager = () => {
         </div>
 
         {selected && (
-          <div className="w-2/3 p-2 my-8 space-y-4 bg-white rounded-xl">
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
             <h3>VIN: {selected.vin}</h3>
             <p>Г/н: {selected.license_plate}</p>
             <p>Марка: {selected.brand}</p>

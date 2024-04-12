@@ -3786,6 +3786,10 @@
                                                                     "description": "vin автомобиля",
                                                                     "type": "string"
                                                                 },
+                                                                "status_id": {
+                                                                    "description": "status_id автомобиля",
+                                                                    "type": "integer"
+                                                                },
                                                                 "images": {
                                                                     "description": "Ссылки на изображения автомобиля",
                                                                     "type": "array",

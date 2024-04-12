@@ -17783,6 +17783,8 @@ export class Cars4 implements ICars4 {
     year_produced?: number;
     /** vin автомобиля */
     vin?: string;
+    /** status_id автомобиля */
+    status_id?: number;
     /** Ссылки на изображения автомобиля */
     images?: string[];
     status?: CarStatus;
@@ -17822,6 +17824,7 @@ export class Cars4 implements ICars4 {
             this.model = _data["model"];
             this.year_produced = _data["year_produced"];
             this.vin = _data["vin"];
+            this.status_id = _data["status_id"];
             if (Array.isArray(_data["images"])) {
                 this.images = [] as any;
                 for (let item of _data["images"])
@@ -17863,6 +17866,7 @@ export class Cars4 implements ICars4 {
         data["model"] = this.model;
         data["year_produced"] = this.year_produced;
         data["vin"] = this.vin;
+        data["status_id"] = this.status_id;
         if (Array.isArray(this.images)) {
             data["images"] = [];
             for (let item of this.images)
@@ -17903,6 +17907,8 @@ export interface ICars4 {
     year_produced?: number;
     /** vin автомобиля */
     vin?: string;
+    /** status_id автомобиля */
+    status_id?: number;
     /** Ссылки на изображения автомобиля */
     images?: string[];
     status?: CarStatus;

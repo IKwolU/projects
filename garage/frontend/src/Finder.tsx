@@ -222,11 +222,18 @@ export const Finder = () => {
                 key={carClass}
                 className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
                   // isActive ? "shadow border-2 border-gray" : ""
-                  isActive ?"bg-white shadow" : "bg-grey"
+                  isActive ? "bg-white shadow" : "bg-grey"
                 }`}
               >
-                <img alt="" className="w-12 rounded-xl" style={{ margin: "-4px" }} src={img} />
-                <span className="text-black pb-2" style={{ margin: "-8px" }}>{title}</span>
+                <img
+                  alt=""
+                  className="w-12 rounded-xl"
+                  style={{ margin: "-4px" }}
+                  src={img}
+                />
+                <span className="pb-2 text-black" style={{ margin: "-8px" }}>
+                  {title}
+                </span>
               </div>
             );
           })}

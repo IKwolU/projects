@@ -142,7 +142,7 @@ const onboarded = localStorage.getItem("onboarded");
 
       <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full max-w-[437px] bg-white z-30'">
 
-        <div v-if="interruptor" v-bind:class="'absolute w-full max-w-[437px] h-full pt-[60%] bg-black/60 z-[100]'">
+        <div v-if="interruptor" v-bind:class="'absolute w-full max-w-[437px] h-full pt-40 bg-black/60 z-[100]'">
 
           <div v-bind:class="'p-8 rounded-xl bg-white mx-8'">
 

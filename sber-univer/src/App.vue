@@ -81,7 +81,7 @@ const returnToMap = () => {
 const passOnboarding = () => {
   localStorage.setItem("onboarded", "true");
   window.location.reload();
-}; 
+};
 
 const visitNearby = (nearbyLocId: number) => {
   window.location.href = window.location.origin + `/?id=${nearbyLocId}`;
@@ -96,7 +96,9 @@ const onTimeChanged = (time: number) => {
   const possibleTip = (activeLocation!.value?.tips as any)[getDisplayValueByDecimalSeconds(time)];
   if (possibleTip && !seenTips.includes(possibleTip)) {
     seenTips.push(possibleTip);
-    player.value.pause();
+    if (activeLocation.value!.pauseOnTip) {
+      player.value.pause();
+    }
     interruptor.value = possibleTip;
   }
 };
@@ -114,7 +116,7 @@ const onboarded = localStorage.getItem("onboarded");
   <div v-bind:class="'flex justify-center max-w-[437px]'">
     <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full max-w-[437px] p-8'">
 
-      <audio autoplay  src="https://storage.yandexcloud.net/testingwow/intro.mp3" class="hiddenx"></audio>
+      <!-- <audio autoplay  src="https://storage.yandexcloud.net/testingwow/intro.mp3" class="hiddenx"></audio> -->
 
       <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 

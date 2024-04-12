@@ -209,7 +209,7 @@ const onboarded = localStorage.getItem("onboarded");
 
 
             <div v-bind:class="'rounded space-y-2 mt-4'">
-              <div v-if="activeLocation.id !== 1" v-bind:class="'h-7 text-sm text-black underline text-left'"
+              <div v-if="activeLocation.id !== 1" v-bind:class="'h-7 text-sm text-black underline text-right'"
                 @click="visitNearby(1)">К началу экскурсии</div>
               <div v-bind:class="'flex justify-between w-full items-center'">
                 <h2>Локации рядом:</h2>
@@ -256,7 +256,7 @@ const onboarded = localStorage.getItem("onboarded");
     background: 'white',
     borderRadius: '50%',
     cursor: 'pointer'
-  }" v-bind:class="'flex justify-center items-center'">
+  }" v-bind:class="'flex justify-center items-center z-20'">
 
           <div :class="{
     'absolute top-0 left-0 py-1 pl-14 pr-6 rounded-full bg-green opacity-0 transition-all text-white border-2 border-white': true,
@@ -288,7 +288,7 @@ const onboarded = localStorage.getItem("onboarded");
     background: 'white',
     borderRadius: '50%',
     cursor: 'pointer'
-  }" v-bind:class="'flex justify-center items-center'">
+  }" v-bind:class="'flex justify-center items-center z-10'">
 
           <div :class="{
     'absolute top-0 left-0 py-1 pl-14 pr-6 rounded-full bg-cyan-400 opacity-0 transition-all text-white border-2 border-white': true,

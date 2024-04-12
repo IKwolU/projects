@@ -1548,7 +1548,7 @@ class ManagerController extends Controller
          public function pushPhotosToCarsManager(Request $request) {
             $request->validate([
                 'ids' => 'string',
-                'file.*' => 'required|image|mimes:png,jpg,jpeg|max:7168',
+                'file.*' => 'required|image|mimes:png,jpg,jpeg,webp|max:7168',
             ]);
             $idsString = $request->ids;
             $ids = explode(',', $idsString);

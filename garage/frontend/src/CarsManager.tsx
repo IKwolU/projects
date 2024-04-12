@@ -8,8 +8,10 @@ import {
   Body37,
   CarStatus,
   Cars4,
+  IPark2,
   Statuses,
 } from "./api-client";
+import Resizer from "react-image-file-resizer";
 import { useEffect, useState } from "react";
 import SliderImages from "@/components/ui/slider-images";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
@@ -85,6 +87,61 @@ export const CarsManager = () => {
     getStatuses();
   }, []);
 
+  const resizeFile = (file: File) =>
+    new Promise((resolve, reject) => {
+      if (file instanceof Blob) {
+        Resizer.imageFileResizer(
+          file,
+          1920,
+          1080,
+          "WEBP",
+          30,
+          0,
+          (uri) => {
+            resolve(uri);
+          },
+          "blob"
+        );
+      } else {
+        reject(new Error("File is not of type Blob"));
+      }
+    });
+
+  const handlePhotos = async (fileList: FileList) => {
+    try {
+      const file: any = await resizeFile(fileList[0]);
+      const image = await resizeFile(file);
+      setPhotos([...photos, file as File]);
+      console.log(image);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addPhotosToCars = async () => {
+    const fileParameters = await Promise.all(
+      photos.map(async (file) => ({
+        data: file,
+        fileName: "any",
+      }))
+    );
+    const stringIds = ids.join(",");
+    try {
+      await client.pushPhotosToCarsManager(fileParameters, stringIds);
+      getPark();
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
+  };
+
   const addDivisionToCars = async () => {
     try {
       await client.assignCarsToDivisionManager(
@@ -150,28 +207,6 @@ export const CarsManager = () => {
   const getCars = async () => {
     try {
       await client.pushCarsFromParkClientManager();
-      getPark();
-    } catch (error: any) {
-      if (error.errors) {
-        const errorMessages = Object.values(error.errors).flatMap(
-          (errorArray) => errorArray
-        );
-        const errorMessage = errorMessages.join("\n");
-        alert("An error occurred:\n" + errorMessage);
-      } else {
-        alert("An error occurred: " + error.message);
-      }
-    }
-  };
-
-  const addPhotosToCars = async () => {
-    const fileParameters = photos.map((file) => ({
-      data: file,
-      fileName: "any",
-    }));
-    const stringIds = ids.join(",");
-    try {
-      await client.pushPhotosToCarsManager(fileParameters, stringIds);
       getPark();
     } catch (error: any) {
       if (error.errors) {
@@ -314,28 +349,31 @@ export const CarsManager = () => {
           Фото:
           <div className="flex flex-wrap gap-2 ">
             {photos?.map((file, index) => (
-              <div className="relative">
-                <img
-                  className="object-contain h-64 w-80 rounded-xl bg-grey"
-                  key={index}
-                  src={URL.createObjectURL(file)}
-                  alt={`Image ${index}`}
-                />
-                <div
-                  onClick={() =>
-                    setPhotos([...photos.filter((x) => x !== file)])
-                  }
-                  className="absolute p-2 bg-white rounded-lg cursor-pointer top-1 right-1"
-                >
-                  Отмена
-                </div>
+              <div className="relative" key={index}>
+                {file instanceof Blob && (
+                  <div>
+                    <img
+                      className="object-contain h-64 w-80 rounded-xl bg-grey"
+                      src={URL.createObjectURL(file)}
+                      alt={`Image ${index}`}
+                    />
+                    <div
+                      onClick={() =>
+                        setPhotos([...photos.filter((x) => x !== file)])
+                      }
+                      className="absolute p-2 bg-white rounded-lg cursor-pointer top-1 right-1"
+                    >
+                      Отмена
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
           {photos.length < 3 && (
             <FileInput
               title="Загрузить"
-              onChange={(fileList) => setPhotos([...photos, fileList[0]])}
+              onChange={(fileList) => handlePhotos(fileList)}
             />
           )}
           {photos.length >= 1 && (

@@ -1851,7 +1851,6 @@ public function assignCarsToRentTermManager(Request $request) {
         foreach ($clientCars as $car) {
             $carVin = $car->VIN;
             $carStatus = $car->Status;
-
             $existingCar = $cars->where('car_id', $carVin)->first();
 
             if ($existingCar && $controller->checkCarDataIsFilled($existingCar)) {

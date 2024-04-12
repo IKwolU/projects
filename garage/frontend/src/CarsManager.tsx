@@ -17,7 +17,7 @@ export const CarsManager = () => {
   const [park] = useRecoilState(parkAtom);
   const [selected, setSelected] = useState<Cars4>();
   const [ids, setIds] = useState<number[]>([]);
-  // const [showFullInfo, setShowFullInfo] = useState(false);
+  const [showFullInfo, setShowFullInfo] = useState(false);
 
   const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
@@ -308,12 +308,12 @@ export const CarsManager = () => {
       <div className="flex space-x-1">
         <div className="w-1/3 p-2 my-8 space-y-4 bg-white rounded-xl">
           <div className="flex flex-col items-center justify-between gap-1">
-            {/* <Button
+            <Button
               variant={"manager"}
               onClick={() => setShowFullInfo(!showFullInfo)}
             >
-              Скрыть заполненные
-            </Button> */}
+              {showFullInfo ? "Скрыть заполненные" : "Показать все авто"}
+            </Button>
             {sortedCars!.map((car) => {
               const excludedFields = [
                 "status_id",
@@ -322,51 +322,53 @@ export const CarsManager = () => {
                 "updated_at",
               ];
 
-              const infoIsFull = Object.values(car)
-                .filter((x) => !excludedFields.includes(x))
-                .some((value) => value === null);
-
-              // const showed = showFullInfo || infoIsFull;
+              const infoIsNotFull = Object.keys(car)
+                .filter((key) => !excludedFields.includes(key))
+                .some((key) => car[key] === null);
 
               const hidden = car.status === CarStatus.Hidden;
 
               return (
-                <div key={car.id} className="w-full">
-                  <div className="">
-                    <div className="flex justify-between px-2">
-                      <div className="flex items-center gap-1">
-                        {hidden && (
-                          <FontAwesomeIcon
-                            icon={faTriangleExclamation}
-                            className="text-yellow"
-                          />
-                        )}
-                        {infoIsFull && (
-                          <FontAwesomeIcon
-                            icon={faTriangleExclamation}
-                            className="text-red"
-                          />
-                        )}
-                        <div
-                          className={`${
-                            selected?.id === car.id ? "text-yellow" : ""
-                          }`}
-                          onClick={() => setSelected(car!)}
-                        >
-                          {car.brand} {car.model} {car.license_plate}
+                <>
+                  {(showFullInfo || infoIsNotFull) && (
+                    <div key={car.id} className="w-full">
+                      <div className="">
+                        <div className="flex justify-between px-2">
+                          <div className="flex items-center gap-1">
+                            {hidden && (
+                              <FontAwesomeIcon
+                                icon={faTriangleExclamation}
+                                className="text-yellow"
+                              />
+                            )}
+                            {infoIsNotFull && (
+                              <FontAwesomeIcon
+                                icon={faTriangleExclamation}
+                                className="text-red"
+                              />
+                            )}
+                            <div
+                              className={`${
+                                selected?.id === car.id ? "text-yellow" : ""
+                              }`}
+                              onClick={() => setSelected(car!)}
+                            >
+                              {car.brand} {car.model} {car.license_plate}
+                            </div>
+                          </div>
+                          <Input
+                            className="flex w-6 m-0"
+                            type="checkbox"
+                            onChange={(e) =>
+                              handleCheckboxes(e.target.checked, car!.id!)
+                            }
+                          ></Input>
                         </div>
                       </div>
-                      <Input
-                        className="flex w-6 m-0"
-                        type="checkbox"
-                        onChange={(e) =>
-                          handleCheckboxes(e.target.checked, car!.id!)
-                        }
-                      ></Input>
+                      <Separator className="my-1" />
                     </div>
-                  </div>
-                  <Separator className="my-1" />
-                </div>
+                  )}
+                </>
               );
             })}
           </div>
@@ -403,6 +405,7 @@ export const CarsManager = () => {
               {park.tariffs!.find((x) => x.id === selected.tariff_id!)?.class ||
                 "еще нет"}
             </p>
+            <p>Статус: {selected.status || "еще нет"}</p>
           </div>
         )}
       </div>

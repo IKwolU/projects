@@ -271,7 +271,7 @@ const onboarded = localStorage.getItem("onboarded");
     [`bg-green w-7 h-7 rounded-full flex justify-center
            items-end text-white text-sb-display-bold`]: true
   }">
-                <div>{{ bubble.displayId }}</div>
+                <div class="h-6 md:h-[25px]">{{ bubble.displayId }}</div>
               </div>
             </div>
           </div>

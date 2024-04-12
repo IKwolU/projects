@@ -151,7 +151,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
               <div className="flex justify-center max-w-[1208px] mx-auto ">
                 <div className="relative w-32 h-full bg-white">
                   <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
-                    <div className="flex items-center justify-center w-16 h-16 border-4 border-gray rounded-full">
+                    <div className="flex items-center justify-center w-16 h-16 border-2 border-gray rounded-full">
                       <FontAwesomeIcon className="h-10 text-gray" icon={faChevronLeft} />
                     </div>
                   </div>

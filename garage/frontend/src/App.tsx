@@ -104,6 +104,13 @@ function App() {
           </Routes>
         </div>
       )}
+      {!user && (
+        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+          <Routes>
+            <Route path="/termsofuse" element={<Terms />} />
+          </Routes>
+        </div>
+      )}
     </>
   );
 }
@@ -117,8 +124,8 @@ const LogoutHandler = () => {
 };
 
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex items-center justify-between w-full space-x-4 my-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1208px] h-14 bg-opacity-85 rounded-2xl">
-    <Link to="/" className="md:grow">;
+  <div className="flex items-start justify-between w-full space-x-4 sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1208px]">
+    <Link to="/" className="">
       <div className="flex flex-col md:flex-row md:items-end">
         <div className="text-2xl font-bold sm:text-3xl mr-6"> BeeBeep </div>{" "}
         <div className="font-regular sm:text-lg">
@@ -146,21 +153,21 @@ const Menu = ({ user }: { user: User }) => (
     {user && (
       <Popover>
         <PopoverTrigger asChild>
-          <FontAwesomeIcon icon={faBars} className="h-6 cursor-pointer " />
+          <FontAwesomeIcon icon={faBars} className="cursor-pointer mt-2" />
         </PopoverTrigger>
-        <PopoverContent className="w-64 space-y-4 mx-4">
-          <Link className="flex items-center hover:text-yellow" to="bookings">
+        <PopoverContent className="w-64 space-y-1 mx-4 rounded-xl">
+          <Link className="flex items-center text-base hover:bg-grey hover:rounded-md p-2" to="bookings">
             Моё бронирование
           </Link>
-          <Separator />
-          <Link className="flex items-center hover:text-yellow" to="">
+          {/* <Separator /> */}
+          <Link className="flex items-center text-base hover:bg-grey hover:rounded-md p-2" to="">
             {/* <FontAwesomeIcon
               icon={faPhoneVolume}
               className="h-4 mr-2 sm:h-5 hover:text-yellow"
             /> */}
             Поддержка
           </Link>
-          <Separator />
+          {/* <Separator /> */}
           {/* <CommandGroup className="w-[200px] p-0 h-96 overflow-y-scroll">
           {allCities.map((c: string) => (
             <CommandItem
@@ -188,13 +195,13 @@ const Menu = ({ user }: { user: User }) => (
               cancel={() => {}}
               title="Выйти из аккаунта?"
               trigger={
-                <div className="flex items-center">
-                  <FontAwesomeIcon
-                    icon={faArrowRightFromBracket}
-                    className="h-4 mr-2 sm:h-5 hover:text-yellow"
-                  />
-                  Выйти
-                </div>
+                <div className="flex items-center cursor-pointer hover:bg-grey hover:rounded-md p-2">
+                <FontAwesomeIcon
+                  icon={faArrowRightFromBracket}
+                  className="h-4 mr-2 sm:h-5 transition-all duration-300 rounded-md"
+                />
+                <span>Выйти</span>
+              </div>
               }
               type="red"
             />
@@ -203,15 +210,18 @@ const Menu = ({ user }: { user: User }) => (
       </Popover>
     )}
     {!user && (
-      <Link className="flex items-center hover:text-yellow" to="login/driver">
-        <Button variant='black'>
-          <FontAwesomeIcon
-            icon={faArrowRightToBracket}
-            className="h-4 cursor-pointer text-white sm:h-5 mr-2"
-          />
-          Войти
-        </Button>
-      </Link>
-    )}
+      <Link className="flex items-center hover:text-gray" to="login/driver">
+        <Button variant="black"style={{ width: '105px', flexShrink: 0 }}> <div className="flex justify-center items-center">
+        <FontAwesomeIcon
+          icon={faArrowRightToBracket}
+          className="h-4 cursor-pointer text-white sm:h-5 mr-2"
+        />
+        <span className="text-white sm:text-base">Войти</span>
+      </div>
+    </Button>
+  </Link>
+)}
   </div>
 );
+
+const Terms = () => <div>xxx</div>;

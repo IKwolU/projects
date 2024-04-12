@@ -385,9 +385,11 @@ export const BookingDrawer = () => {
                   },
                   { text: "Телефон", content: divisionPhone, type: "phone" },
                   {
-                    text: "Дата окончания бронирования",
-                    content: format(booking.end_date!, "dd.MM.yyyy HH:mm"),
-                    type: "time",
+                    text: "Депозит",
+                    content: formatRoubles(
+                      booking.rent_term!.deposit_amount_total!
+                    ),
+                    type: "deposit",
                   },
                   {
                     text: "Сумма бронирования",
@@ -397,11 +399,9 @@ export const BookingDrawer = () => {
                     type: "price",
                   },
                   {
-                    text: "Депозит",
-                    content: formatRoubles(
-                      booking.rent_term!.deposit_amount_total!
-                    ),
-                    type: "deposit",
+                    text: "Дата окончания бронирования",
+                    content: format(booking.end_date!, "dd.MM.yyyy HH:mm"),
+                    type: "time",
                   },
                 ].map((x) => (
                   <div key={x.type}>

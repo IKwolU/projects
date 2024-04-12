@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "SBSansDisplay";
+  src: url("assets/fonts/SBSansDisplay-Regular.ttf") format("ttf"),
+    url("assets/fonts/SBSansDisplay-Regular.woff") format("woff"),
+    url("assets/fonts/SBSansDisplay-Regular.woff2") format("woff2"),
+    url("assets/fonts/SBSansDisplay-Regular.svg") format("svg"),
+    url("assets/fonts/SBSansDisplay-Regular.eot") format("embedded-opentype"); 
+}
+
+@font-face {
+  font-family: "SBSansDisplayBold";
+  src: url("assets/fonts/SBSansDisplay-Bold.ttf") format("ttf"),
+    url("assets/fonts/SBSansDisplay-Bold.woff") format("woff"),
+    url("assets/fonts/SBSansDisplay-Bold.woff2") format("woff2"),
+    url("assets/fonts/SBSansDisplay-Bold.svg") format("svg"),
+    url("assets/fonts/SBSansDisplay-Bold.eot") format("embedded-opentype"); 
+}
+
+@font-face {
+  font-family: "SBSansDisplaySemiBold";
+  src: url("assets/fonts/SBSansDisplay-SemiBold.ttf") format("ttf"),
+    url("assets/fonts/SBSansDisplay-SemiBold.woff") format("woff"),
+    url("assets/fonts/SBSansDisplay-SemiBold.woff2") format("woff2"),
+    url("assets/fonts/SBSansDisplay-SemiBold.svg") format("svg"),
+    url("assets/fonts/SBSansDisplay-SemiBold.eot") format("embedded-opentype"); 
+}
+
+@font-face {
+  font-family: "SBSansText";
+  src: url("assets/fonts/SBSansDisplay-Regular.ttf") format("ttf"),
+    url("assets/fonts/SBSansDisplay-Regular.woff") format("woff"),
+    url("assets/fonts/SBSansDisplay-Regular.woff2") format("woff2"),
+    url("assets/fonts/SBSansDisplay-Regular.svg") format("svg"),
+    url("assets/fonts/SBSansDisplay-Regular.eot") format("embedded-opentype");
+}
+
+html,
+body {
+  background-color: white;
+
+  color: #171717;
+}
+
+:root {
+  font-family: "SBSansDisplay";
+  line-height: 1.5;
+  font-weight: 500;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.text-sb-display {
+  font-family: "SBSansDisplay";
+}
+.text-sb-display-semi-bold {
+  font-family: "SBSansDisplaySemiBold"; 
+}
+.text-sb-display-bold {
+  font-family: "SBSansDisplayBold"; 
+}
+.text-sb {
+  font-family: "SBSansDisplay";
+}
+
+.bg-green {
+  background-color: #4cc98d;
+}
+
+.sb-blue {
+  background-color: #0DB1DE;
+}
+
+.bg-top {
+  background-image: url("/assets/shablon-top.png");
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+.bg {
+  background-color: #eff3ff;
+  background-image: url("/assets/shablon.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.bg-welcome {
+  background-color: #aae4e6;
+  background-image: url("/assets/welcome.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@layer base {
+  h1 {
+    @apply mb-1 mb-4 text-xl text-sb-display-bold;
+  }
+
+  h2 {
+    @apply mb-1 mb-3 text-sb-display-semi-bold;
+  }
+
+  h3 {
+    @apply mb-1 text-sm mb-3 text-sb-display-bold;
+  }
+
+  p {
+    @apply text-sm;
+  }
+
+  a {
+    @apply text-sm font-medium;
+  }
+}
+
+#app {
+  max-width: 450px;
+  margin: 0 auto;
+}

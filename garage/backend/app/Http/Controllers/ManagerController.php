@@ -1854,7 +1854,7 @@ public function assignCarsToRentTermManager(Request $request) {
 
             $existingCar = $cars->where('car_id', $carVin)->first();
 
-            if ($existingCar && ManagerController::checkCarDataIsFilled($existingCar)) {
+            if ($existingCar && $controller->checkCarDataIsFilled($existingCar)) {
                 $matchingStatusValue = null;
                 $matchingStatusId = null;
                 foreach ($statuses as $status) {
@@ -1866,9 +1866,27 @@ public function assignCarsToRentTermManager(Request $request) {
                 }
                 $existingCar->status = $matchingStatusValue;
                 $oldStatus = $existingCar->status_id;
-                $existingCar->status_id = $matchingStatusId;
-                $existingCar->old_status_id = $oldStatus;
-                $existingCar->save();
+                if ($oldStatus !== $matchingStatusId) {
+                    if ($existingCar->status === CarStatus::Booked->value) {
+                        $booking = Booking::where('car_id', $existingCar->id)->first();
+                        if ($matchingStatusValue === CarStatus::AvailableForBooking) {
+                            $booking->status = BookingStatus::UnBooked;
+                            $booking->save();
+                        }
+                        if ($matchingStatusValue === CarStatus::Rented) {
+                            $booking->status = BookingStatus::RentStart;
+                            $booking->save();
+                        }
+                    }
+                    if ($existingCar->status === CarStatus::Rented->value && $matchingStatusValue === CarStatus::AvailableForBooking) {
+                        $booking = Booking::where('car_id', $existingCar->id)->first();
+                        $booking->status = BookingStatus::RentOver;
+                        $booking->save();
+                    }
+                    $existingCar->status_id = $matchingStatusId;
+                    $existingCar->old_status_id = $oldStatus;
+                    $existingCar->save();
+                }
             }
         }
         return response()->json(['message' => 'Статусы успешно обновлены'], 200);

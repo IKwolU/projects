@@ -38,6 +38,9 @@ class CheckClientStatuses extends Command
      */
     public function handle()
     {
+        // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
+        set_time_limit(300);
+        // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         $parks = Park::whereNotNull('url')->get();
         $controller = new ManagerController;
         foreach ($parks as $park) {

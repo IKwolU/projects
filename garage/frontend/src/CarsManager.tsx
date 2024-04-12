@@ -101,20 +101,8 @@ export const CarsManager = () => {
   };
 
   const getStatuses = async () => {
-    try {
-      await client.getCarsCurrentStatusesFromClientManager();
-      window.location.href = "/cars";
-    } catch (error: any) {
-      if (error.errors) {
-        const errorMessages = Object.values(error.errors).flatMap(
-          (errorArray) => errorArray
-        );
-        const errorMessage = errorMessages.join("\n");
-        alert("An error occurred:\n" + errorMessage);
-      } else {
-        alert("An error occurred: " + error.message);
-      }
-    }
+    await client.getCarsCurrentStatusesFromClientManager();
+    window.location.href = "/cars";
   };
 
   const getCars = async () => {

@@ -1841,6 +1841,9 @@ public function assignCarsToRentTermManager(Request $request) {
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
+        // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
+        set_time_limit(300);
+        // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
         $statuses = Status::where('park_id', $request->park_id)->select('status_value', 'custom_status_name','id')->get();
         $cars = Car::where('park_id', $request->park_id)->get();

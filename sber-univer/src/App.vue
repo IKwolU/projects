@@ -114,6 +114,8 @@ const onboarded = localStorage.getItem("onboarded");
   <div v-bind:class="'flex justify-center max-w-[437px]'">
     <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full max-w-[437px] p-8'">
 
+      <audio autoplay  src="https://storage.yandexcloud.net/testingwow/intro.mp3" class="hiddenx"></audio>
+
       <img src="/assets/black-logo-sber.svg" v-bind:class="'w-56 pt-[105%] mb-16'" />
 
       <div v-bind:class="'text-2xl text-sb-display-semi-bold'">Исследуй место

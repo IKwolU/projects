@@ -1795,33 +1795,56 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
     {
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
             ->find($booking_id);
-        // if ($booking) {
-        //     $car = $booking->car;
-        //     $user = $booking->driver->user;
-        //     $park = $car->division->park;
-        //     $apiKey = $park->API_key;
-        //     $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
-        //     $customStatusName = $car->status->custom_status_name;
-        //     $tocken = $park->status_api_tocken;
-        //     if ($url !== null) {
-        //         $client = new Client();
-        //         $response = $client->post($url, [
-        //             'headers' => [
-        //                 'Authorization' => 'Bearer'.$tocken,
-        //             ],
-        //             'json' => [
-        //                 'vehicleNumber' => $car->license_plate,
-        //                 'comment' => $user->name,
-        //                 'phone' => $user->phone,
-        //             ],
-        //             'http_errors' => false,
-        //             ]);
-        //         $statusCode = $response->getStatusCode();
-        //         if ($statusCode === 500) {
-        //             $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
-        //         }
-        //     }
-        // }
+        if ($booking) {
+            $car = $booking->car;
+            $user = $booking->driver->user;
+            $park = $car->division->park;
+            $apiKey = $park->API_key;
+
+            $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
+            $customStatusName = $car->status->custom_status_name;
+            $tocken = $park->status_api_tocken;
+            if ($url !== null) {
+                $client = new Client();
+                $response = $client->post($url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer'.$tocken,
+                    ],
+                    'json' => [
+                        'vehicleNumber' => $car->license_plate,
+                        'comment' => $user->name,
+                        'phone' => $user->phone,
+                    ],
+                    'http_errors' => false,
+                    ]);
+                $statusCode = $response->getStatusCode();
+                if ($statusCode === 500) {
+                    $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+                }
+            }
+
+           if ($is_booked) {
+            $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
+            $customStatusName = $car->status->custom_status_name;
+            $tocken = $park->status_api_tocken;
+            if ($secondUrl !== null) {
+                $client = new Client();
+                $response = $client->post($secondUrl, [
+                    'headers' => [
+                        'Authorization' => 'Bearer'.$tocken,
+                    ],
+                    'json' => [
+                        'message' => 'Бронь',
+                    ],
+                    'http_errors' => false,
+                    ]);
+                $statusCode = $response->getStatusCode();
+                if ($statusCode === 500) {
+                    $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+                }
+            }
+           }
+        }
     }
 
 

@@ -1842,19 +1842,29 @@ public function assignCarsToRentTermManager(Request $request) {
  */
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
-        $statuses = Status::where('park_id', $request->park_id)->pluck('status_value', 'custom_status_name')->all();
+        $statuses = Status::where('park_id', $request->park_id)->select('status_value', 'custom_status_name','id')->get();
         $cars = Car::where('park_id', $request->park_id)->get();
 
         foreach ($clientCars as $car) {
             $carVin = $car->VIN;
             $carStatus = $car->Status;
 
-            $matchingStatusValue = array_search($carStatus, $statuses) !== false ? $carStatus : 0;
-
             $existingCar = $cars->where('car_id', $carVin)->first();
 
             if ($existingCar && ManagerController::checkCarDataIsFilled($existingCar)) {
+                $matchingStatusValue = null;
+                $matchingStatusId = null;
+                foreach ($statuses as $status) {
+                    if ($carStatus === $status->custom_status_name) {
+                        $matchingStatusValue = $status->status_value;
+                        $matchingStatusId = $status->id;
+                        break;
+                    }
+                }
                 $existingCar->status = $matchingStatusValue;
+                $oldStatus = $existingCar->status_id;
+                $existingCar->status_id = $matchingStatusId;
+                $existingCar->old_status_id = $oldStatus;
                 $existingCar->save();
             }
         }

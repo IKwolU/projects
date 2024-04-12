@@ -1558,7 +1558,7 @@ class ManagerController extends Controller
             foreach ($request->file('file') as $file) {
                 $name = uuid_create(UUID_TYPE_RANDOM);
                 $fileService->saveFile($file, $name);
-                $imageUrl = config('app.url') . "uploads/" . $name;
+                $imageUrl = config('app.url') . "/uploads/" . $name;
                 $images[] = stripslashes($imageUrl);
             }
             foreach ($cars as $car) {
@@ -1804,6 +1804,42 @@ public function assignCarsToRentTermManager(Request $request) {
     return response()->json(['message' => 'Cars assigned to rent term successfully'], 200);
 }
 
+/**
+ * Проверка статусов клиента
+ *
+ * Метод для проверки статусов клиента
+ *
+ * @OA\Get(
+ *     path="/manager/cars/statuses/client",
+ *     operationId="getCarsCurrentStatusesFromClientManager",
+ *     summary="Проверка статусов клиента",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
         $statuses = Status::where('park_id', $request->park_id)->pluck('status_value', 'custom_status_name')->all();
@@ -1813,7 +1849,7 @@ public function assignCarsToRentTermManager(Request $request) {
             $carVin = $car->VIN;
             $carStatus = $car->Status;
 
-            $matchingStatusValue = $statuses[$carStatus] ?? 0;
+            $matchingStatusValue = array_search($carStatus, $statuses) !== false ? $carStatus : 0;
 
             $existingCar = $cars->where('car_id', $carVin)->first();
 

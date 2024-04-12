@@ -102,7 +102,7 @@ export const CarsManager = () => {
 
   const getStatuses = async () => {
     try {
-      await client.pushStatusesFromParkClientManager();
+      await client.getCarsCurrentStatusesFromClientManager();
       window.location.href = "/cars";
     } catch (error: any) {
       if (error.errors) {

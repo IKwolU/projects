@@ -49,7 +49,10 @@ onMounted(() => {
   const urlParams = new URLSearchParams(window.location.search);
   const locationId = urlParams.get('id');
   if (locationId) {
-    startTheJourney(Number(locationId))
+    const startingPoint = Locations.find(x => x.id.toString() === locationId)!;
+    activeLocation.value = startingPoint;
+    currentImageUrl.value = Object.values(startingPoint.timestamps)[0];
+    previewedLocation.value = startingPoint;
   }
 });
 
@@ -78,14 +81,7 @@ const returnToMap = () => {
 const passOnboarding = () => {
   localStorage.setItem("onboarded", "true");
   window.location.reload();
-};
-
-const startTheJourney = (locationId: number = 1) => {
-  const startingPoint = Locations.find(x => x.id === locationId)!;
-  activeLocation.value = startingPoint;
-  currentImageUrl.value = Object.values(startingPoint.timestamps)[0];
-  previewedLocation.value = startingPoint;
-};
+}; 
 
 const visitNearby = (nearbyLocId: number) => {
   window.location.href = window.location.origin + `/?id=${nearbyLocId}`;
@@ -151,13 +147,14 @@ const onboarded = localStorage.getItem("onboarded");
 
             <div @click="closeTip"
               v-bind:class="'mt-12 bg-lime-400 rounded-xl px-8 py-4 text-sb-display-semi-bold text-дп text-center cursor-pointer'">
-
               ОК
             </div>
           </div>
 
         </div>
 
+
+        <img v-bind:src="'assets/close.svg'" @click="returnToMap" v-bind:class="'fixed top-2 right-2 z-[9001] w-12'" />
 
         <div class="relative w-full h-60 bg-top">
           <img v-for="(url, time) in activeLocation.timestamps" :key="time" v-bind:src="'assets/' + url" :class="{
@@ -190,7 +187,7 @@ const onboarded = localStorage.getItem("onboarded");
                 <div v-bind:class="'w-full h-16 absolute bottom-0 bg-gradient-to-t from-white to-white/30'">
                 </div>
 
-                <div v-bind:class="'max-h-44 overflow-y-scroll pb-4'">
+                <div v-bind:class="'max-h-64 overflow-y-scroll pb-4'">
                   <div v-for=" fact  in  activeLocation.facts " :key="fact"
                     v-bind:class="'text-slate-800 border-b border-b-lime-300 mb-5 text-sm pb-1'">
                     {{ fact }}
@@ -208,10 +205,10 @@ const onboarded = localStorage.getItem("onboarded");
 
 
             <div v-bind:class="'rounded space-y-2 mt-4'">
+              <div v-if="activeLocation.id !== 1" v-bind:class="'h-7 text-sm text-black underline text-left'"
+                @click="visitNearby(1)">К началу экскурсии</div>
               <div v-bind:class="'flex justify-between w-full items-center'">
                 <h2>Локации рядом:</h2>
-                <div v-if="activeLocation.id !== 1" v-bind:class="'h-7 text-sm text-sky-400 underline'"
-                  @click="startTheJourney()">К началу экскурсии</div>
               </div>
               <div v-bind:class="'flex space-between space-x-2 items-center'">
                 <div v-for=" (nearbyLocId, i)  in  activeLocation.nearbyLocations " :key="nearbyLocId"

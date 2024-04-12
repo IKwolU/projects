@@ -36,6 +36,7 @@ import { cn } from "@/lib/utils";
 import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
 import { Command, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Terms } from "./Terms";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -224,4 +225,3 @@ const Menu = ({ user }: { user: User }) => (
   </div>
 );
 
-const Terms = () => <div>xxx</div>;

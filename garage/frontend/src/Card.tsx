@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 
 export const Card = ({ car }: { car: Cars3 }) => {
@@ -29,7 +28,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}
       >
-        <div className="relative max-w-[352px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
+        <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
               {car.park_name}
@@ -63,7 +62,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
             <div className="pl-1 my-2 text-lg md:text-xl md:mb-4 text-center">
               <h1 className="">
                 {`${car.brand} ${car.model}`} {car.year_produced}
-              </h1> 
+              </h1>
             </div>
             <div className="flex justify-center items-center space-x-2 -mt-4 mb-4">
               <p className="text-base">Пробег</p>
@@ -144,7 +143,13 @@ export const Card = ({ car }: { car: Cars3 }) => {
           <div>
             <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
               <div className="flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
-                <Button variant='outline' full className="sm:max-w-[250px] mx-auto">Назад</Button>
+                <Button
+                  variant="outline"
+                  full
+                  className="sm:max-w-[250px] mx-auto"
+                >
+                  Назад
+                </Button>
               </div>
             </div>
             <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
@@ -152,7 +157,10 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 <div className="relative w-32 h-full bg-white">
                   <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
                     <div className="flex items-center justify-center w-16 h-16 border-2 border-gray rounded-full">
-                      <FontAwesomeIcon className="h-10 text-gray" icon={faChevronLeft} />
+                      <img
+                        className="h-10 -ml-1"
+                        src={ChevoronLeft}
+                      />
                     </div>
                   </div>
                 </div>

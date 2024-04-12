@@ -312,7 +312,7 @@ export const BookingDrawer = () => {
             )}
           </div>
           <div className="hidden space-x-6 lg:flex">
-            <div className="w-1/2 px-4 py-4 bg-white rounded-xl">
+            <div className="w-1/2 p-4 bg-white rounded-xl">
               {[
                 { status: BookingStatus.Booked, text: "Текущая бронь" },
                 { status: BookingStatus.RentStart, text: "Текущая аренда" },

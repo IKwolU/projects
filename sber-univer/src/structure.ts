@@ -7,9 +7,12 @@ export default [
     mapLocationName: "Главный корпус",
     timestamps: {
       "00:00": "glavkorp/floor1/0.jpg",
-      "00:09": "glavkorp/floor1/1.jpg",
-      "00:14": "glavkorp/floor1/2.jpg",
-      "00:27": "glavkorp/floor1/3.jpg",
+      "00:14": "glavkorp/floor1/1.jpg",
+      "00:16": "glavkorp/floor1/2.jpg",
+      "00:54": "glavkorp/floor1/1.jpg",
+      "01:12": "glavkorp/floor1/2.jpg",
+      "02:31": "glavkorp/floor1/1.jpg",
+      "03:13": "glavkorp/floor1/3.jpg",
       "04:15": "glavkorp/floor1/4.jpg",
       "04:31": "glavkorp/floor1/5.jpg",
       "04:55": "glavkorp/floor1/6.jpg",
@@ -65,6 +68,14 @@ export default [
       "00:12": "glavkorp/floor3/1.jpg",
       "01:01": "glavkorp/floor3/2.jpg",
       "04:42": "glavkorp/floor3/3.jpg",
+      "04:43": "glavkorp/floor3/4.jpg",
+      "04:44": "glavkorp/floor3/5.jpg",
+      "04:45": "glavkorp/floor3/3.jpg",
+      "04:46": "glavkorp/floor3/4.jpg",
+      "04:47": "glavkorp/floor3/5.jpg",
+      "04:48": "glavkorp/floor3/3.jpg",
+      "04:49": "glavkorp/floor3/4.jpg",
+      "04:50": "glavkorp/floor3/5.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/003.%20%D0%A2%D1%80%D0%B5%D1%82%D0%B8%D0%B9%20%D1%8D%D1%82%D0%B0%D0%B6.mp3",
     facts: [
@@ -84,13 +95,14 @@ export default [
     timestamps: {
       "00:00": "gallery/0.jpg",
       "01:29": "gallery/1.jpg",
-      "01:48": "gallery/2.jpg",
+      "01:49": "gallery/2.jpg",
       "02:26": "gallery/3.jpg",
       "02:58": "gallery/4.jpg",
+      "03:05": "gallery/5.jpg",
     },
-    tips: {
-      "00:01": "Встаньте лицом к парку и направляйтесь в левую часть галереи",
-    },
+    // tips: {
+    //   "00:01": "Встаньте лицом к парку и направляйтесь в левую часть галереи",
+    // },
     audio: "https://storage.yandexcloud.net/testingwow/004.%20%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F.mp3",
     facts: [
       "Ученые доказали, что хождение босиком развивает мозг, улучшает работу лимфатической системы, стабилизирует эмоции.",
@@ -126,8 +138,7 @@ export default [
     locationName: "Лабиринт",
     pauseOnTip: true,
     timestamps: {
-      "00:00": "maze/0.jpg",
-      "03:47": "maze/1.jpg",
+      "00:00": "maze/1.jpg"
     },
     tips: {
       "03:46":
@@ -179,6 +190,7 @@ export default [
       "01:23": "sport/4.jpg",
       "01:26": "sport/5.jpg",
       "01:34": "sport/6.jpg",
+      "01:35": "sport/0.jpg",
     },
     audio: "https://storage.yandexcloud.net/testingwow/008.%20%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81.mp3",
     facts: ["Длина бассейна составляет 24,5 метра, вместо стандартных 25."],
@@ -230,7 +242,7 @@ export default [
     locationName: "Японский сад",
     timestamps: {
       "00:00": "japan/0.jpg",
-      "00:16": "japan/1.jpg",
+      "01:16": "japan/1.jpg",
       "01:21": "japan/2.jpg",
       "01:27": "japan/3.jpg",
     },

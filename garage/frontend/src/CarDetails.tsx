@@ -115,9 +115,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         ],
       })
     );
-    ym("reachGoal", "tobook_tc", 96683881, {
-      userId: user.id,
-    });
+    ym("reachGoal", "tobook_tc", 96683881);
     setIsBooked(true);
     // } else {
     //   navigate("account");
@@ -159,22 +157,22 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
 
               <div className="space-y-2">
                 <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
-                <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular text-gray">
+                <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular">
                   {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
                   <span>Пробег: {car.mileage} км</span>
                 </p>
                 <div className="flex flex-col md:flex-row md:flex-wrap">
                   <div className="md:w-1/2 md:space-y-2 ">
                     <Separator className="my-1" />
-                    <p className="flex justify-between pr-4 text-base md:text-lg font-regular text-gray">
+                    <p className="flex justify-between pr-4 text-base md:text-lg font-regular">
                       <span>Парк: {car.park_name}</span>
                     </p>
                     <Separator className="my-1" />
-                    <p className="text-base md:text-lg font-regular text-gray">
+                    <p className="text-base md:text-lg font-regular">
                       Адрес: {car.division?.address}
                     </p>
                     <Separator className="my-1" />
-                    <p className="text-base md:text-lg font-regular text-gray">
+                    <p className="text-base md:text-lg font-regular">
                       Телефон: {car.division?.phone}
                     </p>
                     <Separator className="my-1" />
@@ -441,7 +439,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         Название парка: {car.park_name}
                       </div>
                       <Separator className="my-2" />
-                      <div className="flex items-start justify-between">
+                      <div className="flex justify-between items-start">
                         <div>
                           Адрес парка:
                           <a
@@ -455,13 +453,9 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             />
                             {car.division!.address!}
                           </a>
-                          <div className="">
-                            <p className="mt-4 mb-2 text-base">Телефон</p>
-                            <p>{car.division!.phone}</p>
-                          </div>
-                        </div>
-                        <div className="mb-2 text-base">
-                          <div className="mb-2 text-base">График работы </div>
+                      <Separator className="mb-2 mt-4" />
+                        <div className="text-base mb-2">
+                          <div className="mb-2 text-base">График работы: </div>
                           {car.working_hours?.map((x, i) => (
                             <div
                               key={`hour_${i}`}
@@ -471,12 +465,18 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                               {x}
                             </div>
                           ))}
+                          <Separator className="my-2" />
+                          <div className="">
+                            <p className="text-base mb-2">Телефон:</p>
+                            <p>{car.division!.phone}</p>
+                          </div>
+                        </div>
                         </div>
                       </div>
-                      <Separator className="my-4" />
+                      <Separator className="my-2" />
                       <Collapsible>
                         <CollapsibleTrigger className="flex justify-between w-full mb-2 focus:outline-none md:text-lg">
-                          <p>О парке</p>
+                          <div className="text-base">  О парке</div>
                           <FontAwesomeIcon icon={faChevronDown} />
                         </CollapsibleTrigger>
                         <CollapsibleContent>

@@ -199,7 +199,7 @@ export const Finder = () => {
     <>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
       <div className="">
-        <div className="flex justify-between mx-auto my-2 sm:justify-start h-[75px]">
+        <div className="flex my-2 space-x-1">
           {[
             [CarClass.Economy, econom, "Эконом"],
             [CarClass.Comfort, comfort, "Комфорт"],
@@ -220,14 +220,13 @@ export const Finder = () => {
                   })
                 }
                 key={carClass}
-                className={`cursor-pointer w-20 md:w-32 flex flex-col items-center bg-grey rounded-xl transition-all h-full pb-2  ${
-                  isActive ? "shadow border-2 border-yellow" : " scale-90"
+                className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
+                  // isActive ? "shadow border-2 border-gray" : ""
+                  isActive ?"bg-white shadow" : "bg-grey"
                 }`}
               >
-                <img alt="" className="w-auto h-full rounded-xl" src={img} />
-                <span className="-mt-4 text-xs font-semibold text-gray">
-                  {title}
-                </span>
+                <img alt="" className="w-12 rounded-xl" style={{ margin: "-4px" }} src={img} />
+                <span className="text-black pb-2" style={{ margin: "-8px" }}>{title}</span>
               </div>
             );
           })}

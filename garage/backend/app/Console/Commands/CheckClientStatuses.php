@@ -40,8 +40,7 @@ class CheckClientStatuses extends Command
      */
     public function handle()
     {
-
-
+        Log::info('Старт');
         // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         set_time_limit(300);
         // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
@@ -72,6 +71,7 @@ class CheckClientStatuses extends Command
                             foreach ($statuses as $status) {
 
                                 if ($carStatus === $status->custom_status_name) {
+
                                     $matchingStatusValue = $status->status_value;
                                     $matchingStatusId = $status->id;
                                     break;
@@ -80,6 +80,7 @@ class CheckClientStatuses extends Command
                             $existingCar->status = $matchingStatusValue;
                             $oldStatus = $existingCar->status_id;
                             if ($oldStatus !== $matchingStatusId) {
+                                Log::info('новый статус' . $carStatus . 'значение: ' . $matchingStatusValue);
                                 if ($existingCar->status === CarStatus::Booked->value) {
                                     $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
                                     if ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value) {
@@ -104,7 +105,6 @@ class CheckClientStatuses extends Command
                     }
                 }
             }
-            return response()->json();
         } catch (\Exception $e) {
             Log::error('Произошла ошибка: ' . $e->getMessage());
         }

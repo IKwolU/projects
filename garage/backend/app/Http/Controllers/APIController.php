@@ -1820,10 +1820,11 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
                         $repeat=true;
                     }
                 }
-            if ($is_booked && !$count) {
+            if (!$count) {
+                $message = $is_booked ?'Бронь, от пользователя: '.$user->phone.'; г/н: '.$car->license_plate:'Отмена брони: '.$user->phone.'; г/н: '.$car->license_plate;
                 $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
                 $response = Http::withToken($token)->post($secondUrl, [
-                    'message' => 'Бронь, от пользователя: '.$user->phone.'; г/н: '.$car->license_plate,
+                    'message' => $message,
                 ]);
                 $statusCode = $response->getStatusCode();
             }

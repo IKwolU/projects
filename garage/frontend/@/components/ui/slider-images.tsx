@@ -49,30 +49,20 @@ const SliderImages = ({
     }
   };
 
+  const imagesSlised =
+    images.length > 3 ? images.slice(0, 3) : images.slice(0, images.length);
+
   return (
     <>
       <div className={`relative h-64 sm:h-80 ${classImages}`}>
-        {type === "click" && (
+        {type === "click" && imagesSlised.length > 1 && (
           <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
         )}
         {!openIsAffordable && (
-          <Slider ref={sliderRef} {...settings}>
-            {images.map((image, index) => (
-              <div key={index}>
-                <img
-                  src={image}
-                  alt={`Slide ${index}`}
-                  className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
-                />
-              </div>
-            ))}
-          </Slider>
-        )}
-        <FullScreenImages
-          trigger={
-            openIsAffordable ? (
+          <div className="">
+            {imagesSlised.length > 1 && (
               <Slider ref={sliderRef} {...settings}>
-                {images.slice(0, 3).map((image, index) => (
+                {imagesSlised.map((image, index) => (
                   <div key={index}>
                     <img
                       src={image}
@@ -82,6 +72,45 @@ const SliderImages = ({
                   </div>
                 ))}
               </Slider>
+            )}
+            {imagesSlised.length === 1 && (
+              <div>
+                <img
+                  src={imagesSlised[0]}
+                  alt={`Slide ${0}`}
+                  className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                />
+              </div>
+            )}
+          </div>
+        )}
+        <FullScreenImages
+          trigger={
+            openIsAffordable ? (
+              <div className="">
+                {imagesSlised.length > 1 && (
+                  <Slider ref={sliderRef} {...settings}>
+                    {imagesSlised.map((image, index) => (
+                      <div key={index}>
+                        <img
+                          src={image}
+                          alt={`Slide ${index}`}
+                          className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                )}
+                {imagesSlised.length === 1 && (
+                  <div>
+                    <img
+                      src={imagesSlised[0]}
+                      alt={`Slide ${0}`}
+                      className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                    />
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="hidden"></div>
             )
@@ -89,52 +118,56 @@ const SliderImages = ({
           fullscreenIndex={fullscreenIndex}
           images={images}
         />
-        <div
-          className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 ${classPaginationImages} ${
-            type === "hover" && "h-full"
-          }`}
-        >
-          {type === "click" &&
-            images.slice(0, 3).map((x, i) => (
-              <div
-                key={`image_${i}`}
-                className={`w-full flex items-center cursor-pointer bg-white rounded-xl transition-all h-14 sm:h-28 lg:h-24  ${
-                  i === activeIndex
-                    ? "shadow border-2 border-yellow"
-                    : "scale-90"
-                } `}
-                onClick={() => handlePaginationMouseEnterOrClick(i)}
-                style={{
-                  cursor: isTransitioning.current ? "default" : "default",
-                }}
-              >
-                <img
-                  className="object-cover w-full h-full cursor-pointer rounded-xl "
-                  src={x}
-                  alt=""
-                />
-              </div>
-            ))}
-          {type === "hover" && (
-            <div className="flex w-full h-full max-h-full p-3 transition-opacity opacity-0 hover:opacity-100 ">
-              {[0, 1, 2].map((i) => (
+        {imagesSlised.length > 1 && (
+          <div
+            className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 ${classPaginationImages} ${
+              type === "hover" && "h-full"
+            }`}
+          >
+            {type === "click" &&
+              imagesSlised.map((x, i) => (
                 <div
                   key={`image_${i}`}
-                  className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10  `}
-                  onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
+                  className={`w-full flex items-center cursor-pointer bg-white rounded-xl transition-all h-14 sm:h-28 lg:h-24  ${
+                    i === activeIndex
+                      ? "shadow border-2 border-yellow"
+                      : "scale-90"
+                  } `}
+                  onClick={() => handlePaginationMouseEnterOrClick(i)}
+                  style={{
+                    cursor: isTransitioning.current ? "default" : "default",
+                  }}
                 >
-                  <div
-                    className={`w-full rounded-xl h-1 ${
-                      i === activeIndex
-                        ? "shadow  bg-white"
-                        : "scale-90 bg-black bg-opacity-45"
-                    }`}
-                  ></div>
+                  <img
+                    className="object-cover w-full h-full cursor-pointer rounded-xl "
+                    src={x}
+                    alt=""
+                  />
                 </div>
               ))}
-            </div>
-          )}
-        </div>
+            {type === "hover" && (
+              <div className="flex w-full h-full max-h-full p-3 transition-opacity opacity-0 hover:opacity-100 ">
+                {imagesSlised.map((image, i) => (
+                  <div
+                    key={`image_${i}`}
+                    className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10  `}
+                    onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
+                  >
+                    {image && (
+                      <div
+                        className={`w-full rounded-xl h-1 ${
+                          i === activeIndex
+                            ? "shadow  bg-white"
+                            : "scale-90 bg-black bg-opacity-45"
+                        }`}
+                      ></div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

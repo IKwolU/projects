@@ -1796,13 +1796,14 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
     public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
     {
         $repeat = false;
-        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
+        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city', 'car.rentTerm')
             ->find($booking_id);
         if ($booking) {
             $car = $booking->car;
             $user = $booking->driver->user;
             $park = $car->division->park;
             $apiKey = $park->API_key;
+            $schema= Schema::find($booking->schema_id);
             $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
             $customStatusName = $CarStatus->custom_status_name;
@@ -1821,7 +1822,23 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
                     }
                 }
             if (!$count) {
-                $message = $is_booked ?'Бронь, от пользователя: '.$user->phone.'; г/н: '.$car->license_plate:'Отмена брони: '.$user->phone.'; г/н: '.$car->license_plate;
+                $message = $is_booked ?
+                'Новое бронирование №: ' . $booking->id . '' . "\n\n" .
+                $car->division->city->name . "\n\n" .
+                'Автопарк ' . $car->division->park->park_name . '' . "\n\n" .
+                'Колонна ' . $car->division->name . '' . "\n\n" .
+                'Авто ' . $car->brand . ' ' . $car->model . '' . "\n\n" .
+                'Гос номер ' . $car->license_plate . '' . "\n\n" .
+                'Условия аренды ' . $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n\n" .
+                'Депозит ' . $car->rentTerm->deposit_amount_total . '/' . $car->rentTerm->deposit_amount_daily . '' . "\n\n" .
+                'Тел ' . $user->phone . '' :
+                'Отмена бронирования №: ' . $booking->id . '' . "\n\n" .
+                $car->division->city->name . "\n\n" .
+                'Автопарк ' . $car->division->park->park_name . '' . "\n\n" .
+                'Колонна ' . $car->division->name . '' . "\n\n" .
+                'Авто ' . $car->brand . ' ' . $car->model . '' . "\n\n" .
+                'Гос номер ' . $car->license_plate . '' . "\n\n" .
+                'Тел ' . $user->phone . '';
                 $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
                 $response = Http::withToken($token)->post($secondUrl, [
                     'message' => $message,

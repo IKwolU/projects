@@ -3175,9 +3175,9 @@ export enum DriverDocumentType {
 
 /** The unique identifier of a product in our catalog */
 export enum FuelType {
-    Propane = "Propane",
-    Methane = "Methane",
     Gasoline = "Gasoline",
+    Methane = "Methane",
+    Propane = "Propane",
     Electric = "Electric",
 }
 
@@ -4634,7 +4634,7 @@ export class Body19 implements IBody19 {
             }
             this.sorting = _data["sorting"];
             this.car_vin = _data["car_vin"];
-            this.schemas = _data["Schemas"] ? Schemas2.fromJS(_data["Schemas"]) : <any>undefined;
+            this.schemas = _data["schemas"] ? Schemas2.fromJS(_data["schemas"]) : <any>undefined;
             this.is_buyout_possible = _data["is_buyout_possible"];
             if (Array.isArray(_data["model"])) {
                 this.model = [] as any;
@@ -4685,7 +4685,7 @@ export class Body19 implements IBody19 {
         }
         data["sorting"] = this.sorting;
         data["car_vin"] = this.car_vin;
-        data["Schemas"] = this.schemas ? this.schemas.toJSON() : <any>undefined;
+        data["schemas"] = this.schemas ? this.schemas.toJSON() : <any>undefined;
         data["is_buyout_possible"] = this.is_buyout_possible;
         if (Array.isArray(this.model)) {
             data["model"] = [];

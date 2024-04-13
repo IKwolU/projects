@@ -256,14 +256,14 @@ export const RentTermManager = () => {
                     title: `Рабочих дней ${schema?.working_days || ""}`,
                     type: "number",
                     placeholder: "Введите значение",
-                    param: "non_working_days",
+                    param: "working_days",
                     value: schema.non_working_days || 0,
                   },
                   {
                     title: `Нерабочих дней ${schema?.non_working_days || ""}`,
                     type: "number",
                     placeholder: "Введите значение",
-                    param: "working_days",
+                    param: "non_working_days",
                     value: schema.working_days || 0,
                   },
                 ].map((input, index) => (

@@ -51,7 +51,7 @@ class CarsController extends Controller
      *             @OA\Property(property="search", type="array", description="Марка или модель автомобиля",@OA\Items()),
      *             @OA\Property(property="sorting", type="string", description="сортировка, asc или desc"),
      *             @OA\Property(property="car_vin", type="string", description="VIN авто"),
-     *             @OA\Property(property="Schemas", type="object", description="Данные о сроке аренды",
+     *             @OA\Property(property="schemas", type="object", description="Данные о сроке аренды",
      *                 @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),
      *                 @OA\Property(property="working_days", type="integer", description="Количество рабочих дней"),
      *             ),
@@ -137,7 +137,7 @@ class CarsController extends Controller
         $search = $request->search;
         $carVin = $request->car_vin;
         $cityId = $city->id;
-        $rentTerm = $request->Schemas;
+        $rentTerm = $request->schemas;
         if (!$city) {
             return response()->json(['error' => 'Город не найден'], 404);
         }
@@ -195,11 +195,10 @@ class CarsController extends Controller
         //         });
         //     }
         // }
-        if ($fuelType) {
+        if ($fuelType!==null) {
             $carsQuery->where('fuel_type', $fuelType);
         }
-
-        if ($transmissionType) {
+        if ($transmissionType!==null) {
             $carsQuery->where('transmission_type', $transmissionType);
         }
 
@@ -323,14 +322,14 @@ class CarsController extends Controller
         foreach ($uniqueCars as $car) {
             $car['variants'] = $similarCars->filter(function ($similarCar) use ($car) {
                 return $similarCar->division_id == $car->division_id &&
-                       $similarCar->park_id == $car->park_id &&
-                       $similarCar->tariff_id == $car->tariff_id &&
-                       $similarCar->rent_term_id == $car->rent_term_id &&
-                       $similarCar->fuel_type == $car->fuel_type &&
-                       $similarCar->transmission_type == $car->transmission_type &&
-                       $similarCar->brand == $car->brand &&
-                       $similarCar->model == $car->model &&
-                       $similarCar->year_produced == $car->year_produced;
+                    $similarCar->park_id == $car->park_id &&
+                    $similarCar->tariff_id == $car->tariff_id &&
+                    $similarCar->rent_term_id == $car->rent_term_id &&
+                    $similarCar->fuel_type == $car->fuel_type &&
+                    $similarCar->transmission_type == $car->transmission_type &&
+                    $similarCar->brand == $car->brand &&
+                    $similarCar->model == $car->model &&
+                    $similarCar->year_produced == $car->year_produced;
             })->map(function ($similarCar) {
                 return [
                     'id' => $similarCar->id,

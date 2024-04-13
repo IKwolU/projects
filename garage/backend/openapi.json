@@ -2996,7 +2996,7 @@
                                         "description": "VIN авто",
                                         "type": "string"
                                     },
-                                    "Schemas": {
+                                    "schemas": {
                                         "description": "Данные о сроке аренды",
                                         "properties": {
                                             "non_working_days": {
@@ -6731,9 +6731,9 @@
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
                 "enum": [
-                    "Propane",
-                    "Methane",
                     "Gasoline",
+                    "Methane",
+                    "Propane",
                     "Electric"
                 ]
             },

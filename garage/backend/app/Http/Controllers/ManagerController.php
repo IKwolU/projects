@@ -19,6 +19,7 @@ use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ManagerController extends Controller
 {
@@ -1843,9 +1844,11 @@ public function assignCarsToRentTermManager(Request $request) {
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
     public function getCarsCurrentStatusesFromClientManager(Request $request) {
+
         // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         set_time_limit(300);
         // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
+        Log::info('getCarsCurrentStatusesFromClientManager started');
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
         $statuses = Status::where('park_id', $request->park_id)->select('status_value', 'custom_status_name','id')->get();
         $cars = Car::where('park_id', $request->park_id)->get();
@@ -1869,19 +1872,19 @@ public function assignCarsToRentTermManager(Request $request) {
                 $oldStatus = $existingCar->status_id;
                 if ($oldStatus !== $matchingStatusId) {
                     if ($existingCar->status === CarStatus::Booked->value) {
-                        $booking = Booking::where('car_id', $existingCar->id)->first();
-                        if ($matchingStatusValue === CarStatus::AvailableForBooking) {
-                            $booking->status = BookingStatus::UnBooked;
+                        $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
+                        if ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value) {
+                            $booking->status = BookingStatus::UnBooked->value;
                             $booking->save();
                         }
-                        if ($matchingStatusValue === CarStatus::Rented) {
-                            $booking->status = BookingStatus::RentStart;
+                        if ($matchingStatusValue === CarStatus::Rented->value) {
+                            $booking->status = BookingStatus::RentStart->value;
                             $booking->save();
                         }
                     }
-                    if ($existingCar->status === CarStatus::Rented->value && $matchingStatusValue === CarStatus::AvailableForBooking) {
-                        $booking = Booking::where('car_id', $existingCar->id)->first();
-                        $booking->status = BookingStatus::RentOver;
+                    if ($existingCar->status === CarStatus::Rented->value && ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value)) {
+                        $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
+                        $booking->status = BookingStatus::RentOver->value;
                         $booking->save();
                     }
                     $existingCar->status_id = $matchingStatusId;

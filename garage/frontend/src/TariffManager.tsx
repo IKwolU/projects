@@ -35,7 +35,10 @@ export const TariffManager = () => {
 
   const createTariff = async () => {
     let criminal_ids = newTariff.criminal_ids as any;
-    criminal_ids = criminal_ids.split(",").map((x: any) => Number(x));
+    criminal_ids =
+      criminal_ids.lenth > 0
+        ? criminal_ids.split(",").map((x: any) => Number(x))
+        : [];
     try {
       await client.createTariffManager(
         new Body32({

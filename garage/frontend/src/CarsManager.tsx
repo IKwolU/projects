@@ -8,8 +8,11 @@ import {
   Body37,
   CarStatus,
   Cars4,
+  Divisions,
+  FuelType,
   IPark2,
   Statuses,
+  TransmissionType,
 } from "./api-client";
 import Resizer from "react-image-file-resizer";
 import { useEffect, useState } from "react";
@@ -21,6 +24,10 @@ import { Input } from "@/components/ui/input";
 import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
 import FileInput from "@/components/ui/file-input";
+import {
+  getFuelTypeDisplayName,
+  getTransmissionDisplayName,
+} from "@/lib/utils";
 
 export const CarsManager = () => {
   const [park, setPark] = useRecoilState(parkAtom);
@@ -28,6 +35,12 @@ export const CarsManager = () => {
   const [ids, setIds] = useState<number[]>([]);
   const [showFullInfo, setShowFullInfo] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTransmission, setSearchTransmission] = useState<string | null>(
+    null
+  );
+  const [searchFuel, setSearchFuel] = useState<string | null>(null);
+  const [searchDivision, setSearchDivision] = useState<number | null>(null);
+  const [searchYear, setSearchYear] = useState(0);
   const [photos, setPhotos] = useState<File[]>([]);
   const [divisionId, setDivisionId] = useState<number | undefined>(
     park.divisions![0]?.id || undefined
@@ -53,12 +66,64 @@ export const CarsManager = () => {
     return 0;
   });
 
-  const SearchedSortedCars = sortedCars.filter(
-    (car: Cars4) =>
-      car.license_plate!.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      car.model!.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      car.brand!.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const excludedFields = [
+    "status_id",
+    "old_status_id",
+    "created_at",
+    "updated_at",
+  ];
+
+  const filterBySearchTerm = (car: Cars4) => {
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      car.license_plate!.toLowerCase().includes(searchTermLower) ||
+      car.model!.toLowerCase().includes(searchTermLower) ||
+      car.brand!.toLowerCase().includes(searchTermLower)
+    );
+  };
+
+  const filterByDivision = (car: Cars4) => {
+    if (searchDivision === -1) {
+      return !car.division_id;
+    }
+    if (searchDivision) {
+      return car.division_id === searchDivision;
+    }
+    return true;
+  };
+
+  const filterByFuel = (car: Cars4) => {
+    return searchFuel ? car.fuel_type === searchFuel : true;
+  };
+
+  const filterByTransmission = (car: Cars4) => {
+    return searchTransmission
+      ? car.transmission_type === searchTransmission
+      : true;
+  };
+
+  const filterByYear = (car: Cars4) => {
+    return searchYear ? car.year_produced! === searchYear : true;
+  };
+
+  const filterByFullInfo = (car: Cars4, excludedFields: string[]) => {
+    return showFullInfo
+      ? true
+      : Object.keys(car)
+          .filter((key) => !excludedFields.includes(key))
+          .some((key) => car[key] === null);
+  };
+
+  const SearchedSortedCars = sortedCars.filter((car: Cars4) => {
+    return (
+      filterBySearchTerm(car) &&
+      filterByDivision(car) &&
+      filterByFuel(car) &&
+      filterByTransmission(car) &&
+      filterByYear(car) &&
+      filterByFullInfo(car, excludedFields)
+    );
+  });
 
   const getPark = async () => {
     const parkData: IPark2 = await client.getParkManager();
@@ -391,26 +456,105 @@ export const CarsManager = () => {
       <div className="flex space-x-1">
         <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
           <div className="flex flex-col items-center justify-between gap-1">
-            <Button
-              variant={"manager"}
-              onClick={() => setShowFullInfo(!showFullInfo)}
-            >
-              {showFullInfo ? "Скрыть заполненные" : "Показать все авто"}
-            </Button>
-            <Input
-              className="my-1"
-              placeholder="Модель, марка, г/н"
-              type="text"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            ></Input>
+            <div className="flex flex-wrap gap-1">
+              <Button
+                variant={"manager"}
+                onClick={() =>
+                  setIds([
+                    ...ids.filter(
+                      (y) =>
+                        !SearchedSortedCars.map((item) => item!.id!).includes(y)
+                    ),
+                    ...SearchedSortedCars.map((item) => item!.id!),
+                  ])
+                }
+              >
+                Выбрать все
+              </Button>
+              <Button
+                variant={"manager"}
+                onClick={() =>
+                  setIds([
+                    ...ids.filter(
+                      (item) =>
+                        !SearchedSortedCars.map((item) => item!.id!).includes(
+                          item
+                        )
+                    ),
+                  ])
+                }
+              >
+                Отменить все
+              </Button>
+              <Button
+                variant={"manager"}
+                onClick={() => setShowFullInfo(!showFullInfo)}
+              >
+                {showFullInfo ? "Скрыть заполненные" : "Показать все авто"}
+              </Button>
+            </div>
+            <div className="flex w-full gap-1">
+              <Input
+                className="w-1/2 my-1"
+                placeholder="Модель, марка, г/н"
+                type="text"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              ></Input>
+              <Input
+                className="w-1/2 my-1"
+                placeholder="год выпуска"
+                type="number"
+                onChange={(e) => setSearchYear(Number(e.target.value))}
+              ></Input>
+            </div>
+            <div className="flex w-full gap-1">
+              <select
+                onChange={(e) => setSearchTransmission(e.target.value)}
+                name=""
+                id=""
+                className="p-2 border-2 border-grey rounded-xl"
+              >
+                {" "}
+                <option value="">Все трансмиссии</option>
+                {Object.keys(TransmissionType).map((type: any) => (
+                  <option key={type} value={type}>
+                    {getTransmissionDisplayName(type)}
+                  </option>
+                ))}
+              </select>
+              <select
+                onChange={(e) => setSearchFuel(e.target.value)}
+                name=""
+                id=""
+                className="p-2 border-2 border-grey rounded-xl"
+              >
+                {" "}
+                <option value="">Любое топливо</option>
+                {Object.keys(FuelType).map((type: any) => (
+                  <option key={type} value={type}>
+                    {getFuelTypeDisplayName(type)}
+                  </option>
+                ))}
+              </select>
+              <select
+                onChange={(e) => setSearchDivision(Number(e.target.value))}
+                name=""
+                id=""
+                className="p-2 border-2 border-grey rounded-xl"
+              >
+                {" "}
+                <option value="">Все подразделения</option>
+                <option value="-1">Без подразделения</option>
+                {park.divisions?.map((division: Divisions) => {
+                  return (
+                    <option key={"division" + division.id} value={division.id}>
+                      {division.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
             {SearchedSortedCars!.map((car) => {
-              const excludedFields = [
-                "status_id",
-                "old_status_id",
-                "created_at",
-                "updated_at",
-              ];
-
               const infoIsNotFull = Object.keys(car)
                 .filter((key) => !excludedFields.includes(key))
                 .some((key) => car[key] === null);
@@ -423,45 +567,44 @@ export const CarsManager = () => {
 
               return (
                 <>
-                  {(showFullInfo || infoIsNotFull) && (
-                    <div key={car.id} className="w-full">
-                      <div className="">
-                        <div className="flex justify-between px-2">
-                          <div className="flex items-center gap-1">
-                            {hidden && (
-                              <FontAwesomeIcon
-                                icon={faTriangleExclamation}
-                                className="text-yellow"
-                              />
-                            )}
-                            {infoIsNotFull && (
-                              <FontAwesomeIcon
-                                icon={faTriangleExclamation}
-                                className="text-red"
-                              />
-                            )}
-                            <div
-                              className={`${
-                                selected?.id === car.id ? "text-yellow" : ""
-                              }`}
-                              onClick={() => setSelected(car!)}
-                            >
-                              {car.brand} {car.model} {car.license_plate} -{" "}
-                              {status}
-                            </div>
+                  <div key={car.id} className="w-full">
+                    <div className="">
+                      <div className="flex justify-between px-2">
+                        <div className="flex items-center gap-1">
+                          {hidden && (
+                            <FontAwesomeIcon
+                              icon={faTriangleExclamation}
+                              className="text-yellow"
+                            />
+                          )}
+                          {infoIsNotFull && (
+                            <FontAwesomeIcon
+                              icon={faTriangleExclamation}
+                              className="text-red"
+                            />
+                          )}
+                          <div
+                            className={`${
+                              selected?.id === car.id ? "text-yellow" : ""
+                            }`}
+                            onClick={() => setSelected(car!)}
+                          >
+                            {car.brand} {car.model} {car.license_plate} -{" "}
+                            {status}
                           </div>
-                          <Input
-                            className="flex w-6 m-0"
-                            type="checkbox"
-                            onChange={(e) =>
-                              handleCheckboxes(e.target.checked, car!.id!)
-                            }
-                          ></Input>
                         </div>
+                        <Input
+                          className="flex w-6 m-0"
+                          type="checkbox"
+                          onChange={(e) =>
+                            handleCheckboxes(e.target.checked, car!.id!)
+                          }
+                          checked={ids.includes(car.id!)}
+                        ></Input>
                       </div>
-                      <Separator className="my-1" />
                     </div>
-                  )}
+                    <Separator className="my-1" />
+                  </div>
                 </>
               );
             })}
@@ -474,6 +617,7 @@ export const CarsManager = () => {
             <p>Г/н: {selected.license_plate}</p>
             <p>Марка: {selected.brand}</p>
             <p>Модель: {selected.model}</p>
+            <p>Год производства: {selected.year_produced || "еще нет"}</p>
             <p>
               Подразделение:{" "}
               {park.divisions!.find((x) => x.id === selected.division_id!)
@@ -500,6 +644,15 @@ export const CarsManager = () => {
                 "еще нет"}
             </p>
             <p>Статус: {selected.status || "еще нет"}</p>
+            <p>
+              Топливо: {getFuelTypeDisplayName(selected.fuel_type) || "еще нет"}
+            </p>
+            <p>
+              Трансмиссия:{" "}
+              {getTransmissionDisplayName(selected.transmission_type) ||
+                "еще нет"}
+            </p>
+            <p>Год производства: {selected.year_produced || "еще нет"}</p>
           </div>
         )}
       </div>

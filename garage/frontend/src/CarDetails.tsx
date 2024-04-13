@@ -197,7 +197,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     О парке ▼
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <div className="mb-2 text-sm text-gray-700 md:text-base">
+                    <div className="mb-2 text-sm text-gray-700 whitespace-pre-line md:text-base">
                       {car.about}
                     </div>
                   </CollapsibleContent>
@@ -295,7 +295,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         ${activeBooking.car?.brand}
                         ${activeBooking.car?.model}`}
                         text={`Отменить и забронировать ${car.brand} ${car.model}
-                   `}
+                    `}
                         type="green"
                         accept={book}
                         cancel={() => {}}
@@ -482,7 +482,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                           <FontAwesomeIcon icon={faChevronDown} />
                         </CollapsibleTrigger>
                         <CollapsibleContent>
-                          <div className="mb-2 text-sm text-gray-700 md:text-base">
+                          <div className="mb-2 text-sm text-gray-700 whitespace-pre-line md:text-base">
                             {car.about}
                           </div>
                         </CollapsibleContent>

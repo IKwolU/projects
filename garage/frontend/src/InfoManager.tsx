@@ -87,14 +87,17 @@ export const InfoManager = () => {
         )}
         <div className="">
           <h4>Описание парка:</h4>
-          <p>{park.about ? park.about : "Описания еще нет"}</p>
-          <Input
+          <p className="whitespace-pre-line">
+            {park.about ? park.about : "Описания еще нет"}
+          </p>
+          <textarea
+            className="flex w-full resize-y"
+            style={{ whiteSpace: "pre-line" }}
             onChange={(e) =>
               setParkInfo([{ ...parkInfo[0], about: e.target.value }])
             }
-            type="textarea"
             placeholder="Введите новое значение"
-          ></Input>
+          ></textarea>
         </div>
         <div className="">
           <h4>Комиссия парка:</h4>

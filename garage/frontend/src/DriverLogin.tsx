@@ -181,7 +181,10 @@ export const DriverLogin = () => {
           {codeRequested && (
             <div className="flex flex-col my-4 text-base text-center">
               Нажимая &laquo;Войти&raquo;, вы соглашаетесь с{" "}
-              <a className="text-base text-blue-800 underline" href={window.location.origin + "/termsofuse"}>
+              <a
+                className="text-base text-blue-800 underline"
+                href={window.location.origin + "/termsofuse"}
+              >
                 условиями договора
               </a>
             </div>

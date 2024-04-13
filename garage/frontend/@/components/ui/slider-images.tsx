@@ -116,7 +116,7 @@ const SliderImages = ({
             )
           }
           fullscreenIndex={fullscreenIndex}
-          images={images}
+          images={imagesSlised}
         />
         {imagesSlised.length > 1 && (
           <div

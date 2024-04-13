@@ -31,7 +31,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
-              {car.park_name}
+              Парк: &laquo;{car.park_name}&raquo;
             </div>
             {car.variants!.length > 1 && (
               <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg right-1 text-gray">
@@ -72,22 +72,24 @@ export const Card = ({ car }: { car: Cars3 }) => {
             </div>
 
             <div className="flex flex-wrap justify-start gap-2 mb-2">
-              <div className="flex flex-col justify-start gap-1">
-                <div>
-                  <Badge variant="card" className="px-0 py-0 bg-grey ">
-                    <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                      <span className="text-zinc-400">Депозит</span>
-                      <span className="ml-1">
-                        {formatRoubles(car.rent_term!.deposit_amount_total!)}
+              {Number(car.rent_term!.deposit_amount_total) !== 0 && (
+                <div className="flex flex-col justify-start gap-1">
+                  <div>
+                    <Badge variant="card" className="px-0 py-0 bg-grey ">
+                      <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                        <span className="text-zinc-400">Депозит</span>
+                        <span className="ml-1">
+                          {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                        </span>
                       </span>
-                    </span>
-                    <span className="flex items-center h-full px-2 ">
-                      {formatRoubles(car.rent_term!.deposit_amount_daily!)}
-                      /день
-                    </span>
-                  </Badge>
+                      <span className="flex items-center h-full px-2 ">
+                        {formatRoubles(car.rent_term!.deposit_amount_daily!)}
+                        /день
+                      </span>
+                    </Badge>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="">
                 <Badge variant="card">
                   <span className="mr-1 text-zinc-400">Комиссия</span>{" "}

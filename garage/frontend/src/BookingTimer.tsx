@@ -67,7 +67,8 @@ export const BookingTimer = () => {
       <div className="">
         <Animation />
       </div>
-      <div className="pl-1 mt-2 text-lg md:text-xl text-center">
+      <div className="pl-1 mt-2 text-lg text-center md:text-xl">
+        <p className="w-full text-lg text-center">Вы забронировали</p>
         <h1 className="">
           {`${activeBooking.car!.brand} ${activeBooking.car!.model}`}{" "}
           {activeBooking.car!.year_produced}

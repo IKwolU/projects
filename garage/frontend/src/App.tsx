@@ -77,7 +77,7 @@ function App() {
       )}
       {(!user || user.user_type === UserType.Driver) && (
         <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
-          <div className="flex items-end justify-end my-2">
+          <div className="flex items-end justify-end mb-2">
             <FontAwesomeIcon
               icon={faLocationDot}
               className="h-4 mr-2 sm:h-5 text-gray mb-0.5"
@@ -212,15 +212,18 @@ const Menu = ({ user }: { user: User }) => (
       </Popover>
     )}
     {!user && (
-      <Link className="flex items-center hover:text-gray" to="login/driver">
-        <Button variant="black" style={{ width: "105px", flexShrink: 0 }}>
+      <Link
+        className="flex items-center mt-2 hover:text-gray"
+        to="login/driver"
+      >
+        <Button variant="outline" style={{ width: "105px", flexShrink: 0 }}>
           {" "}
           <div className="flex items-center justify-center">
             <FontAwesomeIcon
               icon={faArrowRightToBracket}
-              className="h-4 mr-2 text-white cursor-pointer sm:h-5"
+              className="h-4 mr-2 cursor-pointer sm:h-5"
             />
-            <span className="text-white sm:text-base">Войти</span>
+            <span className=" sm:text-base">Войти</span>
           </div>
         </Button>
       </Link>

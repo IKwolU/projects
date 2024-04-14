@@ -18587,7 +18587,7 @@ export class Car2 implements ICar2 {
     brand?: string;
     model?: string;
     year_produced?: number;
-    car_id?: string;
+    vin?: string;
     images?: string[];
     status?: number;
     status_id?: number;
@@ -18625,7 +18625,7 @@ export class Car2 implements ICar2 {
             this.brand = _data["brand"];
             this.model = _data["model"];
             this.year_produced = _data["year_produced"];
-            this.car_id = _data["car_id"];
+            this.vin = _data["vin"];
             if (Array.isArray(_data["images"])) {
                 this.images = [] as any;
                 for (let item of _data["images"])
@@ -18665,7 +18665,7 @@ export class Car2 implements ICar2 {
         data["brand"] = this.brand;
         data["model"] = this.model;
         data["year_produced"] = this.year_produced;
-        data["car_id"] = this.car_id;
+        data["vin"] = this.vin;
         if (Array.isArray(this.images)) {
             data["images"] = [];
             for (let item of this.images)
@@ -18694,7 +18694,7 @@ export interface ICar2 {
     brand?: string;
     model?: string;
     year_produced?: number;
-    car_id?: string;
+    vin?: string;
     images?: string[];
     status?: number;
     status_id?: number;

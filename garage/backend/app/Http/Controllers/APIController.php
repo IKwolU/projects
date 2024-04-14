@@ -1796,7 +1796,7 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
     public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
     {
         $repeat = false;
-        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city', 'car.rentTerm')
+        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
             ->find($booking_id);
         if ($booking) {
             $car = $booking->car;
@@ -1823,22 +1823,12 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
                 }
             if (!$count) {
                 $message = $is_booked ?
-                'Новое бронирование №: ' . $booking->id . '' . "\n\n" .
-                $car->division->city->name . "\n\n" .
-                'Автопарк ' . $car->division->park->park_name . '' . "\n\n" .
-                'Колонна ' . $car->division->name . '' . "\n\n" .
-                'Авто ' . $car->brand . ' ' . $car->model . '' . "\n\n" .
-                'Гос номер ' . $car->license_plate . '' . "\n\n" .
-                'Условия аренды ' . $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n\n" .
-                'Депозит ' . $car->rentTerm->deposit_amount_total . '/' . $car->rentTerm->deposit_amount_daily . '' . "\n\n" .
-                'Тел ' . $user->phone . '' :
-                'Отмена бронирования №: ' . $booking->id . '' . "\n\n" .
-                $car->division->city->name . "\n\n" .
-                'Автопарк ' . $car->division->park->park_name . '' . "\n\n" .
-                'Колонна ' . $car->division->name . '' . "\n\n" .
-                'Авто ' . $car->brand . ' ' . $car->model . '' . "\n\n" .
-                'Гос номер ' . $car->license_plate . '' . "\n\n" .
-                'Тел ' . $user->phone . '';
+                'Новое бронирование №: ' . $booking->id . '' . "\n":
+                'Отмена бронирования №: ' . $booking->id . '' . "\n";
+                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
+                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
+                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
+                'Тел ' . $user->phone;
                 $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
                 $response = Http::withToken($token)->post($secondUrl, [
                     'message' => $message,

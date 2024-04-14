@@ -161,7 +161,8 @@ const Menu = ({ user }: { user: User }) => (
           {/* <Separator /> */}
           <Link
             className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
-            to=""
+            target="_blank"
+            to="https://forms.yandex.ru/cloud/6617d44102848f0fb4b9bbf5/"
           >
             {/* <FontAwesomeIcon
               icon={faPhoneVolume}

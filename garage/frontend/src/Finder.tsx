@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import econom from "./assets/car_icons/econom.png";
 import comfort from "./assets/car_icons/comfort.png";
 import comfortPlus from "./assets/car_icons/comfort-plus.png";
+import allClasses from "./assets/car_icons/all-cars.png";
 import business from "./assets/car_icons/business.png";
 import { useEffect, useState } from "react";
 import OnMap from "@/components/ui/on-map";
@@ -134,7 +135,7 @@ export const Finder = () => {
           fuel_type: filters.fuelType || undefined,
           transmission_type: filters.transmissionType || undefined,
           car_class: filters.carClass,
-          limit: 50,
+          limit: 500,
           offset: 0,
           sorting: filters.sorting,
           commission:
@@ -195,11 +196,45 @@ export const Finder = () => {
     [searchParkTerm]
   );
 
+  useEffect(() => {
+    if (filters.carClass.length === Object.keys(CarClass).length) {
+      setFilters({
+        ...filters,
+        carClass: [],
+      });
+    }
+  }, [filters]);
+
   return (
     <>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
       <div className="">
         <div className="flex my-2 space-x-1">
+          <div
+            onClick={() =>
+              setFilters({
+                ...filters,
+                carClass: [],
+              })
+            }
+            className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
+              // isActive ? "shadow border-2 border-gray" : ""
+              filters.carClass.length === 0 ? "bg-white shadow" : "bg-grey"
+            }`}
+          >
+            <img
+              alt=""
+              className="w-12 rounded-xl"
+              style={{ margin: "-4px" }}
+              src={allClasses}
+            />
+            <span
+              className="pb-2 text-[10px] sm:text-base text-black"
+              style={{ margin: "-8px" }}
+            >
+              Все тарифы
+            </span>
+          </div>
           {[
             [CarClass.Economy, econom, "Эконом"],
             [CarClass.Comfort, comfort, "Комфорт"],
@@ -231,7 +266,10 @@ export const Finder = () => {
                   style={{ margin: "-4px" }}
                   src={img}
                 />
-                <span className="pb-2 text-black" style={{ margin: "-8px" }}>
+                <span
+                  className="pb-2 text-black text-[10px] sm:text-base"
+                  style={{ margin: "-8px" }}
+                >
                   {title}
                 </span>
               </div>

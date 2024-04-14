@@ -1853,7 +1853,14 @@ public function assignCarsToRentTermManager(Request $request) {
         $statuses = Status::where('park_id', $request->park_id)->select('status_value', 'custom_status_name','id')->get();
         $cars = Car::where('park_id', $request->park_id)->get();
 
+        usort($clientCars, function($a, $b) {
+            return strtotime($b->STSIssueDate) - strtotime($a->STSIssueDate);
+        });
+
         foreach ($clientCars as $car) {
+            if (!$car->Activity) {
+                continue;
+            }
             $carVin = $car->VIN;
             $carStatus = $car->Status;
             $existingCar = $cars->where('car_id', $carVin)->first();

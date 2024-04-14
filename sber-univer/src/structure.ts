@@ -7,12 +7,14 @@ export default [
     mapLocationName: "Главный корпус",
     timestamps: {
       "00:00": "glavkorp/floor1/0.jpg",
-      "00:14": "glavkorp/floor1/1.jpg",
-      "00:16": "glavkorp/floor1/2.jpg",
-      "00:54": "glavkorp/floor1/1.jpg",
+      "00:09": "glavkorp/floor1/1.jpg",
+      "00:14": "glavkorp/floor1/2.jpg",
+      "00:28": "glavkorp/floor1/1.jpg",
+      "00:54": "glavkorp/floor1/2.jpg",
+      "01:08": "glavkorp/floor1/1.jpg",
       "01:12": "glavkorp/floor1/2.jpg",
       "02:31": "glavkorp/floor1/1.jpg",
-      "03:13": "glavkorp/floor1/3.jpg",
+      "02:33": "glavkorp/floor1/3.jpg",
       "04:15": "glavkorp/floor1/4.jpg",
       "04:31": "glavkorp/floor1/5.jpg",
       "04:55": "glavkorp/floor1/6.jpg",
@@ -138,7 +140,8 @@ export default [
     locationName: "Лабиринт",
     pauseOnTip: true,
     timestamps: {
-      "00:00": "maze/1.jpg"
+      "00:00": "maze/0.jpg",
+      "03:47": "maze/1.jpg",
     },
     tips: {
       "03:46":
@@ -160,8 +163,7 @@ export default [
     coords: { x: 7, y: 54 },
     locationName: "Центральный парк",
     timestamps: {
-      "00:00": "park/0.jpg",
-      "00:07": "park/1.jpg",
+      "00:00": "park/1.jpg",
       "02:18": "park/2.jpg",
       "03:39": "park/3.jpg",
       "04:25": "park/4.jpg",

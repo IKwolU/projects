@@ -10,9 +10,7 @@ import {
   Cars,
   Body3,
   Body5,
-  Body6,
-  Division3,
-  IDivisions2,
+  Body6, 
   DayOfWeek,
   IBody5,
   CarClass,
@@ -56,7 +54,7 @@ export const ParkManager = () => {
   const [city] = useRecoilState(cityAtom);
   const [park, setPark] = useState<IPark2 | undefined>();
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
-  const [newDivisionPhone, setNewDivisionPhone] = useState("");
+  const [_, setNewDivisionPhone] = useState("");
   const [newDivision, setNewDivision] = useState<IBody3>({
     city: city,
     coords: "",
@@ -125,7 +123,7 @@ export const ParkManager = () => {
         {
           ...newDivision,
           id: newDivisionData.id,
-        },
+        } as Divisions2,
       ],
     });
   };
@@ -145,7 +143,7 @@ export const ParkManager = () => {
         {
           ...newTariff,
           id: newTariffData.id,
-        },
+        } as Tariffs,
       ],
     });
   };
@@ -162,7 +160,7 @@ export const ParkManager = () => {
           newRentTerm.rent_term_id
             ? rent_term.id !== newRentTerm.rent_term_id
             : rent_term
-        ),
+        ) as any,
         {
           ...newRentTerm,
           id: newTariffData.id,
@@ -1148,7 +1146,7 @@ export const ParkManager = () => {
   return (
     <>
       <div className="flex justify-end h-full mt-4">
-        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1104px]">
+        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
           <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
             BeeBeep
           </div>

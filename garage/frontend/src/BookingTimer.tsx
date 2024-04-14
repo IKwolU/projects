@@ -67,6 +67,12 @@ export const BookingTimer = () => {
       <div className="">
         <Animation />
       </div>
+      <div className="pl-1 mt-2 text-lg md:text-xl text-center">
+        <h1 className="">
+          {`${activeBooking.car!.brand} ${activeBooking.car!.model}`}{" "}
+          {activeBooking.car!.year_produced}
+        </h1>
+      </div>
       <div className="flex flex-col mb-2 text-lg text-center sm:flex-row sm:items-center sm:gap-2">
         До конца бронирования осталось:{" "}
         <span>{getFormattedTimerValue(days, hours, minutes, seconds)}</span>
@@ -77,8 +83,8 @@ export const BookingTimer = () => {
         )}
         {location.pathname === "/bookings" && (
           <p className="w-full text-center">
-            Нажмите на адрес, чтобы узнать маршрут до пункта проката, или нажмите
-            на кнопку для звонка, если хотите связаться с нами.
+            Нажмите на адрес, чтобы узнать маршрут до пункта проката, или
+            нажмите на кнопку для звонка, если хотите связаться с нами.
           </p>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import logo from "./assets/mon-garage.svg";
 import "./App.css";
 import { Link, Route, Routes } from "react-router-dom";
@@ -35,6 +35,7 @@ import { Terms } from "./Terms";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
+  const [loaded, setLoaded] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -45,12 +46,25 @@ function App() {
           const userData = await client.getUser();
 
           setUser(userData.user!);
-        } catch (error) {}
+        } catch (error) {
+          //
+        } finally {
+          setLoaded(true);
+        }
       }
     };
 
     checkAuth();
   }, []);
+
+  if (!loaded) {
+    return (
+      <>
+        <div className="">Loading...</div>
+      </>
+    );
+  }
+
   return (
     <>
       <YMInitializer

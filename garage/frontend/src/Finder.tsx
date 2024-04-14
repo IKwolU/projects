@@ -417,7 +417,7 @@ export const Finder = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-auto ">
+                    <div className="flex flex-wrap items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto ">
                       <div
                         className="w-full p-1 text-xl text-black cursor-pointer "
                         onClick={() => {
@@ -617,7 +617,7 @@ export const Finder = () => {
                   onChange={(e) => setSearchParkTerm(e.target.value)}
                 />
               </div>
-              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 overflow-y-auto ">
+              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto">
                 <div
                   className="w-full p-1 text-xl text-black cursor-pointer"
                   onClick={() => {

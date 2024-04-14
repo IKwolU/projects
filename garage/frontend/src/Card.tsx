@@ -31,7 +31,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
-              {car.park_name}
+              Парк: &laquo;{car.park_name}&raquo;
             </div>
             {car.variants!.length > 1 && (
               <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg right-1 text-gray">
@@ -43,7 +43,9 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 <img
                   alt=""
                   key={`${x}${i}`}
-                  className="object-cover w-10/12 rounded-sm h-52"
+                  className={`object-cover  rounded-sm h-52 ${
+                    car.images && car.images.length > 1 ? "w-10/12" : "w-full"
+                  }`}
                   src={x}
                 />
               ))}
@@ -59,33 +61,35 @@ export const Card = ({ car }: { car: Cars3 }) => {
             </div>
           </div>
           <div className="px-1">
-            <div className="pl-1 my-2 text-lg md:text-xl md:mb-4 text-center">
+            <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-4">
               <h1 className="">
                 {`${car.brand} ${car.model}`} {car.year_produced}
               </h1>
             </div>
-            <div className="flex justify-center items-center space-x-2 -mt-4 mb-4">
+            <div className="flex items-center justify-center mb-4 -mt-4 space-x-2">
               <p className="text-base">Пробег</p>
               <p>{car!.variants![0].mileage}</p>
             </div>
 
             <div className="flex flex-wrap justify-start gap-2 mb-2">
-              <div className="flex flex-col justify-start gap-1">
-                <div>
-                  <Badge variant="card" className="px-0 py-0 bg-grey ">
-                    <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                      <span className="text-zinc-400">Депозит</span>
-                      <span className="ml-1">
-                        {formatRoubles(car.rent_term!.deposit_amount_total!)}
+              {Number(car.rent_term!.deposit_amount_total) !== 0 && (
+                <div className="flex flex-col justify-start gap-1">
+                  <div>
+                    <Badge variant="card" className="px-0 py-0 bg-grey ">
+                      <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                        <span className="text-zinc-400">Депозит</span>
+                        <span className="ml-1">
+                          {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                        </span>
                       </span>
-                    </span>
-                    <span className="flex items-center h-full px-2 ">
-                      {formatRoubles(car.rent_term!.deposit_amount_daily!)}
-                      /день
-                    </span>
-                  </Badge>
+                      <span className="flex items-center h-full px-2 ">
+                        {formatRoubles(car.rent_term!.deposit_amount_daily!)}
+                        /день
+                      </span>
+                    </Badge>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="">
                 <Badge variant="card">
                   <span className="mr-1 text-zinc-400">Комиссия</span>{" "}
@@ -156,11 +160,8 @@ export const Card = ({ car }: { car: Cars3 }) => {
               <div className="flex justify-center max-w-[1208px] mx-auto ">
                 <div className="relative w-32 h-full bg-white">
                   <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-gray rounded-full">
-                      <img
-                        className="h-10 -ml-1"
-                        src={ChevoronLeft}
-                      />
+                    <div className="flex items-center justify-center w-16 h-16 border-2 rounded-full border-gray">
+                      <img className="h-10 -ml-1" src={ChevoronLeft} />
                     </div>
                   </div>
                 </div>

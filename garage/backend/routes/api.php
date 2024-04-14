@@ -56,8 +56,14 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::put('manager/cars/booking/replace', [ManagerController::class, 'BookReplaceManager']);
     Route::post('manager/cars/client', [ManagerController::class, 'pushCarsFromParkClientManager']);
     Route::post('manager/statuses/client', [ManagerController::class, 'pushStatusesFromParkClientManager']);
+    Route::post('manager/cars/photos', [ManagerController::class, 'pushPhotosToCarsManager']);
+    Route::post('manager/cars/division', [ManagerController::class, 'assignCarsToDivisionManager']);
+    Route::post('manager/cars/rent-term', [ManagerController::class, 'assignCarsToRentTermManager']);
+    Route::post('manager/cars/tariff', [ManagerController::class, 'assignCarsToTariffManager']);
     Route::get('manager/statuses', [ManagerController::class, 'getParkStatusesForCarsManager']);
     Route::get('manager/cars/statuses/client', [ManagerController::class, 'getCarsCurrentStatusesFromClientManager']);
     Route::put('manager/status', [ManagerController::class, 'changeParkStatusManager']);
     Route::put('manager/auth/data', [ManagerController::class, 'pushAuthDataManager']);
+    Route::get('manager/bookings', [ManagerController::class, 'getParkBookingsManager']);
+    Route::post('manager/test', [ManagerController::class, 'test']);
 });

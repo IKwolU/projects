@@ -224,15 +224,33 @@ class DriverController extends Controller
         if (!$schema) {
             return response()->json(['message' => 'Схема аренды не найдена'], 404);
         }
-        $car = Car::where('id', $request->id)->with('booking', 'division', 'division.park')->first();
+        $selectedCar = Car::where('id', $request->id)->with('booking', 'division', 'division.park')->first();
 
-        if (!$car) {
+        if (!$selectedCar) {
             return response()->json(['message' => 'Машина не найдена'], 404);
         }
 
-        if ($car->status !== CarStatus::AvailableForBooking->value) {
-            return response()->json(['message' => 'Машина уже забронирована'], 409);
+        if ($selectedCar->status !== CarStatus::AvailableForBooking->value) {
+            $car = Car::where('division_id', $selectedCar->division_id)
+                ->where('park_id', $selectedCar->park_id)
+                ->where('tariff_id', $selectedCar->tariff_id)
+                ->where('rent_term_id', $selectedCar->rent_term_id)
+                ->where('fuel_type', $selectedCar->fuel_type)
+                ->where('transmission_type', $selectedCar->transmission_type)
+                ->where('brand', $selectedCar->brand)
+                ->where('model', $selectedCar->model)
+                ->where('year_produced', $selectedCar->year_produced)
+                ->where('images', $selectedCar->images)
+                ->where('status', CarStatus::AvailableForBooking->value)
+                ->with('booking', 'division', 'division.park')->first();
+            if (!$car) {
+                return response()->json(['message' => 'Машина не найдена'], 404);
+            }
+        } else {
+            $car = $selectedCar;
         }
+
+
 
         $checkBook = Booking::where('driver_id', $user->driver->id)
             ->where('status', BookingStatus::Booked->value)

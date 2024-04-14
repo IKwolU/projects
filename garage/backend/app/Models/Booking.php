@@ -21,4 +21,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Driver::class);
     }
+
+    public function schema()
+    {
+        return $this->belongsTo(Schema::class);
+    }
 }

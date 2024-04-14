@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import {  User } from "./api-client";
+import { IPark2, User } from "./api-client";
 
 const userAtom = atom<User>({
   key: "userAtom",
@@ -9,4 +9,8 @@ const cityAtom = atom<string>({
   key: "cityAtom",
   default: "Москва",
 });
-export { userAtom, cityAtom};
+const parkAtom = atom<IPark2>({
+  key: "parkAtom",
+  default: undefined,
+});
+export { userAtom, cityAtom, parkAtom };

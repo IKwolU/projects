@@ -25,9 +25,11 @@ use Carbon\Carbon;
 use App\Http\Controllers\ParserController;
 use App\Models\Referral;
 use App\Models\Schema;
+use App\Models\Status;
 use App\Rules\WorkingHoursRule;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 
 /**
@@ -1791,42 +1793,51 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом изменения статуса бронирования
      */
 
-    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null)
+    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
     {
-        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.rentTerm.schemas')
+        $repeat = false;
+        $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
             ->find($booking_id);
-        // if ($booking) {
-        //     $car = $booking->car;
-        //     $user = $booking->driver->user;
-        //     $park = $car->division->park;
-        //     $apiKey = $park->API_key;
-        //     $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
-        //     $customStatusName = $car->status->custom_status_name;
-        //     $tocken = $park->status_api_tocken;
-        //     if ($url !== null) {
-        //         $client = new Client();
-        //         $response = $client->post($url, [
-        //             'headers' => [
-        //                 'Authorization' => 'Bearer'.$tocken,
-        //             ],
-        //             'json' => [
-        //                 'vehicleNumber' => $car->license_plate,
-        //                 'comment' => $user->name,
-        //                 'phone' => $user->phone,
-        //             ],
-        //             'http_errors' => false,
-        //             ]);
-        //         $statusCode = $response->getStatusCode();
-        //         if ($statusCode === 500) {
-        //             $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
-        //         }
-        //     }
-        // }
+        if ($booking) {
+            $car = $booking->car;
+            $user = $booking->driver->user;
+            $park = $car->division->park;
+            $apiKey = $park->API_key;
+            $schema= Schema::find($booking->schema_id);
+            $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
+            $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
+            $customStatusName = $CarStatus->custom_status_name;
+            $token = $park->status_api_tocken;
+            $response = Http::withToken($token)->post($url, [
+                'vehicleNumber' => $car->license_plate,
+                'comment' => $user->phone,
+                'statusName' => $customStatusName,
+            ]);
+                $statusCode = $response->getStatusCode();
+                if ($statusCode === 500) {
+
+                    if ($count<5) {
+                        $count++;
+                        $repeat=true;
+                    }
+                }
+            if (!$count) {
+                $message = $is_booked ?
+                'Новое бронирование №: ' . $booking->id . '' . "\n":
+                'Отмена бронирования №: ' . $booking->id . '' . "\n";
+                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
+                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
+                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
+                'Тел ' . $user->phone;
+                $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
+                $response = Http::withToken($token)->post($secondUrl, [
+                    'message' => $message,
+                ]);
+                $statusCode = $response->getStatusCode();
+            }
+            if ($repeat) {
+            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+            }
+        }
     }
-
-
-
-
-
-
 }

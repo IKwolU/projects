@@ -118,7 +118,7 @@ const OnMap = ({ cars }: OnMapProps) => {
       </YMaps>
       {isClicked && (
         <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
-          <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[764px] p-4 mx-auto overflow-y-auto pb-16">
+          <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[816px] p-4 mx-auto overflow-y-auto pb-16">
             <div className="flex flex-wrap gap-2 md:justify-start ">
               {clickedCars.map((car) => {
                 return (
@@ -129,17 +129,10 @@ const OnMap = ({ cars }: OnMapProps) => {
               })}
             </div>
           </div>
-          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[744px] mx-auto">
+          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[816px] mx-auto z-[50]">
             <Button
-              className="sm:max-w-[250px] mx-auto"
-              onClick={() => setIsClicked(false)}
-            >
-              Назад
-            </Button>
-          </div>
-          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[744px] mx-auto">
-            <Button
-              className="sm:max-w-[250px] mx-auto"
+              variant={"outline"}
+              className="sm:w-[250px] mx-auto"
               onClick={() => setIsClicked(false)}
             >
               Назад

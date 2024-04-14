@@ -139,21 +139,20 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   return (
     <>
       {isBooked && <BookingAlert />}
-      <div className="pb-10 lg:hidden">
-        {car.variants!.map((x: Variants, i: number) => (
-          <div key={i} className="mb-2">
-            <div
-              className={`flex flex-col justify-center p-2  overflow-y-auto bg-white rounded-xl ${
-                car.variants!.length === 1 && "pb-16"
-              }`}
-            >
-              <SliderImages
-                type="click"
-                openIsAffordable={true}
-                images={x.images!}
-                classImages="md:h-92"
-                classPaginationImages=""
-              />
+      <div className="pb-28 lg:hidden">
+        <div className="mb-2">
+          <div
+            className={`flex flex-col justify-center p-2  overflow-y-auto bg-white rounded-xl ${
+              car.variants!.length === 1 && "pb-16"
+            }`}
+          >
+            <SliderImages
+              type="click"
+              openIsAffordable={true}
+              images={car.images!}
+              classImages="md:h-92"
+              classPaginationImages=""
+            />
 
               <div className="space-y-2">
                 <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
@@ -188,126 +187,129 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             {x}
                           </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <Collapsible>
+                <CollapsibleTrigger className="mb-2 focus:outline-none md:text-lg">
+                  О парке ▼
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="mb-2 text-sm text-gray-700 whitespace-pre-line md:text-base">
+                    {car.about}
                   </div>
-                </div>
-                <Collapsible>
-                  <CollapsibleTrigger className="mb-2 focus:outline-none md:text-lg">
-                    О парке ▼
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="mb-2 text-sm text-gray-700 md:text-base">
-                      {car.about}
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+            <Separator />
+            <div className="flex flex-wrap gap-2 mt-2 mb-2 md:mb-4">
+              <div>
+                <Badge variant="card" className="px-0 py-0 bg-grey ">
+                  <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
+                    Депозит{" "}
+                    {formatRoubles(car.rent_term!.deposit_amount_total!)}
+                  </span>
+                  <span className="flex items-center h-full px-2 md:text-lg">
+                    {formatRoubles(car.rent_term!.deposit_amount_daily!)}
+                    /день
+                  </span>
+                </Badge>
               </div>
-              <Separator />
-              <div className="flex flex-wrap gap-2 mt-2 mb-2 md:mb-4">
-                <div>
-                  <Badge variant="card" className="px-0 py-0 bg-grey ">
-                    <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
-                      Депозит{" "}
-                      {formatRoubles(car.rent_term!.deposit_amount_total!)}
-                    </span>
-                    <span className="flex items-center h-full px-2 md:text-lg">
-                      {formatRoubles(car.rent_term!.deposit_amount_daily!)}
-                      /день
-                    </span>
-                  </Badge>
-                </div>
+              <div className="">
+                <Badge variant="card" className="md:text-lg">
+                  Комиссия {car.commission} %
+                </Badge>{" "}
+              </div>
+
+              <div className="">
+                {" "}
+                <Badge variant="card" className="md:text-lg">
+                  {getTransmissionDisplayName(car.transmission_type)}
+                </Badge>{" "}
+              </div>
+              <div className="">
+                <Badge variant="card" className=" md:text-lg">
+                  {getFuelTypeDisplayName(car.fuel_type)}
+                </Badge>
+              </div>
+              {!!car.rent_term?.is_buyout_possible && (
                 <div className="">
                   <Badge variant="card" className="md:text-lg">
-                    Комиссия {car.commission} %
-                  </Badge>{" "}
-                </div>
-
-                <div className="">
-                  {" "}
-                  <Badge variant="card" className="md:text-lg">
-                    {getTransmissionDisplayName(car.transmission_type)}
-                  </Badge>{" "}
-                </div>
-                <div className="">
-                  <Badge variant="card" className=" md:text-lg">
-                    {getFuelTypeDisplayName(car.fuel_type)}
+                    Выкуп автомобиля
                   </Badge>
                 </div>
-                <div className="">
-                  {!!car.rent_term?.is_buyout_possible && (
-                    <Badge variant="card" className="md:text-lg">
-                      Выкуп автомобиля
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-1 pb-1">
-                {schemas!
-                  .slice(0, 3)
-                  .map((currentSchema: Schema, i: number) => (
-                    <Badge
-                      key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                      className="flex-col items-start justify-start flex-grow h-full px-2 text-lg font-semibold md:text-lg text-wrap"
-                      variant="schema"
-                    >
-                      {`${formatRoubles(currentSchema.daily_amount!)}`}
-                      <div className="text-xs font-medium text-black md:text-lg">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                    </Badge>
-                  ))}
-              </div>
-              <div className={car.variants!.length === 1 ? "" : ""}>
-                <div className="grid grid-cols-2 h-16 w-full max-w-[800px] bg-white mx-auto sm:px-40 space-x-2">
-                  <Select
-                    onValueChange={(value) => handleTariffChange(value)}
-                    defaultValue={`${schemas![0].id}`}
-                  >
-                    <SelectTrigger className="h-12 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
-                      <SelectValue placeholder="Схема аренды" />
-                    </SelectTrigger>
-                    <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
-                      {schemas!.map((currentSchema: Schema, i: number) => (
-                        <SelectItem
-                          className="mb-1 border rounded-xl border-zinc-300 "
-                          key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                          value={`${currentSchema.id}`}
-                        >
-                          {`${formatRoubles(currentSchema.daily_amount!)}`}
-                          <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+              )}
+              {car.variants!.length > 1 && (
+                <Badge variant="card" className="md:text-lg">
+                  {`Доступно авто: ${car.variants!.length}`}
+                </Badge>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-1 pb-1">
+              {schemas!.slice(0, 3).map((currentSchema: Schema, i: number) => (
+                <Badge
+                  key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                  className="flex-col items-start justify-start flex-grow h-full px-2 text-lg font-semibold md:text-lg text-wrap"
+                  variant="schema"
+                >
+                  {`${formatRoubles(currentSchema.daily_amount!)}`}
+                  <div className="text-xs font-medium text-black md:text-lg">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                </Badge>
+              ))}
+            </div>
+            <div className="fixed left-0 z-50 flex justify-center w-full px-2 space-x-2 bottom-14">
+              <div className="grid grid-cols-2 h-16 w-full bg-white sm:mx-auto sm:px-40 space-x-2 p-2 md:max-w-[800px] max-w-[512px] px-2">
+                <Select
+                  onValueChange={(value) => handleTariffChange(value)}
+                  defaultValue={`${schemas![0].id}`}
+                >
+                  <SelectTrigger className="h-12 pl-3 text-left border-none bg-grey rounded-xl md:px-5">
+                    <SelectValue placeholder="Схема аренды" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
+                    {schemas!.map((currentSchema: Schema, i: number) => (
+                      <SelectItem
+                        className="mb-1 border rounded-xl border-zinc-300 "
+                        key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                        value={`${currentSchema.id}`}
+                      >
+                        {`${formatRoubles(currentSchema.daily_amount!)}`}
+                        <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-                  {!activeBooking && (
+                {!activeBooking && (
+                  <Confirmation
+                    title={`Забронировать ${car.brand} ${car.model}?`}
+                    type="green"
+                    accept={book}
+                    cancel={() => {}}
+                    trigger={<Button>Забронировать</Button>}
+                  />
+                )}
+                {!!activeBooking && (
+                  <div className="sm:max-w-[250px] relative">
                     <Confirmation
-                      title={`Забронировать ${car.brand} ${car.model}?`}
+                      title={`У вас есть активная бронь: 
+                        ${activeBooking.car?.brand}
+                        ${activeBooking.car?.model}`}
+                      text={`Отменить и забронировать ${car.brand} ${car.model}
+                    `}
                       type="green"
                       accept={book}
                       cancel={() => {}}
-                      trigger={<Button>Забронировать</Button>}
+                      trigger={<Button className="">Забронировать</Button>}
                     />
-                  )}
-                  {!!activeBooking && (
-                    <div className="w-1/2 sm:max-w-[250px] relative">
-                      <Confirmation
-                        title={`У вас есть активная бронь: 
-                        ${activeBooking.car?.brand}
-                        ${activeBooking.car?.model}`}
-                        text={`Отменить и забронировать ${car.brand} ${car.model}
-                   `}
-                        type="green"
-                        accept={book}
-                        cancel={() => {}}
-                        trigger={<Button className="">Забронировать</Button>}
-                      />
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
       <div className="hidden py-6 lg:block">
         {car.variants!.map((variant, index) => (
@@ -435,11 +437,18 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   </div>
                   <div className="px-2 py-4 bg-white shadow-xl rounded-xl">
                     <div className="flex flex-col">
-                      <div className="mb-2">
-                        Название парка: {car.park_name}
+                      <div className="flex items-center justify-between">
+                        <div className="mb-2">
+                          Название парка: {car.park_name}
+                        </div>
+                        {car.variants!.length > 1 && !index && (
+                          <div className="flex justify-end p-2 border-2 border-grey w-fit rounded-xl">
+                            {`Доступно авто: ${car.variants!.length}`}
+                          </div>
+                        )}
                       </div>
                       <Separator className="my-2" />
-                      <div className="flex justify-between items-start">
+                      <div className="flex items-start justify-between">
                         <div>
                           Адрес парка:
                           <a
@@ -453,53 +462,40 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                             />
                             {car.division!.address!}
                           </a>
-                      <Separator className="mb-2 mt-4" />
-                        <div className="text-base mb-2">
-                          <div className="mb-2 text-base">График работы: </div>
-                          {car.working_hours?.map((x, i) => (
-                            <div
-                              key={`hour_${i}`}
-                              className="flex items-center gap-2"
-                            >
-                              {!i && <FontAwesomeIcon icon={faClock} />}
-                              {x}
+                          <Separator className="mt-4 mb-2" />
+                          <div className="mb-2 text-base">
+                            <div className="mb-2 text-base">
+                              График работы:{" "}
                             </div>
-                          ))}
-                          <Separator className="my-2" />
-                          <div className="">
-                            <p className="text-base mb-2">Телефон:</p>
-                            <p>{car.division!.phone}</p>
+                            {car.working_hours?.map((x, i) => (
+                              <div
+                                key={`hour_${i}`}
+                                className="flex items-center gap-2"
+                              >
+                                {!i && <FontAwesomeIcon icon={faClock} />}
+                                {x}
+                              </div>
+                            ))}
+                            {/* <Separator className="my-2" />
+                            <div className="">
+                              <p className="mb-2 text-base">Телефон:</p>
+                              <p>{car.division!.phone}</p>
+                            </div> */}
                           </div>
-                        </div>
                         </div>
                       </div>
                       <Separator className="my-2" />
                       <Collapsible>
                         <CollapsibleTrigger className="flex justify-between w-full mb-2 focus:outline-none md:text-lg">
-                          <div className="text-base">  О парке</div>
+                          <div className="text-base"> О парке</div>
                           <FontAwesomeIcon icon={faChevronDown} />
                         </CollapsibleTrigger>
                         <CollapsibleContent>
-                          <div className="mb-2 text-sm text-gray-700 md:text-base">
+                          <div className="mb-2 text-sm text-gray-700 whitespace-pre-line md:text-base">
                             {car.about}
                           </div>
                         </CollapsibleContent>
                       </Collapsible>
-                      {car.variants!.length > 1 && !index && (
-                        <div className="">
-                          <Separator className="my-3" />
-                          <div className="flex justify-end">
-                            <Button
-                              onClick={() => setShowVariants(!showVariants)}
-                              className="w-64"
-                            >
-                              {!showVariants &&
-                                `Смотреть похожие: ${car.variants!.length - 1}`}
-                              {showVariants && "Скрыть похожие"}
-                            </Button>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

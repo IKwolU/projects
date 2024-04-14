@@ -35,7 +35,7 @@ import { Terms } from "./Terms";
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
-  const [loaded, setLoaded] = useState(true);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {

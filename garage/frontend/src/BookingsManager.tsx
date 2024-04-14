@@ -75,7 +75,7 @@ export const BookingsManager = () => {
                         {selected.car!.year_produced}
                       </p>
                       <p>Г/н: {selected.car!.license_plate}</p>
-                      <p>VIN: {selected.car!.car_id}</p>
+                      <p>VIN: {selected.car!.vin}</p>
                       <p>Город: {selected.car!.division!.city!.name}</p>
                       <p>Подразделение: {selected.car!.division!.name}</p>
                       <p>

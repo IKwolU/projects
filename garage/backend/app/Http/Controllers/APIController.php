@@ -1478,6 +1478,8 @@ class APIController extends Controller
             $booking->status = $status;
             $booking->save();
             $car->status = CarStatus::AvailableForBooking->value;
+            $car->status_id = $car->old_status_id;
+            $car->old_status_id = null;
             $car->save();
             return response()->json(['message' => 'Статус бронирования успешно изменен, авто доступно для брони'], 200);
         }
@@ -1512,6 +1514,8 @@ if($referral->status === ReferralStatus::Invited->name){$rewardServive = new Rew
             $booking->status = $status;
             $booking->save();
             $car->status = CarStatus::AvailableForBooking->value;
+            $car->status_id = $car->old_status_id;
+            $car->old_status_id = null;
             $car->save();
             return response()->json(['message' => 'Статус бронирования успешно изменен, аренда закончена'], 200);
         }

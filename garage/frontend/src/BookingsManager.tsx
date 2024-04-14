@@ -35,7 +35,7 @@ export const BookingsManager = () => {
 
   const changeBookingStatus = async (status: BookingStatus) => {
     await client.updateCarBookingStatusManager(
-      new Body33({ status: status, vin: selected!.vin })
+      new Body33({ status: status, vin: selected!.car!.vin })
     );
     getBookings();
   };
@@ -111,8 +111,8 @@ export const BookingsManager = () => {
                         type="red"
                       />
 
-                      <Button variant={"manager"}>Продление брони</Button>
-                      <Button variant={"manager"}>Смена авто</Button>
+                      {/* <Button variant={"manager"}>Продление брони</Button>
+                      <Button variant={"manager"}>Смена авто</Button> */}
                     </div>
                   </div>
                 </div>

@@ -1031,7 +1031,7 @@ class ManagerController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="errors", type="object", example={
      *                 "status": {"Поле status обязательно для заполнения и должно быть строкой."},
-     *                 "id": {"Поле id обязательно для заполнения и должно быть строкой."}
+     *                 "vin": {"Поле id обязательно для заполнения и должно быть строкой."}
      *             })
      *         )
      *     ),
@@ -1059,7 +1059,7 @@ class ManagerController extends Controller
 
         $request->merge([
             'car_id' => $request->vin,
-            'class' => CarClass::{$request->class}->value
+            'class' => BookingStatus::{$request->status}->value
      ]);
 
         return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
@@ -1848,7 +1848,7 @@ public function assignCarsToRentTermManager(Request $request) {
  *                     @OA\Property(property="brand", type="string"),
  *                     @OA\Property(property="model", type="string"),
  *                     @OA\Property(property="year_produced", type="integer"),
- *                     @OA\Property(property="car_id", type="string"),
+ *                     @OA\Property(property="vin", type="string"),
  *                     @OA\Property(property="images", type="array", @OA\Items(type="string")),
  *                     @OA\Property(property="status", type="integer"),
  *                     @OA\Property(property="status_id", type="integer"),
@@ -1947,7 +1947,8 @@ public function getParkBookingsManager(Request $request) {
     ->get();
 foreach ($bookings as $booking) {
     $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
-    unset($booking->driver->user->code);
+    $booking->car->vin = $booking->car->car_id;
+    unset($booking->driver->user->codem,$booking->car->car_id);
 }
     return response()->json(['bookings' => $bookings], 200);
 }

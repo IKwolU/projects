@@ -52,6 +52,9 @@ function App() {
           setLoaded(true);
         }
       }
+      if (!token) {
+        setLoaded(true);
+      }
     };
 
     checkAuth();

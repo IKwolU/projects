@@ -9,6 +9,7 @@ import { RentTermManager } from "./RentTermManager";
 import { TariffManager } from "./TariffManager";
 import { CarsManager } from "./CarsManager";
 import { InfoManager } from "./InfoManager";
+import { BookingsManager } from "./BookingsManager";
 import { StatusesManager } from "./StatusesManager";
 import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,9 +53,9 @@ export const ParkManager = () => {
       <div className="flex justify-end h-full mt-4">
         <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
           <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
-            BeeBeep
+            BeeBeep - {park.park_name}
           </div>
-          <div className="flex justify-end m-0 space-x-8">
+          <div className="flex justify-end m-0 space-x-6">
             {[
               { name: "Инфо", path: "/info" },
               { name: "Подразделения", path: "/divisions" },
@@ -62,6 +63,7 @@ export const ParkManager = () => {
               { name: "Тарифы", path: "/tariffs" },
               { name: "Автомобили", path: "/cars" },
               { name: "Статусы", path: "/statuses" },
+              { name: "Бронь", path: "/bookings" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="flex ">
                 <Link
@@ -72,9 +74,6 @@ export const ParkManager = () => {
                 </Link>
               </div>
             ))}
-          </div>
-          <div className="flex items-center justify-end space-x-4 text-xl font-semibold">
-            {park.park_name}
           </div>
           <div className="flex items-center text-black cursor-pointer">
             <Confirmation
@@ -104,6 +103,7 @@ export const ParkManager = () => {
         <Route path={`/tariffs`} element={<TariffManager />} />
         <Route path={`/cars`} element={<CarsManager />} />
         <Route path={`/statuses`} element={<StatusesManager />} />
+        <Route path={`/bookings`} element={<BookingsManager />} />
       </Routes>
     </>
   );

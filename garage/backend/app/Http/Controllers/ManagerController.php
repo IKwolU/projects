@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
+use App\Models\Booking;
 use App\Models\Car;
 use App\Models\Division;
 use App\Models\Manager;
@@ -1805,6 +1807,49 @@ public function assignCarsToRentTermManager(Request $request) {
     }
 
     return response()->json(['message' => 'Cars assigned to rent term successfully'], 200);
+}
+
+/**
+ * Получение активных бронирований
+ *
+ * Метод для получения активных бронирований
+ *
+ * @OA\Get(
+ *     path="/manager/bookings",
+ *     operationId="assignCarsToRentTermManager",
+ *     summary="Получение активных бронирований",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function getParkBookingsManager(Request $request) {
+
+    $booking=Booking::where('status', BookingStatus::Booked->value)->where('park_id', $request->park_id)->with('car', 'driver')
+
+    return response()->json(['bookings' => $booking], 200);
 }
 
 /**

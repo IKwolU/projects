@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BookingStatus, Bookings, User } from "./api-client";
+import { BookingStatus, Bookings2, User } from "./api-client";
 import { useTimer } from "react-timer-hook";
 import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
@@ -41,7 +41,7 @@ export const BookingTimer = () => {
           ...user,
           bookings: [
             ...user.bookings!.filter((x) => x !== activeBooking),
-            new Bookings({
+            new Bookings2({
               ...activeBooking,
               status: BookingStatus.BookingTimeOver,
               end_date: new Date().toISOString(),

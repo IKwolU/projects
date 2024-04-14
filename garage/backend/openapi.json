@@ -6610,6 +6610,340 @@
                 }
             }
         },
+        "/manager/bookings": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение активных бронирований",
+                "description": "Получение активных бронирований\n\nМетод для получения активных бронирований",
+                "operationId": "getParkBookingsManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "bookings": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "status": {
+                                                        "type": "integer"
+                                                    },
+                                                    "schema_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "car_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "driver_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "booked_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "end_date": {
+                                                        "type": "string"
+                                                    },
+                                                    "park_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "car": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "division_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "park_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "tariff_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "mileage": {
+                                                                "type": "string"
+                                                            },
+                                                            "license_plate": {
+                                                                "type": "string"
+                                                            },
+                                                            "rent_term_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "fuel_type": {
+                                                                "type": "integer"
+                                                            },
+                                                            "transmission_type": {
+                                                                "type": "integer"
+                                                            },
+                                                            "brand": {
+                                                                "type": "string"
+                                                            },
+                                                            "model": {
+                                                                "type": "string"
+                                                            },
+                                                            "year_produced": {
+                                                                "type": "integer"
+                                                            },
+                                                            "car_id": {
+                                                                "type": "string"
+                                                            },
+                                                            "images": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "status": {
+                                                                "type": "integer"
+                                                            },
+                                                            "status_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "old_status_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "division": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "park_id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "city_id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "coords": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "address": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "metro": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "working_hours": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "properties": {
+                                                                                "day": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "end": {
+                                                                                    "properties": {
+                                                                                        "hours": {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "minutes": {
+                                                                                            "type": "integer"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                                },
+                                                                                "start": {
+                                                                                    "properties": {
+                                                                                        "hours": {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "minutes": {
+                                                                                            "type": "integer"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        }
+                                                                    },
+                                                                    "timezone_difference": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "updated_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "city": {
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "name": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "created_at": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "updated_at": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "driver": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "user_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "city_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "user": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "code": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "role_id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "user_status": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "avatar": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "email_verified_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "updated_at": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "user_type": {
+                                                                        "type": "integer"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "schema": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "rent_term_id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "daily_amount": {
+                                                                "type": "integer"
+                                                            },
+                                                            "non_working_days": {
+                                                                "type": "integer"
+                                                            },
+                                                            "working_days": {
+                                                                "type": "integer"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Укажите rent_term_id и car_ids"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/manager/cars/statuses/client": {
             "get": {
                 "tags": [

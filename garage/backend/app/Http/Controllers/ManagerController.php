@@ -18,6 +18,7 @@ use App\Models\Status;
 use App\Models\Tariff;
 use App\Models\User;
 use App\Services\FileService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -1816,14 +1817,106 @@ public function assignCarsToRentTermManager(Request $request) {
  *
  * @OA\Get(
  *     path="/manager/bookings",
- *     operationId="assignCarsToRentTermManager",
+ *     operationId="getParkBookingsManager",
  *     summary="Получение активных бронирований",
  *     tags={"Manager"},
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="bookings", type="array", @OA\Items(
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="status", type="integer"),
+ *                 @OA\Property(property="schema_id", type="integer"),
+ *                 @OA\Property(property="car_id", type="integer"),
+ *                 @OA\Property(property="driver_id", type="integer"),
+ *                 @OA\Property(property="booked_at", type="string"),
+ *                 @OA\Property(property="end_date", type="string"),
+ *                 @OA\Property(property="park_id", type="integer"),
+ *                 @OA\Property(property="created_at", type="string"),
+ *                 @OA\Property(property="updated_at", type="string"),
+ *                 @OA\Property(property="car", type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="division_id", type="integer"),
+ *                     @OA\Property(property="park_id", type="integer"),
+ *                     @OA\Property(property="tariff_id", type="integer"),
+ *                     @OA\Property(property="mileage", type="string"),
+ *                     @OA\Property(property="license_plate", type="string"),
+ *                     @OA\Property(property="rent_term_id", type="integer"),
+ *                     @OA\Property(property="fuel_type", type="integer"),
+ *                     @OA\Property(property="transmission_type", type="integer"),
+ *                     @OA\Property(property="brand", type="string"),
+ *                     @OA\Property(property="model", type="string"),
+ *                     @OA\Property(property="year_produced", type="integer"),
+ *                     @OA\Property(property="car_id", type="string"),
+ *                     @OA\Property(property="images", type="array", @OA\Items(type="string")),
+ *                     @OA\Property(property="status", type="integer"),
+ *                     @OA\Property(property="status_id", type="integer"),
+ *                     @OA\Property(property="old_status_id", type="integer"),
+ *                     @OA\Property(property="created_at", type="string"),
+ *                     @OA\Property(property="updated_at", type="string"),
+ *                     @OA\Property(property="division", type="object", properties={
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="park_id", type="integer"),
+ *                         @OA\Property(property="city_id", type="integer"),
+ *                         @OA\Property(property="coords", type="string"),
+ *                         @OA\Property(property="address", type="string"),
+ *                         @OA\Property(property="metro", type="string"),
+ *                         @OA\Property(property="working_hours", type="array", @OA\Items(
+ *                             @OA\Property(property="day", type="string"),
+ *                             @OA\Property(property="end", type="object", properties={
+ *                                 @OA\Property(property="hours", type="integer"),
+ *                                 @OA\Property(property="minutes", type="integer")
+ *                             }),
+ *                             @OA\Property(property="start", type="object", properties={
+ *                                 @OA\Property(property="hours", type="integer"),
+ *                                 @OA\Property(property="minutes", type="integer")
+ *                             })
+ *                         )),
+ *                         @OA\Property(property="timezone_difference", type="integer"),
+ *                         @OA\Property(property="created_at", type="string"),
+ *                         @OA\Property(property="updated_at", type="string"),
+ *                         @OA\Property(property="name", type="string"),
+ *                         @OA\Property(property="phone", type="string"),
+ *                         @OA\Property(property="city", type="object", properties={
+ *                             @OA\Property(property="id", type="integer"),
+ *                             @OA\Property(property="name", type="string"),
+ *                             @OA\Property(property="created_at", type="string"),
+ *                             @OA\Property(property="updated_at", type="string")
+ *                         })
+ *                     })
+ *                 }),
+ *                 @OA\Property(property="driver", type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="user_id", type="integer"),
+ *                     @OA\Property(property="city_id", type="integer"),
+ *                     @OA\Property(property="created_at", type="string"),
+ *                     @OA\Property(property="updated_at", type="string"),
+ *                     @OA\Property(property="user", type="object", properties={
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="code", type="integer"),
+ *                         @OA\Property(property="role_id", type="integer"),
+ *                         @OA\Property(property="user_status", type="integer"),
+ *                         @OA\Property(property="phone", type="string"),
+ *                         @OA\Property(property="name", type="string"),
+ *                         @OA\Property(property="email", type="string"),
+ *                         @OA\Property(property="avatar", type="string"),
+ *                         @OA\Property(property="email_verified_at", type="string"),
+ *                         @OA\Property(property="created_at", type="string"),
+ *                         @OA\Property(property="updated_at", type="string"),
+ *                         @OA\Property(property="user_type", type="integer")
+ *                     })
+ *                 }),
+ *                 @OA\Property(property="schema", type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="rent_term_id", type="integer"),
+ *                     @OA\Property(property="daily_amount", type="integer"),
+ *                     @OA\Property(property="non_working_days", type="integer"),
+ *                     @OA\Property(property="working_days", type="integer"),
+ *                     @OA\Property(property="created_at", type="string"),
+ *                     @OA\Property(property="updated_at", type="string")
+ *                 })
+ *             ))
  *         )
  *     ),
  *     @OA\Response(
@@ -1847,9 +1940,16 @@ public function assignCarsToRentTermManager(Request $request) {
  */
 public function getParkBookingsManager(Request $request) {
 
-    $booking=Booking::where('status', BookingStatus::Booked->value)->where('park_id', $request->park_id)->with('car', 'driver')
-
-    return response()->json(['bookings' => $booking], 200);
+    $bookings = Booking::where('status', BookingStatus::Booked->value)
+    ->where('park_id', $request->park_id)
+    ->with('car', 'driver', 'driver.user', 'schema', 'car.division', 'car.division.city')
+    ->orderBy('created_at', 'desc')
+    ->get();
+foreach ($bookings as $booking) {
+    $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
+    unset($booking->driver->user->code);
+}
+    return response()->json(['bookings' => $bookings], 200);
 }
 
 /**

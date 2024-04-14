@@ -154,41 +154,38 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               classPaginationImages=""
             />
 
-            <div className="space-y-2">
-              <h1 className="my-4 text-center ">
-                {`${car.brand} ${car.model} ${car.year_produced}`}{" "}
-              </h1>
-
-              <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular">
-                {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
-                <span>Пробег: {car.mileage} км</span>
-              </p>
-
-              <div className="flex flex-col md:flex-row md:flex-wrap">
-                <div className="md:w-1/2 md:space-y-2 ">
-                  <Separator className="my-1" />
-                  <p className="flex justify-between pr-4 text-base md:text-lg font-regular">
-                    <span>Парк: {car.park_name}</span>
-                  </p>
-                  <Separator className="my-1" />
-                  <p className="text-base md:text-lg font-regular">
-                    Адрес: {car.division?.address}
-                  </p>
-                  <Separator className="my-1" />
-                  <p className="text-base md:text-lg font-regular">
-                    Телефон: {car.division?.phone}
-                  </p>
-                  <Separator className="my-1" />
-                </div>
-                <div className="min-h-fit md:w-1/2 md:pl-8">
-                  {car.working_hours!.map((x, i) => {
-                    return (
-                      <div
-                        className="flex flex-col items-start md:text-lg"
-                        key={`hours_${i}`}
-                      >
-                        <div className="text-base capitalize md:text-lg">
-                          {x}
+              <div className="space-y-2">
+                <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+                <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular">
+                  {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
+                  <span>Пробег: {car.mileage} км</span>
+                </p>
+                <div className="flex flex-col md:flex-row md:flex-wrap">
+                  <div className="md:w-1/2 md:space-y-2 ">
+                    <Separator className="my-1" />
+                    <p className="flex justify-between pr-4 text-base md:text-lg font-regular">
+                      <span>Парк: {car.park_name}</span>
+                    </p>
+                    <Separator className="my-1" />
+                    <p className="text-base md:text-lg font-regular">
+                      Адрес: {car.division?.address}
+                    </p>
+                    <Separator className="my-1" />
+                    <p className="text-base md:text-lg font-regular">
+                      Телефон: {car.division?.phone}
+                    </p>
+                    <Separator className="my-1" />
+                  </div>
+                  <div className="min-h-fit md:w-1/2 md:pl-8">
+                    {car.working_hours!.map((x, i) => {
+                      return (
+                        <div
+                          className="flex flex-col items-start md:text-lg"
+                          key={`hours_${i}`}
+                        >
+                          <div className="text-base capitalize md:text-lg">
+                            {x}
+                          </div>
                         </div>
                       </div>
                     );

@@ -17,7 +17,9 @@ import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
+  faClockRotateLeft,
   faLocationDot,
+  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -30,6 +32,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
+import { Command, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Terms } from "./Terms";
 
@@ -178,8 +183,7 @@ const Menu = ({ user }: { user: User }) => (
           {/* <Separator /> */}
           <Link
             className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
-            target="_blank"
-            to="https://forms.yandex.ru/cloud/6617d44102848f0fb4b9bbf5/"
+            to=""
           >
             {/* <FontAwesomeIcon
               icon={faPhoneVolume}

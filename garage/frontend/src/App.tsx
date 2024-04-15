@@ -17,9 +17,7 @@ import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
-  faClockRotateLeft,
   faLocationDot,
-  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -32,9 +30,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
-import { Command, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Terms } from "./Terms";
 
@@ -238,9 +233,9 @@ const Menu = ({ user }: { user: User }) => (
         className="flex items-center mt-2 hover:text-gray"
         to="login/driver"
       >
-        <Button variant="outline" style={{ width: "105px", flexShrink: 0 }}>
+        <Button variant="outline" style={{ width: "105px", flexShrink: 0, padding: 0 }}>
           {" "}
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center p-0">
             <FontAwesomeIcon
               icon={faArrowRightToBracket}
               className="h-4 mr-2 cursor-pointer sm:h-5"

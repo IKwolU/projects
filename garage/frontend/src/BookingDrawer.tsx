@@ -162,8 +162,8 @@ export const BookingDrawer = () => {
                 /> */}
                   </a>
                 </p>
-                <Separator />
-                <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
+                {/* <Separator />
+                <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p> */}
 
                 <div className="hidden md:block">
                   {booking.status! !== BookingStatus.RentStart && (
@@ -528,8 +528,8 @@ export const BookingDrawer = () => {
                   /> */}
                           </a>
                         </p>
-                        <Separator />
-                        <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
+                        {/* <Separator />
+                        <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p> */}
                       </div>
                     </div>
                     <Separator className="my-2" />
@@ -578,8 +578,8 @@ export const BookingDrawer = () => {
                           {`${booking.car?.division?.address}`}
                         </a>
                       </p>
-                      <Separator />
-                      <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p>
+                      {/* <Separator />
+                      <p className="text-base">{`Тел.: ${booking.car?.division?.phone}`}</p> */}
                     </div>
                   </div>
                   <Separator className="my-2" />

@@ -1803,6 +1803,7 @@ class APIController extends Controller
         $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
             ->find($booking_id);
+
         if ($booking) {
             $car = $booking->car;
             $user = $booking->driver->user;
@@ -1810,12 +1811,22 @@ class APIController extends Controller
             $apiKey = $park->API_key;
             $schema= Schema::find($booking->schema_id);
             $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
-            $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
             $customStatusName = $CarStatus->custom_status_name;
             $token = $park->status_api_tocken;
+
+            $message = $is_booked ?
+                'Новое бронирование №: ' . $booking->id . '' . "\n":
+                'Отмена бронирования №: ' . $booking->id . '' . "\n";
+                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
+                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
+                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
+                'Тел ' . $user->phone;
+
+            $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
+
             $response = Http::withToken($token)->post($url, [
                 'vehicleNumber' => $car->license_plate,
-                'comment' => $user->phone,
+                'comment' => $message,
                 'statusName' => $customStatusName,
             ]);
                 $statusCode = $response->getStatusCode();
@@ -1827,14 +1838,9 @@ class APIController extends Controller
                     }
                 }
             if (!$count) {
-                $message = $is_booked ?
-                'Новое бронирование №: ' . $booking->id . '' . "\n":
-                'Отмена бронирования №: ' . $booking->id . '' . "\n";
-                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
-                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
-                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
-                'Тел ' . $user->phone;
+
                 $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
+
                 $response = Http::withToken($token)->post($secondUrl, [
                     'message' => $message,
                 ]);

@@ -1,4 +1,4 @@
-import { Body17, BookingStatus, Bookings, User } from "./api-client";
+import { Body17, BookingStatus, Bookings2, User } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { useRecoilState } from "recoil";
@@ -71,7 +71,7 @@ export const BookingDrawer = () => {
         ...user,
         bookings: [
           ...user.bookings!.filter((x) => x !== activeBooking),
-          new Bookings({
+          new Bookings2({
             ...activeBooking,
             status: BookingStatus.UnBooked,
             end_date: new Date().toISOString(),
@@ -327,14 +327,14 @@ export const BookingDrawer = () => {
               })}
               <div className="h-[364px] flex items-center justify-center">
                 <img
-                  className="object-contain rounded-xl h-full"
+                  className="object-contain h-full rounded-xl"
                   src={booking.car!.images![0]}
                   alt=""
                 />
               </div>
 
               <div className="flex flex-col items-center justify-between pt-4">
-                <div className="pl-1 my-2 text-lg md:text-xl md:mb-4 text-center">
+                <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-4">
                   <h1>
                     {`${booking.car!.brand} ${booking.car!.model}`}{" "}
                     {booking.car!.year_produced}
@@ -361,7 +361,7 @@ export const BookingDrawer = () => {
             </div>
             <div className="w-1/2 space-y-2">
               <div className="px-4 py-2 pb-4 bg-white rounded-xl">
-                <h4 className="font-semibold mt-3">Детали бронирования</h4>
+                <h4 className="mt-3 font-semibold">Детали бронирования</h4>
                 {booking.status === BookingStatus.RentStart && (
                   <div className="items-center ">
                     <p className="pt-1 leading-4">

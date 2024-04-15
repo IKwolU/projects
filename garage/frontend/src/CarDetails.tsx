@@ -16,10 +16,10 @@ import {
   Body16,
   Body17,
   BookingStatus,
-  Bookings,
   User,
   Schema,
   Cars3,
+  Bookings2,
 } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -47,7 +47,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
     latitude: null,
     longitude: null,
   });
-  const [showVariants, setShowVariants] = useState(false);
+  const [showVariants] = useState(false);
 
   const [selectedSchema, setSelectedSchema] = useState(
     car.rent_term!.schemas![0]!.id
@@ -96,7 +96,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
 
     const potentialExistingBooking = activeBooking
       ? [
-          new Bookings({
+          new Bookings2({
             ...activeBooking,
             status: BookingStatus.UnBooked,
             end_date: new Date().toISOString(),
@@ -110,7 +110,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         bookings: [
           ...user.bookings!.filter((x) => x !== activeBooking),
           ...potentialExistingBooking,
-          new Bookings(bookingData.booking),
+          new Bookings2(bookingData.booking),
         ],
       })
     );

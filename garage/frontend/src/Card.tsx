@@ -31,7 +31,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
-              Парк &laquo;{car.park_name}&raquo;
+              Парк: &laquo;{car.park_name}&raquo;
             </div>
             {car.variants!.length > 1 && (
               <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg right-1 text-gray">
@@ -126,9 +126,8 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 </Badge>
               ))}
             </div>
-            <div className="flex gap-2 mt-4 text-center">
-              <Button variant={"outline"} className="w-full sm:max-w-[376px]">Подробнее</Button>
-              <Button className="w-full sm:max-w-[376px]">Забронировать</Button>
+            <div className="mt-4 text-center">
+              <Button className="w-full sm:max-w-[376px]">Подробнее</Button>
             </div>
           </div>
         </div>

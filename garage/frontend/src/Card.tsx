@@ -34,7 +34,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
               Парк &laquo;{car.park_name}&raquo;
             </div>
             {car.cars_count! > 1 && (
-              <div className="absolute left-0 z-50 h-10 px-4 py-2 font-medium text-center text-white rounded-full rounded-t-lg top-72">
+              <div className="absolute left-1 z-10 m-1 flex items-center  px-4 py-1 font-medium text-center bg-white shadow rounded-full text-gray top-[170px] md:top-[265px]">
                 {car.cars_count} авто в наличии
               </div>
             )}

@@ -170,10 +170,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   <p className="text-base md:text-lg font-regular">
                     Адрес: {car.division?.address}
                   </p>
-                  <Separator className="my-1" />
+                  {/* <Separator className="my-1" />
                   <p className="text-base md:text-lg font-regular">
                     Телефон: {car.division?.phone}
-                  </p>
+                  </p> */}
                   <Separator className="my-1" />
                 </div>
                 <div className="min-h-fit md:w-1/2 md:pl-8">

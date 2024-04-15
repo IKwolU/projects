@@ -238,9 +238,9 @@ const Menu = ({ user }: { user: User }) => (
         className="flex items-center mt-2 hover:text-gray"
         to="login/driver"
       >
-        <Button variant="outline" style={{ width: "105px", flexShrink: 0 }}>
+        <Button variant="outline" style={{ width: "105px", flexShrink: 0, padding: 0 }}>
           {" "}
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center p-0">
             <FontAwesomeIcon
               icon={faArrowRightToBracket}
               className="h-4 mr-2 cursor-pointer sm:h-5"

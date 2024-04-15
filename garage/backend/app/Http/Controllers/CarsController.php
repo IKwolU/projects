@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\APIController;
 use App\Enums\BookingStatus;
 use App\Enums\DayOfWeek;
+use Illuminate\Support\Facades\DB;
 
 class CarsController extends Controller
 
@@ -70,19 +71,14 @@ class CarsController extends Controller
      *                 @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
      *                 @OA\Property(property="brand", type="string", description="Марка автомобиля"),
      *                 @OA\Property(property="model", type="string", description="Модель автомобиля"),
+     *                 @OA\Property(property="mileage", type="string", description="Пробег автомобиля"),
      *                 @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *                 @OA\Property(property="vin", type="string", description="VIN автомобиля"),
      *                 @OA\Property(property="year_produced", type="integer", description="Год производства"),
      *                 @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
      *                 @OA\Property(property="сar_class", type="string", description="Класс тарифа", ref="#/components/schemas/CarClass"),
      *                 @OA\Property(property="park_name", type="string", description="Название парка"),
-     *                 @OA\Property(property="variants", type="array", @OA\Items(
-     *                         type="object",
-     *                         @OA\Property(property="id", type="integer"),
-     *                         @OA\Property(property="images", type="array", @OA\Items(type="string"), description="Ссылки на изображения"),
-     *                         @OA\Property(property="vin", type="string", description="VIN автомобиля"),
-     *                         @OA\Property(property="mileage", type="number", description="Пробег")
-     *                     )),
+     *                 @OA\Property(property="cars_count", type="number", description="Количество одинаковых"),
      *                 @OA\Property(
      *                     property="working_hours",
      *                     type="array",
@@ -295,51 +291,67 @@ class CarsController extends Controller
                 ->limit(1);
         }, $sorting);
 
+        $carsQuery->selectRaw('id, division_id, park_id, tariff_id, rent_term_id, fuel_type, transmission_type, brand, model, year_produced, COUNT(*) as cars_count')
+        ->where('rent_term_id', '!=', null)
+        ->where('status', 1)
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('divisions')
+                ->whereColumn('cars.division_id', 'divisions.id')
+                ->where('city_id', 1);
+        })
+        ->groupBy('year_produced', 'model', 'brand', 'transmission_type', 'fuel_type', 'rent_term_id', 'tariff_id', 'park_id')
+        ->orderByRaw('(select MIN(schemas.daily_amount) from `schemas` where `schemas`.`rent_term_id` = `cars`.`rent_term_id` order by `schemas`.`daily_amount` asc limit 1) asc');
+
         $carsQuery->offset($offset)->limit($limit);
+
         $cars = $carsQuery->get();
-        $uniqueCars = $cars->unique(function ($item) {
-            return $item->division_id . $item->park_id . $item->tariff_id . $item->rent_term_id .
-                $item->fuel_type . $item->transmission_type . $item->brand . $item->model . $item->year_produced;
-        });
 
-        $similarCars = Car::where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
-        ->where(function ($query) use ($uniqueCars) {
-            foreach ($uniqueCars as $uniqueCar) {
-                $query->orWhere(function ($subQuery) use ($uniqueCar) {
-                    $subQuery->where('division_id', $uniqueCar->division_id)
-                        ->where('park_id', $uniqueCar->park_id)
-                        ->where('tariff_id', $uniqueCar->tariff_id)
-                        ->where('rent_term_id', $uniqueCar->rent_term_id)
-                        ->where('fuel_type', $uniqueCar->fuel_type)
-                        ->where('transmission_type', $uniqueCar->transmission_type)
-                        ->where('brand', $uniqueCar->brand)
-                        ->where('model', $uniqueCar->model)
-                        ->where('year_produced', $uniqueCar->year_produced);
-                });
-            }
-        })->get();
+        // $uniqueCars = $cars->unique(function ($item) {
+        //     return $item->division_id . $item->park_id . $item->tariff_id . $item->rent_term_id .
+        //         $item->fuel_type . $item->transmission_type . $item->brand . $item->model . $item->year_produced;
+        // });
 
-        foreach ($uniqueCars as $car) {
-            $car['variants'] = $similarCars->filter(function ($similarCar) use ($car) {
-                return $similarCar->division_id == $car->division_id &&
-                    $similarCar->park_id == $car->park_id &&
-                    $similarCar->tariff_id == $car->tariff_id &&
-                    $similarCar->rent_term_id == $car->rent_term_id &&
-                    $similarCar->fuel_type == $car->fuel_type &&
-                    $similarCar->transmission_type == $car->transmission_type &&
-                    $similarCar->brand == $car->brand &&
-                    $similarCar->model == $car->model &&
-                    $similarCar->year_produced == $car->year_produced;
-            })->map(function ($similarCar) {
-                return [
-                    'id' => $similarCar->id,
-                    'images' => json_decode($similarCar->images),
-                    'vin'=>$similarCar->car_id,
-                    'mileage'=>$similarCar->mileage
-                ];
-            })->values()->all();}
+        // $similarCars = Car::where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
+        // ->where(function ($query) use ($uniqueCars) {
+        //     foreach ($uniqueCars as $uniqueCar) {
+        //         $query->orWhere(function ($subQuery) use ($uniqueCar) {
+        //             $subQuery->where('division_id', $uniqueCar->division_id)
+        //                 ->where('park_id', $uniqueCar->park_id)
+        //                 ->where('tariff_id', $uniqueCar->tariff_id)
+        //                 ->where('rent_term_id', $uniqueCar->rent_term_id)
+        //                 ->where('fuel_type', $uniqueCar->fuel_type)
+        //                 ->where('transmission_type', $uniqueCar->transmission_type)
+        //                 ->where('brand', $uniqueCar->brand)
+        //                 ->where('model', $uniqueCar->model)
+        //                 ->where('year_produced', $uniqueCar->year_produced);
+        //         });
+        //     }
+        // })->get();
+
+        // foreach ($uniqueCars as $car) {
+        //     $car['variants'] = $similarCars->filter(function ($similarCar) use ($car) {
+        //         return $similarCar->division_id == $car->division_id &&
+        //             $similarCar->park_id == $car->park_id &&
+        //             $similarCar->tariff_id == $car->tariff_id &&
+        //             $similarCar->rent_term_id == $car->rent_term_id &&
+        //             $similarCar->fuel_type == $car->fuel_type &&
+        //             $similarCar->transmission_type == $car->transmission_type &&
+        //             $similarCar->brand == $car->brand &&
+        //             $similarCar->model == $car->model &&
+        //             $similarCar->year_produced == $car->year_produced;
+        //     })->map(function ($similarCar) {
+        //         return [
+        //             'id' => $similarCar->id,
+        //             'images' => json_decode($similarCar->images),
+        //             'vin'=>$similarCar->car_id,
+        //             'mileage'=>$similarCar->mileage
+        //         ];
+        //     })->values()->all();
+        // }
+
             $formattedCars = [];
-            foreach ($uniqueCars as $car) {
+            foreach ($cars as $car) {
                 $formattedCar = $car;
                 $formattedCar['images'] = json_decode($car['images']);
                 $formattedCar['images'] = array_slice($formattedCar['images'], 0, 3);

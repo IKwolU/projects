@@ -334,7 +334,7 @@ export const BookingDrawer = () => {
               </div>
 
               <div className="flex flex-col items-center justify-between pt-4">
-                <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-4">
+                <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-0">
                   <h1>
                     {`${booking.car!.brand} ${booking.car!.model}`}{" "}
                     {booking.car!.year_produced}
@@ -383,7 +383,7 @@ export const BookingDrawer = () => {
                     content: "",
                     type: "address",
                   },
-                  { text: "Телефон", content: divisionPhone, type: "phone" },
+                  // { text: "Телефон", content: divisionPhone, type: "phone" },
                   {
                     text: "Депозит",
                     content: formatRoubles(
@@ -410,7 +410,7 @@ export const BookingDrawer = () => {
                       x.type === "time"
                     ) && (
                       <>
-                        <Separator className="my-[15px]" />
+                        <Separator className="my-[18px]" />
                         <div className="flex justify-between">
                           <p>{x.text}</p>
                           {x.type !== "address" && <p>{x.content}</p>}

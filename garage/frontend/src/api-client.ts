@@ -16338,7 +16338,8 @@ export class Cars3 implements ICars3 {
     сar_class?: CarClass;
     /** Название парка */
     park_name?: string;
-    variants?: Variants[];
+    /** Количество одинаковых */
+    cars_count?: number;
     /** Расписание работы парка */
     working_hours?: string[];
     /** Описание парка */
@@ -16381,11 +16382,7 @@ export class Cars3 implements ICars3 {
             }
             this.сar_class = _data["сar_class"];
             this.park_name = _data["park_name"];
-            if (Array.isArray(_data["variants"])) {
-                this.variants = [] as any;
-                for (let item of _data["variants"])
-                    this.variants!.push(Variants.fromJS(item));
-            }
+            this.cars_count = _data["cars_count"];
             if (Array.isArray(_data["working_hours"])) {
                 this.working_hours = [] as any;
                 for (let item of _data["working_hours"])
@@ -16426,11 +16423,7 @@ export class Cars3 implements ICars3 {
         }
         data["сar_class"] = this.сar_class;
         data["park_name"] = this.park_name;
-        if (Array.isArray(this.variants)) {
-            data["variants"] = [];
-            for (let item of this.variants)
-                data["variants"].push(item.toJSON());
-        }
+        data["cars_count"] = this.cars_count;
         if (Array.isArray(this.working_hours)) {
             data["working_hours"] = [];
             for (let item of this.working_hours)
@@ -16464,7 +16457,8 @@ export interface ICars3 {
     сar_class?: CarClass;
     /** Название парка */
     park_name?: string;
-    variants?: Variants[];
+    /** Количество одинаковых */
+    cars_count?: number;
     /** Расписание работы парка */
     working_hours?: string[];
     /** Описание парка */
@@ -17680,80 +17674,6 @@ export interface IBookings2 {
     rent_term?: Rent_term3;
     /** Информация об автомобиле */
     car?: Car3;
-
-    [key: string]: any;
-}
-
-export class Variants implements IVariants {
-    id?: number;
-    /** Ссылки на изображения */
-    images?: string[];
-    /** VIN автомобиля */
-    vin?: string;
-    /** Пробег */
-    mileage?: number;
-
-    [key: string]: any;
-
-    constructor(data?: IVariants) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            for (var property in _data) {
-                if (_data.hasOwnProperty(property))
-                    this[property] = _data[property];
-            }
-            this.id = _data["id"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"])
-                    this.images!.push(item);
-            }
-            this.vin = _data["vin"];
-            this.mileage = _data["mileage"];
-        }
-    }
-
-    static fromJS(data: any): Variants {
-        data = typeof data === 'object' ? data : {};
-        let result = new Variants();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        for (var property in this) {
-            if (this.hasOwnProperty(property))
-                data[property] = this[property];
-        }
-        data["id"] = this.id;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item);
-        }
-        data["vin"] = this.vin;
-        data["mileage"] = this.mileage;
-        return data;
-    }
-}
-
-export interface IVariants {
-    id?: number;
-    /** Ссылки на изображения */
-    images?: string[];
-    /** VIN автомобиля */
-    vin?: string;
-    /** Пробег */
-    mileage?: number;
 
     [key: string]: any;
 }

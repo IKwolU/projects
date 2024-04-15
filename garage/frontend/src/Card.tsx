@@ -28,14 +28,14 @@ export const Card = ({ car }: { car: Cars3 }) => {
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}
       >
-        <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0">
+        <div className="relative max-w-[376px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-xl lg:mx-0 flex flex-col">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray">
               Парк &laquo;{car.park_name}&raquo;
             </div>
-            {car.variants!.length > 1 && (
-              <div className="absolute z-50 h-10 px-4 py-2 font-medium text-center bg-white rounded-full rounded-t-lg right-1 text-gray">
-                +{car.variants!.length}
+            {car.cars_count! > 1 && (
+              <div className="absolute left-0 z-50 h-10 px-4 py-2 font-medium text-center text-white rounded-full rounded-t-lg top-72">
+                {car.cars_count} авто в наличии
               </div>
             )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden">
@@ -60,74 +60,80 @@ export const Card = ({ car }: { car: Cars3 }) => {
               />
             </div>
           </div>
-          <div className="px-1">
-            <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-4">
-              <h1 className="">
-                {`${car.brand} ${car.model}`} {car.year_produced}
-              </h1>
-            </div>
-            <div className="flex items-center justify-center mb-4 -mt-4 space-x-2">
-              <p className="text-base">Пробег</p>
-              <p>{car!.variants![0].mileage}</p>
-            </div>
-
-            <div className="flex flex-wrap justify-start gap-2 mb-2">
-              {Number(car.rent_term!.deposit_amount_total) !== 0 && (
-                <div className="flex flex-col justify-start gap-1">
-                  <div>
-                    <Badge variant="card" className="px-0 py-0 bg-grey ">
-                      <span className="flex items-center h-full px-2 bg-white rounded-xl">
-                        <span className="text-zinc-400">Депозит</span>
-                        <span className="ml-1">
-                          {formatRoubles(car.rent_term!.deposit_amount_total!)}
-                        </span>
-                      </span>
-                      <span className="flex items-center h-full px-2 ">
-                        {formatRoubles(car.rent_term!.deposit_amount_daily!)}
-                        /день
-                      </span>
-                    </Badge>
-                  </div>
-                </div>
-              )}
-              <div className="">
-                <Badge variant="card">
-                  <span className="mr-1 text-zinc-400">Комиссия</span>{" "}
-                  {car.commission} %
-                </Badge>{" "}
+          <div className="flex flex-col justify-between flex-grow px-1">
+            <div className="">
+              <div className="pl-1 my-2 text-lg text-center md:text-xl md:mb-4">
+                <h1 className="">
+                  {`${car.brand} ${car.model}`} {car.year_produced}
+                </h1>
               </div>
-              <Badge variant="card" className="w-fit text-zinc-400">
-                {getTransmissionDisplayName(car.transmission_type)}
-              </Badge>
-              <Badge variant="card" className=" w-fit text-zinc-400">
-                {getFuelTypeDisplayName(car.fuel_type)}
-              </Badge>
+              <div className="flex items-center justify-center mb-4 -mt-4 space-x-2">
+                <p className="text-base">Пробег</p>
+                <p>{car!.mileage}</p>
+              </div>
 
-              <div>
-                {/* {!!car.self_employed && (
+              <div className="flex flex-wrap justify-start gap-2 mb-2">
+                {Number(car.rent_term!.deposit_amount_total) !== 0 && (
+                  <div className="flex flex-col justify-start gap-1">
+                    <div>
+                      <Badge variant="card" className="px-0 py-0 bg-grey ">
+                        <span className="flex items-center h-full px-2 bg-white rounded-xl">
+                          <span className="text-zinc-400">Депозит</span>
+                          <span className="ml-1">
+                            {formatRoubles(
+                              car.rent_term!.deposit_amount_total!
+                            )}
+                          </span>
+                        </span>
+                        <span className="flex items-center h-full px-2 ">
+                          {formatRoubles(car.rent_term!.deposit_amount_daily!)}
+                          /день
+                        </span>
+                      </Badge>
+                    </div>
+                  </div>
+                )}
+                <div className="">
+                  <Badge variant="card">
+                    <span className="mr-1 text-zinc-400">Комиссия</span>{" "}
+                    {car.commission} %
+                  </Badge>{" "}
+                </div>
+                <Badge variant="card" className="w-fit text-zinc-400">
+                  {getTransmissionDisplayName(car.transmission_type)}
+                </Badge>
+                <Badge variant="card" className=" w-fit text-zinc-400">
+                  {getFuelTypeDisplayName(car.fuel_type)}
+                </Badge>
+
+                <div>
+                  {/* {!!car.self_employed && (
                 <Badge variant="card">Для самозанятых</Badge>
               )} */}
-                {!!car.rent_term!.is_buyout_possible && (
-                  <Badge variant="card" className="text-zinc-400">
-                    Выкуп автомобиля
+                  {!!car.rent_term!.is_buyout_possible && (
+                    <Badge variant="card" className="text-zinc-400">
+                      Выкуп автомобиля
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {currentSchemas?.slice(0, 3).map((currentSchema, i) => (
+                  <Badge
+                    key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                    className=""
+                    variant="schema"
+                  >
+                    {`${formatRoubles(currentSchema.daily_amount!)}`}
+                    <div className="text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
                   </Badge>
-                )}
+                ))}
               </div>
             </div>
-            <div className="flex flex-wrap gap-1">
-              {currentSchemas?.slice(0, 3).map((currentSchema, i) => (
-                <Badge
-                  key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                  className=""
-                  variant="schema"
-                >
-                  {`${formatRoubles(currentSchema.daily_amount!)}`}
-                  <div className="text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                </Badge>
-              ))}
-            </div>
             <div className="flex gap-2 mt-4 text-center">
-              <Button variant={"outline"} className="w-full sm:max-w-[376px]">Подробнее</Button>
+              <Button variant={"outline"} className="w-full sm:max-w-[376px]">
+                Подробнее
+              </Button>
               <Button className="w-full sm:max-w-[376px]">Забронировать</Button>
             </div>
           </div>
@@ -162,7 +168,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 <div className="relative w-32 h-full bg-white">
                   <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
                     <div className="flex items-center justify-center w-16 h-16 border-2 rounded-full border-gray">
-                      <img className="h-10 -ml-1" src={ChevoronLeft} />
+                      <img className="h-10 -ml-1" src={ChevoronLeft} alt="" />
                     </div>
                   </div>
                 </div>

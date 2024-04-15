@@ -3087,31 +3087,9 @@
                                                         "description": "Название парка",
                                                         "type": "string"
                                                     },
-                                                    "variants": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "images": {
-                                                                    "description": "Ссылки на изображения",
-                                                                    "type": "array",
-                                                                    "items": {
-                                                                        "type": "string"
-                                                                    }
-                                                                },
-                                                                "vin": {
-                                                                    "description": "VIN автомобиля",
-                                                                    "type": "string"
-                                                                },
-                                                                "mileage": {
-                                                                    "description": "Пробег",
-                                                                    "type": "number"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        }
+                                                    "cars_count": {
+                                                        "description": "Количество одинаковых",
+                                                        "type": "number"
                                                     },
                                                     "working_hours": {
                                                         "description": "Расписание работы парка",

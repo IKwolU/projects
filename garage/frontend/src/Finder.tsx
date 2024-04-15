@@ -701,7 +701,10 @@ export const Finder = () => {
                 onClick={() =>
                   setFilters({
                     ...filters,
-                    sorting: sorting as CarFilter["sorting"],
+                    sorting:
+                      filters.sorting === sorting
+                        ? "asc"
+                        : (sorting as CarFilter["sorting"]),
                   })
                 }
               >
@@ -719,7 +722,7 @@ export const Finder = () => {
                 onClick={() => {
                   return setFilters({
                     ...filters,
-                    schema,
+                    schema: filters.schema === schema ? null : schema,
                   });
                 }}
               >
@@ -741,7 +744,10 @@ export const Finder = () => {
                   onClick={() => {
                     return setFilters({
                       ...filters,
-                      transmissionType,
+                      transmissionType:
+                        filters.transmissionType === transmissionType
+                          ? null
+                          : transmissionType,
                     });
                   }}
                 >
@@ -754,12 +760,15 @@ export const Finder = () => {
               <Badge
                 key={`Buyout${i}`}
                 className={`${
-                  filters.buyoutPossible !== undefined ? "bg-white" : ""
+                  filters.buyoutPossible === buyoutPossible ? "bg-white" : ""
                 } cursor-pointer`}
                 onClick={() => {
-                  return setFilters({
+                  setFilters({
                     ...filters,
-                    buyoutPossible,
+                    buyoutPossible:
+                      filters.buyoutPossible === buyoutPossible
+                        ? undefined
+                        : buyoutPossible,
                   });
                 }}
               >
@@ -784,7 +793,7 @@ export const Finder = () => {
                 onClick={() => {
                   return setFilters({
                     ...filters,
-                    fuelType,
+                    fuelType: filters.fuelType === fuelType ? null : fuelType,
                   });
                 }}
               >

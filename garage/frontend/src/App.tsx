@@ -61,11 +61,7 @@ function App() {
   }, []);
 
   if (!loaded) {
-    return (
-      <>
-        <div className="">Loading...</div>
-      </>
-    );
+    return <></>;
   }
 
   return (
@@ -178,7 +174,8 @@ const Menu = ({ user }: { user: User }) => (
           {/* <Separator /> */}
           <Link
             className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
-            to=""
+            to="https://forms.yandex.ru/cloud/6617d44102848f0fb4b9bbf5/"
+            target="_blank"
           >
             {/* <FontAwesomeIcon
               icon={faPhoneVolume}
@@ -233,7 +230,10 @@ const Menu = ({ user }: { user: User }) => (
         className="flex items-center mt-2 hover:text-gray"
         to="login/driver"
       >
-        <Button variant="outline" style={{ width: "105px", flexShrink: 0, padding: 0 }}>
+        <Button
+          variant="outline"
+          style={{ width: "105px", flexShrink: 0, padding: 0 }}
+        >
           {" "}
           <div className="flex items-center justify-center p-0">
             <FontAwesomeIcon

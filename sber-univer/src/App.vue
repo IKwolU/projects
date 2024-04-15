@@ -5,6 +5,11 @@ import { format } from 'date-fns';
 import Locations from './structure.ts';
 
 
+const urlParams = new URLSearchParams(window.location.search);
+const locationId = urlParams.get('id');
+
+const onboarded = !!localStorage.getItem("onboarded");
+
 function getDisplayValueByDecimalSeconds(seconds: number): string {
   const totalMinutes = Math.floor(seconds / 60);
   const secondsAsInt = Math.floor(seconds) % 60;
@@ -36,18 +41,17 @@ type LocationData = typeof Locations[0];
 
 const seenTips: string[] = [];
 
-const interruptor = ref<string | undefined>()
-const player = ref()
+const interruptor = ref<string | undefined>();
+const player = ref();
 
-const previewedLocation = ref<LocationData | undefined>()
+const previewedLocation = ref<LocationData | undefined>();
 const activeLocation = ref<LocationData | undefined>();
 
-const currentImageUrl = ref()
-const blueBubbleExpanded = ref(false)
+const currentImageUrl = ref();
+const blueBubbleExpanded = ref(false);
+const showWelcomeScreen = ref(!onboarded || !locationId);
 
 onMounted(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const locationId = urlParams.get('id');
   if (locationId) {
     const startingPoint = Locations.find(x => x.id.toString() === locationId)!;
     activeLocation.value = startingPoint;
@@ -80,7 +84,7 @@ const returnToMap = () => {
 
 const passOnboarding = () => {
   localStorage.setItem("onboarded", "true");
-  window.location.reload();
+  showWelcomeScreen.value = false;
 };
 
 const visitNearby = (nearbyLocId: number) => {
@@ -108,13 +112,11 @@ const closeTip = () => {
   player.value.play();
 };
 
-const onboarded = localStorage.getItem("onboarded");
-
 </script>
 
 <template>
   <div v-bind:class="'flex justify-center max-w-[437px]'">
-    <div v-if="!onboarded" v-bind:class="'absolute z-40 bg-welcome w-full max-w-[437px] p-8'">
+    <div v-if="showWelcomeScreen" v-bind:class="'absolute z-40 bg-welcome w-full max-w-[437px] p-8'">
 
       <!-- <audio autoplay  src="https://storage.yandexcloud.net/testingwow/intro.mp3" class="hiddenx"></audio> -->
 
@@ -138,7 +140,7 @@ const onboarded = localStorage.getItem("onboarded");
       </div>
     </div>
 
-    <div v-if="onboarded">
+    <div v-if="!showWelcomeScreen">
 
       <div v-if="!!activeLocation" v-bind:class="'absolute top-0 left-0 w-full max-w-[437px] bg-white z-30'">
 

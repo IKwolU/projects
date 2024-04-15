@@ -18,7 +18,6 @@ import {
   BookingStatus,
   Bookings,
   User,
-  Variants,
   Schema,
   Cars3,
 } from "./api-client";

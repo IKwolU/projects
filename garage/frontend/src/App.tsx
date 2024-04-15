@@ -17,9 +17,7 @@ import {
   faArrowRightFromBracket,
   faArrowRightToBracket,
   faBars,
-  faClockRotateLeft,
   faLocationDot,
-  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 import { User, UserType } from "./api-client";
 import { CityPicker } from "./CityPicker";
@@ -32,9 +30,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
-import { Command, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Terms } from "./Terms";
 

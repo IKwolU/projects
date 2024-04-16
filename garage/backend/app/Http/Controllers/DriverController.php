@@ -257,12 +257,7 @@ class DriverController extends Controller
 
         $checkBook = Booking::where('driver_id', $user->driver->id)
             ->where('status', BookingStatus::Booked->value)
-            ->orWhere(function ($query) use ($car) {
-                $query->where('status', 1)
-                    ->orWhere('status', 3)
-                    ->where('car_id', $car->id);
-            })
-            ->first();
+            ->orWhere('status', BookingStatus::RentStart->value)->first();
 
         if ($checkBook) {
             return response()->json(['message' => 'Уже есть активная бронь!'], 409);
@@ -579,10 +574,10 @@ class DriverController extends Controller
      */
     public function checkActiveBookingDriver(Request $request)
     {
-        $bookingStatus = Booking::where('id', $request->id)->select('status')->first()->status;
-        if ($bookingStatus === BookingStatus::Booked) {
-            return response()->json(['result' => true], 200);
+        $bookingStatus = Booking::where('id', $request->id)->select('id', 'status')->first()->status;
+        if ($bookingStatus === BookingStatus::Booked->value) {
+            return response()->json(['result' => false], 200);
         }
-        return response()->json(['result' => false], 200);
+        return response()->json(['result' => true], 200);
     }
 }

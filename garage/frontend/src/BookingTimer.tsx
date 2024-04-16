@@ -52,7 +52,6 @@ export const BookingTimer = () => {
           ],
         })
       );
-      setIsUnbooked(true);
     },
   });
 
@@ -98,7 +97,7 @@ export const BookingTimer = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [activeBooking]);
 
   if (!activeBooking) {
     return <></>;

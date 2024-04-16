@@ -56,7 +56,7 @@ const SliderImages = ({
 
   return (
     <>
-      <div className={`relative h-64 sm:h-80 ${classImages}`}>
+      <div className={`relative h-52 sm:h-80 ${classImages}`}>
         {type === "click" && imagesSlised.length > 1 && (
           <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
         )}
@@ -69,7 +69,7 @@ const SliderImages = ({
                     <img
                       src={image}
                       alt={`Slide ${index}`}
-                      className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-2xl sm:min-w-full sm:h-80 ${classImages}`}
+                      className={`bg-black bg-opacity-90 object-cover w-full h-52 rounded-2xl sm:min-w-full sm:h-80 ${classImages}`}
                     />
                   </div>
                 ))}
@@ -80,7 +80,7 @@ const SliderImages = ({
                 <img
                   src={imagesSlised[0]}
                   alt={`Slide ${0}`}
-                  className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                  className={`bg-black bg-opacity-90 object-cover w-full h-52 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
                 />
               </div>
             )}
@@ -100,7 +100,7 @@ const SliderImages = ({
                         <img
                           src={image}
                           alt={`Slide ${index}`}
-                          className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                          className={`bg-black bg-opacity-90 object-cover w-full h-52 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
                         />
                       </div>
                     ))}
@@ -111,7 +111,7 @@ const SliderImages = ({
                     <img
                       src={imagesSlised[0]}
                       alt={`Slide ${0}`}
-                      className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                      className={`bg-black bg-opacity-90 object-cover w-full h-52 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
                     />
                   </div>
                 )}

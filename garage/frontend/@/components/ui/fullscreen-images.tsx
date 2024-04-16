@@ -8,12 +8,14 @@ interface FullScreenImagesProps {
   images: string[];
   fullscreenIndex: number;
   trigger: JSX.Element;
+  openIsAffordable: boolean;
 }
 
 const FullScreenImages = ({
   images,
   fullscreenIndex,
   trigger,
+  openIsAffordable,
 }: FullScreenImagesProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef<Slider>(null);
@@ -47,7 +49,7 @@ const FullScreenImages = ({
 
   return (
     <>
-      {isOpen && (
+      {isOpen && openIsAffordable && (
         <div className="fixed top-0 left-0 z-[53] w-full h-full bg-black bg-opacity-95">
           <div className="relative flex flex-col justify-center h-full m-auto">
             <Slider ref={sliderRef} {...settings}>

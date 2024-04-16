@@ -22,7 +22,8 @@ const SliderImages = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef<Slider>(null);
   const isTransitioning = useRef(false);
-  const [fullscreenIndex, setFullscreenIndex] = useState(-1);
+  const [sliderOpenIsAffordable, setSliderOpenIsAffordable] = useState(false);
+  const [fullscreenIndex, setFullscreenIndex] = useState(0);
 
   const settings = {
     dots: false,
@@ -33,11 +34,12 @@ const SliderImages = ({
     arrows: false,
     beforeChange: () => {
       isTransitioning.current = true;
+      setSliderOpenIsAffordable(false);
     },
     afterChange: (current: any) => {
-      setFullscreenIndex(current);
       setActiveIndex(current);
       isTransitioning.current = false;
+      setSliderOpenIsAffordable(true);
     },
   };
 
@@ -91,7 +93,10 @@ const SliderImages = ({
                 {imagesSlised.length > 1 && (
                   <Slider ref={sliderRef} {...settings}>
                     {imagesSlised.map((image, index) => (
-                      <div key={index}>
+                      <div
+                        key={index}
+                        onClick={() => setFullscreenIndex(index)}
+                      >
                         <img
                           src={image}
                           alt={`Slide ${index}`}
@@ -117,6 +122,7 @@ const SliderImages = ({
           }
           fullscreenIndex={fullscreenIndex}
           images={imagesSlised}
+          openIsAffordable={sliderOpenIsAffordable}
         />
         {imagesSlised.length > 1 && (
           <div

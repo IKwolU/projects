@@ -40,74 +40,67 @@ class CheckClientStatuses extends Command
      */
     public function handle()
     {
-        Log::info('Старт');
-        // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
-        set_time_limit(300);
-        // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
 
+        // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
+        set_time_limit(600);
+        // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         try {
             $parks = Park::whereNotNull('url')->get();
-
             foreach ($parks as $park) {
-                $clientCars = $this->getCarsFromParkClient($park->id);
-
-                if (!is_string($clientCars)) {
-                    continue;
-                }
                 $clientCars = json_decode($this->getCarsFromParkClient($park->id));
-
+                $statuses = Status::where('park_id', $park->id)->select('status_value', 'custom_status_name', 'id')->get();
+                $cars = Car::where('park_id', $park->id)->get();
                 if (is_array($clientCars)) {
-
-                    $statuses = Status::where('park_id', $park->id)->select('status_value', 'custom_status_name', 'id')->get();
-                    $cars = Car::where('park_id', $park->id)->get();
-
                     usort($clientCars, function ($a, $b) {
                         return strtotime($b->STSIssueDate) - strtotime($a->STSIssueDate);
                     });
-
+                    $statuses = Status::where('park_id', $park->id)->select('status_value', 'custom_status_name', 'id')->get();
+                    $cars = Car::where('park_id', $park->id)->get();
+                    usort($clientCars, function ($a, $b) {
+                        return strtotime($b->STSIssueDate) - strtotime($a->STSIssueDate);
+                    });
                     foreach ($clientCars as $car) {
-                        if (!$car->Activity) {
-                            continue;
-                        }
-                        $carVin = $car->VIN;
-                        $carStatus = $car->Status;
+                        if ($car && $car->Activity === true) {
 
-                        $existingCar = $cars->where('car_id', $carVin)->first();
-                        if ($existingCar && ManagerController::checkCarDataIsFilled($existingCar)) {
-                            $matchingStatusValue = null;
-                            $matchingStatusId = null;
-                            foreach ($statuses as $status) {
+                            $carVin = $car->VIN;
+                            $carStatus = $car->Status;
+                            $existingCar = $cars->where('car_id', $carVin)->first();
+                            if ($existingCar && ManagerController::checkCarDataIsFilled($existingCar)) {
+                                $matchingStatusValue = null;
+                                $matchingStatusId = null;
+                                foreach ($statuses as $status) {
 
-                                if ($carStatus === $status->custom_status_name) {
+                                    if ($carStatus === $status->custom_status_name) {
 
-                                    $matchingStatusValue = $status->status_value;
-                                    $matchingStatusId = $status->id;
-                                    break;
-                                }
-                            }
-                            $existingCar->status = $matchingStatusValue;
-                            $oldStatus = $existingCar->status_id;
-                            if ($oldStatus !== $matchingStatusId) {
-                                Log::info('новый статус' . $carStatus . 'значение: ' . $matchingStatusValue);
-                                if ($existingCar->status === CarStatus::Booked->value) {
-                                    $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
-                                    if ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value) {
-                                        $booking->status = BookingStatus::UnBooked->value;
-                                        $booking->save();
-                                    }
-                                    if ($matchingStatusValue === CarStatus::Rented->value) {
-                                        $booking->status = BookingStatus::RentStart->value;
-                                        $booking->save();
+                                        $matchingStatusValue = $status->status_value;
+                                        $matchingStatusId = $status->id;
+                                        break;
                                     }
                                 }
-                                if ($existingCar->status === CarStatus::Rented->value && ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value)) {
-                                    $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
-                                    $booking->status = BookingStatus::RentOver->value;
-                                    $booking->save();
+                                $existingCar->status = $matchingStatusValue;
+                                $oldStatus = $existingCar->status_id;
+
+                                if ($oldStatus !== $matchingStatusId) {
+                                    if ($existingCar->status === CarStatus::Booked->value) {
+                                        $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
+                                        if ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value) {
+                                            $booking->status = BookingStatus::UnBooked->value;
+                                            $booking->save();
+                                        }
+                                        if ($matchingStatusValue === CarStatus::Rented->value) {
+                                            $booking->status = BookingStatus::RentStart->value;
+                                            $booking->save();
+                                        }
+                                    }
+                                    if ($existingCar->status === CarStatus::Rented->value && ($matchingStatusValue === CarStatus::AvailableForBooking->value || $matchingStatusValue === CarStatus::Hidden->value)) {
+                                        $booking = Booking::where('car_id', $existingCar->id)->where('status', BookingStatus::Booked->value)->first();
+                                        $booking->status = BookingStatus::RentOver->value;
+                                        $booking->save();
+                                    }
+                                    $existingCar->status_id = $matchingStatusId;
+                                    $existingCar->old_status_id = $oldStatus;
+                                    $existingCar->save();
                                 }
-                                $existingCar->status_id = $matchingStatusId;
-                                $existingCar->old_status_id = $oldStatus;
-                                $existingCar->save();
                             }
                         }
                     }
@@ -123,6 +116,7 @@ class CheckClientStatuses extends Command
         $url = Park::where('id', $parkId)->select('url')->first()->url;
         $url .= '/hs/Car/v1/Get';
         $manager = Manager::where('park_id', $parkId)->first();
+
         if ($manager) {
             $user = User::where('id', $manager->user_id)->first();
             $username = $user->name ?? ' ';
@@ -130,7 +124,7 @@ class CheckClientStatuses extends Command
             $response = Http::withoutVerifying()->withBasicAuth($username, $password)->get($url);
 
             if ($response->successful()) {
-                return $response->json();
+                return $response;
             } else {
                 return [];
             }

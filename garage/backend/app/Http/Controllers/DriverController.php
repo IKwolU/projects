@@ -242,7 +242,12 @@ class DriverController extends Controller
                 ->where('year_produced', $selectedCar->year_produced)
                 ->where('images', $selectedCar->images)
                 ->where('status', CarStatus::AvailableForBooking->value)
-                ->with('booking', 'division', 'division.park')->first();
+                ->whereHas('booking', function ($query) {
+                    $query->where('status', '!=', 1)
+                        ->where('status', '!=', 3);
+                })
+                ->with('booking', 'division', 'division.park')
+                ->first();
             if (!$car) {
                 return response()->json(['message' => 'Машина не найдена'], 404);
             }
@@ -250,15 +255,22 @@ class DriverController extends Controller
             $car = $selectedCar;
         }
 
-
-
         $checkBook = Booking::where('driver_id', $user->driver->id)
             ->where('status', BookingStatus::Booked->value)
+            ->orWhere(function ($query) use ($car) {
+                $query->where('status', 1)
+                    ->orWhere('status', 3)
+                    ->where('car_id', $car->id);
+            })
             ->first();
 
         if ($checkBook) {
-            return response()->json(['message' => 'У пользователя уже есть активная бронь!'], 409);
+            return response()->json(['message' => 'Уже есть активная бронь!'], 409);
         }
+
+        $car->status = CarStatus::Booked->value;
+        $car->save();
+
         $division = $car->division;
         $rent_time = $division->park->booking_window;
         $driver = $user->driver;
@@ -317,7 +329,6 @@ class DriverController extends Controller
             }
             $car->status_id = $customStatusBooked->id;
         }
-        $car->status = CarStatus::Booked->value;
         $car->save();
 
         $workingHours = json_decode($car->division->working_hours, true);

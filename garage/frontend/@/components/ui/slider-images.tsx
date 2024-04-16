@@ -22,7 +22,7 @@ const SliderImages = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const sliderRef = useRef<Slider>(null);
   const isTransitioning = useRef(false);
-  const [sliderOpenIsAffordable, setSliderOpenIsAffordable] = useState(false);
+  const [sliderOpenIsAffordable, setSliderOpenIsAffordable] = useState(true);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
 
   const settings = {

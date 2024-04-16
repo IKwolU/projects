@@ -21,6 +21,9 @@ const buttonVariants = cva(
           "bg-pale text-slate-900  hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
         manager:
           "bg-yellow w-64 text-black  hover:bg-darkyellow dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+        card: "bg-grey text-black  hover:bg-pale",
+
+        cardDefault: "bg-yellow text-black hover:bg-opacity-70",
       },
     },
     defaultVariants: {
@@ -73,7 +76,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={`${cn(buttonVariants({ variant, className }))} ${full ? 'w-full' :''}`}
+        className={`${cn(buttonVariants({ variant, className }))} ${
+          full ? "w-full" : ""
+        }`}
         ref={ref}
         {...props}
         onClick={handler}

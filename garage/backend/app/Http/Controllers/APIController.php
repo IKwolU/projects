@@ -30,6 +30,7 @@ use App\Rules\WorkingHoursRule;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 /**
@@ -1821,7 +1822,7 @@ class APIController extends Controller
                 $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
                 $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
                 'Тел ' . $user->phone;
-
+                Log::info($message);
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
 
             $response = Http::withToken($token)->post($url, [
@@ -1830,6 +1831,7 @@ class APIController extends Controller
                 'statusName' => $customStatusName,
             ]);
                 $statusCode = $response->getStatusCode();
+                Log::info('код от робота: '. $statusCode);
                 if ($statusCode === 500) {
 
                     if ($count<5) {

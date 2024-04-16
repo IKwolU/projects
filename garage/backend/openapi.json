@@ -3061,6 +3061,10 @@
                                                         "description": "Модель автомобиля",
                                                         "type": "string"
                                                     },
+                                                    "mileage": {
+                                                        "description": "Пробег автомобиля",
+                                                        "type": "string"
+                                                    },
                                                     "commission": {
                                                         "description": "Комиссия парка",
                                                         "type": "number"
@@ -3632,6 +3636,66 @@
                                             "items": {
                                                 "type": "string"
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Внутренняя ошибка сервера",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/booking/check": {
+            "post": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Проверить активную бронь",
+                "description": "Проверить активную бронь",
+                "operationId": "checkActiveBookingDriver",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "Идентификатор брони",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "result": {
+                                            "description": "Результат проверки активной брони (true/false)",
+                                            "type": "boolean"
                                         }
                                     },
                                     "type": "object"

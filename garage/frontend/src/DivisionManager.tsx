@@ -8,7 +8,7 @@ import {
   Working_hours2,
   End2,
   Start2,
-  Body28,
+  Body30,
 } from "./api-client";
 import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
@@ -89,7 +89,7 @@ export const DivisionManager = () => {
   const updateDivision = async () => {
     try {
       await client.updateParkDivisionManager(
-        new Body28({
+        new Body30({
           id: selected.id,
           city: newDivision.city || undefined,
           address: newDivision.address || undefined,

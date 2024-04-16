@@ -7,9 +7,17 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
 
+const storedApprovedBookings = localStorage.getItem("approvedBookings");
+const initialApprovedBookings = storedApprovedBookings
+  ? JSON.parse(storedApprovedBookings)
+  : [];
+
 export const BookingsManager = () => {
   const [bookings, setBookings] = useState<Bookings[]>();
   const [selected, setSelected] = useState<Bookings>();
+  const [approvedBookings, setApprovedBookings] = useState<number[]>(
+    initialApprovedBookings
+  );
 
   const getBookings = async () => {
     const data = await client.getParkBookingsManager();
@@ -38,6 +46,11 @@ export const BookingsManager = () => {
       new Body33({ status: status, vin: selected!.car!.vin })
     );
     getBookings();
+  };
+
+  const HandleApprovedBookings = (id: number) => {
+    setApprovedBookings([...approvedBookings, id]);
+    localStorage.setItem("approvedBookings", String([...approvedBookings, id]));
   };
 
   if (!bookings) {
@@ -96,7 +109,7 @@ export const BookingsManager = () => {
                       </p>
                       <p>Телефон водителя: {selected.driver!.user!.phone}</p>
                     </div>
-                    <div className="w-1/2 space-y-2">
+                    <div className="w-1/2 space-y-2 ">
                       <Confirmation
                         accept={() =>
                           changeBookingStatus(BookingStatus.UnBooked)
@@ -113,6 +126,35 @@ export const BookingsManager = () => {
 
                       {/* <Button variant={"manager"}>Продление брони</Button>
                       <Button variant={"manager"}>Смена авто</Button> */}
+                      <div className="flex gap-2">
+                        {!approvedBookings.includes(selected.id!) && (
+                          <Confirmation
+                            accept={() => HandleApprovedBookings(selected.id!)}
+                            cancel={() => {}}
+                            title="Подтвердить бронь?"
+                            trigger={
+                              <Button variant={"manager"}>
+                                Бронь подтверждена
+                              </Button>
+                            }
+                            type="green"
+                          />
+                        )}
+                        {!!approvedBookings.length &&
+                          approvedBookings.includes(selected.id!) && (
+                            <Confirmation
+                              accept={() =>
+                                changeBookingStatus(BookingStatus.RentStart)
+                              }
+                              cancel={() => {}}
+                              title="Выдать авто?"
+                              trigger={
+                                <Button variant={"manager"}>Авто выдано</Button>
+                              }
+                              type="green"
+                            />
+                          )}
+                      </div>
                     </div>
                   </div>
                 </div>

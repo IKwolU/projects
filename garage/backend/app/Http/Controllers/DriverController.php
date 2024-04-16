@@ -543,4 +543,46 @@ class DriverController extends Controller
 
         return response()->json(['brands' => $brandList, 'parks' => $parkList]);
     }
+
+    /**
+     * Проверить активную бронь
+     *
+     * @OA\Post(
+     *     path="/driver/booking/check",
+     *     operationId="checkActiveBookingDriver",
+     *     summary="Проверить активную бронь",
+     *     tags={"Driver"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", description="Идентификатор брони")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Успешный ответ",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="result", type="boolean", description="Результат проверки активной брони (true/false)")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="Внутренняя ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор брони для проверки
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом проверки активной брони (true/false)
+     */
+    public function checkActiveBookingDriver(Request $request)
+    {
+        $bookingStatus = Booking::where('id', $request->id)->select('status')->first()->status;
+        if ($bookingStatus === BookingStatus::Booked) {
+            return response()->json(['result' => true], 200);
+        }
+        return response()->json(['result' => false], 200);
+    }
 }

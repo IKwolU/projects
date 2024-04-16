@@ -52,8 +52,8 @@ export const ParkManager = () => {
     <>
       <div className="flex justify-end h-full mt-4">
         <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
-          <div className="flex items-center text-sm font-black tracking-widest sm:text-xl">
-            BeeBeep - {park.park_name}
+          <div className="flex items-center text-sm font-black tracking-widest sm:text-xl max-w-10">
+            BeeBeep {park.park_name}
           </div>
           <div className="flex justify-end m-0 space-x-6">
             {[

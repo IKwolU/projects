@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\BookingStatus;
+use App\Events\BookingStatusChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

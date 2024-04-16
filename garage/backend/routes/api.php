@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\ManagerController;
+use Illuminate\Support\Facades\Broadcast;
 use PHPUnit\Framework\Attributes\Group;
 
 /*
@@ -32,6 +33,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
     Route::post('admin/park', [AdminController::class, 'createPark']);
+    Route::post('driver/booking/check', [DriverController::class, 'checkActiveBookingDriver']);
+    Broadcast::routes();
 });
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
 Route::post('cars/app-data', [DriverController::class, 'getFinderFilterData']);

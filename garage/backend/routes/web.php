@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\URL;
 use TCG\Voyager\Facades\Voyager;
 
@@ -42,6 +43,8 @@ Route::middleware('api.key')->put('/cars/booking/replace', [APIController::class
 Route::get('/documentation', function () {
     return view('swagger.docs');
 });
+
+
 
 // Auth::routes();
 

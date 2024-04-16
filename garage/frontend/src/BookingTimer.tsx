@@ -52,6 +52,7 @@ export const BookingTimer = () => {
           ],
         })
       );
+      setIsUnbooked(true);
     },
   });
 
@@ -108,14 +109,11 @@ export const BookingTimer = () => {
       {isUnbooked && (
         <div className="fixed left-0 top-0 w-full h-full z-[54] bg-black bg-opacity-50 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center p-8 space-y-6 bg-white rounded-2xl max-w-80 md:max-w-[600px] h-fit">
-            <h3 className="text-center">Бронирование отменено!</h3>
-            <p className="pb-4 text-center">
-              Ваша бронь была отменена. Вы можете забронировать новый
-              автомобиль.
-            </p>
+            <h3 className="text-center">Бронирование завершено!</h3>
+            <p className="pb-4 text-center">Ваша бронь была завершена.</p>
             <Link to="/" className="">
               <Button variant={"default"} onClick={() => setIsUnbooked(false)}>
-                Выбрать новое авто
+                Вернуться на главную
               </Button>
             </Link>
           </div>

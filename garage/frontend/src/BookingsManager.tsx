@@ -134,7 +134,7 @@ export const BookingsManager = () => {
                             title="Подтвердить бронь?"
                             trigger={
                               <Button variant={"manager"}>
-                                Бронь подтверждена
+                                Подтвердить бронь
                               </Button>
                             }
                             type="green"
@@ -149,7 +149,7 @@ export const BookingsManager = () => {
                               cancel={() => {}}
                               title="Выдать авто?"
                               trigger={
-                                <Button variant={"manager"}>Авто выдано</Button>
+                                <Button variant={"manager"}>Выдать авто</Button>
                               }
                               type="green"
                             />

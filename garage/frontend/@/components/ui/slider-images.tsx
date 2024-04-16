@@ -69,7 +69,7 @@ const SliderImages = ({
                     <img
                       src={image}
                       alt={`Slide ${index}`}
-                      className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-xl sm:min-w-full sm:h-80 ${classImages}`}
+                      className={`bg-black bg-opacity-90 object-cover w-full h-64 rounded-2xl sm:min-w-full sm:h-80 ${classImages}`}
                     />
                   </div>
                 ))}
@@ -153,13 +153,13 @@ const SliderImages = ({
               ))}
             {type === "hover" && (
               <div
-                className="flex w-full h-full max-h-full p-3 transition-opacity opacity-0 hover:opacity-100 "
+                className="flex w-full h-full max-h-full px-1 py-3 transition-opacity opacity-0 hover:opacity-100 "
                 onMouseLeave={() => handlePaginationMouseEnterOrClick(0)}
               >
                 {imagesSlised.map((image, i) => (
                   <div
                     key={`image_${i}`}
-                    className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10  `}
+                    className={`w-full flex items-end rounded-xl transition-all h-full cursor-pointer z-10 pb-7 `}
                     onMouseEnter={() => handlePaginationMouseEnterOrClick(i)}
                   >
                     {image && (

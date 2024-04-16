@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\BookingStatus;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
+use App\Http\Controllers\APIController;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -32,12 +33,17 @@ class CheckBookingTimers extends Command
     {
         $bookings = Booking::where('status', BookingStatus::Booked->value)->get();
         $timeNow = Carbon::now('UTC');
-        foreach ($bookings as $booking) {
-            if ($booking->booked_until < $timeNow) {
-                $booking->status = BookingStatus::BookingTimeOver->value;
-                $booking->car->status = CarStatus::AvailableForBooking->value;
-                $booking->car->save();
-                $booking->save();
+        if ($bookings) {
+            $apiController = new APIController;
+
+            foreach ($bookings as $booking) {
+                if ($booking->booked_until < $timeNow) {
+                    $booking->status = BookingStatus::BookingTimeOver->value;
+                    $booking->car->status = CarStatus::AvailableForBooking->value;
+                    $booking->car->save();
+                    $booking->save();
+                    $apiController->notifyParkOnBookingStatusChanged($booking->id, false);
+                }
             }
         }
     }

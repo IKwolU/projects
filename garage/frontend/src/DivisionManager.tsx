@@ -26,13 +26,7 @@ export const DivisionManager = () => {
   const [park, setPark] = useRecoilState(parkAtom);
   const [newDivisionPhone, setNewDivisionPhone] = useState("");
   const [selectedId, setSelectedId] = useState(0);
-  const [workingHours, setWorkingHours] = useState<Working_hours2[]>([
-    new Working_hours2({
-      day: DayOfWeek.Monday,
-      start: new Start2({ hours: 0, minutes: 0 }),
-      end: new End2({ hours: 0, minutes: 0 }),
-    }),
-  ]);
+  const [workingHours, setWorkingHours] = useState<Working_hours2[]>([]);
   const [nonWorkingDay, setNonWorkingDay] = useState([""]);
   const [newDivision, setNewDivision] = useState<IBody3>({
     city: city,
@@ -99,7 +93,7 @@ export const DivisionManager = () => {
           phone: newDivisionPhone || undefined,
           timezone_difference: newDivision.timezone_difference || undefined,
           working_hours: workingHours.filter(
-            (item) => !nonWorkingDay.includes(item!.day!)
+            (item) => !nonWorkingDay.includes(item!.day!) && !!item!.day!
           ),
         })
       );
@@ -252,7 +246,7 @@ export const DivisionManager = () => {
                     : selected!.working_hours!.find(
                         (workingHour) => workingHour.day === day
                       );
-                if (!item) {
+                if (!item && selectedId === 0) {
                   item = new Working_hours2({
                     day: day,
                     start: new Start2({
@@ -297,14 +291,14 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item!.start!.hours}
+                              value={item?.start!.hours}
                               type="number"
                               placeholder="ч"
                             ></Input>
                             <p>:</p>
                             <Input
                               className="w-10 p-0 m-0 text-center"
-                              value={item!.start!.minutes}
+                              value={item?.start!.minutes}
                               onChange={(e) => {
                                 const updatedWorkingHours = workingHours.map(
                                   (workingHour) => {
@@ -347,7 +341,7 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item!.end!.hours}
+                              value={item?.end!.hours}
                               type="number"
                               placeholder="ч"
                             ></Input>
@@ -371,7 +365,7 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item!.end!.minutes}
+                              value={item?.end!.minutes}
                               type="number"
                               placeholder="м"
                             ></Input>

@@ -14,6 +14,7 @@ use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
 use App\Models\RentTerm;
+use App\Models\Schema;
 use App\Models\Status;
 use App\Models\Tariff;
 use App\Models\User;
@@ -1808,6 +1809,63 @@ public function assignCarsToRentTermManager(Request $request) {
     }
 
     return response()->json(['message' => 'Cars assigned to rent term successfully'], 200);
+}
+
+/**
+ * Удаление схемы
+ *
+ * @OA\Delete(
+ *     path="/manager/schema",
+ *     operationId="deleteSchemaManager",
+ *     summary="Удаление схемы",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="id",
+ *                 description="Идентификатор",
+ *                 type="integer"
+ *             ))),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function deleteSchemaManager(Request $request) {
+    $request->validate([
+        'id' => 'required|integer',
+    ]);
+
+    $schema = Schema::find($request->id);
+
+    if (!$schema) {
+        return response()->json(['error' => 'Schema not found'], 404);
+    }
+
+    $schema->delete();
+
+    return response()->json(['message' => 'Schema deleted'], 200);
 }
 
 /**

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Body6, Rent_terms, Schemas } from "./api-client";
+import { Body41, Body6, Rent_terms, Schemas } from "./api-client";
 import { parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -30,24 +30,21 @@ export const RentTermManager = () => {
 
   const [selectedId, setSelectedId] = useState(0);
 
-  const upsertRentTerm = async () => {
+  const createRentTerm = async () => {
     try {
       const newRentTermData = await client.createOrUpdateRentTermManager(
         new Body6({
-          rent_term_id: selected?.id || undefined,
+          rent_term_id: undefined,
           deposit_amount_daily: newRentTerm.deposit_amount_daily,
           deposit_amount_total: newRentTerm.deposit_amount_total,
-          is_buyout_possible:
-            newRentTerm.is_buyout_possible || !!selected?.is_buyout_possible,
-          name: newRentTerm.name || selected?.name,
-          minimum_period_days:
-            newRentTerm.minimum_period_days || selected?.minimum_period_days,
+          is_buyout_possible: newRentTerm.is_buyout_possible,
+          name: newRentTerm.name,
+          minimum_period_days: newRentTerm.minimum_period_days,
           schemas: newRentTerm.schemas,
         })
       );
 
       const upsertedRentTerm = {
-        rent_term_id: newRentTermData.rent_term_id,
         is_buyout_possible: newRentTerm.is_buyout_possible,
         name: newRentTerm.name,
         minimum_period_days: newRentTerm.is_buyout_possible,
@@ -55,16 +52,57 @@ export const RentTermManager = () => {
         id: newRentTermData.id,
         deposit_amount_daily: newRentTerm.deposit_amount_daily,
       };
-      setSelectedId(-1);
+      setSelectedId(0);
       setPark({
         ...park,
         rent_terms: [
-          ...rentTerms!.filter((rentTerm) =>
-            newRentTerm.rent_term_id
-              ? rentTerm.id !== newRentTerm.rent_term_id
-              : rentTerm
+          ...rentTerms!.filter(
+            (rentTerm) => rentTerm.id !== newRentTerm.rent_term_id
           ),
           new Rent_terms(upsertedRentTerm),
+        ],
+      });
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
+  };
+
+  const updateRentTerm = async () => {
+    try {
+      await client.createOrUpdateRentTermManager(
+        new Body6({
+          rent_term_id: selected!.id,
+          deposit_amount_daily: Number(selected.deposit_amount_daily),
+          deposit_amount_total: Number(selected.deposit_amount_total),
+          is_buyout_possible: !!selected.is_buyout_possible,
+          name: selected.name,
+          minimum_period_days: selected.minimum_period_days,
+          schemas: selected.schemas,
+        })
+      );
+
+      const updatedRentTerm = {
+        rent_term_id: selected.rent_term_id,
+        is_buyout_possible: selected.is_buyout_possible,
+        name: selected.name,
+        minimum_period_days: selected.is_buyout_possible,
+        schemas: [new Schemas(selected.schemas)],
+        id: selected.id,
+        deposit_amount_daily: selected.deposit_amount_daily,
+      };
+      setPark({
+        ...park,
+        rent_terms: [
+          ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
+          new Rent_terms(updatedRentTerm),
         ],
       });
     } catch (error: any) {
@@ -90,20 +128,78 @@ export const RentTermManager = () => {
     });
   };
 
+  const handleInputRentTermChange = (
+    value: string | boolean,
+    param: keyof Rent_terms
+  ) => {
+    setPark({
+      ...park,
+      rent_terms: [
+        ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
+        new Rent_terms({
+          ...selected,
+          [param]: value,
+        }),
+      ],
+    });
+  };
+
+  const deleteSchema = async (id: number) => {
+    await client.deleteSchemaManager(new Body41({ id: id }));
+    setPark({
+      ...park,
+      rent_terms: [
+        ...rentTerms!.filter(
+          (rentTerm) => rentTerm.id !== selected.rent_term_id
+        ),
+        new Rent_terms({
+          ...selected,
+          schemas: [...selected.schemas!.filter((x) => x.id !== id)],
+        }),
+      ],
+    });
+  };
+
   const handleInputNewRentTermSchemaChange = (
     value: string,
     param: keyof Schemas,
     id: number
   ) => {
-    const currentSchema = newRentTerm.schemas!.find(
-      (schema) => schema.id === id
-    );
+    console.log(id);
 
     setNewRentTerm({
       ...newRentTerm,
       schemas: [
         ...newRentTerm.schemas!.filter((schema) => schema.id !== id),
-        new Schemas({ ...currentSchema!, [param]: value }),
+        new Schemas({
+          ...newRentTerm.schemas!.find((schema) => schema.id === id)!,
+          [param]: value,
+        }),
+      ],
+    });
+  };
+
+  const handleInputRentTermSchemaChange = (
+    value: string,
+    param: keyof Schemas,
+    id: number
+  ) => {
+    console.log(id);
+
+    setPark({
+      ...park,
+      rent_terms: [
+        ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
+        new Rent_terms({
+          ...selected,
+          schemas: [
+            ...selected.schemas!.filter((schema) => schema.id !== id),
+            new Schemas({
+              ...selected.schemas!.find((schema) => schema.id === id)!,
+              [param]: value,
+            }),
+          ],
+        }),
       ],
     });
   };
@@ -114,7 +210,7 @@ export const RentTermManager = () => {
     (rentTerm) => rentTerm.id === selectedId
   ) as Rent_terms;
 
-  const AddSchema = () => {
+  const addSchema = () => {
     if (newRentTerm.schemas && newRentTerm.schemas.length > 0) {
       const lastSchema = newRentTerm.schemas[newRentTerm.schemas.length - 1];
       const newId = lastSchema!.id! + 1;
@@ -127,11 +223,49 @@ export const RentTermManager = () => {
       if (newRentTerm.schemas.length < 10) {
         setNewRentTerm({
           ...newRentTerm,
-          schemas: [...newRentTerm.schemas, new Schemas(newSchema)] as any,
+          schemas: [...newRentTerm.schemas, new Schemas(newSchema)],
         });
       }
     }
   };
+
+  const addSchemaUpdate = () => {
+    if (selected.schemas && selected.schemas.length > 0) {
+      const lastSchema = selected.schemas[selected.schemas.length - 1];
+      const newId = lastSchema!.id! + 1;
+      const newSchema = {
+        id: newId,
+        daily_amount: 0,
+        non_working_days: 0,
+        working_days: 0,
+      };
+      if (selected.schemas.length < 10) {
+        setPark({
+          ...park,
+          rent_terms: [
+            ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
+            new Rent_terms({
+              ...selected,
+              schemas: [...selected.schemas, new Schemas(newSchema)],
+            }),
+          ],
+        });
+      }
+    }
+  };
+
+  const dellNewSchema = (id: number) => {
+    if (newRentTerm.schemas.length < 10) {
+      setNewRentTerm({
+        ...newRentTerm,
+        schemas: [...newRentTerm.schemas.filter((schema) => schema.id !== id)],
+      });
+    }
+  };
+
+  const sortedSchemas = selected?.schemas
+    ? [...selected.schemas].sort((a, b) => a.id! - b.id!)
+    : [];
 
   if (!rentTerms) {
     return <></>;
@@ -151,7 +285,10 @@ export const RentTermManager = () => {
             )}
             {rentTerms.map((x, i) => (
               <div className="" key={`rentTerm_${i}`}>
-                <div className="" onClick={() => setSelectedId(x.id!)}>
+                <div
+                  className={`${selectedId === x.id && "text-yellow"}`}
+                  onClick={() => setSelectedId(x.id!)}
+                >
                   {x.name}
                 </div>
               </div>
@@ -162,197 +299,311 @@ export const RentTermManager = () => {
             Создать
           </Button>
         </div>
-        <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
-          <h3 className="my-4">Создание условий аренды</h3>
-          {[
-            {
-              title: `Ежедневный депозит: ${
-                selected?.deposit_amount_daily || ""
-              }`,
-              type: "nubmer",
-              placeholder: "Введите значение",
-              param: "deposit_amount_daily",
-              value: selected?.deposit_amount_daily || undefined,
-            },
-            {
-              title: `Всего депозит: ${selected?.deposit_amount_total || ""}`,
-              type: "number",
-              placeholder: "Введите значение",
-              param: "deposit_amount_total",
-              value: selected?.deposit_amount_total || undefined,
-            },
-            {
-              title: `Возможность выкупа: ${
-                selected?.is_buyout_possible ? "возможен" : "не возможен"
-              }`,
-              type: "checkbox",
-              placeholder: "Введите значение",
-              param: "is_buyout_possible",
-              value: selected?.is_buyout_possible,
-            },
-            {
-              title: `Минимальный срок аренды в днях: ${
-                selected?.minimum_period_days || ""
-              }`,
-              type: "number",
-              placeholder: "Введите значение",
-              param: "minimum_period_days",
-              value: selected?.minimum_period_days || undefined,
-            },
-            {
-              title: `Название: ${selected?.name || ""}`,
-              type: "text",
-              placeholder: "Введите значение",
-              param: "name",
-              value: selected?.name || undefined,
-            },
-          ].map((input, index) => (
-            <div
-              key={`input_${index}`}
-              className={`${
-                input.type === "checkbox" &&
-                "flex flex-row-reverse justify-end items-center gap-4"
-              }`}
-            >
-              <h4>{input.title}</h4>
-              <Input
-                className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
-                onChange={(e) =>
-                  input.type === "checkbox"
-                    ? handleInputNewRentTermChange(
-                        e.target.checked,
-                        input.param
-                      )
-                    : handleInputNewRentTermChange(e.target.value, input.param)
-                }
-                type={input.type}
-                placeholder={input.placeholder}
-              ></Input>
+        {selectedId === 0 && (
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            <h3 className="my-4">Создание условий аренды</h3>
+            {[
+              {
+                title: `Ежедневный депозит: ${
+                  newRentTerm.deposit_amount_daily || ""
+                }`,
+                type: "nubmer",
+                placeholder: "Введите значение",
+                param: "deposit_amount_daily",
+                value: newRentTerm.deposit_amount_daily || undefined,
+              },
+              {
+                title: `Всего депозит: ${
+                  newRentTerm.deposit_amount_total || ""
+                }`,
+                type: "number",
+                placeholder: "Введите значение",
+                param: "deposit_amount_total",
+                value: newRentTerm.deposit_amount_total || undefined,
+              },
+              {
+                title: `Возможность выкупа: ${
+                  newRentTerm.is_buyout_possible ? "возможен" : "не возможен"
+                }`,
+                type: "checkbox",
+                placeholder: "Введите значение",
+                param: "is_buyout_possible",
+                value: newRentTerm.is_buyout_possible,
+              },
+              {
+                title: `Минимальный срок аренды в днях: ${
+                  newRentTerm.minimum_period_days || ""
+                }`,
+                type: "number",
+                placeholder: "Введите значение",
+                param: "minimum_period_days",
+                value: newRentTerm.minimum_period_days || undefined,
+              },
+              {
+                title: `Название: ${newRentTerm.name || ""}`,
+                type: "text",
+                placeholder: "Введите значение",
+                param: "name",
+                value: newRentTerm.name || undefined,
+              },
+            ].map((input, index) => (
+              <div
+                key={`input_${index}`}
+                className={`${
+                  input.type === "checkbox" &&
+                  "flex flex-row-reverse justify-end items-center gap-4"
+                }`}
+              >
+                <h4>{input.title}</h4>
+                <Input
+                  className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
+                  onChange={(e) =>
+                    input.type === "checkbox"
+                      ? handleInputNewRentTermChange(
+                          e.target.checked,
+                          input.param
+                        )
+                      : handleInputNewRentTermChange(
+                          e.target.value,
+                          input.param
+                        )
+                  }
+                  checked={input.type === "checkbox" && !!input.value}
+                  type={input.type}
+                  placeholder={input.placeholder}
+                ></Input>
+              </div>
+            ))}
+            <div className="flex items-center justify-between space-x-2">
+              <h4>Схемы аренды:</h4>
+              {newRentTerm.schemas!.length < 10 && (
+                <Button className="w-1/2" onClick={addSchema}>
+                  Добавить схему аренды
+                </Button>
+              )}
             </div>
-          ))}
-          <div className="flex items-center justify-between space-x-2">
-            <h4>Схемы аренды:</h4>
-            {newRentTerm.schemas!.length < 10 && (
-              <Button className="w-1/2" onClick={AddSchema}>
-                Добавить схему аренды
-              </Button>
-            )}
-          </div>
-          <div className="">
-            {selectedId === 0 &&
-              newRentTerm.schemas!.map((schema, i) => (
-                <div
-                  key={`schema_${i}`}
-                  className="p-4 my-1 border border-grey rounded-xl"
-                >
-                  {[
-                    {
-                      title: `Стоимость ежедневно ${
-                        schema?.daily_amount || ""
-                      }`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "daily_amount",
-                      value: schema.daily_amount || 0,
-                    },
-                    {
-                      title: `Рабочих дней ${schema?.working_days || ""}`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "working_days",
-                      value: schema.non_working_days || 0,
-                    },
-                    {
-                      title: `Нерабочих дней ${schema?.non_working_days || ""}`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "non_working_days",
-                      value: schema.working_days || 0,
-                    },
-                  ].map((input, index) => (
-                    <div
-                      key={`input_${index}`}
-                      className="flex items-center justify-between"
-                    >
-                      <h4>{input.title}</h4>
-                      <Input
-                        className={"w-3/5 m-1"}
-                        onChange={(e) =>
-                          handleInputNewRentTermSchemaChange(
-                            e.target.value,
-                            input.param,
-                            schema.id!
-                          )
-                        }
-                        type={input.type}
-                        placeholder={input.placeholder}
-                      ></Input>
+            <div className="">
+              {newRentTerm
+                .schemas!.sort((a, b) => a.id - b.id)
+                .sort((a, b) => a.id - b.id)
+                .map((schema, i) => {
+                  return (
+                    <div key={`schema_${i}`}>
+                      <div className="p-4 my-1 border border-grey rounded-xl">
+                        {[
+                          {
+                            title: "Стоимость ежедневно",
+                            type: "number",
+                            placeholder: "Введите значение",
+                            param: "daily_amount",
+                            value: schema.daily_amount,
+                          },
+                          {
+                            title: "Рабочих дней",
+                            type: "number",
+                            placeholder: "Введите значение",
+                            param: "working_days",
+                            value: schema.working_days,
+                          },
+                          {
+                            title: "Нерабочих дней",
+                            type: "number",
+                            placeholder: "Введите значение",
+                            param: "non_working_days",
+                            value: schema.non_working_days,
+                          },
+                        ].map((input, index) => (
+                          <div key={`input_${index}`}>
+                            <div className="flex items-center justify-between">
+                              <h4>{input.title}</h4>
+                              <Input
+                                className={"w-3/5 m-1"}
+                                onChange={(e) =>
+                                  handleInputNewRentTermSchemaChange(
+                                    e.target.value,
+                                    input.param,
+                                    schema.id!
+                                  )
+                                }
+                                type={input.type}
+                                placeholder={input.placeholder}
+                                value={input.value}
+                              ></Input>
+                            </div>
+                          </div>
+                        ))}
+                        {newRentTerm.schemas!.length > 1 && (
+                          <Button
+                            variant={"manager"}
+                            onClick={() => dellNewSchema(schema.id)}
+                          >
+                            Удалить схему
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              ))}
-            {selectedId !== 0 &&
-              selected.schemas!.map((schema, i) => (
-                <div
-                  key={`schema_${i}`}
-                  className="p-4 my-1 border border-grey rounded-xl"
-                >
-                  {[
-                    {
-                      title: `Стоимость ежедневно ${
-                        schema?.daily_amount || ""
-                      }`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "daily_amount",
-                      value: schema.daily_amount || 0,
-                    },
-                    {
-                      title: `Рабочих дней ${schema?.working_days || ""}`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "working_days",
-                      value: schema.non_working_days || 0,
-                    },
-                    {
-                      title: `Нерабочих дней ${schema?.non_working_days || ""}`,
-                      type: "number",
-                      placeholder: "Введите значение",
-                      param: "non_working_days",
-                      value: schema.working_days || 0,
-                    },
-                  ].map((input, index) => (
-                    <div
-                      key={`input_${index}`}
-                      className="flex items-center justify-between"
-                    >
-                      <h4>{input.title}</h4>
-                      <Input
-                        className={"w-3/5 m-1"}
-                        onChange={(e) =>
-                          handleInputNewRentTermSchemaChange(
-                            e.target.value,
-                            input.param,
-                            schema.id!
-                          )
-                        }
-                        type={input.type}
-                        placeholder={input.placeholder}
-                      ></Input>
-                    </div>
-                  ))}
-                </div>
-              ))}
-          </div>
+                  );
+                })}
+            </div>
 
-          <Confirmation
-            accept={upsertRentTerm}
-            cancel={() => {}}
-            trigger={<Button className="w-60">Применить</Button>}
-            title={"Создать условие аренды?"}
-            type="green"
-          />
-        </div>
+            <Confirmation
+              accept={createRentTerm}
+              cancel={() => {}}
+              trigger={<Button className="w-60">Применить</Button>}
+              title={"Создать условие аренды?"}
+              type="green"
+            />
+          </div>
+        )}
+        {selectedId !== 0 && (
+          <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
+            <h3 className="my-4">Изменение условий аренды</h3>
+            {[
+              {
+                title: `Ежедневный депозит: ${
+                  selected.deposit_amount_daily || ""
+                }`,
+                type: "nubmer",
+                placeholder: "Введите значение",
+                param: "deposit_amount_daily",
+                value: selected.deposit_amount_daily || undefined,
+              },
+              {
+                title: `Всего депозит: ${selected.deposit_amount_total || ""}`,
+                type: "number",
+                placeholder: "Введите значение",
+                param: "deposit_amount_total",
+                value: selected.deposit_amount_total || undefined,
+              },
+              {
+                title: `Возможность выкупа: ${
+                  selected.is_buyout_possible ? "возможен" : "не возможен"
+                }`,
+                type: "checkbox",
+                placeholder: "Введите значение",
+                param: "is_buyout_possible",
+                value: selected.is_buyout_possible,
+              },
+              {
+                title: `Минимальный срок аренды в днях: ${
+                  selected.minimum_period_days || ""
+                }`,
+                type: "number",
+                placeholder: "Введите значение",
+                param: "minimum_period_days",
+                value: selected.minimum_period_days || undefined,
+              },
+              {
+                title: `Название: ${selected.name || ""}`,
+                type: "text",
+                placeholder: "Введите значение",
+                param: "name",
+                value: selected.name || undefined,
+              },
+            ].map((input, index) => (
+              <div
+                key={`input_${index}`}
+                className={`${
+                  input.type === "checkbox" &&
+                  "flex flex-row-reverse justify-end items-center gap-4"
+                }`}
+              >
+                <h4>{input.title}</h4>
+                <Input
+                  className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
+                  onChange={(e) =>
+                    input.type === "checkbox"
+                      ? handleInputRentTermChange(e.target.checked, input.param)
+                      : handleInputRentTermChange(e.target.value, input.param)
+                  }
+                  type={input.type}
+                  placeholder={input.placeholder}
+                ></Input>
+              </div>
+            ))}
+            <div className="flex items-center justify-between space-x-2">
+              <h4>Схемы аренды:</h4>
+              {selected.schemas!.length < 10 && (
+                <Button className="w-1/2" onClick={addSchemaUpdate}>
+                  Добавить схему аренды
+                </Button>
+              )}
+            </div>
+            <div className="">
+              {sortedSchemas.map((schema, i) => (
+                <div key={`schema_${i}`}>
+                  <div className="p-4 my-1 border border-grey rounded-xl">
+                    {[
+                      {
+                        title: `Стоимость ежедневно ${
+                          schema?.daily_amount || 0
+                        }`,
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "daily_amount",
+                        value: schema.daily_amount || 0,
+                      },
+                      {
+                        title: `Рабочих дней ${schema?.working_days || 0}`,
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "working_days",
+                        value: schema.working_days || 0,
+                      },
+                      {
+                        title: `Нерабочих дней ${
+                          schema?.non_working_days || 0
+                        }`,
+                        type: "number",
+                        placeholder: "Введите значение",
+                        param: "non_working_days",
+                        value: schema.non_working_days || 0,
+                      },
+                    ].map((input, index) => (
+                      <div
+                        key={`input_${index}`}
+                        className="flex items-center justify-between"
+                      >
+                        <h4>{input.title}</h4>
+                        <Input
+                          className={"w-3/5 m-1"}
+                          onChange={(e) =>
+                            handleInputRentTermSchemaChange(
+                              e.target.value,
+                              input.param,
+                              schema.id!
+                            )
+                          }
+                          type={input.type}
+                          placeholder={input.placeholder}
+                        ></Input>
+                      </div>
+                    ))}
+                  </div>
+                  {selected.schemas!.length > 1 && (
+                    <Confirmation
+                      accept={() => deleteSchema(schema.id!)}
+                      cancel={() => {}}
+                      title="Удалить схему?"
+                      trigger={
+                        <Button variant={"manager"}>Удалить схему</Button>
+                      }
+                      type="red"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <Confirmation
+              accept={updateRentTerm}
+              cancel={() => {}}
+              trigger={<Button className="w-60">Применить</Button>}
+              title={"Создать условие аренды?"}
+              type="green"
+            />
+          </div>
+        )}
       </div>
     </>
   );

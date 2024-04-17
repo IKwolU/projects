@@ -17,6 +17,7 @@ use App\Enums\BookingStatus;
 use App\Enums\SuitEnum;
 use App\Enums\CarStatus;use App\Enums\DayOfWeek;
 use App\Enums\ReferralStatus;
+use App\Events\BookingStatusChanged;
 use App\Services\RewardService;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
@@ -1815,6 +1816,10 @@ class APIController extends Controller
             $customStatusName = $CarStatus->custom_status_name;
             $token = $park->status_api_tocken;
 
+// if(!$is_booked){
+//     event(new BookingStatusChanged($booking->id));
+// }
+
             $message = $is_booked ?
                 'Новое бронирование №: ' . $booking->id . '' . "\n":
                 'Отмена бронирования №: ' . $booking->id . '' . "\n";
@@ -1827,7 +1832,7 @@ class APIController extends Controller
 
             $response = Http::withToken($token)->post($url, [
                 'vehicleNumber' => $car->license_plate,
-                'comment' => $message,
+                'comment' => $is_booked?$message:'',
                 'statusName' => $customStatusName,
             ]);
                 $statusCode = $response->getStatusCode();

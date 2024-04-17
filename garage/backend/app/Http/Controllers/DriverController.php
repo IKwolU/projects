@@ -257,12 +257,7 @@ class DriverController extends Controller
 
         $checkBook = Booking::where('driver_id', $user->driver->id)
             ->where('status', BookingStatus::Booked->value)
-            ->orWhere(function ($query) use ($car) {
-                $query->where('status', 1)
-                    ->orWhere('status', 3)
-                    ->where('car_id', $car->id);
-            })
-            ->first();
+            ->orWhere('status', BookingStatus::RentStart->value)->first();
 
         if ($checkBook) {
             return response()->json(['message' => 'Уже есть активная бронь!'], 409);
@@ -542,5 +537,47 @@ class DriverController extends Controller
         $parkList = Park::orderBy('park_name')->pluck('park_name')->all();
 
         return response()->json(['brands' => $brandList, 'parks' => $parkList]);
+    }
+
+    /**
+     * Проверить активную бронь
+     *
+     * @OA\Post(
+     *     path="/driver/booking/check",
+     *     operationId="checkActiveBookingDriver",
+     *     summary="Проверить активную бронь",
+     *     tags={"Driver"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", description="Идентификатор брони")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Успешный ответ",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="result", type="boolean", description="Результат проверки активной брони (true/false)")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="Внутренняя ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор брони для проверки
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом проверки активной брони (true/false)
+     */
+    public function checkActiveBookingDriver(Request $request)
+    {
+        $bookingStatus = Booking::where('id', $request->id)->select('id', 'status')->first()->status;
+        if ($bookingStatus === BookingStatus::Booked->value) {
+            return response()->json(['result' => false], 200);
+        }
+        return response()->json(['result' => true], 200);
     }
 }

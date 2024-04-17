@@ -239,55 +239,110 @@ export const RentTermManager = () => {
             )}
           </div>
           <div className="">
-            {newRentTerm.schemas!.map((schema, i) => (
-              <div
-                key={`schema_${i}`}
-                className="p-4 my-1 border border-grey rounded-xl"
-              >
-                {[
-                  {
-                    title: `Стоимость ежедневно ${schema?.daily_amount || ""}`,
-                    type: "number",
-                    placeholder: "Введите значение",
-                    param: "daily_amount",
-                    value: schema.daily_amount || 0,
-                  },
-                  {
-                    title: `Рабочих дней ${schema?.working_days || ""}`,
-                    type: "number",
-                    placeholder: "Введите значение",
-                    param: "working_days",
-                    value: schema.non_working_days || 0,
-                  },
-                  {
-                    title: `Нерабочих дней ${schema?.non_working_days || ""}`,
-                    type: "number",
-                    placeholder: "Введите значение",
-                    param: "non_working_days",
-                    value: schema.working_days || 0,
-                  },
-                ].map((input, index) => (
-                  <div
-                    key={`input_${index}`}
-                    className="flex items-center justify-between"
-                  >
-                    <h4>{input.title}</h4>
-                    <Input
-                      className={"w-3/5 m-1"}
-                      onChange={(e) =>
-                        handleInputNewRentTermSchemaChange(
-                          e.target.value,
-                          input.param,
-                          schema.id!
-                        )
-                      }
-                      type={input.type}
-                      placeholder={input.placeholder}
-                    ></Input>
-                  </div>
-                ))}
-              </div>
-            ))}
+            {selectedId === 0 &&
+              newRentTerm.schemas!.map((schema, i) => (
+                <div
+                  key={`schema_${i}`}
+                  className="p-4 my-1 border border-grey rounded-xl"
+                >
+                  {[
+                    {
+                      title: `Стоимость ежедневно ${
+                        schema?.daily_amount || ""
+                      }`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "daily_amount",
+                      value: schema.daily_amount || 0,
+                    },
+                    {
+                      title: `Рабочих дней ${schema?.working_days || ""}`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "working_days",
+                      value: schema.non_working_days || 0,
+                    },
+                    {
+                      title: `Нерабочих дней ${schema?.non_working_days || ""}`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "non_working_days",
+                      value: schema.working_days || 0,
+                    },
+                  ].map((input, index) => (
+                    <div
+                      key={`input_${index}`}
+                      className="flex items-center justify-between"
+                    >
+                      <h4>{input.title}</h4>
+                      <Input
+                        className={"w-3/5 m-1"}
+                        onChange={(e) =>
+                          handleInputNewRentTermSchemaChange(
+                            e.target.value,
+                            input.param,
+                            schema.id!
+                          )
+                        }
+                        type={input.type}
+                        placeholder={input.placeholder}
+                      ></Input>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            {selectedId !== 0 &&
+              selected.schemas!.map((schema, i) => (
+                <div
+                  key={`schema_${i}`}
+                  className="p-4 my-1 border border-grey rounded-xl"
+                >
+                  {[
+                    {
+                      title: `Стоимость ежедневно ${
+                        schema?.daily_amount || ""
+                      }`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "daily_amount",
+                      value: schema.daily_amount || 0,
+                    },
+                    {
+                      title: `Рабочих дней ${schema?.working_days || ""}`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "working_days",
+                      value: schema.non_working_days || 0,
+                    },
+                    {
+                      title: `Нерабочих дней ${schema?.non_working_days || ""}`,
+                      type: "number",
+                      placeholder: "Введите значение",
+                      param: "non_working_days",
+                      value: schema.working_days || 0,
+                    },
+                  ].map((input, index) => (
+                    <div
+                      key={`input_${index}`}
+                      className="flex items-center justify-between"
+                    >
+                      <h4>{input.title}</h4>
+                      <Input
+                        className={"w-3/5 m-1"}
+                        onChange={(e) =>
+                          handleInputNewRentTermSchemaChange(
+                            e.target.value,
+                            input.param,
+                            schema.id!
+                          )
+                        }
+                        type={input.type}
+                        placeholder={input.placeholder}
+                      ></Input>
+                    </div>
+                  ))}
+                </div>
+              ))}
           </div>
 
           <Confirmation

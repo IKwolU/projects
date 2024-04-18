@@ -1816,10 +1816,6 @@ class APIController extends Controller
             $customStatusName = $CarStatus->custom_status_name;
             $token = $park->status_api_tocken;
 
-// if(!$is_booked){
-//     event(new BookingStatusChanged($booking->id));
-// }
-
             $message = $is_booked ?
                 'Новое бронирование №: ' . $booking->id . '' . "\n":
                 'Отмена бронирования №: ' . $booking->id . '' . "\n";

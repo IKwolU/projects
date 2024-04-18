@@ -46,13 +46,13 @@ export const BookingDrawer = () => {
   if (!user) {
     return <></>;
   }
-  const activeBooking = user!.bookings!.find(
+  const activeBooking = user!.bookings?.find(
     (x) => x.status === BookingStatus.Booked
   );
 
   const bookings = user!.bookings!;
 
-  if (!bookings.length) {
+  if (!bookings?.length) {
     return <>У вас пока нет бронирований</>;
   }
 

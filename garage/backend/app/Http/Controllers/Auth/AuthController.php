@@ -170,83 +170,82 @@ class AuthController extends Controller
         $user = Auth::guard('sanctum')->user();
         $user->user_type = UserType::from($user->user_type)->name;
         $user->user_status = UserStatus::from($user->user_status)->name;
-        if ($user->user_type === UserType::Driver->value) {
-            $driver = Driver::where('user_id', $user->id)->with('city')->first();
-            $referral = Referral::where('user_id', $user->id)->select('referral_code', 'status', 'coins')->first();
-            $driverDocs = DriverDoc::where('driver_id', $driver->id)->first(['image_licence_front', 'image_licence_back', 'image_pasport_front', 'image_pasport_address', 'image_fase_and_pasport']);
-            $docs = [];
-            foreach ($driverDocs->toArray() as $key => $value) {
-                $docs[] = [
-                    'type' => $key,
-                    'url' => $value  ? asset('uploads') . '/' . $value : null,
-                ];
-            }
-            if (!$driver->city) {
-                $user->city_name = 'Москва';
-            } else {
-                $user->city_name = $driver->city->name;
-            }
-            $bookings =  $driver->booking;
-            if ($bookings) {
-                foreach ($bookings as $booking) {
-                    $booking->status = BookingStatus::from($booking->status)->name;
-                    $booking->start_date = Carbon::parse($booking->booked_at)->toIso8601ZuluString();
-                    $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
-                    $booking->car->сar_class = CarClass::from($booking->car->tariff->class)->name;
-                    $booking->car->transmission_type = TransmissionType::from($booking->car->transmission_type)->name;
-                    $booking->car->fuel_type = FuelType::from($booking->car->fuel_type)->name;
-                    $booking->car->images = json_decode($booking->car->images);
-                    $booking->car->division = Division::where('id', $booking->car->division_id)->with('park')->select('address', 'park_id', 'coords', 'working_hours', 'phone')->first();
-                    $booking->rent_term = RentTerm::where('id', $booking->car->rent_term_id)
-                        ->with(['schemas' => function ($query) use ($booking) {
-                            $query->where('id', $booking->schema_id);
-                        }])
-                        ->select('deposit_amount_daily', 'deposit_amount_total', 'minimum_period_days', 'is_buyout_possible', 'id')
-                        ->first();
-                    $workingHours = json_decode($booking->car->division->working_hours, true);
-                    $booking->car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
-                    unset(
-                        $booking->created_at,
-                        $booking->updated_at,
-                        $booking->booked_at,
-                        $booking->booked_until,
-                        $booking->park_id,
-                        $booking->driver_id,
-                        $booking->car->booking,
-                        $booking->car->created_at,
-                        $booking->car->updated_at,
-                        $booking->car->status,
-                        $booking->car->car_id,
-                        $booking->car->division_id,
-                        $booking->car->park_id,
-                        $booking->car->tariff_id,
-                        $booking->car->tariff,
-                        $booking->car->rent_term_id,
-                        $booking->car->division->id,
-                        $booking->car->division->park_id,
-                        $booking->car->division->city_id,
-                        $booking->car->division->created_at,
-                        $booking->car->division->updated_at,
-                        $booking->car->division->name,
-                        $booking->car->division->park->id,
-                        $booking->car->division->park->id,
-                        $booking->car->division->park->API_key,
-                        $booking->car->division->park->created_at,
-                        $booking->car->division->park->updated_at,
-                        $booking->car->division->park->created_at,
-                        $booking->rent_term->id
-                    );
-                    foreach ($booking->rent_term->schemas as $schema) {
-                        unset($schema->created_at, $schema->updated_at, $schema->id, $schema->rent_term_id);
-                    }
+        $driver = Driver::where('user_id', $user->id)->with('city')->first();
+        $referral = Referral::where('user_id', $user->id)->select('referral_code', 'status', 'coins')->first();
+        $driverDocs = DriverDoc::where('driver_id', $driver->id)->first(['image_licence_front', 'image_licence_back', 'image_pasport_front', 'image_pasport_address', 'image_fase_and_pasport']);
+        $docs = [];
+        foreach ($driverDocs->toArray() as $key => $value) {
+            $docs[] = [
+                'type' => $key,
+                'url' => $value  ? asset('uploads') . '/' . $value : null,
+            ];
+        }
+        if (!$driver->city) {
+            $user->city_name = 'Москва';
+        } else {
+            $user->city_name = $driver->city->name;
+        }
+        $bookings =  $driver->booking;
+        if ($bookings) {
+            foreach ($bookings as $booking) {
+                $booking->status = BookingStatus::from($booking->status)->name;
+                $booking->start_date = Carbon::parse($booking->booked_at)->toIso8601ZuluString();
+                $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
+                $booking->car->сar_class = CarClass::from($booking->car->tariff->class)->name;
+                $booking->car->transmission_type = TransmissionType::from($booking->car->transmission_type)->name;
+                $booking->car->fuel_type = FuelType::from($booking->car->fuel_type)->name;
+                $booking->car->images = json_decode($booking->car->images);
+                $booking->car->division = Division::where('id', $booking->car->division_id)->with('park')->select('address', 'park_id', 'coords', 'working_hours', 'phone')->first();
+                $booking->rent_term = RentTerm::where('id', $booking->car->rent_term_id)
+                    ->with(['schemas' => function ($query) use ($booking) {
+                        $query->where('id', $booking->schema_id);
+                    }])
+                    ->select('deposit_amount_daily', 'deposit_amount_total', 'minimum_period_days', 'is_buyout_possible', 'id')
+                    ->first();
+                $workingHours = json_decode($booking->car->division->working_hours, true);
+                $booking->car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
+                unset(
+                    $booking->created_at,
+                    $booking->updated_at,
+                    $booking->booked_at,
+                    $booking->booked_until,
+                    $booking->park_id,
+                    $booking->driver_id,
+                    $booking->car->booking,
+                    $booking->car->created_at,
+                    $booking->car->updated_at,
+                    $booking->car->status,
+                    $booking->car->car_id,
+                    $booking->car->division_id,
+                    $booking->car->park_id,
+                    $booking->car->tariff_id,
+                    $booking->car->tariff,
+                    $booking->car->rent_term_id,
+                    $booking->car->division->id,
+                    $booking->car->division->park_id,
+                    $booking->car->division->city_id,
+                    $booking->car->division->created_at,
+                    $booking->car->division->updated_at,
+                    $booking->car->division->name,
+                    $booking->car->division->park->id,
+                    $booking->car->division->park->id,
+                    $booking->car->division->park->API_key,
+                    $booking->car->division->park->created_at,
+                    $booking->car->division->park->updated_at,
+                    $booking->car->division->park->created_at,
+                    $booking->rent_term->id
+                );
+                foreach ($booking->rent_term->schemas as $schema) {
+                    unset($schema->created_at, $schema->updated_at, $schema->id, $schema->rent_term_id);
                 }
             }
-
-            $user->referral_info = $referral;
-            $user->docs = $docs;
-            $user->bookings = $bookings ? $bookings : null;
-            unset($user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
         }
+
+        $user->referral_info = $referral;
+        $user->docs = $docs;
+        $user->bookings = $bookings ? $bookings : null;
+        unset($user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
+
         return response()->json(['user' => $user]);
     }
     /**

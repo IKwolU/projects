@@ -31,7 +31,7 @@ export const BookingTimer = () => {
   const [isUnbooked, setIsUnbooked] = useState(false);
   const [expiryTime, setExpiryTime] = useState(new Date());
 
-  const activeBooking = user?.bookings!.find(
+  const activeBooking = user?.bookings?.find(
     (x) => x.status === BookingStatus.Booked
   );
 

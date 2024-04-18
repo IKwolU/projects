@@ -53,7 +53,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   );
   const navigate = useNavigate();
 
-  const activeBooking = user?.bookings!.find(
+  const activeBooking = user?.bookings?.find(
     (x) => x.status === BookingStatus.Booked
   );
 

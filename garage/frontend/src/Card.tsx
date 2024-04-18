@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Cars3, Schemas3 } from "./api-client";
 import {
   formatRoubles,

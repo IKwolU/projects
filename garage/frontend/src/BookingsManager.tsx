@@ -50,7 +50,10 @@ export const BookingsManager = () => {
 
   const HandleApprovedBookings = (id: number) => {
     setApprovedBookings([...approvedBookings, id]);
-    localStorage.setItem("approvedBookings", String([...approvedBookings, id]));
+    localStorage.setItem(
+      "approvedBookings",
+      JSON.stringify([...approvedBookings, id])
+    );
   };
 
   if (!bookings) {

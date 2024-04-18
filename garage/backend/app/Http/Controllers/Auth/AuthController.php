@@ -168,8 +168,14 @@ class AuthController extends Controller
     public function GetUser(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
+        if ($user->user_type !== UserType::Driver->value) {
+            $user->user_type = UserType::from($user->user_type)->name;
+            $user->user_status = UserStatus::from($user->user_status)->name;
+            return response()->json(['user' => $user]);
+        }
         $user->user_type = UserType::from($user->user_type)->name;
         $user->user_status = UserStatus::from($user->user_status)->name;
+
         $driver = Driver::where('user_id', $user->id)->with('city')->first();
         $referral = Referral::where('user_id', $user->id)->select('referral_code', 'status', 'coins')->first();
         $driverDocs = DriverDoc::where('driver_id', $driver->id)->first(['image_licence_front', 'image_licence_back', 'image_pasport_front', 'image_pasport_address', 'image_fase_and_pasport']);

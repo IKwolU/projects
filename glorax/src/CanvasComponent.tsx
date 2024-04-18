@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
 import { contentIdAtom, currentTimeAtom } from "./atoms";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+// import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 interface OBJModelProps {
   file: string;
@@ -49,103 +49,103 @@ function CanvasComponent() {
   // }
   // };
 
-  function DracoModel({
-    file,
-    texture,
-    position,
-    scale,
-    rotate,
-    opacity,
-    isOpacity,
-  }: OBJModelProps) {
-    const gltf = useLoader(GLTFLoader, file, (loader) => {
-      const draco = new DRACOLoader();
-      draco.setDecoderConfig({ type: "js" });
-      draco.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
-      loader.setDRACOLoader(draco);
-    });
-    const [isTextureLoaded, setIsTextureLoaded] = useState(false);
-    const { camera } = useThree();
+  // function DracoModel({
+  //   file,
+  //   texture,
+  //   position,
+  //   scale,
+  //   rotate,
+  //   opacity,
+  //   isOpacity,
+  // }: OBJModelProps) {
+  //   const gltf = useLoader(GLTFLoader, file, (loader) => {
+  //     const draco = new DRACOLoader();
+  //     draco.setDecoderConfig({ type: "js" });
+  //     draco.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+  //     loader.setDRACOLoader(draco);
+  //   });
+  //   const [isTextureLoaded, setIsTextureLoaded] = useState(false);
+  //   const { camera } = useThree();
 
-    function checkTextureAlreadyLoaded(textureName: string): boolean {
-      return loadedTextures.includes(textureName);
-    }
+  //   function checkTextureAlreadyLoaded(textureName: string): boolean {
+  //     return loadedTextures.includes(textureName);
+  //   }
 
-    function addLoadedTexture(textureName: string): void {
-      setLoadedTextures((prevTextures) => [...prevTextures, textureName]);
-    }
+  //   function addLoadedTexture(textureName: string): void {
+  //     setLoadedTextures((prevTextures) => [...prevTextures, textureName]);
+  //   }
 
-    useEffect(() => {
-      if (checkTextureAlreadyLoaded(texture.name)) {
-        setIsTextureLoaded(true);
-        return;
-      }
-      const checkTextureLoaded = () => {
-        if (texture.image) {
-          gltf.scene.traverse((child) => {
-            if ((child as THREE.Mesh).isMesh) {
-              const mesh = child as THREE.Mesh;
-              if (isOpacity) {
-                const material = new MeshStandardMaterial({
-                  map: texture,
-                  transparent: true,
-                  alphaTest: 0.5,
-                  opacity: opacity,
-                  depthWrite: false,
-                  depthTest: true,
-                });
-                mesh.material = material;
-              }
-              if (mesh.material instanceof MeshStandardMaterial) {
-                mesh.material.roughness = 1;
-              }
-            }
-          });
-          setIsTextureLoaded(true);
-          addLoadedTexture(texture.name);
-        } else {
-          setTimeout(checkTextureLoaded, 100);
-        }
-      };
-      checkTextureLoaded();
-    }, [gltf, texture]);
+  //   useEffect(() => {
+  //     if (checkTextureAlreadyLoaded(texture.name)) {
+  //       setIsTextureLoaded(true);
+  //       return;
+  //     }
+  //     const checkTextureLoaded = () => {
+  //       if (texture.image) {
+  //         gltf.scene.traverse((child) => {
+  //           if ((child as THREE.Mesh).isMesh) {
+  //             const mesh = child as THREE.Mesh;
+  //             if (isOpacity) {
+  //               const material = new MeshStandardMaterial({
+  //                 map: texture,
+  //                 transparent: true,
+  //                 alphaTest: 0.5,
+  //                 opacity: opacity,
+  //                 depthWrite: false,
+  //                 depthTest: true,
+  //               });
+  //               mesh.material = material;
+  //             }
+  //             if (mesh.material instanceof MeshStandardMaterial) {
+  //               mesh.material.roughness = 1;
+  //             }
+  //           }
+  //         });
+  //         setIsTextureLoaded(true);
+  //         addLoadedTexture(texture.name);
+  //       } else {
+  //         setTimeout(checkTextureLoaded, 100);
+  //       }
+  //     };
+  //     checkTextureLoaded();
+  //   }, [gltf, texture]);
 
-    useFrame(() => {
-      if (sphereRef.current) {
-        const { rotation } = camera;
-        sphereRef.current.rotation.x = rotation.x;
-        sphereRef.current.rotation.y = rotation.y;
-        sphereRef.current.rotation.z = rotation.z;
-      }
-      if (aboutRef.current) {
-        const { rotation } = camera;
-        aboutRef.current.rotation.x = rotation.x;
-        aboutRef.current.rotation.y = rotation.y;
-        aboutRef.current.rotation.z = rotation.z;
-      }
-    });
+  //   useFrame(() => {
+  //     if (sphereRef.current) {
+  //       const { rotation } = camera;
+  //       sphereRef.current.rotation.x = rotation.x;
+  //       sphereRef.current.rotation.y = rotation.y;
+  //       sphereRef.current.rotation.z = rotation.z;
+  //     }
+  //     if (aboutRef.current) {
+  //       const { rotation } = camera;
+  //       aboutRef.current.rotation.x = rotation.x;
+  //       aboutRef.current.rotation.y = rotation.y;
+  //       aboutRef.current.rotation.z = rotation.z;
+  //     }
+  //   });
 
-    if (!isTextureLoaded) {
-      return null;
-    }
+  //   if (!isTextureLoaded) {
+  //     return null;
+  //   }
 
-    return (
-      <primitive
-        object={gltf.scene.clone()}
-        position={position}
-        scale={scale}
-        rotation={
-          rotate
-            ? [
-                (rotate[0] * Math.PI) / 180,
-                (rotate[1] * Math.PI) / 180,
-                (rotate[2] * Math.PI) / 180,
-              ]
-            : [0, 0, 0]
-        }
-      />
-    );
-  }
+  //   return (
+  //     <primitive
+  //       object={gltf.scene.clone()}
+  //       position={position}
+  //       scale={scale}
+  //       rotation={
+  //         rotate
+  //           ? [
+  //               (rotate[0] * Math.PI) / 180,
+  //               (rotate[1] * Math.PI) / 180,
+  //               (rotate[2] * Math.PI) / 180,
+  //             ]
+  //           : [0, 0, 0]
+  //       }
+  //     />
+  //   );
+  // }
 
   function OBJModel({
     file,
@@ -315,11 +315,11 @@ function CanvasComponent() {
         intensity={1}
         // color="#fff0de"
       />
-      <DracoModel
+      <OBJModel
         scale={[1, 1, 1]}
-        file="/models/pre-finale-optimized.gltf"
+        file="/models/pre-finale.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-        position={[0, -5, 0]}
+        position={[0, -8, 0]}
         opacity={0.93}
         rotate={[0, 0, 0]}
         isOpacity={false}
@@ -343,7 +343,7 @@ function CanvasComponent() {
           <OBJModel
             file="/models/navigation.gltf"
             texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-            position={[0, -5.3, 0]}
+            position={[0, -8.3, 0]}
             scale={[1, 1, 1]}
             opacity={0.8}
             rotate={[0, 0, 0]}
@@ -378,19 +378,19 @@ function CanvasComponent() {
           </mesh>
         </React.Fragment>
       ))}
-      {/* <mesh ref={aboutRef}>
+      <mesh>
         <OBJModel
           file="/models/x logo glorax-premium.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-          position={[-1.3, 13, 0]}
+          position={[14.3, 13, 6]}
           scale={[35, 35, 35]}
           opacity={0.93}
-          rotate={[120, 0, 0]}
+          rotate={[85, 13, 120]}
           isOpacity={false}
         />
-      </mesh> */}
+      </mesh>
       <OrbitControls
-        maxPolarAngle={Math.PI / 2.2}
+        maxPolarAngle={Math.PI / 2.0}
         minDistance={14}
         maxDistance={20}
         target={[0, 1, 0]}

@@ -1,0 +1,72 @@
+[
+  {
+    "position": [-3, 4, -3.6],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "description": "",
+    "background_image": "/card-bg-1.png",
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Портретное фото.",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "link"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      }
+    ]
+  },
+  {
+    "position": [-5, 4, -3.6],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "description": "",
+    "background_image": "/card-bg-1.png",
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/libken.jpg",
+        "title": "Портретное фото.",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена. Является первым фильмом студии. ",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Заказчик и владелец кинокартины",
+        "text": "Известный ярославский колбасный фабрикант Григорий Либкен",
+        "type": "text"
+      }
+    ]
+  }
+]

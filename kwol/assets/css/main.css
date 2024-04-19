@@ -287,6 +287,7 @@ li {
 a {
     text-decoration: none;
     color: var(--color-primary);
+    cursor: pointer;
 }
 
 button {
@@ -297,6 +298,7 @@ button {
     padding: 18px 30px;
     font-weight: var(--fw-second);
     font-size: var(--fs-content);
+    cursor: pointer;
 }
 
 .header {
@@ -962,6 +964,130 @@ button {
 .hidden_navigator {
     position: absolute;
     top: -160px;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000d5;
+    z-index: 6;
+    display: none;
+    align-items: start;
+    justify-content: center;
+    padding-top: 10%;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal_content {
+    padding: 20px 20px;
+    border-radius: var(--rounded);
+    background-color: var(--bg-block-color-alternative);
+}
+
+.show {}
+
+.modal_form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.modal_close_btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.modal_title {
+    font-size: var(--fs-content);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal_input {
+    padding: 10px 20px;
+    border-radius: var(--rounded);
+    border: 2px solid var(--bg-block-color-secondary)
+}
+
+.modal_input:focus {
+    outline: 1px solid var(--bg-block-color-secondary)
+}
+
+.modal_btn {
+    margin-top: 20px;
+}
+
+.modal_txt {
+    margin-top: -4px;
+    text-align: center;
+    font-size: var(--fs-nano);
+}
+
+.modal_link {
+    text-decoration: underline;
+}
+
+.thanks {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000d5;
+    z-index: 7;
+    display: none;
+    align-items: start;
+    justify-content: center;
+    padding-top: 10%;
+}
+
+.thanks.show {
+    display: flex;
+}
+
+.thanks_content {
+    padding: 20px 20px;
+    border-radius: var(--rounded);
+    background-color: var(--bg-block-color-alternative);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.thanks_title {
+    font-size: var(--fs-content);
+    text-align: center;
+    margin-bottom: 0px;
+    color: var(--bg-block-color-secondary);
+}
+
+.thanks_txt {
+    text-align: center;
+}
+
+.thanks_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
 @media (max-width:1400px) {
@@ -1693,10 +1819,6 @@ button {
         display: flex;
         gap: 10px;
     }
-
-
-
-
 }
 
 @media (max-width:480px) {

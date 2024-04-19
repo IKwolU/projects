@@ -30,12 +30,12 @@ export const Card = ({ car }: { car: Cars3 }) => {
       >
         <div className="relative max-w-[376px]  lg:max-w-[386px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-2xl lg:mx-0 flex flex-col w-full">
           <div>
-            <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white shadow rounded-2xl text-gray ">
+            <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white bg-opacity-90 shadow rounded-2xl text-black ">
               Парк &laquo;{car.park_name}&raquo;
             </div>
             {car.cars_count! > 1 && (
-              <div className="absolute left-1 z-10 m-1 flex items-center  px-4 py-1 font-medium text-center bg-white shadow rounded-full text-gray top-[170px]">
-                {car.cars_count} авто в наличии
+              <div className="absolute left-1 z-10 m-1 flex items-center  px-4 py-1 font-medium text-center bg-white bg-opacity-80 shadow rounded-full text-black top-[170px]">
+                {car.cars_count} авто
               </div>
             )}
             <div className="flex space-x-1 overflow-x-auto scrollbar-hide rounded-xl md:hidden h-52">
@@ -99,14 +99,17 @@ export const Card = ({ car }: { car: Cars3 }) => {
                   <div className="flex flex-col justify-start gap-1">
                     <span className="flex items-center h-full bg-white rounded-xl">
                       <span className="flex items-center gap-2">
-                        <span className="text-sm text-zinc-400">Депозит</span>
-                        <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
-                        <span className="">
+                        <span className="text-sm text-zinc-400">
+                          {car.rent_term!.deposit_amount_total
+                            ? "Депозит"
+                            : "Без депозита"}
+                        </span>
+                        {/* <span className="">
                           {formatRoubles(car.rent_term!.deposit_amount_total!)}{" "}
                           по{" "}
                           {formatRoubles(car.rent_term!.deposit_amount_daily!)}{" "}
                           в день
-                        </span>
+                        </span> */}
                       </span>
                     </span>
                   </div>
@@ -124,12 +127,13 @@ export const Card = ({ car }: { car: Cars3 }) => {
                   </span>
                   <Separator className="my-0 sm:hidden" />
                   <span className="flex items-center gap-2 mr-1 ">
-                    <span className="text-sm text-zinc-400">
-                      Возможен выкуп
-                    </span>
                     <span className="w-1 h-1 rounded-full bg-zinc-400"></span>{" "}
                     <span className="">
-                      {car.rent_term!.is_buyout_possible ? "да" : "нет"}
+                      {car.rent_term!.is_buyout_possible && (
+                        <div className="text-sm text-zinc-400">
+                          Возможен выкуп: да
+                        </div>
+                      )}
                     </span>
                   </span>
                 </div>

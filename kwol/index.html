@@ -13,6 +13,7 @@
 
 <body>
     <header class="header_wrap center">
+        <div class="headre_typer" id="top"></div>
         <div class="header"><a href="/" class="logo"><img src="assets/img/logo.svg" alt="logo"
                     class="header_logo-img"></a>
             <input type="checkbox" id="burger" class="burger-input">
@@ -23,12 +24,16 @@
             </label>
             <nav class="header_nav">
                 <ul class="header_nav-list">
-                    <li class="header_nav-item"><a href="" class="header_nav-link">Главная</a></li>
-                    <li class="header_nav-item"><a href="" class="header_nav-link">Портфолио</a></li>
-                    <li class="header_nav-item"><a href="" class="header_nav-link">Стоимость</a></li>
-                    <li class="header_nav-item"><a href="" class="header_nav-link">Подробнее</a></li>
+                    <li class="header_nav-item"><a onclick="moveAndClose('top')" class="header_nav-link">Главная</a>
+                    </li>
+                    <li class="header_nav-item"><a onclick="moveAndClose('portfolio')"
+                            class="header_nav-link">Портфолио</a></li>
+                    <li class="header_nav-item"><a onclick="moveAndClose('price')" class="header_nav-link">Стоимость</a>
+                    </li>
+                    <li class="header_nav-item"><a onclick="moveAndClose('more')" class="header_nav-link">Подробнее</a>
+                    </li>
                 </ul>
-                <label for="burger" class="burger_label">
+                <label for="burger" class="burger_label" id="close">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -95,6 +100,7 @@
         </div>
     </section>
     <section class="portfolio ">
+        <span id="portfolio" class="hidden_navigator"></span>
         <h1 class="portfolio_title center">
             <span>&mdash; </span> Только за 2024 год мы успешно <br>
             запустили 34 проекта, одни из которых:
@@ -250,6 +256,7 @@
         </div>
     </section>
     <section class="promo center">
+        <span id="price" class="hidden_navigator"></span>
         <div class="promo_wrap">
             <h3 class="promo_title">Запустите свой сайт всего от 28.990₽! </h3>
             <p class="promo_txt">Получите скидку 40% на создание лэндинга до 31.03.2024</p>
@@ -258,11 +265,12 @@
                 <button class="promo_btn">Начать бесплатно <img src="assets/img/discount.svg" alt=""
                         class="promo_discount"></button>
             </div>
-            <p class="promo_politic">Нажимая кнопку "Отправить" Вы соглашаетесь с <a href="#"
-                    class="promo_pilitic-link">политикой обработки персональных данных</a></p>
+            <p class="promo_politic">Нажимая кнопку "Отправить" Вы соглашаетесь с <a href="https://kwol.ru/terms.php"
+                    target="_blank" class="promo_pilitic-link">политикой обработки персональных данных</a></p>
         </div>
     </section>
     <section class="contacts center">
+        <span id="more" class="hidden_navigator"></span>
         <h3 class="contacts_title"><span>&mdash; </span> Получите ещё больше <br class="br"> информации о нас:</h3>
         <div class="contacts-first contacts-block">
             <div class="contacts_subtitle-block block-one">
@@ -427,14 +435,19 @@
                 <div class="footer_nav-wrap">
                     <ul class="footer_else-list">
                         <li class="footer_else-item">Навигация</li>
-                        <li class="footer_else-item"><a href="" class="footer_else-link">Начало</a></li>
-                        <li class="footer_else-item"><a href="" class="footer_else-link">Портфолио</a></li>
-                        <li class="footer_else-item"><a href="" class="footer_else-link">Стоимость</a></li>
-                        <li class="footer_else-item"><a href="" class="footer_else-link">Больше информации </a></li>
+                        <li class="footer_else-item"><a onclick="move('top')" class="footer_else-link">Начало</a></li>
+                        <li class="footer_else-item"><a onclick="move('portfolio')"
+                                class="footer_else-link">Портфолио</a></li>
+                        <li class="footer_else-item"><a onclick="move('price')" class="footer_else-link">Стоимость</a>
+                        </li>
+                        <li class="footer_else-item"><a onclick="move('more')" class="footer_else-link">Больше
+                                информации </a>
+                        </li>
                     </ul>
                     <ul class="footer_else-list">
                         <li class="footer_else-item">Прочее</li>
-                        <li class="footer_else-item"><a href="" class="footer_else-link">Политика конфиденциальности</a>
+                        <li class="footer_else-item"><a href="https://kwol.ru/terms.php" target="_blank"
+                                class="footer_else-link">Политика конфиденциальности</a>
                         </li>
                         <li class="footer_else-item"><a href="" class="footer_else-link">Договор оферты</a></li>
                         <li class="footer_else-item"><a href="" class="footer_else-link">Сотрудникам</a></li>
@@ -543,6 +556,23 @@
             });
         });
     </script>
+    <script>
+        const moveAndClose = (elementId) => {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+            const close = document.getElementById('close');
+            close.click();
+        }
+        const move = (elementId) => {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    </script>
+
 </body>
 
 </html>

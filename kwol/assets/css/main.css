@@ -299,16 +299,23 @@ button {
     font-size: var(--fs-content);
 }
 
-
-
 .header {
-    margin-top: 43px;
+    margin-top: 0;
     padding: 16px 50px;
     background-color: var(--bg-block-color-primary);
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: var(--rounded-big);
+    position: fixed;
+    width: calc(100% - 40px);
+    max-width: var(--max-w);
+    z-index: 4;
+    top: 43px;
+}
+
+.headre_typer {
+    height: 154px;
 }
 
 .center {
@@ -952,6 +959,11 @@ button {
     display: none;
 }
 
+.hidden_navigator {
+    position: absolute;
+    top: -160px;
+}
+
 @media (max-width:1400px) {
 
     .header_wrap,
@@ -964,6 +976,7 @@ button {
     .footer {
         padding-left: 20px;
         padding-right: 20px;
+        position: relative;
     }
 }
 
@@ -984,6 +997,11 @@ button {
         --max-w: 767px;
     }
 
+    .hidden_navigator {
+        position: absolute;
+        top: -100px;
+    }
+
     .center {
         padding-left: 20px;
         padding-right: 20px;
@@ -994,7 +1012,19 @@ button {
         background-color: var(--bg-block-color-alternative);
         padding-top: 0;
         padding-bottom: 0;
+        top: 0;
+        width: 100%;
+        left: 0;
+        border-radius: 0;
+        opacity: 1;
+        padding-bottom: 4px;
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 
+    .headre_typer {
+        height: 52px;
     }
 
     .header_btn {
@@ -1049,7 +1079,7 @@ button {
         padding-left: 20px;
         padding-right: 20px;
         border-left: 2px solid var(--bg-block-color-secondary);
-        opacity: 0.95;
+        opacity: 0.99;
         z-index: 5;
     }
 

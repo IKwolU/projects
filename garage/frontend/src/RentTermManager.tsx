@@ -322,9 +322,7 @@ export const RentTermManager = () => {
                 value: newRentTerm.deposit_amount_total || undefined,
               },
               {
-                title: `Возможность выкупа: ${
-                  newRentTerm.is_buyout_possible ? "возможен" : "не возможен"
-                }`,
+                title: `Возможность выкупа`,
                 type: "checkbox",
                 placeholder: "Введите значение",
                 param: "is_buyout_possible",
@@ -476,9 +474,7 @@ export const RentTermManager = () => {
                 value: selected.deposit_amount_total || undefined,
               },
               {
-                title: `Возможность выкупа: ${
-                  selected.is_buyout_possible ? "возможен" : "не возможен"
-                }`,
+                title: `Возможность выкупа`,
                 type: "checkbox",
                 placeholder: "Введите значение",
                 param: "is_buyout_possible",

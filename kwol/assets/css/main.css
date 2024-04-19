@@ -1467,4 +1467,227 @@ button {
     .footer_contacts-wrap.mobile {
         display: block;
     }
+
+    .portfolio_slider.mobile {
+        display: block;
+    }
+
+    .advantages_title .br {
+        display: none;
+    }
+}
+
+@media (max-width:670px) {
+
+    .about_list.first .about_item:nth-child(3) {
+        left: 110px;
+    }
+
+    .about_list.second .about_item:nth-child(3) {
+        right: 100px;
+    }
+
+    .advantages_title::after {
+        right: 60px;
+    }
+
+    .advantages_title::before {
+        left: 60px;
+    }
+}
+
+@media (max-width:670px) {
+    .advantages_title::after {
+        right: 40px;
+    }
+
+    .advantages_title::before {
+        left: 40px;
+    }
+
+    .portfolio_slide-txt {
+        max-width: 50%;
+    }
+
+    .portfolio_slider-wrap.top {
+        background-position: right bottom;
+    }
+}
+
+@media (max-width:590px) {
+    .about_list.first .about_item:nth-child(2) {
+        right: 10px;
+    }
+
+    .about_list.first .about_item:nth-child(1) {
+        left: 20px;
+    }
+
+    .about_list.second .about_item:nth-child(1) {
+        right: 60px;
+    }
+
+    .about_list.first .about_item:nth-child(3) {
+        left: 80px;
+    }
+
+    .about_list.second .about_item:nth-child(3) {
+        right: 50px;
+    }
+
+    .about_list.second .about_item:nth-child(2) {
+        left: 0px;
+    }
+
+    .advantages_title::after {
+        right: 20px;
+    }
+
+    .advantages_title::before {
+        left: 20px;
+    }
+
+    .promo_txt,
+    .promo_title {
+        text-align: center;
+    }
+}
+
+@media (max-width:550px) {
+    .advantages_title::after {
+        right: 20px;
+    }
+
+    .advantages_title::before {
+        left: 20px;
+    }
+
+    .advantages_title {
+        padding: 0 30px;
+    }
+
+    .block-fiwe .contacts_txt-link {
+        gap: 7px;
+    }
+
+    .contacts_txt-link {
+        max-width: fit-content
+    }
+
+    .contacts_txt-link {
+        gap: 10px;
+    }
+
+    .contacts_subtitle-block {
+        padding: 20px 20px 18px 20px;
+    }
+
+    .block-one .contacts_txt_wrap,
+    .contacts_subtitle-block.block-two,
+    .block-four-txt-wrap {
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        gap: 26px;
+    }
+
+    .contacts_subtitle-block.block-four {
+        padding-right: 20%;
+    }
+
+    .promo_politic {
+        text-align: center;
+        padding: 0 30px;
+    }
+
+    .block-three .contacts_txt-link {
+        padding: 13px 20px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .block-three .contacts_txt {
+        width: 50%;
+        padding-bottom: 20px;
+    }
+
+    .footer_btn {
+        min-width: fit-content;
+        display: flex;
+        gap: 10px;
+    }
+
+
+
+
+}
+
+@media (max-width:480px) {
+    .about_list.first .about_item:nth-child(2) {
+        right: -10px;
+    }
+
+    .about_list.second .about_item:nth-child(1) {
+        right: -10px;
+    }
+
+    .about_list.first .about_item:nth-child(3) {
+        left: 20px;
+    }
+
+    .portfolio_slide-logo-image {
+        margin-bottom: 10px;
+        height: 30px;
+    }
+
+    .portfolio_slider-wrap {
+        padding: 30px 20px;
+    }
+
+    .portfolio_slide-txt {
+        max-width: 80%;
+    }
+
+    .portfolio_slider-wrap.sber .portfolio_slide-txt {
+        max-width: 50%;
+    }
+
+    .portfolio_slider-wrap.ed {
+        background-position: center 50px;
+    }
+
+    .portfolio_slider-wrap.glorax {
+        background-position: center bottom;
+    }
+
+    .portfolio_slider-wrap.top {
+        background-position: center bottom;
+    }
+
+    .portfolio_slider-wrap.top .portfolio_slide-txt {
+        max-width: 80%;
+    }
+
+    .advantages_title .br {
+        display: block;
+    }
+
+    .advantages_title::before {
+        left: 16%;
+    }
+
+    .advantages_title::after {
+        right: 18%;
+        top: 45px;
+    }
+
+    .promo_btn-wrap {
+        flex-direction: column;
+        gap: 33px;
+    }
+
+    .promo_btn-txt {
+        padding: 18px 35px;
+        width: 100%;
+    }
 }

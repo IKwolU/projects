@@ -257,7 +257,7 @@ function CanvasComponent() {
 
   return (
     <Canvas
-      className="w-screen h-screen bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
+      className="w-full h-full bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
       camera={{ position: [-60, 30, -35] }}
       shadows
       // style={{
@@ -315,9 +315,10 @@ function CanvasComponent() {
         intensity={1}
         // color="#fff0de"
       />
+
       <OBJModel
         scale={[1, 1, 1]}
-        file="/models/pre-finale.gltf"
+        file="/models/version6.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
         position={[0, -8, 0]}
         opacity={0.93}

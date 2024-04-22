@@ -405,9 +405,6 @@ export const Finder = () => {
                     </span>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[1208px]">
-                    <DialogHeader>
-                      <DialogTitle></DialogTitle>
-                    </DialogHeader>
                     <div className="">
                       <input
                         className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
@@ -457,12 +454,12 @@ export const Finder = () => {
                               }`}
                             >
                               {title}
-                              {isActive && (
+                              {/* {isActive && (
                                 <FontAwesomeIcon
                                   icon={faCheck}
                                   className="cursor-pointer"
                                 />
-                              )}
+                              )} */}
                             </span>{" "}
                             {x.models!.map((model) => {
                               const isActiveModel = filters.models.some(
@@ -486,7 +483,7 @@ export const Finder = () => {
                                   }
                                 >
                                   <span
-                                    className={`w-full font-normal text-base p-1 flex justify-between items-center ${
+                                    className={`w-full font-normal text-base p-1 flex gap-x-40 justify-between items-center ${
                                       isActiveModel ? "bg-pale" : ""
                                     }`}
                                   >

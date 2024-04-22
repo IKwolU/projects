@@ -291,14 +291,12 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item?.start!.hours}
                               type="number"
-                              placeholder="ч"
+                              placeholder={String(item?.start!.hours) ?? "ч"}
                             ></Input>
                             <p>:</p>
                             <Input
                               className="w-10 p-0 m-0 text-center"
-                              value={item?.start!.minutes}
                               onChange={(e) => {
                                 const updatedWorkingHours = workingHours.map(
                                   (workingHour) => {
@@ -317,7 +315,7 @@ export const DivisionManager = () => {
                                 setWorkingHours(updatedWorkingHours);
                               }}
                               type="number"
-                              placeholder="м"
+                              placeholder={String(item?.start!.minutes) ?? "м"}
                             ></Input>
                           </div>
                           <div className="flex items-center space-x-2 space-y-1">
@@ -341,9 +339,8 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item?.end!.hours}
                               type="number"
-                              placeholder="ч"
+                              placeholder={String(item?.end!.hours) ?? "ч"}
                             ></Input>
                             <p>:</p>
                             <Input
@@ -365,9 +362,8 @@ export const DivisionManager = () => {
                                 );
                                 setWorkingHours(updatedWorkingHours);
                               }}
-                              value={item?.end!.minutes}
                               type="number"
-                              placeholder="м"
+                              placeholder={String(item?.end!.minutes) ?? "м"}
                             ></Input>
                           </div>
                         </div>

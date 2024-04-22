@@ -486,7 +486,7 @@ class DriverController extends Controller
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
         $api = new APIController;
-        $api->notifyParkOnBookingStatusChanged($booking->id, false);
+        $api->notifyParkOnBookingStatusChanged($booking_id = $booking->id, $is_booked = false, $fromDriver = true);
         return response()->json(['message' => 'Бронирование автомобиля успешно отменено'], 200);
     }
 

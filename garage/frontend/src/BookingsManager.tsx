@@ -6,6 +6,8 @@ import { getFormattedTimerValue } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
+import { SelectContent } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const storedApprovedBookings = localStorage.getItem("approvedBookings");
 const initialApprovedBookings = storedApprovedBookings
@@ -15,6 +17,7 @@ const initialApprovedBookings = storedApprovedBookings
 export const BookingsManager = () => {
   const [bookings, setBookings] = useState<Bookings[]>();
   const [selected, setSelected] = useState<Bookings>();
+  const [isReasonSelect, setIdReasonSelect] = useState(false);
   const [approvedBookings, setApprovedBookings] = useState<number[]>(
     initialApprovedBookings
   );
@@ -63,6 +66,36 @@ export const BookingsManager = () => {
   return (
     <>
       <div className="flex justify-end h-full mt-4">
+        {!!selected && isReasonSelect && (
+          <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="p-4 bg-white rounded-xl">
+              <h3>Выберите причину отмены бронирования</h3>
+              <select
+                name=""
+                id=""
+                className="w-full py-2 my-4 border-2 border-grey rounded-xl"
+              >
+                <option value="Передумал">Передумал</option>
+                <option
+                  value="Нет ID КИСАРТ (Москва и МО)
+"
+                >
+                  Нет ID КИСАРТ (Москва и МО)
+                </option>
+              </select>
+              <Input type="text" placeholder="Комментарий" value="" />
+              <Confirmation
+                accept={() => changeBookingStatus(BookingStatus.UnBooked)}
+                cancel={() => {}}
+                title={`Отменить бронирование №${selected.id}  ${
+                  selected.car!.brand
+                } ${selected.car!.model}?`}
+                trigger={<Button variant={"manager"}>Отмена брони</Button>}
+                type="red"
+              />
+            </div>
+          </div>
+        )}
         <div className="flex justify-between w-full space-x-4 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
           {bookings.length === 0 && <div className="">Бронирований нет</div>}
           {bookings.length > 0 && (

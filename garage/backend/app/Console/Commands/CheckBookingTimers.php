@@ -42,7 +42,7 @@ class CheckBookingTimers extends Command
                     $booking->car->status = CarStatus::AvailableForBooking->value;
                     $booking->car->save();
                     $booking->save();
-                    $apiController->notifyParkOnBookingStatusChanged($booking->id, false);
+                    $apiController->notifyParkOnBookingStatusChanged($booking_id = $booking->id, $is_booked = false, $reason = 'Истек срок бронирования');
                 }
             }
         }

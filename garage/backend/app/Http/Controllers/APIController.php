@@ -1483,7 +1483,7 @@ class APIController extends Controller
             $car->status_id = $car->old_status_id;
             $car->old_status_id = null;
             $car->save();
-            $this->notifyParkOnBookingStatusChanged($booking->id, false);
+            $this->notifyParkOnBookingStatusChanged($booking_id=$booking->id, $is_booked=false,$fromDriver=false);
             return response()->json(['message' => 'Статус бронирования успешно изменен, авто доступно для брони'], 200);
         }
         if ($status === BookingStatus::RentStart->value) {

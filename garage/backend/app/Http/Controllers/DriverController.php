@@ -256,8 +256,7 @@ class DriverController extends Controller
         }
 
         $checkBook = Booking::where('driver_id', $user->driver->id)
-            ->where('status', BookingStatus::Booked->value)
-            ->orWhere('status', BookingStatus::RentStart->value)->where('driver_id', $user->driver->id)->first();
+            ->where('status', BookingStatus::Booked->value);
 
         if ($checkBook) {
             return response()->json(['message' => 'Уже есть активная бронь!'], 409);

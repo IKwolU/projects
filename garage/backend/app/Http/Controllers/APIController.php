@@ -1800,7 +1800,7 @@ class APIController extends Controller
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом изменения статуса бронирования
      */
 
-    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
+    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null, $fromDriver=null, $reason=null)
     {
         $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
@@ -1817,18 +1817,27 @@ class APIController extends Controller
             $token = $park->status_api_tocken;
 
             $message = $is_booked ?
-                'Новое бронирование №: ' . $booking->id . '' . "\n":
-                'Отмена бронирования №: ' . $booking->id . '' . "\n";
-                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
-                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
-                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
+                'Новое бронирование №: ' . $booking->id  . "\n":
+                'Отмена бронирования №: ' . $booking->id  . "\n";
+                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name  . "\n" .
+                $car->brand . ' ' . $car->model  . "/" .$car->license_plate  . "\n" .
+                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount  . "\n" .
                 'Тел ' . $user->phone;
-                Log::info($message);
+
+            if($reason)
+            {
+                $message .="\n" . 'Причина: '. $reason;
+            }
+            if($fromDriver!==null)
+            {
+                $message .="\n" . $fromDriver?'Отменена водителем':'Отменена менеджером';
+            }
+
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
 
             $response = Http::withToken($token)->post($url, [
                 'vehicleNumber' => $car->license_plate,
-                'comment' => $is_booked?$message:'',
+                'comment' => $message,
                 'statusName' => $customStatusName,
             ]);
                 $statusCode = $response->getStatusCode();

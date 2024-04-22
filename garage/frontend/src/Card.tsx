@@ -28,7 +28,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}
       >
-        <div className="relative flex flex-col w-full p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-2xl lg:mx-0">
+        <div className="relative flex flex-col w-full max-w-[400px] p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-2xl lg:mx-0">
           <div>
             <div className="absolute z-50 px-3 py-1 m-1 font-medium text-black bg-white shadow bg-opacity-90 rounded-2xl ">
               Парк &laquo;{car.park_name}&raquo;

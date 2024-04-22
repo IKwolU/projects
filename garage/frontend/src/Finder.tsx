@@ -404,7 +404,7 @@ export const Finder = () => {
                       )}
                     </span>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[800px]">
+                  <DialogContent className="sm:max-w-[1208px]">
                     <DialogHeader>
                       <DialogTitle></DialogTitle>
                     </DialogHeader>
@@ -417,9 +417,9 @@ export const Finder = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <div className="flex flex-wrap items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto ">
+                    <div className="grid grid-ciols-1 sm:grid-cols-3 items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto ">
                       <div
-                        className="w-full p-1 text-xl text-black cursor-pointer "
+                        className="w-full p-1 text-xl text-black font-semibold cursor-pointer "
                         onClick={() => {
                           setFilters({
                             ...filters,
@@ -431,7 +431,6 @@ export const Finder = () => {
                       >
                         Все модели
                       </div>
-                      <Separator className="mt-1" />
                       {filteredBrands.map((x: IBrands) => {
                         const title = x.name!;
                         const isActive = filters.brands.some(
@@ -439,7 +438,7 @@ export const Finder = () => {
                         );
                         return (
                           <span
-                            className={`cursor-pointer text-xl font-semibold w-full py-1 text-black ${
+                            className={`cursor-pointer text-xl font-semibold text-black  ${
                               isActive ? "" : ""
                             }`}
                             key={title}
@@ -453,14 +452,14 @@ export const Finder = () => {
                                     : [...filters.brands, title],
                                 })
                               }
-                              className={`w-full  p-1 rounded-xl font-normal flex justify-start ${
-                                isActive ? "" : "ml-[46px]"
+                              className={`p-1 font-semibold flex justify-start ${
+                                isActive ? "" : ""
                               }`}
                             >
                               {isActive && (
                                 <FontAwesomeIcon
                                   icon={faCheck}
-                                  className="px-1 mr-[20.5px] cursor-pointer"
+                                  className="cursor-pointer"
                                 />
                               )}
                               {title}
@@ -472,7 +471,7 @@ export const Finder = () => {
                                 );
                                 return (
                                   <span
-                                    className={`cursor-pointer text-xl  w-full py-1 text-black ${
+                                    className={`cursor-pointer text-xl py-1 text-black  ${
                                       isActiveModel ? "" : ""
                                     }`}
                                     key={model}
@@ -486,25 +485,23 @@ export const Finder = () => {
                                           : [...filters.models, model],
                                       })
                                     }
-                                  >
-                                    <span
-                                      className={` w-full font-normal text-base p-1 rounded-xl flex justify-start ${
-                                        isActiveModel ? "" : "ml-[46px]"
-                                      }`}
-                                    >
-                                      {" "}
-                                      {isActiveModel && (
-                                        <FontAwesomeIcon
-                                          icon={faCheck}
-                                          className="px-1 mr-6 cursor-pointer"
-                                        />
-                                      )}{" "}
-                                      {model}
-                                    </span>
+                                  ><span
+                                  className={`w-full font-normal text-base p-1 flex justify-between items-center ${
+                                    isActiveModel ? "bg-pale" : ""
+                                  }`}
+                                >
+                                  {model}
+                                  {isActiveModel && (
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      className="cursor-pointer"
+                                    />
+                                  )}
+                                </span>
+                                
                                   </span>
                                 );
                               })}
-                            <Separator className="mt-1" />
                           </span>
                         );
                       })}
@@ -812,7 +809,7 @@ export const Finder = () => {
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
         {!filters.onMap && (
-          <div className="flex flex-wrap gap-2 md:justify-start ">
+          <div className="grid md:gap-4 content-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {cars.map((car) => (
               <Card key={car.id} car={car} />
             ))}

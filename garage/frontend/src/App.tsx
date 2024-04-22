@@ -95,19 +95,19 @@ function App() {
         }}
       />
       {user?.user_type === UserType.Manager && (
-        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+        <div className="max-w-sm p-4 md:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
           <ParkManager />
         </div>
       )}
       {user?.user_type === UserType.Admin && (
-        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+        <div className="max-w-sm p-4 md:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
           <Routes>
             <Route path="/*" element={<Admin />} />
           </Routes>
         </div>
       )}
       {(!user || user.user_type === UserType.Driver) && (
-        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+        <div className="max-w-sm p-4 md:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
           <div className="flex items-end justify-end mb-2">
             <FontAwesomeIcon
               icon={faLocationDot}
@@ -132,7 +132,7 @@ function App() {
         </div>
       )}
       {!user && (
-        <div className="max-w-sm p-4 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+        <div className="max-w-sm p-4 md:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
           <Routes>
             <Route path="/termsofuse" element={<Terms />} />
           </Routes>

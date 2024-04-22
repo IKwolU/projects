@@ -417,9 +417,9 @@ export const Finder = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <div className="grid grid-ciols-1 sm:grid-cols-3 items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto ">
+                    <div className="grid items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto grid-ciols-1 sm:grid-cols-3 ">
                       <div
-                        className="w-full p-1 text-xl text-black font-semibold cursor-pointer "
+                        className="w-full p-1 text-xl font-semibold text-black cursor-pointer "
                         onClick={() => {
                           setFilters({
                             ...filters,
@@ -438,7 +438,7 @@ export const Finder = () => {
                         );
                         return (
                           <span
-                            className={`cursor-pointer text-xl font-semibold text-black  ${
+                            className={`cursor-pointer text-xl font-semibold text-black md:pr-12 ${
                               isActive ? "" : ""
                             }`}
                             key={title}
@@ -452,56 +452,55 @@ export const Finder = () => {
                                     : [...filters.brands, title],
                                 })
                               }
-                              className={`p-1 font-semibold flex justify-start ${
+                              className={`p-1 font-semibold justify-between flex ${
                                 isActive ? "" : ""
                               }`}
                             >
+                              {title}
                               {isActive && (
                                 <FontAwesomeIcon
                                   icon={faCheck}
                                   className="cursor-pointer"
                                 />
                               )}
-                              {title}
                             </span>{" "}
-                            {isActive &&
-                              x.models!.map((model) => {
-                                const isActiveModel = filters.models.some(
-                                  (b) => b === model
-                                );
-                                return (
-                                  <span
-                                    className={`cursor-pointer text-xl py-1 text-black  ${
-                                      isActiveModel ? "" : ""
-                                    }`}
-                                    key={model}
-                                    onClick={() =>
-                                      setFilters({
-                                        ...filters,
-                                        models: isActiveModel
-                                          ? filters.models.filter(
-                                              (b) => b != model
-                                            )
-                                          : [...filters.models, model],
-                                      })
-                                    }
-                                  ><span
-                                  className={`w-full font-normal text-base p-1 flex justify-between items-center ${
-                                    isActiveModel ? "bg-pale" : ""
+                            {x.models!.map((model) => {
+                              const isActiveModel = filters.models.some(
+                                (b) => b === model
+                              );
+                              return (
+                                <span
+                                  className={`cursor-pointer text-xl py-1 text-black  ${
+                                    isActiveModel ? "" : ""
                                   }`}
+                                  key={model}
+                                  onClick={() =>
+                                    setFilters({
+                                      ...filters,
+                                      models: isActiveModel
+                                        ? filters.models.filter(
+                                            (b) => b != model
+                                          )
+                                        : [...filters.models, model],
+                                    })
+                                  }
                                 >
-                                  {model}
-                                  {isActiveModel && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      className="cursor-pointer"
-                                    />
-                                  )}
-                                </span>
-                                
+                                  <span
+                                    className={`w-full font-normal text-base p-1 flex justify-between items-center ${
+                                      isActiveModel ? "bg-pale" : ""
+                                    }`}
+                                  >
+                                    {model}
+                                    {isActiveModel && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        className="cursor-pointer"
+                                      />
+                                    )}
                                   </span>
-                                );
-                              })}
+                                </span>
+                              );
+                            })}
                           </span>
                         );
                       })}
@@ -809,7 +808,7 @@ export const Finder = () => {
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
         {!filters.onMap && (
-          <div className="grid md:gap-4 content-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid content-center grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
             {cars.map((car) => (
               <Card key={car.id} car={car} />
             ))}

@@ -28,9 +28,9 @@ export const Card = ({ car }: { car: Cars3 }) => {
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}
       >
-        <div className="relative p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-2xl lg:mx-0 flex flex-col w-full">
+        <div className="relative flex flex-col w-full p-1 pb-2 mx-auto mb-2 text-gray-700 bg-white shadow-md w-100 rounded-2xl lg:mx-0">
           <div>
-            <div className="absolute z-50 px-3 py-1 m-1 font-medium bg-white bg-opacity-90 shadow rounded-2xl text-black ">
+            <div className="absolute z-50 px-3 py-1 m-1 font-medium text-black bg-white shadow bg-opacity-90 rounded-2xl ">
               Парк &laquo;{car.park_name}&raquo;
             </div>
             {car.cars_count! > 1 && (
@@ -93,29 +93,26 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 ))}
               </div>
               <Separator className="my-2" />
-              {Number(car.rent_term!.deposit_amount_total) !== 0 && (
-                <>
-                  {" "}
-                  <div className="flex flex-col justify-start gap-1">
-                    <span className="flex items-center h-full bg-white rounded-xl">
-                      <span className="flex items-center gap-2">
-                        <span className="text-sm text-zinc-400">
-                          {car.rent_term!.deposit_amount_total
-                            ? "Депозит"
-                            : "Без депозита"}
-                        </span>
-                        {/* <span className="">
+
+              <div className="flex flex-col justify-start gap-1">
+                <span className="flex items-center h-full bg-white rounded-xl">
+                  <span className="flex items-center gap-2">
+                    <span className="text-sm text-zinc-400">
+                      {car.rent_term!.deposit_amount_total
+                        ? "Депозит"
+                        : "Без депозита"}
+                    </span>
+                    {/* <span className="">
                           {formatRoubles(car.rent_term!.deposit_amount_total!)}{" "}
                           по{" "}
                           {formatRoubles(car.rent_term!.deposit_amount_daily!)}{" "}
                           в день
                         </span> */}
-                      </span>
-                    </span>
-                  </div>
-                  <Separator className="my-2" />
-                </>
-              )}
+                  </span>
+                </span>
+              </div>
+              <Separator className="my-2" />
+
               <div className="flex flex-wrap justify-start gap-2 mb-0">
                 <div className="flex flex-col items-start w-full gap-2 sm:items-center sm:flex-row">
                   <span className="flex items-center gap-2 mr-1 ">
@@ -126,16 +123,16 @@ export const Card = ({ car }: { car: Cars3 }) => {
                     <span className="">{car.commission} %</span>
                   </span>
                   <Separator className="my-0 sm:hidden" />
-                  <span className="flex items-center gap-2 mr-1 ">
-                    <span className="w-1 h-1 rounded-full bg-zinc-400"></span>{" "}
-                    <span className="">
-                      {car.rent_term!.is_buyout_possible && (
+                  {!!car.rent_term!.is_buyout_possible && (
+                    <span className="flex items-center gap-2 mr-1 ">
+                      <span className="w-1 h-1 rounded-full bg-zinc-400"></span>{" "}
+                      <span className="">
                         <div className="text-sm text-zinc-400">
                           Возможен выкуп: да
                         </div>
-                      )}
+                      </span>
                     </span>
-                  </span>
+                  )}
                 </div>
 
                 <div>

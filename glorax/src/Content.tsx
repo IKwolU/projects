@@ -42,8 +42,8 @@ function Content() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-50 flex w-full h-40">
-        <img src="img/360.svg" className="mx-auto w-80 h-60 text-blue" alt="" />
+      <div className="fixed bottom-0 left-0 z-50 flex w-full h-8">
+        <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
       </div>
       {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>
       <div className="fixed top-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>

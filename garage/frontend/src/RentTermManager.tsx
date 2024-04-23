@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Body41, Body6, Rent_terms, Schemas } from "./api-client";
+import { Body41, Body6, IPark2, Rent_terms, Schemas } from "./api-client";
 import { parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,11 @@ export const RentTermManager = () => {
   });
 
   const [selectedId, setSelectedId] = useState(0);
+
+  const getPark = async () => {
+    const parkData: IPark2 = await client.getParkManager();
+    setPark(parkData.park);
+  };
 
   const createRentTerm = async () => {
     try {
@@ -85,26 +90,11 @@ export const RentTermManager = () => {
           is_buyout_possible: !!selected.is_buyout_possible,
           name: selected.name,
           minimum_period_days: selected.minimum_period_days,
-          schemas: selected.schemas,
+          schemas: selected.schemas!.map((schema) => new Schemas(schema)),
         })
       );
 
-      const updatedRentTerm = {
-        rent_term_id: selected.rent_term_id,
-        is_buyout_possible: selected.is_buyout_possible,
-        name: selected.name,
-        minimum_period_days: selected.is_buyout_possible,
-        schemas: [new Schemas(selected.schemas)],
-        id: selected.id,
-        deposit_amount_daily: selected.deposit_amount_daily,
-      };
-      setPark({
-        ...park,
-        rent_terms: [
-          ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
-          new Rent_terms(updatedRentTerm),
-        ],
-      });
+      getPark();
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -184,8 +174,6 @@ export const RentTermManager = () => {
     param: keyof Schemas,
     id: number
   ) => {
-    console.log(id);
-
     setPark({
       ...park,
       rent_terms: [
@@ -353,23 +341,26 @@ export const RentTermManager = () => {
                 }`}
               >
                 <h4>{input.title}</h4>
-                <Input
-                  className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
-                  onChange={(e) =>
-                    input.type === "checkbox"
-                      ? handleInputNewRentTermChange(
-                          e.target.checked,
-                          input.param
-                        )
-                      : handleInputNewRentTermChange(
-                          e.target.value,
-                          input.param
-                        )
-                  }
-                  checked={input.type === "checkbox" && !!input.value}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                ></Input>
+                {input.type !== "checkbox" && (
+                  <Input
+                    onChange={(e) => {
+                      handleInputNewRentTermChange(e.target.value, input.param);
+                    }}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                )}
+                {input.type === "checkbox" && (
+                  <Input
+                    className="flex w-6 m-0 "
+                    onChange={() => {
+                      handleInputNewRentTermChange(!input.value, input.param);
+                    }}
+                    checked={!!input.value}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                )}
               </div>
             ))}
             <div className="flex items-center justify-between space-x-2">
@@ -505,16 +496,26 @@ export const RentTermManager = () => {
                 }`}
               >
                 <h4>{input.title}</h4>
-                <Input
-                  className={`${input.type === "checkbox" && "flex w-6 m-0 "}`}
-                  onChange={(e) =>
-                    input.type === "checkbox"
-                      ? handleInputRentTermChange(e.target.checked, input.param)
-                      : handleInputRentTermChange(e.target.value, input.param)
-                  }
-                  type={input.type}
-                  placeholder={input.placeholder}
-                ></Input>
+                {input.type !== "checkbox" && (
+                  <Input
+                    onChange={(e) => {
+                      handleInputRentTermChange(e.target.value, input.param);
+                    }}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                )}
+                {input.type === "checkbox" && (
+                  <Input
+                    className="flex w-6 m-0 "
+                    onChange={() => {
+                      handleInputRentTermChange(!input.value, input.param);
+                    }}
+                    checked={!!input.value}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                  ></Input>
+                )}
               </div>
             ))}
             <div className="flex items-center justify-between space-x-2">

@@ -131,7 +131,24 @@ class AuthController extends Controller
      *                 property="working_hours",
      *                 type="array",
      *                 description="Расписание работы парка",
-     *                 @OA\Items(type="string")
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
+     *                     @OA\Property(
+     *                         property="start",
+     *                         type="object",
+     *                         description="Время начала работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="end",
+     *                         type="object",
+     *                         description="Время окончания работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     )
+     *                 )
      *             ),
      *                             @OA\Property(
      *                                 property="park",
@@ -209,7 +226,7 @@ class AuthController extends Controller
                     ->select('deposit_amount_daily', 'deposit_amount_total', 'minimum_period_days', 'is_buyout_possible', 'id')
                     ->first();
                 $workingHours = json_decode($booking->car->division->working_hours, true);
-                $booking->car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
+                $booking->car->division->working_hours = $workingHours;
                 unset(
                     $booking->created_at,
                     $booking->updated_at,

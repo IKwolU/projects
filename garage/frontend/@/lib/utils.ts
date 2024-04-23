@@ -81,13 +81,13 @@ export function getFormattedTimerValue(
 
 export const getDayOfWeekDisplayName = (day: DayOfWeek) => {
   const daysOfWeek = {
-    [DayOfWeek.Monday]: "понедельник",
-    [DayOfWeek.Tuesday]: "вторник",
-    [DayOfWeek.Wednesday]: "среда",
-    [DayOfWeek.Thursday]: "четверг",
-    [DayOfWeek.Friday]: "пятница",
-    [DayOfWeek.Saturday]: "суббота",
-    [DayOfWeek.Sunday]: "воскресенье",
+    [DayOfWeek.Monday]: "Пн",
+    [DayOfWeek.Tuesday]: "Вт",
+    [DayOfWeek.Wednesday]: "Ср",
+    [DayOfWeek.Thursday]: "Чт",
+    [DayOfWeek.Friday]: "Пт",
+    [DayOfWeek.Saturday]: "Сб",
+    [DayOfWeek.Sunday]: "Вск",
   };
   return daysOfWeek[day];
 };

@@ -79,12 +79,29 @@ class CarsController extends Controller
      *                 @OA\Property(property="сar_class", type="string", description="Класс тарифа", ref="#/components/schemas/CarClass"),
      *                 @OA\Property(property="park_name", type="string", description="Название парка"),
      *                 @OA\Property(property="cars_count", type="number", description="Количество одинаковых"),
-     *                 @OA\Property(
-     *                     property="working_hours",
-     *                     type="array",
-     *                     description="Расписание работы парка",
-     *     @OA\Items(type="string")
-     * ),
+     *             @OA\Property(
+     *                 property="working_hours",
+     *                 type="array",
+     *                 description="Расписание работы парка",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
+     *                     @OA\Property(
+     *                         property="start",
+     *                         type="object",
+     *                         description="Время начала работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="end",
+     *                         type="object",
+     *                         description="Время окончания работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     )
+     *                 )
+     *             ),
      *                 @OA\Property(property="about", type="string", description="Описание парка"),
      *                 @OA\Property(property="city", type="string"),
      *                 @OA\Property(property="division", type="object", description="Данные о подразделении",
@@ -368,7 +385,7 @@ class CarsController extends Controller
                 $formattedCar['city'] = $city;
                 $formattedCar['CarClass'] = $end;
                 $formattedCar['park_name'] = $parkName;
-                $formattedCar['working_hours'] = $this->formattedWorkingHours($workingHours);
+                $formattedCar['working_hours'] = $workingHours;
                 $formattedCar['phone'] = $phone;
                 $formattedCar['vin'] = $car['car_id'];
                 $formattedCar['about'] = $about;

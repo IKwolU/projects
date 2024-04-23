@@ -1483,7 +1483,11 @@ class APIController extends Controller
             $car->status_id = $car->old_status_id;
             $car->old_status_id = null;
             $car->save();
-            $this->notifyParkOnBookingStatusChanged($booking->id, false);
+            $reason = null;
+            if ($request->reason) {
+                $reason = $request->reason;
+            }
+            $this->notifyParkOnBookingStatusChanged(booking_id:$booking->id, is_booked:false,fromDriver:false,reason:$reason);
             return response()->json(['message' => 'Статус бронирования успешно изменен, авто доступно для брони'], 200);
         }
         if ($status === BookingStatus::RentStart->value) {
@@ -1800,7 +1804,7 @@ class APIController extends Controller
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом изменения статуса бронирования
      */
 
-    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null)
+    public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null, $fromDriver=null, $reason=null)
     {
         $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
@@ -1817,18 +1821,28 @@ class APIController extends Controller
             $token = $park->status_api_tocken;
 
             $message = $is_booked ?
-                'Новое бронирование №: ' . $booking->id . '' . "\n":
-                'Отмена бронирования №: ' . $booking->id . '' . "\n";
-                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name . '' . "\n" .
-                $car->brand . ' ' . $car->model . '' . "/" .$car->license_plate . '' . "\n" .
-                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount . '' . "\n" .
+                'Новое бронирование №: ' . $booking->id  . "\n":
+                'Отмена бронирования №: ' . $booking->id  . "\n";
+                $message.= $car->division->city->name . "/". $car->division->park->park_name . "/" . $car->division->name  . "\n" .
+                $car->brand . ' ' . $car->model  . "/" .$car->license_plate  . "\n" .
+                $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount  . "\n" .
                 'Тел ' . $user->phone;
-                Log::info($message);
+
+            if($reason!==null)
+            {
+                $message .="\n" . 'Причина: '. $reason;
+            }
+            if($fromDriver!==null)
+            {
+                $submessege = $fromDriver ? 'Отменена водителем' : 'Отменена менеджером';
+                $message .= "\n" . $submessege;
+            }
+
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
 
             $response = Http::withToken($token)->post($url, [
                 'vehicleNumber' => $car->license_plate,
-                'comment' => $is_booked?$message:'',
+                'comment' => $message,
                 'statusName' => $customStatusName,
             ]);
                 $statusCode = $response->getStatusCode();
@@ -1850,7 +1864,7 @@ class APIController extends Controller
                 $statusCode = $response->getStatusCode();
             }
             if ($repeat) {
-            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema,$fromDriver,$reason);
             }
         }
     }

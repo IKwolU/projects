@@ -168,12 +168,12 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div className="flex flex-col md:flex-row md:flex-wrap">
                 <div className="md:w-1/2 md:space-y-2 ">
                   <Separator className="my-1" />
-                  <p className="flex justify-between pr-4 text-base md:text-lg font-regular">
-                    <span>Парк: {car.park_name}</span>
+                  <p className="flex justify-between pr-4 text-base md:text-lg font-regular font-semibold ">
+                    <span>Парк {car.park_name}</span>
                   </p>
                   <Separator className="my-1" />
-                  <p className="text-base md:text-lg font-regular">
-                    Адрес: {car.division?.address}
+                  <p className="text-base md:text-lg font-regular ">
+                    Адрес {car.division?.address}
                   </p>
                   {/* <Separator className="my-1" />
                   <p className="text-base md:text-lg font-regular">
@@ -294,7 +294,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 </Badge>
               ))}
             </div>
-            <div className="fixed left-0 z-50 flex justify-center w-full px-2 space-x-2 bottom-14">
+            <div className="fixed left-0 z-50 flex justify-center w-full px-2 space-x-2 bottom-0">
               <div className="grid grid-cols-2 h-16 w-full bg-white sm:mx-auto sm:px-40 space-x-2 p-2 md:max-w-[800px] max-w-[512px] px-2">
                 <Select
                   onValueChange={(value) => handleTariffChange(value)}
@@ -465,7 +465,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div className="px-2 py-4 bg-white shadow-xl rounded-xl">
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between">
-                    <div className="mb-2">Название парка: {car.park_name}</div>
+                    <div className="mb-2 text-lg font-semibold ">
+                      {" "}
+                      Парк {car.park_name}
+                    </div>
                     {car.cars_count! > 1 && (
                       <div className="flex justify-end p-2 border-2 border-grey w-fit rounded-xl">
                         {`Доступно авто: ${car.cars_count}`}
@@ -473,18 +476,18 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     )}
                   </div>
                   <Separator className="my-2" />
-                  <div className="flex items-start justify-between">
-                    <div>
-                      Адрес парка:
+                  <div className="grid grid-cols-2">
+                    <div className="font-semibold">
+                      <FontAwesomeIcon
+                        icon={faCompass}
+                        className="text-zinc-400 mr-2"
+                      />
+                      Адрес
                       <a
                         href={navigationLink(car.division!.address!)}
-                        className="flex items-center gap-2 mt-2 space-x-2 text-base text-blue-400 underline active:text-yellow"
+                        className="flex items-center gap-2 mt-2 space-x-2 text-base text-zinc-400 underline active:text-yellow"
                         target="_blank"
                       >
-                        <FontAwesomeIcon
-                          icon={faCompass}
-                          className="text-black"
-                        />
                         {car.division!.address!}
                       </a>
                       <Separator className="mt-4 mb-2" />
@@ -534,7 +537,6 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                               <p className="mb-2 text-base">Телефон:</p>
                               <p>{car.division!.phone}</p>
                             </div> */}
-                      </div>
                     </div>
                   </div>
                   <Separator className="my-2" />

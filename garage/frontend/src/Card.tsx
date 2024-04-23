@@ -124,14 +124,11 @@ export const Card = ({ car }: { car: Cars3 }) => {
                   </span>
                   <Separator className="my-0 sm:hidden" />
                   {!!car.rent_term!.is_buyout_possible && (
-                    <span className="flex items-center gap-2 mr-1 ">
-                      <span className="w-1 h-1 rounded-full bg-zinc-400"></span>{" "}
-                      <span className="">
-                        <div className="text-sm text-zinc-400">
-                          Возможен выкуп: да
-                        </div>
-                      </span>
-                    </span>
+                    <div className="flex items-center gap-2 mr-1 text-sm text-zinc-400">
+                      Возможен выкуп{" "}
+                      <div className="w-1 h-1 rounded-full bg-zinc-400"></div>{" "}
+                      Да
+                    </div>
                   )}
                 </div>
 
@@ -169,7 +166,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
       </DialogFooter> */}
         <DialogClose asChild className="">
           <div>
-            <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
+            {/* <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
               <div className="flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
                 <Button
                   variant="outline"
@@ -179,7 +176,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
                   Назад
                 </Button>
               </div>
-            </div>
+            </div> */}
             <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
               <div className="flex justify-center max-w-[1208px] mx-auto ">
                 <div className="relative w-32 h-full bg-white">

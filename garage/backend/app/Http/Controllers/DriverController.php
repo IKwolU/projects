@@ -160,7 +160,24 @@ class DriverController extends Controller
      *                 property="working_hours",
      *                 type="array",
      *                 description="Расписание работы парка",
-     *                 @OA\Items(type="string",)
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="day", type="string", description="День недели на английском",ref="#/components/schemas/DayOfWeek"),
+     *                     @OA\Property(
+     *                         property="start",
+     *                         type="object",
+     *                         description="Время начала работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     ),
+     *                     @OA\Property(
+     *                         property="end",
+     *                         type="object",
+     *                         description="Время окончания работы",
+     *                         @OA\Property(property="hours", type="integer", description="Часы (0-23)"),
+     *                         @OA\Property(property="minutes", type="integer", description="Минуты (0-59)")
+     *                     )
+     *                 )
      *             ),
      *                         @OA\Property(property="park", type="object",
      *                             @OA\Property(property="url", type="string"),
@@ -255,8 +272,7 @@ class DriverController extends Controller
             $car = $selectedCar;
         }
 
-        $checkBook = Booking::where('driver_id', $user->driver->id)
-            ->where('status', BookingStatus::Booked->value);
+        $checkBook = Booking::where('driver_id', $user->driver->id)->where('status', BookingStatus::Booked->value)->first();
 
         if ($checkBook) {
             return response()->json(['message' => 'Уже есть активная бронь!'], 409);
@@ -327,7 +343,7 @@ class DriverController extends Controller
 
         $workingHours = json_decode($car->division->working_hours, true);
 
-        $car->division->working_hours = CarsController::formattedWorkingHours($workingHours);
+        $car->division->working_hours = $workingHours;
         $booked = $booking;
         $booked->status = BookingStatus::from($booked->status)->name;
         $booked->start_date = $booked->booked_at;
@@ -486,7 +502,7 @@ class DriverController extends Controller
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
         $api = new APIController;
-        $api->notifyParkOnBookingStatusChanged($booking_id = $booking->id, $is_booked = false, $fromDriver = true);
+        $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true);
         return response()->json(['message' => 'Бронирование автомобиля успешно отменено'], 200);
     }
 

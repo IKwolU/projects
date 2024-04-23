@@ -1483,7 +1483,7 @@ class APIController extends Controller
             $car->status_id = $car->old_status_id;
             $car->old_status_id = null;
             $car->save();
-            $this->notifyParkOnBookingStatusChanged($booking_id=$booking->id, $is_booked=false,$fromDriver=false);
+            $this->notifyParkOnBookingStatusChanged(booking_id:$booking->id, is_booked:false,fromDriver:false);
             return response()->json(['message' => 'Статус бронирования успешно изменен, авто доступно для брони'], 200);
         }
         if ($status === BookingStatus::RentStart->value) {
@@ -1824,13 +1824,14 @@ class APIController extends Controller
                 $schema->working_days . '/' . $schema->non_working_days . ' ' . $schema->daily_amount  . "\n" .
                 'Тел ' . $user->phone;
 
-            if($reason)
+            if($reason!==null)
             {
                 $message .="\n" . 'Причина: '. $reason;
             }
             if($fromDriver!==null)
             {
-                $message .="\n" . $fromDriver?'Отменена водителем':'Отменена менеджером';
+                $submessege = $fromDriver ? 'Отменена водителем' : 'Отменена менеджером';
+                $message .= "\n" . $submessege;
             }
 
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';
@@ -1859,7 +1860,7 @@ class APIController extends Controller
                 $statusCode = $response->getStatusCode();
             }
             if ($repeat) {
-            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema);
+            $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema,$fromDriver,$reason);
             }
         }
     }

@@ -1,4 +1,10 @@
-import { Body17, BookingStatus, Bookings2, User } from "./api-client";
+import {
+  Body17,
+  BookingStatus,
+  Bookings2,
+  DayOfWeek,
+  User,
+} from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { useRecoilState } from "recoil";
@@ -7,6 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { CSSTransition } from "react-transition-group";
 import {
   formatRoubles,
+  formatWorkingTime,
+  getDayOfWeekDisplayName,
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
@@ -15,6 +23,7 @@ import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
 import ym from "react-yandex-metrika";
+import { toLower } from "ramda";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -106,6 +115,8 @@ export const BookingDrawer = () => {
       return 0;
     });
 
+  const nonWorkingDays: string[] = [];
+
   const navigationLink = (address: string) => {
     const link =
       window.innerWidth < 800
@@ -178,14 +189,50 @@ export const BookingDrawer = () => {
                 </div>
 
                 <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:block hidden">
-                  {booking.car!.division!.working_hours!.map((x, i) => (
-                    <div
-                      className="flex flex-col items-start"
-                      key={`time_${i}`}
-                    >
-                      {x}
+                  {Object.values(DayOfWeek).map((day) => {
+                    const dayOfWeek = getDayOfWeekDisplayName(day);
+                    const workingHoursTime =
+                      booking.car!.division!.working_hours!.filter(
+                        (x) => x.day === day
+                      );
+
+                    if (!workingHoursTime.length) {
+                      nonWorkingDays.push(dayOfWeek);
+                    }
+                    return (
+                      <div key={day} className="max-w-48">
+                        {!!workingHoursTime.length && (
+                          <div className="flex w-full">
+                            <div className="w-20 text-base font-semibold">
+                              {dayOfWeek}
+                            </div>
+                            <div className="">
+                              {formatWorkingTime(
+                                workingHoursTime[0]!.start!.hours!,
+                                workingHoursTime[0]!.start!.minutes!
+                              )}{" "}
+                              -{" "}
+                              {formatWorkingTime(
+                                workingHoursTime[0]!.end!.hours!,
+                                workingHoursTime[0]!.end!.minutes!
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  <div className="flex max-w-44">
+                    <div className="flex w-20 space-x-2">
+                      {nonWorkingDays.map((y, i) => (
+                        <div className="text-base text-pale" key={y}>
+                          {i === 0 ? y : toLower(y)}
+                          {i !== nonWorkingDays.length - 1 && ", "}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                    <div className="text-pale">Выходной</div>
+                  </div>
                 </div>
                 {booking.status === BookingStatus.Booked && (
                   <div className="flex-wrap hidden w-1/2 md:flex">
@@ -207,11 +254,50 @@ export const BookingDrawer = () => {
             </div>
             <div className="flex flex-wrap items-center justify-start gap-1 my-3 md:items-start md:flex-nowrap">
               <div className="min-h-fit md:min-w-[250px] lg:min-w-[350px] md:hidden">
-                {booking.car!.division!.working_hours!.map((x, i) => (
-                  <div className="flex flex-col items-start" key={`time_${i}`}>
-                    {x}
+                {Object.values(DayOfWeek).map((day) => {
+                  const dayOfWeek = getDayOfWeekDisplayName(day);
+                  const workingHoursTime =
+                    booking.car!.division!.working_hours!.filter(
+                      (x) => x.day === day
+                    );
+
+                  if (!workingHoursTime.length) {
+                    nonWorkingDays.push(dayOfWeek);
+                  }
+                  return (
+                    <div key={day} className="max-w-48">
+                      {!!workingHoursTime.length && (
+                        <div className="flex w-full">
+                          <div className="w-20 text-base font-semibold">
+                            {dayOfWeek}
+                          </div>
+                          <div className="">
+                            {formatWorkingTime(
+                              workingHoursTime[0]!.start!.hours!,
+                              workingHoursTime[0]!.start!.minutes!
+                            )}{" "}
+                            -{" "}
+                            {formatWorkingTime(
+                              workingHoursTime[0]!.end!.hours!,
+                              workingHoursTime[0]!.end!.minutes!
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                <div className="flex max-w-44">
+                  <div className="flex w-20 space-x-2">
+                    {nonWorkingDays.map((y, i) => (
+                      <div className="text-base text-pale" key={y}>
+                        {i === 0 ? y : toLower(y)}
+                        {i !== nonWorkingDays.length - 1 && ", "}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  <div className="text-pale">Выходной</div>
+                </div>
               </div>
               <Separator className="mb-1 md:hidden" />
               <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">
@@ -340,20 +426,22 @@ export const BookingDrawer = () => {
                 </div>
 
                 <div className="w-1/2 mx-auto">
-                  <Confirmation
-                    title="Отмена бронирования. Хотите продолжить?"
-                    type="red"
-                    accept={cancelBooking}
-                    cancel={() => {}}
-                    trigger={
-                      <Button
-                        variant="reject"
-                        className="text-black bg-white border-2 border-grey"
-                      >
-                        Отменить
-                      </Button>
-                    }
-                  />
+                  {booking.status === BookingStatus.Booked && (
+                    <Confirmation
+                      title="Отмена бронирования. Хотите продолжить?"
+                      type="red"
+                      accept={cancelBooking}
+                      cancel={() => {}}
+                      trigger={
+                        <Button
+                          variant="reject"
+                          className="text-black bg-white border-2 border-grey"
+                        >
+                          Отменить
+                        </Button>
+                      }
+                    />
+                  )}
                 </div>
               </div>
             </div>

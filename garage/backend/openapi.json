@@ -2635,7 +2635,40 @@
                                                                                 "description": "Расписание работы парка",
                                                                                 "type": "array",
                                                                                 "items": {
-                                                                                    "type": "string"
+                                                                                    "properties": {
+                                                                                        "day": {
+                                                                                            "$ref": "#/components/schemas/DayOfWeek"
+                                                                                        },
+                                                                                        "start": {
+                                                                                            "description": "Время начала работы",
+                                                                                            "properties": {
+                                                                                                "hours": {
+                                                                                                    "description": "Часы (0-23)",
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "minutes": {
+                                                                                                    "description": "Минуты (0-59)",
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        },
+                                                                                        "end": {
+                                                                                            "description": "Время окончания работы",
+                                                                                            "properties": {
+                                                                                                "hours": {
+                                                                                                    "description": "Часы (0-23)",
+                                                                                                    "type": "integer"
+                                                                                                },
+                                                                                                "minutes": {
+                                                                                                    "description": "Минуты (0-59)",
+                                                                                                    "type": "integer"
+                                                                                                }
+                                                                                            },
+                                                                                            "type": "object"
+                                                                                        }
+                                                                                    },
+                                                                                    "type": "object"
                                                                                 }
                                                                             },
                                                                             "park": {
@@ -3099,7 +3132,40 @@
                                                         "description": "Расписание работы парка",
                                                         "type": "array",
                                                         "items": {
-                                                            "type": "string"
+                                                            "properties": {
+                                                                "day": {
+                                                                    "$ref": "#/components/schemas/DayOfWeek"
+                                                                },
+                                                                "start": {
+                                                                    "description": "Время начала работы",
+                                                                    "properties": {
+                                                                        "hours": {
+                                                                            "description": "Часы (0-23)",
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "minutes": {
+                                                                            "description": "Минуты (0-59)",
+                                                                            "type": "integer"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "end": {
+                                                                    "description": "Время окончания работы",
+                                                                    "properties": {
+                                                                        "hours": {
+                                                                            "description": "Часы (0-23)",
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "minutes": {
+                                                                            "description": "Минуты (0-59)",
+                                                                            "type": "integer"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
                                                         }
                                                     },
                                                     "about": {
@@ -3361,7 +3427,40 @@
                                                                     "description": "Расписание работы парка",
                                                                     "type": "array",
                                                                     "items": {
-                                                                        "type": "string"
+                                                                        "properties": {
+                                                                            "day": {
+                                                                                "$ref": "#/components/schemas/DayOfWeek"
+                                                                            },
+                                                                            "start": {
+                                                                                "description": "Время начала работы",
+                                                                                "properties": {
+                                                                                    "hours": {
+                                                                                        "description": "Часы (0-23)",
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "minutes": {
+                                                                                        "description": "Минуты (0-59)",
+                                                                                        "type": "integer"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            },
+                                                                            "end": {
+                                                                                "description": "Время окончания работы",
+                                                                                "properties": {
+                                                                                    "hours": {
+                                                                                        "description": "Часы (0-23)",
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "minutes": {
+                                                                                        "description": "Минуты (0-59)",
+                                                                                        "type": "integer"
+                                                                                    }
+                                                                                },
+                                                                                "type": "object"
+                                                                            }
+                                                                        },
+                                                                        "type": "object"
                                                                     }
                                                                 },
                                                                 "park": {

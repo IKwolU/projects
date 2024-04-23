@@ -1008,6 +1008,7 @@ class ManagerController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="vin", type="string", description="VIN-номер автомобиля"),
+     *             @OA\Property(property="reason", type="string", nullable=true, description="Причина отмены"),
      *             @OA\Property(property="status", type="string", description="Статус бронирования: UnBooked - бронь снята и авто может быть доступно к бронированию, RentStart - автомобиль выдан водителю в аренду, RentOver - аренда авто закончена и авто может быть доступно к бронированию", ref="#/components/schemas/BookingStatus")
 
      * )

@@ -5955,6 +5955,8 @@ export interface IBody33 {
 export class Body34 implements IBody34 {
     /** VIN-номер автомобиля */
     vin?: string;
+    /** Причина отмены */
+    reason?: string | undefined;
     status?: BookingStatus;
 
     [key: string]: any;
@@ -5975,6 +5977,7 @@ export class Body34 implements IBody34 {
                     this[property] = _data[property];
             }
             this.vin = _data["vin"];
+            this.reason = _data["reason"];
             this.status = _data["status"];
         }
     }
@@ -5993,6 +5996,7 @@ export class Body34 implements IBody34 {
                 data[property] = this[property];
         }
         data["vin"] = this.vin;
+        data["reason"] = this.reason;
         data["status"] = this.status;
         return data;
     }
@@ -6001,6 +6005,8 @@ export class Body34 implements IBody34 {
 export interface IBody34 {
     /** VIN-номер автомобиля */
     vin?: string;
+    /** Причина отмены */
+    reason?: string | undefined;
     status?: BookingStatus;
 
     [key: string]: any;

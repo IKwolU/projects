@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Body33, BookingStatus, Bookings } from "./api-client";
+import { Body33, Body34, BookingStatus, Bookings } from "./api-client";
 import { client } from "./backend";
 import { useTimer } from "react-timer-hook";
 import { getFormattedTimerValue } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
-import { SelectContent } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
 const storedApprovedBookings = localStorage.getItem("approvedBookings");
@@ -17,7 +16,7 @@ const initialApprovedBookings = storedApprovedBookings
 export const BookingsManager = () => {
   const [bookings, setBookings] = useState<Bookings[]>();
   const [selected, setSelected] = useState<Bookings>();
-  const [isReasonSelect, setIdReasonSelect] = useState(false);
+  const [isReasonSelect, setIsReasonSelect] = useState(false);
   const [approvedBookings, setApprovedBookings] = useState<number[]>(
     initialApprovedBookings
   );
@@ -49,11 +48,28 @@ export const BookingsManager = () => {
 
   const changeBookingStatus = async (status: BookingStatus) => {
     await client.updateCarBookingStatusManager(
-      new Body33({ status: status, vin: selected!.car!.vin })
+      new Body34({ status: status, vin: selected!.car!.vin })
     );
     getBookings();
   };
 
+  const canselBooking = async (status: BookingStatus) => {
+    const reasonForUnbook =
+      reason +
+      (subReason === "Не выбрано" ? "" : " - " + subReason) +
+      (commentReason ? "\nКомментарий: " + commentReason : "");
+    console.log(reasonForUnbook);
+
+    await client.updateCarBookingStatusManager(
+      new Body34({
+        status: status,
+        vin: selected!.car!.vin,
+        reason: reasonForUnbook,
+      })
+    );
+    getBookings();
+    setIsReasonSelect(false);
+  };
   const HandleApprovedBookings = (id: number) => {
     setApprovedBookings([...approvedBookings, id]);
     localStorage.setItem(
@@ -97,7 +113,7 @@ export const BookingsManager = () => {
       <div className="flex justify-end h-full mt-4">
         {!!selected && isReasonSelect && (
           <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="p-4 bg-white rounded-xl">
+            <div className="p-4 bg-white rounded-xl w-[552px]">
               <h3>Выберите причину отмены бронирования</h3>
               <select
                 onChange={(e) => setReason(e.target.value)}
@@ -106,7 +122,9 @@ export const BookingsManager = () => {
                 className="w-full py-2 my-2 border-2 border-grey rounded-xl"
               >
                 {reasonList.map((x) => (
-                  <option value={x}>{x}</option>
+                  <option selected={reason === x} value={x}>
+                    {x}
+                  </option>
                 ))}
               </select>
               {!!subReasonItems.length && (
@@ -117,7 +135,9 @@ export const BookingsManager = () => {
                   className="w-full py-2 mb-2 -mt-1 border-2 border-grey rounded-xl"
                 >
                   {subReasonItems[0].subreasons.map((x) => (
-                    <option value={x}>{x}</option>
+                    <option selected={subReason === x} value={x}>
+                      {x}
+                    </option>
                   ))}
                 </select>
               )}
@@ -129,18 +149,35 @@ export const BookingsManager = () => {
                   onChange={(e) => setSubReason(e.target.value)}
                 />
               )}
-              <Input type="text" placeholder="Комментарий" value="" />
-              {reason !== "Не выбрано" && (
-                <Confirmation
-                  accept={() => changeBookingStatus(BookingStatus.UnBooked)}
-                  cancel={() => {}}
-                  title={`Отменить бронирование №${selected.id}  ${
-                    selected.car!.brand
-                  } ${selected.car!.model}?`}
-                  trigger={<Button variant={"manager"}>Отмена брони</Button>}
-                  type="red"
-                />
-              )}
+              <Input
+                type="text"
+                placeholder="Комментарий"
+                value={commentReason}
+                onChange={(e) => setCommentReason(e.target.value)}
+              />
+              <div className="flex items-center justify-end space-x-2">
+                {reason !== "Не выбрано" && (
+                  <div className="w-1/2">
+                    <Confirmation
+                      accept={() => canselBooking(BookingStatus.UnBooked)}
+                      cancel={() => setIsReasonSelect(false)}
+                      title={`Отменить бронирование №${selected.id}  ${
+                        selected.car!.brand
+                      } ${selected.car!.model}?`}
+                      trigger={
+                        <Button variant={"manager"}>Отмена брони</Button>
+                      }
+                      type="red"
+                    />
+                  </div>
+                )}
+                <Button
+                  variant={"manager"}
+                  onClick={() => setIsReasonSelect(false)}
+                >
+                  Назад
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -196,7 +233,7 @@ export const BookingsManager = () => {
                     <div className="w-1/2 space-y-2 ">
                       <Button
                         variant={"manager"}
-                        onClick={() => setIdReasonSelect(true)}
+                        onClick={() => setIsReasonSelect(true)}
                       >
                         Отмена брони
                       </Button>

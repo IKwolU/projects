@@ -5828,6 +5828,11 @@
                                         "description": "VIN-номер автомобиля",
                                         "type": "string"
                                     },
+                                    "reason": {
+                                        "description": "Причина отмены",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
                                     "status": {
                                         "$ref": "#/components/schemas/BookingStatus"
                                     }

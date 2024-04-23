@@ -21,6 +21,9 @@ export const BookingsManager = () => {
   const [approvedBookings, setApprovedBookings] = useState<number[]>(
     initialApprovedBookings
   );
+  const [reason, setReason] = useState("Не выбрано");
+  const [subReason, setSubReason] = useState("Не выбрано");
+  const [commentReason, setCommentReason] = useState("");
 
   const getBookings = async () => {
     const data = await client.getParkBookingsManager();
@@ -59,6 +62,32 @@ export const BookingsManager = () => {
     );
   };
 
+  const reasonList = [
+    "Не выбрано",
+    "Передумал",
+    "Не подходит для работы в такси",
+    "Не отвечает",
+    "Нет ID КИСАРТ (Москва и МО)",
+    "Изменение даты бронирования",
+    "Не понравилась модель машины",
+    "Не устроили условия аренды",
+    "Другое",
+  ];
+
+  const subReasonList = [
+    {
+      reason: "Не подходит для работы в такси",
+      subreasons: [
+        "Не выбрано",
+        "Иностранное ВУ",
+        "Стаж менее 3 лет",
+        "Возраст",
+      ],
+    },
+  ];
+
+  const subReasonItems = subReasonList.filter((y) => y.reason === reason);
+
   if (!bookings) {
     return <></>;
   }
@@ -71,28 +100,47 @@ export const BookingsManager = () => {
             <div className="p-4 bg-white rounded-xl">
               <h3>Выберите причину отмены бронирования</h3>
               <select
+                onChange={(e) => setReason(e.target.value)}
                 name=""
                 id=""
-                className="w-full py-2 my-4 border-2 border-grey rounded-xl"
+                className="w-full py-2 my-2 border-2 border-grey rounded-xl"
               >
-                <option value="Передумал">Передумал</option>
-                <option
-                  value="Нет ID КИСАРТ (Москва и МО)
-"
-                >
-                  Нет ID КИСАРТ (Москва и МО)
-                </option>
+                {reasonList.map((x) => (
+                  <option value={x}>{x}</option>
+                ))}
               </select>
+              {!!subReasonItems.length && (
+                <select
+                  onChange={(e) => setSubReason(e.target.value)}
+                  name=""
+                  id=""
+                  className="w-full py-2 mb-2 -mt-1 border-2 border-grey rounded-xl"
+                >
+                  {subReasonItems[0].subreasons.map((x) => (
+                    <option value={x}>{x}</option>
+                  ))}
+                </select>
+              )}
+              {reason === "Другое" && (
+                <Input
+                  type="text"
+                  placeholder="Введите причину"
+                  value={subReason}
+                  onChange={(e) => setSubReason(e.target.value)}
+                />
+              )}
               <Input type="text" placeholder="Комментарий" value="" />
-              <Confirmation
-                accept={() => changeBookingStatus(BookingStatus.UnBooked)}
-                cancel={() => {}}
-                title={`Отменить бронирование №${selected.id}  ${
-                  selected.car!.brand
-                } ${selected.car!.model}?`}
-                trigger={<Button variant={"manager"}>Отмена брони</Button>}
-                type="red"
-              />
+              {reason !== "Не выбрано" && (
+                <Confirmation
+                  accept={() => changeBookingStatus(BookingStatus.UnBooked)}
+                  cancel={() => {}}
+                  title={`Отменить бронирование №${selected.id}  ${
+                    selected.car!.brand
+                  } ${selected.car!.model}?`}
+                  trigger={<Button variant={"manager"}>Отмена брони</Button>}
+                  type="red"
+                />
+              )}
             </div>
           </div>
         )}
@@ -146,19 +194,12 @@ export const BookingsManager = () => {
                       <p>Телефон водителя: {selected.driver!.user!.phone}</p>
                     </div>
                     <div className="w-1/2 space-y-2 ">
-                      <Confirmation
-                        accept={() =>
-                          changeBookingStatus(BookingStatus.UnBooked)
-                        }
-                        cancel={() => {}}
-                        title={`Отменить бронирование №${selected.id}  ${
-                          selected.car!.brand
-                        } ${selected.car!.model}?`}
-                        trigger={
-                          <Button variant={"manager"}>Отмена брони</Button>
-                        }
-                        type="red"
-                      />
+                      <Button
+                        variant={"manager"}
+                        onClick={() => setIdReasonSelect(true)}
+                      >
+                        Отмена брони
+                      </Button>
 
                       {/* <Button variant={"manager"}>Продление брони</Button>
                       <Button variant={"manager"}>Смена авто</Button> */}

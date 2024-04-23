@@ -260,10 +260,6 @@ export const BookingDrawer = () => {
                     booking.car!.division!.working_hours!.filter(
                       (x) => x.day === day
                     );
-
-                  if (!workingHoursTime.length) {
-                    nonWorkingDays.push(dayOfWeek);
-                  }
                   return (
                     <div key={day} className="max-w-48">
                       {!!workingHoursTime.length && (

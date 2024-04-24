@@ -1,5 +1,4 @@
 import {
-  Body17,
   Body21,
   BookingStatus,
   Bookings2,
@@ -22,7 +21,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
-import Confirmation from "@/components/ui/confirmation";
 import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
 import { Input } from "@/components/ui/input";

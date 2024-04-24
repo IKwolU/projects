@@ -202,18 +202,21 @@ export const BookingDrawer = () => {
                       <div className="flex items-center justify-between w-full">
                         <Label
                           htmlFor={`${i}`}
-                          className="text-base cursor-pointer"
+                          className="w-full py-2 text-base cursor-pointer"
                         >
                           {x}
                         </Label>
-                        <RadioGroupItem
-                          value={x}
-                          id={`${i}`}
-                          className="w-5 h-5 border border-yellow"
-                        />
+                        <div className="flex items-center px-1">
+                          {" "}
+                          <RadioGroupItem
+                            value={x}
+                            id={`${i}`}
+                            className="w-5 h-5 border border-yellow"
+                          />
+                        </div>
                       </div>
                       {i !== reasonList.length - 1 && (
-                        <Separator className="my-2" />
+                        <Separator className="" />
                       )}
                     </div>
                   ))}

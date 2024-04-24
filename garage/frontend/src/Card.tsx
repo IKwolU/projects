@@ -16,6 +16,7 @@ import SliderImages from "@/components/ui/slider-images";
 import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 export const Card = ({ car }: { car: Cars3 }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
@@ -98,16 +99,29 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 <span className="flex items-center h-full bg-white rounded-xl">
                   <span className="flex items-center gap-2">
                     <span className="text-sm text-zinc-400">
-                      {car.rent_term!.deposit_amount_total
-                        ? "Депозит"
-                        : "Без депозита"}
+                      {car.rent_term!.deposit_amount_total ? (
+                        <Badge variant="card" className="px-0 py-0 bg-grey ">
+                          <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
+                            Депозит{" "}
+                            {formatRoubles(
+                              car.rent_term!.deposit_amount_total!
+                            )}
+                          </span>
+                          <span className="flex items-center h-full px-2 md:text-lg">
+                            {formatRoubles(
+                              car.rent_term!.deposit_amount_daily!
+                            )}
+                            /день
+                          </span>
+                        </Badge>
+                      ) : (
+                        <>
+                          "Депозит "
+                          <div className="w-1 h-1 rounded-full bg-zinc-400"></div>{" "}
+                          " Без депозита"
+                        </>
+                      )}
                     </span>
-                    {/* <span className="">
-                          {formatRoubles(car.rent_term!.deposit_amount_total!)}{" "}
-                          по{" "}
-                          {formatRoubles(car.rent_term!.deposit_amount_daily!)}{" "}
-                          в день
-                        </span> */}
                   </span>
                 </span>
               </div>
@@ -153,37 +167,20 @@ export const Card = ({ car }: { car: Cars3 }) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-8 lg:max-w-full">
-        {/* <DialogHeader>
-        <DialogTitle></DialogTitle> */}
-        {/* <DialogDescription>DialogDescription</DialogDescription> */}
-        {/* </DialogHeader> */}
+      <DialogContent
+        goBackContent={
+          <h1 className="text-center my-0">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+        }
+        className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
+      >
         <CarDetails car={car} />
-        {/* <DialogFooter>
-        <DialogClose asChild>
-          <Button>Выбрать</Button>
-        </DialogClose>
-      </DialogFooter> */}
         <DialogClose asChild className="">
-          <div>
-            {/* <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2 lg:hidden">
-              <div className="flex w-full p-2 mx-auto space-x-2 bg-white rounded-b-xl md:max-w-[800px] max-w-[512px]">
-                <Button
-                  variant="outline"
-                  full
-                  className="sm:max-w-[250px] mx-auto"
-                >
-                  Назад
-                </Button>
-              </div>
-            </div> */}
-            <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
-              <div className="flex justify-center max-w-[1208px] mx-auto ">
-                <div className="relative w-32 h-full bg-white">
-                  <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 rounded-full border-gray">
-                      <img className="h-10 -ml-1" src={ChevoronLeft} alt="" />
-                    </div>
+          <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
+            <div className="flex justify-center max-w-[1208px] mx-auto ">
+              <div className="relative w-32 h-full bg-white">
+                <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
+                  <div className="flex items-center justify-center w-16 h-16 border-2 rounded-full border-gray">
+                    <img className="h-10 -ml-1" src={ChevoronLeft} alt="" />
                   </div>
                 </div>
               </div>

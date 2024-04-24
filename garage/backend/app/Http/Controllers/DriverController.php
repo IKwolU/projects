@@ -426,7 +426,8 @@ class DriverController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", description="Идентификатор автомобиля, для которого необходимо отменить бронирование")
+     *             @OA\Property(property="id", type="integer", description="Идентификатор автомобиля, для которого необходимо отменить бронирование"),
+     *             @OA\Property(property="reason", type="string", description="Причина отмены")
      *         )
      *     ),
      *     @OA\Response(
@@ -479,7 +480,8 @@ class DriverController extends Controller
     public function cancelBooking(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer'
+            'id' => 'required|integer',
+            'reason' => 'required|string'
         ]);
         $user = Auth::guard('sanctum')->user();
         $booking = Booking::where('id', $request->id)->with('car')->first();
@@ -502,7 +504,7 @@ class DriverController extends Controller
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
         $api = new APIController;
-        $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true);
+        $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true, reason: $request->reason);
         return response()->json(['message' => 'Бронирование автомобиля успешно отменено'], 200);
     }
 

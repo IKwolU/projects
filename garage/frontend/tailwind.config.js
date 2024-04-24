@@ -23,6 +23,9 @@ module.exports = {
           },
         },
       }),
+      outline: {
+        yellow: '1px solid #fce003',
+      },
       colors: {
         red: "#ff4930",
         yellow: "#fce003",

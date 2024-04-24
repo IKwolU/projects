@@ -24,6 +24,11 @@ import { Button } from "@/components/ui/button";
 import Confirmation from "@/components/ui/confirmation";
 import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
+import { Input } from "@/components/ui/input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -36,6 +41,9 @@ export const BookingDrawer = () => {
   const [isOpenedTimeOverBookings, setIsOpenedTimeOverBookings] =
     useState(false);
   const [isOpenedCancelBookings, setIsCancelBookings] = useState(false);
+  const [startCancelBooking, setStartCancelBooking] = useState(false);
+  const [reason, setReason] = useState<string | null>(null);
+  const [subReason, setSubReason] = useState<string | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -125,10 +133,119 @@ export const BookingDrawer = () => {
     return link;
   };
 
+  const handleCancelBooking = () => {
+    setStartCancelBooking(true);
+    setReason(null);
+    setSubReason(null);
+  };
+
+  const handleChangeReason = (value: string) => {
+    setReason(value);
+    setSubReason(null);
+  };
+
+  const reasonList = [
+    "Изменились планы",
+    "Не понравилась модель машины",
+    "Не устроили условия аренды",
+    "Со мной не связались",
+    "Другое",
+  ];
+
+  const checkEnable = () => {
+    if (!reason) {
+      return true;
+    }
+    if (reason !== "Другое") {
+      return false;
+    }
+    if (!subReason) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
       {sortedActiveBookings.map((booking) => (
-        <>
+        <div key={booking.id}>
+          {startCancelBooking && (
+            <div
+              className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+              onClick={(e) => {
+                if (e.currentTarget === e.target) {
+                  setStartCancelBooking(false);
+                }
+              }}
+            >
+              <div className="relative w-full max-w-lg px-8 py-4 mx-2 bg-white rounded-xl">
+                <FontAwesomeIcon
+                  className="absolute w-6 h-6 cursor-pointer top-5 right-8"
+                  icon={faXmark}
+                  onClick={() => setStartCancelBooking(false)}
+                />
+                <h3 className="mb-4 text-center">Отмена бронирования</h3>
+                <p className="mb-4 text-center">
+                  Для отмены бронирования{" "}
+                  <span className="font-semibold">
+                    {booking.car!.brand} {booking.car!.model}{" "}
+                    {booking.car!.year_produced}
+                  </span>{" "}
+                  выберите причину
+                </p>
+                <RadioGroup
+                  defaultValue=""
+                  onValueChange={(value) => handleChangeReason(value)}
+                >
+                  {reasonList.map((x, i) => (
+                    <div key={x} className="">
+                      <div className="flex items-center justify-between w-full">
+                        <Label
+                          htmlFor={`${i}`}
+                          className="text-base cursor-pointer"
+                        >
+                          {x}
+                        </Label>
+                        <RadioGroupItem
+                          value={x}
+                          id={`${i}`}
+                          className="w-5 h-5 border border-yellow"
+                        />
+                      </div>
+                      {i !== reasonList.length - 1 && (
+                        <Separator className="my-2" />
+                      )}
+                    </div>
+                  ))}
+                </RadioGroup>
+                {reason === "Другое" && (
+                  <Input
+                    type="text"
+                    onChange={(e) => setSubReason(e.target.value)}
+                    value={subReason ?? ""}
+                    placeholder="Введите причину отмены"
+                  />
+                )}
+
+                <div className="flex space-x-2">
+                  <Button
+                    disabled={checkEnable()}
+                    onClick={cancelBooking}
+                    variant="reject"
+                    className="w-1/2 text-black"
+                  >
+                    Подтвердить
+                  </Button>
+                  <Button
+                    onClick={() => setStartCancelBooking(false)}
+                    className="w-1/2"
+                  >
+                    Назад
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
           <div
             className="overflow-y-auto h-[%] bg-white py-2 px-2 my-2 rounded-xl lg:hidden"
             key={`booking${booking.id}`}
@@ -359,20 +476,13 @@ export const BookingDrawer = () => {
             {booking.status === BookingStatus.Booked && (
               <div className="flex w-full mb-2 space-x-1 max-w-[600px] mt-3  mx-auto">
                 <div className="w-1/2">
-                  <Confirmation
-                    title="Отмена бронирования. Хотите продолжить?"
-                    type="red"
-                    accept={cancelBooking}
-                    cancel={() => {}}
-                    trigger={
-                      <Button
-                        variant="reject"
-                        className="text-black bg-white border-2 border-grey"
-                      >
-                        Отменить
-                      </Button>
-                    }
-                  />
+                  <Button
+                    onClick={handleCancelBooking}
+                    variant="reject"
+                    className="text-black bg-white border-2 border-grey"
+                  >
+                    Отменить
+                  </Button>
                 </div>
                 <Button
                   className="w-1/2 font-normal"
@@ -427,20 +537,13 @@ export const BookingDrawer = () => {
 
                 <div className="w-1/2 mx-auto">
                   {booking.status === BookingStatus.Booked && (
-                    <Confirmation
-                      title="Отмена бронирования. Хотите продолжить?"
-                      type="red"
-                      accept={cancelBooking}
-                      cancel={() => {}}
-                      trigger={
-                        <Button
-                          variant="reject"
-                          className="text-black bg-white border-2 border-grey"
-                        >
-                          Отменить
-                        </Button>
-                      }
-                    />
+                    <Button
+                      onClick={handleCancelBooking}
+                      variant="reject"
+                      className="text-black bg-white border-2 border-grey"
+                    >
+                      Отменить
+                    </Button>
                   )}
                 </div>
               </div>
@@ -558,7 +661,7 @@ export const BookingDrawer = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ))}
 
       {sortedTimeOverBookings.length > 0 && (

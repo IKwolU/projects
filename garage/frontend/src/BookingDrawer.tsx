@@ -222,17 +222,19 @@ export const BookingDrawer = () => {
                       </div>
                     );
                   })}
-                  <div className="flex max-w-44">
-                    <div className="flex w-20 space-x-2">
-                      {nonWorkingDays.map((y, i) => (
-                        <div className="text-base text-pale" key={y}>
-                          {i === 0 ? y : toLower(y)}
-                          {i !== nonWorkingDays.length - 1 && ", "}
-                        </div>
-                      ))}
+                  {!!nonWorkingDays.length && (
+                    <div className="flex max-w-44">
+                      <div className="flex w-20 space-x-2">
+                        {nonWorkingDays.map((y, i) => (
+                          <div className="text-base text-pale" key={y}>
+                            {i === 0 ? y : toLower(y)}
+                            {i !== nonWorkingDays.length - 1 && ", "}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-pale">Выходной</div>
                     </div>
-                    <div className="text-pale">Выходной</div>
-                  </div>
+                  )}
                 </div>
                 {booking.status === BookingStatus.Booked && (
                   <div className="flex-wrap hidden w-1/2 md:flex">
@@ -283,17 +285,19 @@ export const BookingDrawer = () => {
                     </div>
                   );
                 })}
-                <div className="flex max-w-44">
-                  <div className="flex w-20 space-x-2">
-                    {nonWorkingDays.map((y, i) => (
-                      <div className="text-base text-pale" key={y}>
-                        {i === 0 ? y : toLower(y)}
-                        {i !== nonWorkingDays.length - 1 && ", "}
-                      </div>
-                    ))}
+                {!!nonWorkingDays.length && (
+                  <div className="flex max-w-44">
+                    <div className="flex w-20 space-x-2">
+                      {nonWorkingDays.map((y, i) => (
+                        <div className="text-base text-pale" key={y}>
+                          {i === 0 ? y : toLower(y)}
+                          {i !== nonWorkingDays.length - 1 && ", "}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-pale">Выходной</div>
                   </div>
-                  <div className="text-pale">Выходной</div>
-                </div>
+                )}
               </div>
               <Separator className="mb-1 md:hidden" />
               <div className="flex flex-wrap items-center justify-start gap-1 md:items-start">

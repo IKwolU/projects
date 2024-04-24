@@ -42,7 +42,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import ym from "react-yandex-metrika";
-import { format } from "date-fns";
 import { toLower } from "ramda";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
@@ -168,7 +167,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               <div className="flex flex-col md:flex-row md:flex-wrap">
                 <div className="md:w-1/2 md:space-y-2 ">
                   <Separator className="my-1" />
-                  <p className="flex justify-between pr-4 text-base md:text-lg font-regular font-semibold ">
+                  <p className="flex justify-between pr-4 text-base font-semibold md:text-lg font-regular ">
                     <span>Парк {car.park_name}</span>
                   </p>
                   <Separator className="my-1" />
@@ -214,17 +213,19 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       </div>
                     );
                   })}
-                  <div className="flex max-w-44">
-                    <div className="flex w-20 space-x-2">
-                      {nonWorkingDays.map((y, i) => (
-                        <div className="text-base text-pale" key={y}>
-                          {i === 0 ? y : toLower(y)}
-                          {i !== nonWorkingDays.length - 1 && ", "}
-                        </div>
-                      ))}
+                  {!!nonWorkingDays.length && (
+                    <div className="flex max-w-44">
+                      <div className="flex w-20 space-x-2">
+                        {nonWorkingDays.map((y, i) => (
+                          <div className="text-base text-pale" key={y}>
+                            {i === 0 ? y : toLower(y)}
+                            {i !== nonWorkingDays.length - 1 && ", "}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-pale">Выходной</div>
                     </div>
-                    <div className="text-pale">Выходной</div>
-                  </div>
+                  )}
                 </div>
               </div>
               <Collapsible>
@@ -294,7 +295,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 </Badge>
               ))}
             </div>
-            <div className="fixed left-0 z-50 flex justify-center w-full px-2 space-x-2 bottom-0">
+            <div className="fixed bottom-0 left-0 z-50 flex justify-center w-full px-2 space-x-2">
               <div className="grid grid-cols-2 h-16 w-full bg-white sm:mx-auto sm:px-40 space-x-2 p-2 md:max-w-[800px] max-w-[512px] px-2">
                 <Select
                   onValueChange={(value) => handleTariffChange(value)}
@@ -480,47 +481,55 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     <div className="font-semibold">
                       <FontAwesomeIcon
                         icon={faCompass}
-                        className="text-zinc-400 mr-2"
+                        className="mr-2 text-zinc-400"
                       />
                       Адрес
                       <a
                         href={navigationLink(car.division!.address!)}
-                        className="flex items-center gap-2 mt-2 space-x-2 text-base text-zinc-400 underline active:text-yellow"
+                        className="flex items-center gap-2 mt-2 space-x-2 text-base underline text-zinc-400 active:text-yellow"
                         target="_blank"
                       >
                         {car.division!.address!}
                       </a>
-                      <Separator className="mt-4 mb-2" />
+                    </div>
+                    {/* <Separator className="mt-4 mb-2" /> */}
+                    <div className="mb-2 text-base">
                       <div className="mb-2 text-base">
-                        <div className="mb-2 text-base">График работы: </div>
-                        {Object.values(DayOfWeek).map((day) => {
-                          const dayOfWeek = getDayOfWeekDisplayName(day);
-                          const workingHoursTime = car.working_hours!.filter(
-                            (x) => x.day === day
-                          );
-                          return (
-                            <div key={day} className="max-w-48">
-                              {!!workingHoursTime.length && (
-                                <div className="flex w-full">
-                                  <div className="w-20 text-base font-semibold">
-                                    {dayOfWeek}
-                                  </div>
-                                  <div className="">
-                                    {formatWorkingTime(
-                                      workingHoursTime[0]!.start!.hours!,
-                                      workingHoursTime[0]!.start!.minutes!
-                                    )}{" "}
-                                    -{" "}
-                                    {formatWorkingTime(
-                                      workingHoursTime[0]!.end!.hours!,
-                                      workingHoursTime[0]!.end!.minutes!
-                                    )}
-                                  </div>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          className="mr-2 text-zinc-400"
+                        />
+                        График работы:{" "}
+                      </div>
+                      {Object.values(DayOfWeek).map((day) => {
+                        const dayOfWeek = getDayOfWeekDisplayName(day);
+                        const workingHoursTime = car.working_hours!.filter(
+                          (x) => x.day === day
+                        );
+                        return (
+                          <div key={day} className="max-w-48">
+                            {!!workingHoursTime.length && (
+                              <div className="flex w-full">
+                                <div className="w-20 text-base font-semibold">
+                                  {dayOfWeek}
                                 </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                                <div className="">
+                                  {formatWorkingTime(
+                                    workingHoursTime[0]!.start!.hours!,
+                                    workingHoursTime[0]!.start!.minutes!
+                                  )}{" "}
+                                  -{" "}
+                                  {formatWorkingTime(
+                                    workingHoursTime[0]!.end!.hours!,
+                                    workingHoursTime[0]!.end!.minutes!
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                      {!!nonWorkingDays.length && (
                         <div className="flex max-w-44">
                           <div className="flex w-20 space-x-2">
                             {nonWorkingDays.map((y, i) => (
@@ -532,7 +541,8 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                           </div>
                           <div className="text-pale">Выходной</div>
                         </div>
-                        {/* <Separator className="my-2" />
+                      )}
+                      {/* <Separator className="my-2" />
                             <div className="">
                               <p className="mb-2 text-base">Телефон:</p>
                               <p>{car.division!.phone}</p>

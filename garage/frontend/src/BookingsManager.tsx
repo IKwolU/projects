@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Body33, Body34, BookingStatus, Bookings } from "./api-client";
+import { Body34, BookingStatus, Bookings } from "./api-client";
 import { client } from "./backend";
 import { useTimer } from "react-timer-hook";
 import { getFormattedTimerValue } from "@/lib/utils";

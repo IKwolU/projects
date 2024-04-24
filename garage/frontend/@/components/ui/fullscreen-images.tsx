@@ -52,40 +52,52 @@ const FullScreenImages = ({
       {isOpen && openIsAffordable && (
         <div className="fixed top-0 left-0 z-[53] w-full h-full bg-black bg-opacity-95">
           <div className="relative flex flex-col justify-center h-full m-auto">
-            <Slider ref={sliderRef} {...settings}>
-              {images.map((image, index) => (
-                <div
-                  className="flex items-center content-center h-96 md:h-screen md:w-screen"
-                  key={index}
-                >
-                  <img
-                    onClick={() => setIsOpen(false)}
-                    src={image}
-                    alt={`Slide ${index}`}
-                    className="object-contain h-full m-auto sm:min-w-full md:h-screen md:w-screen"
-                  />
-                </div>
-              ))}
-            </Slider>
-            <div className="flex justify-center px-1 py-1 mt-2 sm:m-auto sm:space-x-2 -bottom-20 sm:justify-start sm:w-1/2 md:hidden">
-              {images.map((x, i) => (
-                <div
-                  key={`image_${i}`}
-                  className={`w-full flex items-center bg-white rounded-xl transition-all h-24 ${
-                    i === activeIndex
-                      ? "shadow border-2 border-yellow"
-                      : "scale-90"
-                  }`}
-                  onClick={() => handlePaginationClick(i)}
-                >
-                  <img
-                    className="object-cover w-full h-full rounded-xl"
-                    src={x}
-                    alt=""
-                  />
-                </div>
-              ))}
-            </div>
+            {images.length > 1 && (
+              <Slider ref={sliderRef} {...settings}>
+                {images.map((image, index) => (
+                  <div
+                    className="flex items-center content-center h-96 md:h-screen md:w-screen"
+                    key={index}
+                  >
+                    <img
+                      onClick={() => setIsOpen(false)}
+                      src={image}
+                      alt={`Slide ${index}`}
+                      className="object-contain h-full m-auto sm:min-w-full md:h-screen md:w-screen"
+                    />
+                  </div>
+                ))}
+              </Slider>
+            )}
+            {images.length === 1 && (
+              <img
+                onClick={() => setIsOpen(false)}
+                src={images[0]}
+                alt={`Slide ${1}`}
+                className="object-contain h-full m-auto sm:min-w-full md:h-screen md:w-screen"
+              />
+            )}
+            {images.length > 1 && (
+              <div className="flex justify-center px-1 py-1 mt-2 sm:m-auto sm:space-x-2 -bottom-20 sm:justify-start sm:w-1/2 md:hidden">
+                {images.map((x, i) => (
+                  <div
+                    key={`image_${i}`}
+                    className={`w-full flex items-center bg-white rounded-xl transition-all h-24 ${
+                      i === activeIndex
+                        ? "shadow border-2 border-yellow"
+                        : "scale-90"
+                    }`}
+                    onClick={() => handlePaginationClick(i)}
+                  >
+                    <img
+                      className="object-cover w-full h-full rounded-xl"
+                      src={x}
+                      alt=""
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="fixed bottom-0 flex w-full p-2">
               {" "}
               <Button

@@ -411,7 +411,7 @@ export const BookingDrawer = () => {
               })}
               <div className="h-[364px] flex items-center justify-center">
                 <img
-                  className="object-contain h-full rounded-xl"
+                  className="object-contain h-auto rounded-xl"
                   src={booking.car!.images![0]}
                   alt=""
                 />
@@ -587,7 +587,7 @@ export const BookingDrawer = () => {
                   <div className="" key={`booking${booking.id}`}>
                     <div className="flex space-x-3 md:space-x-5">
                       <img
-                        className="object-cover w-1/3 h-auto rounded-xl"
+                        className="object-cover w-1/3 h-24 sm:h-44 rounded-xl"
                         src={booking.car!.images![0]}
                         alt=""
                       />
@@ -641,7 +641,7 @@ export const BookingDrawer = () => {
                 <div className="mb-2" key={`booking${booking.id}`}>
                   <div className="flex space-x-3 md:space-x-5">
                     <img
-                      className="object-cover w-1/3 h-auto rounded-xl"
+                      className="object-cover w-1/3 h-24 sm:h-44 rounded-xl"
                       src={booking.car!.images![0]}
                       alt=""
                     />

@@ -3,6 +3,8 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -30,10 +32,11 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
-any
-  // React.ElementRef<typeof DialogPrimitive.Content>,
-  // React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ hideCloseButton, className, children, ...props }, ref) => (
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    goBackContent?: React.JSX.Element;
+  }
+>(({ goBackContent, className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -50,11 +53,19 @@ any
       {...props}
     >
       {children}
-      { hideCloseButton &&
+      {goBackContent && (
+        <DialogPrimitive.Close className="absolute left-4 top-0">
+          <div className="h-12 flex items-center">
+            <FontAwesomeIcon icon={faChevronLeft} className="mr-2 h-5" />
+            {goBackContent}
+          </div>
+        </DialogPrimitive.Close>
+      )}
+      {!goBackContent && (
         <DialogPrimitive.Close className="absolute right-4 top-2 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
           <X className="w-6 h-6" />
         </DialogPrimitive.Close>
-      }
+      )}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

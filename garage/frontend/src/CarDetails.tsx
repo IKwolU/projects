@@ -159,7 +159,6 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
             />
 
             <div className="space-y-2">
-              <h1 className="my-4 text-center ">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
               <p className="flex justify-center pr-4 space-x-6 text-base md:text-lg font-regular">
                 {/* <span>VIN: {x.vin?.slice(-4)}</span> */}
                 <span>Пробег: {car.mileage} км</span>

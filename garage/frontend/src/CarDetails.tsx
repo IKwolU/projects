@@ -266,7 +266,9 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       {" "}
                       Парк {car.park_name}
                     </div>
-                    <Separator className="mb-2 lg:hidden" />
+                    {car.cars_count! > 1 && (
+                      <Separator className="mb-2 lg:hidden" />
+                    )}
                     {car.cars_count! > 1 && (
                       <div className="flex justify-end lg:p-2 lg:border-2 lg:border-grey w-fit rounded-xl">
                         {`Доступно авто: ${car.cars_count}`}

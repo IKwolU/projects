@@ -58,7 +58,7 @@ const SliderImages = ({
     <>
       <div className={`relative h-52 sm:h-80 ${classImages}`}>
         {type === "click" && imagesSlised.length > 1 && (
-          <div className="absolute bottom-0 left-0 z-10 w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
+          <div className="absolute bottom-0 left-0 z-10 hidden w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent lg:block"></div>
         )}
         {!openIsAffordable && (
           <div className="">
@@ -126,7 +126,7 @@ const SliderImages = ({
         />
         {imagesSlised.length > 1 && (
           <div
-            className={`absolute bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 ${classPaginationImages} ${
+            className={`absolute lg:bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 -bottom-16 sm:-bottom-32 ${classPaginationImages} ${
               type === "hover" && "h-full"
             }`}
           >

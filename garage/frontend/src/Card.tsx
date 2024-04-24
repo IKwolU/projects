@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
-import ChevoronLeft from "./assets/chevron-left.png";
+// import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -169,24 +169,12 @@ export const Card = ({ car }: { car: Cars3 }) => {
       </DialogTrigger>
       <DialogContent
         goBackContent={
-          <h1 className="text-center my-0">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+          <h1 className="my-0 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
         }
         className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
       >
         <CarDetails car={car} />
-        <DialogClose asChild className="">
-          <div className="fixed top-0 left-0 justify-center hidden h-full m-0 cursor-pointer lg:flex">
-            <div className="flex justify-center max-w-[1208px] mx-auto ">
-              <div className="relative w-32 h-full bg-white">
-                <div className="absolute flex items-center justify-center w-20 h-20 p-1 bg-white rounded-full -right-10 top-40">
-                  <div className="flex items-center justify-center w-16 h-16 border-2 rounded-full border-gray">
-                    <img className="h-10 -ml-1" src={ChevoronLeft} alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogClose>
+        <DialogClose asChild className=""></DialogClose>
       </DialogContent>
     </Dialog>
   );

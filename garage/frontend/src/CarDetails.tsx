@@ -348,10 +348,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
       </div>
       <div className="hidden py-6 lg:block">
         <div className="mb-10">
-          <div className="justify-between hidden lg:flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0 pl-44 xl space-x-8 ">
-            <div className="w-1/3 space-y-2">
+          <div className="justify-between flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
+            <div className="space-y-2 mt-72 lg:mt-0 lg:w-1/3 sm:mt-[460px]">
               <div className="px-4 py-6 bg-white shadow-xl rounded-xl">
-                <h3 className="text-center">
+                <h3 className="hidden text-center lg:block">
                   {car.brand} {car.model} {car.year_produced}
                 </h3>
                 {[
@@ -383,25 +383,25 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 ].map((x, i) => (
                   <div key={i}>
                     {!!i && <Separator className="my-3" />}
-                    <div className="flex justify-between">
-                      <p className="text-base">{x.text}</p>
+                    <div className="flex lg:justify-between">
+                      <p className="w-4/5 text-base">{x.text}</p>
                       <p>{x.content}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="px-2 py-4 bg-white shadow-xl rounded-xl">
-                <h3>Выберите стоимость и схему дней</h3>
+              <div className="fixed bottom-0 left-0 w-full px-2 bg-white shadow-xl lg:py-4 lg:rounded-xl lg:relative">
+                <h3 className="hidden lg:block">
+                  Выберите стоимость и схему дней
+                </h3>
                 <div className="">
-                  <div className="flex flex-wrap gap-1 pb-1">
-                    <div className="inset-x-0 flex flex-col justify-center w-full px-0 py-2 mx-auto space-y-2 bg-white">
+                  <div className="flex flex-wrap gap-1 lg:pb-1">
+                    <div className="inset-x-0 flex justify-center w-full px-0 py-2 mx-auto space-x-2 bg-white lg:space-y-2 lg:flex-col lg:space-x-0">
                       <Select
-                        onValueChange={(value) =>
-                          setSelectedSchema(Number(value))
-                        }
+                        onValueChange={(value) => handleTariffChange(value)}
                         defaultValue={`${schemas![0].id}`}
                       >
-                        <SelectTrigger className="w-full h-auto pb-1 pl-3 text-xl text-left border-none bg-grey rounded-xl">
+                        <SelectTrigger className="w-1/2 h-auto pt-0 pb-1 text-xl text-left border-none lg:w-full lg:pt-1 lg:pl-3 bg-grey rounded-xl">
                           <SelectValue placeholder="Схема аренды" />
                         </SelectTrigger>
                         <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
@@ -419,7 +419,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       </Select>
 
                       {!activeBooking && (
-                        <div className="relative ">
+                        <div className="relative w-1/2 lg:w-full">
                           <Confirmation
                             title={`Забронировать ${car.brand} ${car.model}?`}
                             type="green"
@@ -432,7 +432,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         </div>
                       )}
                       {!!activeBooking && (
-                        <div className="relative">
+                        <div className="relative w-1/2 lg:w-full">
                           <Confirmation
                             title={`У вас есть активная бронь:
                         ${activeBooking.car?.brand}
@@ -452,8 +452,8 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 </div>
               </div>
             </div>
-            <div className="w-2/3 space-y-2 ">
-              <div className="shadow-xl">
+            <div className="lg:space-y-2 lg:w-2/3 ">
+              <div className="absolute top-0 w-full shadow-xl lg:relative h-92">
                 <SliderImages
                   type="click"
                   openIsAffordable={true}
@@ -464,19 +464,22 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               </div>
               <div className="px-2 py-4 bg-white shadow-xl rounded-xl">
                 <div className="flex flex-col">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col justify-between lg:items-center lg:flex-row">
                     <div className="mb-2 text-lg font-semibold ">
                       {" "}
                       Парк {car.park_name}
                     </div>
                     {car.cars_count! > 1 && (
-                      <div className="flex justify-end p-2 border-2 border-grey w-fit rounded-xl">
+                      <Separator className="mb-2 lg:hidden" />
+                    )}
+                    {car.cars_count! > 1 && (
+                      <div className="flex justify-end lg:p-2 lg:border-2 lg:border-grey w-fit rounded-xl">
                         {`Доступно авто: ${car.cars_count}`}
                       </div>
                     )}
                   </div>
                   <Separator className="my-2" />
-                  <div className="grid grid-cols-2">
+                  <div className="grid grid-cols-1 lg:grid-cols-2">
                     <div className="font-semibold">
                       <FontAwesomeIcon
                         icon={faCompass}
@@ -485,7 +488,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       Адрес
                       <a
                         href={navigationLink(car.division!.address!)}
-                        className="flex items-center gap-2 mt-2 space-x-2 text-base underline text-zinc-400 active:text-yellow"
+                        className="flex items-center gap-2 mb-2 space-x-2 text-base underline lg:mb-0 lg:mt-2 lg:text-zinc-400 active:text-yellow"
                         target="_blank"
                       >
                         {car.division!.address!}
@@ -493,7 +496,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     </div>
                     {/* <Separator className="mt-4 mb-2" /> */}
                     <div className="mb-2 text-base">
-                      <div className="mb-2 text-base">
+                      <div className="mb-2 text-base font-semibold">
                         <FontAwesomeIcon
                           icon={faClock}
                           className="mr-2 text-zinc-400"
@@ -509,7 +512,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                           <div key={day} className="max-w-48">
                             {!!workingHoursTime.length && (
                               <div className="flex w-full">
-                                <div className="w-20 text-base font-semibold">
+                                <div className="w-20 text-sm font-semibold lg:text-base">
                                   {dayOfWeek}
                                 </div>
                                 <div className="">
@@ -532,13 +535,18 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         <div className="flex max-w-44">
                           <div className="flex w-20 space-x-2">
                             {nonWorkingDays.map((y, i) => (
-                              <div className="text-base text-pale" key={y}>
+                              <div
+                                className="text-sm lg:text-base text-pale"
+                                key={y}
+                              >
                                 {i === 0 ? y : toLower(y)}
                                 {i !== nonWorkingDays.length - 1 && ", "}
                               </div>
                             ))}
                           </div>
-                          <div className="text-pale">Выходной</div>
+                          <div className="text-sm text-pale lg:text-base">
+                            Выходной
+                          </div>
                         </div>
                       )}
                       {/* <Separator className="my-2" />

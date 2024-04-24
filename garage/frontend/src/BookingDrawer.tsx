@@ -1,5 +1,6 @@
 import {
   Body17,
+  Body21,
   BookingStatus,
   Bookings2,
   DayOfWeek,
@@ -77,8 +78,9 @@ export const BookingDrawer = () => {
 
   const cancelBooking = async () => {
     await client.cancelBooking(
-      new Body17({
+      new Body21({
         id: activeBooking!.id,
+        reason: reason + (subReason ? ": " + subReason : ""),
       })
     );
     setUser(

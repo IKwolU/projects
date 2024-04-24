@@ -3586,6 +3586,10 @@
                                     "id": {
                                         "description": "Идентификатор автомобиля, для которого необходимо отменить бронирование",
                                         "type": "integer"
+                                    },
+                                    "reason": {
+                                        "description": "Причина отмены",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

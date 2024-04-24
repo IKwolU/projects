@@ -4951,6 +4951,8 @@ export interface IBody20 {
 export class Body21 implements IBody21 {
     /** Идентификатор автомобиля, для которого необходимо отменить бронирование */
     id?: number;
+    /** Причина отмены */
+    reason?: string;
 
     [key: string]: any;
 
@@ -4970,6 +4972,7 @@ export class Body21 implements IBody21 {
                     this[property] = _data[property];
             }
             this.id = _data["id"];
+            this.reason = _data["reason"];
         }
     }
 
@@ -4987,6 +4990,7 @@ export class Body21 implements IBody21 {
                 data[property] = this[property];
         }
         data["id"] = this.id;
+        data["reason"] = this.reason;
         return data;
     }
 }
@@ -4994,6 +4998,8 @@ export class Body21 implements IBody21 {
 export interface IBody21 {
     /** Идентификатор автомобиля, для которого необходимо отменить бронирование */
     id?: number;
+    /** Причина отмены */
+    reason?: string;
 
     [key: string]: any;
 }

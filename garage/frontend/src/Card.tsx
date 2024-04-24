@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
-import ChevoronLeft from "./assets/chevron-left.png";
+// import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";

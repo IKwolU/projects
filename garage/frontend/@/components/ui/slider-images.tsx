@@ -58,7 +58,7 @@ const SliderImages = ({
     <>
       <div className={`relative h-52 sm:h-80 ${classImages}`}>
         {type === "click" && imagesSlised.length > 1 && (
-          <div className="absolute bottom-0 left-0 z-10 hidden w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent lg:block"></div>
+          <div className="absolute bottom-0 left-0 z-10 hidden w-full h-1/4 md:h-16 rounded-b-xl bg-gradient-to-t from-black via-black to-transparent"></div>
         )}
         {!openIsAffordable && (
           <div className="">

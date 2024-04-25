@@ -99,7 +99,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
                 <span className="flex items-center h-full bg-white rounded-xl">
                   <span className="flex items-center gap-2">
                     <span className="text-sm text-zinc-400">
-                      {car.rent_term!.deposit_amount_total ? (
+                      {Number(car.rent_term!.deposit_amount_total) !== 0 && (
                         <Badge variant="card" className="px-0 py-0 bg-grey ">
                           <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
                             Депозит{" "}
@@ -107,19 +107,20 @@ export const Card = ({ car }: { car: Cars3 }) => {
                               car.rent_term!.deposit_amount_total!
                             )}
                           </span>
-                          <span className="flex items-center h-full px-2 md:text-lg">
+                          <span className="flex items-center h-full px-2 text md:text-lg">
                             {formatRoubles(
                               car.rent_term!.deposit_amount_daily!
                             )}
                             /день
                           </span>
                         </Badge>
-                      ) : (
-                        <>
-                          "Депозит "
+                      )}
+                      {Number(car.rent_term!.deposit_amount_total) === 0 && (
+                        <div className="flex items-center w-full gap-2 ">
+                          Депозит
                           <div className="w-1 h-1 rounded-full bg-zinc-400"></div>{" "}
-                          " Без депозита"
-                        </>
+                          <span className="text-black">Без депозита</span>
+                        </div>
                       )}
                     </span>
                   </span>
@@ -141,7 +142,7 @@ export const Card = ({ car }: { car: Cars3 }) => {
                     <div className="flex items-center gap-2 mr-1 text-sm text-zinc-400">
                       Возможен выкуп{" "}
                       <div className="w-1 h-1 rounded-full bg-zinc-400"></div>{" "}
-                      Да
+                      <span className="text-black">Да</span>
                     </div>
                   )}
                 </div>

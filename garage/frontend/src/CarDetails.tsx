@@ -165,6 +165,18 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     content: car.year_produced,
                   },
                   {
+                    text: "Депозит всего",
+                    content: Number(car.rent_term!.deposit_amount_total!)
+                      ? formatRoubles(car.rent_term!.deposit_amount_total!)
+                      : "нет",
+                  },
+                  {
+                    text: "Депозит в день",
+                    content: Number(car.rent_term!.deposit_amount_daily!)
+                      ? formatRoubles(car.rent_term!.deposit_amount_daily!)
+                      : "нет",
+                  },
+                  {
                     text: "Комиссия парка",
                     content: `${car.commission} %`,
                   },

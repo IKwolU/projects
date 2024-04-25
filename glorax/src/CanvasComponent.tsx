@@ -318,7 +318,7 @@ function CanvasComponent() {
 
       <OBJModel
         scale={[1, 1, 1]}
-        file="/models/version10.gltf"
+        file="/models/test11.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
         position={[0, -8, 0]}
         opacity={0.93}

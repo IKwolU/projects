@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -249,7 +248,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 </div>
               </div>
             </div>
-            <div className="lg:space-y-2 lg:w-2/3 ">
+            <div className="lg:space-y-32 lg:w-2/3 ">
               <div className="absolute top-0 w-full shadow-xl lg:relative h-92">
                 <SliderImages
                   type="click"

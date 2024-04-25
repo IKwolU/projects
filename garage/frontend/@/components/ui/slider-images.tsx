@@ -126,7 +126,7 @@ const SliderImages = ({
         />
         {imagesSlised.length > 1 && (
           <div
-            className={`absolute lg:bottom-0 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 -bottom-16 sm:-bottom-32 ${classPaginationImages} ${
+            className={`absolute lg:-bottom-28 flex justify-center px-1 py-1 mt-2 sm:justify-start sm:w-1/2 w-60 z-10 -bottom-16 sm:-bottom-32 ${classPaginationImages} ${
               type === "hover" && "h-full"
             }`}
           >

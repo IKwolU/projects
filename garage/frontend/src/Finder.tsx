@@ -239,7 +239,7 @@ export const Finder = () => {
   return (
     <>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
-      <div className="">
+      <div className={`${overflow && "pt-10"}`}>
         <div className="flex my-2 space-x-1">
           <div
             onClick={() =>

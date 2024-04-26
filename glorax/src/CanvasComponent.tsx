@@ -338,17 +338,18 @@ function CanvasComponent() {
             /> */}
             {content[0].navigation.map((item, i) => (
               <React.Fragment key={i}>
-                {currentTime > item.time_start && (
-                  <OBJModel
-                    file="/models/sharik.gltf"
-                    texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                    position={item.position}
-                    scale={[5, 5, 5]}
-                    opacity={1}
-                    rotate={item.rotate}
-                    isOpacity={true}
-                  />
-                )}
+                {currentTime > item.time_start &&
+                  currentTime < item.time_end && (
+                    <OBJModel
+                      file="/models/sharik.gltf"
+                      texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                      position={item.position}
+                      scale={[5, 5, 5]}
+                      opacity={1}
+                      rotate={item.rotate}
+                      isOpacity={true}
+                    />
+                  )}
               </React.Fragment>
             ))}
           </>

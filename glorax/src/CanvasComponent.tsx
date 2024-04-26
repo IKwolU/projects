@@ -340,10 +340,10 @@ function CanvasComponent() {
               <React.Fragment key={i}>
                 {currentTime > item.time_start && (
                   <OBJModel
-                    file="/models/chevron.gltf"
+                    file="/models/sharik.gltf"
                     texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                     position={item.position}
-                    scale={[1, 1, 1]}
+                    scale={[5, 5, 5]}
                     opacity={1}
                     rotate={item.rotate}
                     isOpacity={true}

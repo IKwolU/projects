@@ -4,7 +4,7 @@ import comfort from "./assets/car_icons/comfort.png";
 import comfortPlus from "./assets/car_icons/comfort-plus.png";
 import allClasses from "./assets/car_icons/all-cars.png";
 import business from "./assets/car_icons/business.png";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import OnMap from "@/components/ui/on-map";
 import {
   Body15,
@@ -842,7 +842,7 @@ export const Finder = () => {
             } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
           >
             {cars.map((car) => (
-              <div className="" id={car.id} key={car.id}>
+              <div className="" id={String(car.id)} key={car.id}>
                 <Card
                   car={car}
                   isLargeScreen={isLargeScreen}

@@ -140,7 +140,11 @@ const OnMap = ({ cars, isLargeScreen }: OnMapProps) => {
               {clickedCars.map((car) => {
                 return (
                   <div className="" key={car.id}>
-                    <Card car={car} isLargeScreen={isLargeScreen} />
+                    <Card
+                      car={car}
+                      isLargeScreen={isLargeScreen}
+                      open={() => {}}
+                    />
                   </div>
                 );
               })}

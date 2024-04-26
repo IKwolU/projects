@@ -10,6 +10,176 @@
     "start_time": 5,
     "end_time": 100,
     "choice__time": 100,
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 6,
+        "position": [-0.3, -8.3, 0.8],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 7,
+        "position": [-0.18, -8.3, 0.4],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 8,
+        "position": [-0.04, -8.3, 0.0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 9,
+        "position": [0.07, -8.3, -0.4],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 10,
+        "position": [0.22, -8.3, -0.8],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 11,
+        "position": [0.35, -8.3, -1.2],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 12,
+        "position": [0.48, -8.3, -1.6],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 13,
+        "position": [-4.6, -8.3, 1.31],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 14,
+        "position": [-4.1, -8.3, 1.45],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 15,
+        "position": [-7.02, -8.3, -3.7],
+        "rotate": [0, -180, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 16,
+        "position": [-7.18, -8.3, -3.2],
+        "rotate": [0, -180, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 17,
+        "position": [-3.8, -8.3, 2.735],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 18,
+        "position": [-3.3, -8.3, 2.9],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 19,
+        "position": [-2.8, -8.3, 3.05],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 20,
+        "position": [-2.3, -8.3, 3.22],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 21,
+        "position": [-1.8, -8.3, 3.4],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 22,
+        "position": [-1.3, -8.3, 3.55],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 23,
+        "position": [-0.8, -8.3, 3.72],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 24,
+        "position": [-0.3, -8.3, 3.89],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 25,
+        "position": [0.2, -8.3, 4.05],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 26,
+        "position": [0.7, -8.3, 4.2],
+        "rotate": [0, -90, 0]
+      },
+      {
+        "time_start": 46,
+        "time_end": 47,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 48,
+        "time_end": 49,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 50,
+        "time_end": 51,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 52,
+        "time_end": 53,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 54,
+        "time_end": 55,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 56,
+        "time_end": 57,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      {
+        "time_start": 58,
+        "time_end": 59,
+        "position": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      }
+    ],
     "choice": [
       {
         "image": "/choice-img-1.png",

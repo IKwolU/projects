@@ -268,21 +268,6 @@ function CanvasComponent() {
       //   backgroundPosition: "center",
       // }}
     >
-      {/* <AnimationComponent
-            currentPosition={startPosition}
-            audioTime={audioTime}
-            duration={10}
-            position={endPosition}
-            model={
-              <mesh>
-                <sphereGeometry args={[0.3, 32, 32]} />
-                <meshStandardMaterial
-                  color={"white"}
-                  roughnessMap={glassTexture}
-                />
-              </mesh>
-            }
-          /> */}
       <perspectiveCamera
         ref={cameraRef}
         position={[0, 0, 5]}
@@ -341,15 +326,32 @@ function CanvasComponent() {
           /> */}
       {currentTime > content[0].start_time &&
         currentTime < content[0].end_time && (
-          <OBJModel
-            file="/models/navigation.gltf"
-            texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-            position={[0, -8.3, 0]}
-            scale={[1, 1, 1]}
-            opacity={0.8}
-            rotate={[0, 0, 0]}
-            isOpacity={true}
-          />
+          <>
+            {/* <OBJModel
+              file="/models/navigation.gltf"
+              texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+              position={[0, -8.3, 0]}
+              scale={[1, 1, 1]}
+              opacity={0.8}
+              rotate={[0, 0, 0]}
+              isOpacity={true}
+            /> */}
+            {content[0].navigation.map((item, i) => (
+              <React.Fragment key={i}>
+                {currentTime > item.time_start && (
+                  <OBJModel
+                    file="/models/chevron.gltf"
+                    texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                    position={item.position}
+                    scale={[1, 1, 1]}
+                    opacity={1}
+                    rotate={item.rotate}
+                    isOpacity={true}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </>
         )}
       <meshStandardMaterial map={glassTexture} />
       {content.map((x: any, i: number) => (
@@ -392,7 +394,7 @@ function CanvasComponent() {
       </mesh>
       <OrbitControls
         maxPolarAngle={Math.PI / 2.0}
-        minDistance={14}
+        minDistance={0}
         maxDistance={20}
         target={[0, 1, 0]}
         ref={controlsRef}

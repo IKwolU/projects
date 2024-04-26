@@ -48,15 +48,19 @@ const DialogContent = React.forwardRef<
         data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 
         data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] 
         sm:rounded-lg dark:border-slate-800 dark:bg-slate-950 h-screen sm:max-w-[800px]`,
-        className
+        className,
+        goBackContent ? "lg:top-20 top-0 lg:px-0 " : "top-0"
       )}
       {...props}
     >
       {children}
       {goBackContent && (
-        <DialogPrimitive.Close className="absolute left-4 top-0">
-          <div className="h-12 flex items-center">
-            <FontAwesomeIcon icon={faChevronLeft} className="mr-2 h-5" />
+        <DialogPrimitive.Close className="absolute top-0 lg:top-6 lg:w-full lg:mx-auto left-4 lg:left-0">
+          <div className="flex items-center h-12 lg:mx-auto max-w-[1208px]">
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              className="h-5 mr-2 lg:text-zinc-600"
+            />
             {goBackContent}
           </div>
         </DialogPrimitive.Close>

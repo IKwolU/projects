@@ -119,7 +119,7 @@ const OnMap = ({ cars }: OnMapProps) => {
       {isClicked && (
         <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
           <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[858px] p-4 mx-auto overflow-y-auto pb-16">
-            <div className="flex flex-wrap gap-2 md:justify-start ">
+            <div className="flex flex-wrap gap-2 md:grid md:grid-cols-2">
               {clickedCars.map((car) => {
                 return (
                   <div className="" key={car.id}>

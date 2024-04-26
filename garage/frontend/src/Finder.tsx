@@ -114,6 +114,20 @@ export const Finder = () => {
 
   const city = useRecoilValue(cityAtom);
 
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleResize = () => {
+    setIsLargeScreen(window.innerWidth > 1024);
+  };
+
   useEffect(() => {
     const getFinderFilterData = async () => {
       const data = await client.getFinderFilterData();
@@ -807,7 +821,7 @@ export const Finder = () => {
         {!filters.onMap && (
           <div className="grid content-center grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
             {cars.map((car) => (
-              <Card key={car.id} car={car} />
+              <Card key={car.id} car={car} isLargeScreen={isLargeScreen} />
             ))}
           </div>
         )}

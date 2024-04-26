@@ -13,9 +13,12 @@ import { cityAtom } from "../../../src/atoms";
 import citiesCoords from "../../../../backend/public/cities_coords.json";
 import { Card } from "../../../src/Card";
 import { Button } from "./button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface OnMapProps {
   cars: Cars3[];
+  isLargeScreen: boolean;
 }
 interface CityCoords {
   city_ru: string;
@@ -28,7 +31,7 @@ interface CityCoords {
   city_en: string;
 }
 
-const OnMap = ({ cars }: OnMapProps) => {
+const OnMap = ({ cars, isLargeScreen }: OnMapProps) => {
   const city = useRecoilValue(cityAtom);
   const [isClicked, setIsClicked] = useState(false);
   const [clickedCars, setClickedCars] = useState<Cars3[]>([]);
@@ -117,27 +120,43 @@ const OnMap = ({ cars }: OnMapProps) => {
         </Map>
       </YMaps>
       {isClicked && (
-        <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black bg-opacity-95">
-          <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey max-w-[858px] p-4 mx-auto overflow-y-auto pb-16">
-            <div className="flex flex-wrap gap-2 md:grid md:grid-cols-2">
+        <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black lg:top-20 lg:bg-inherit bg-opacity-95">
+          <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey lg:max-w-[1212px] max-w-[858px] scrollbar-hide lg:px-1 p-4 lg:pt-10 px-auto overflow-y-auto pb-16 lg:pb-0">
+            {isLargeScreen && (
+              <div className="fixed left-0 w-full top-20 z-[53] pt-3 pb-1 bg-lightgrey ">
+                <div
+                  className="flex items-center w-full mx-auto max-w-[1208px] cursor-pointer"
+                  onClick={() => setIsClicked(false)}
+                >
+                  <FontAwesomeIcon
+                    icon={faChevronLeft}
+                    className="h-5 mr-2 text-zinc-600"
+                  />
+                  Назад
+                </div>
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2 md:grid md:grid-cols-2 lg:grid-cols-3">
               {clickedCars.map((car) => {
                 return (
                   <div className="" key={car.id}>
-                    <Card car={car} />
+                    <Card car={car} isLargeScreen={isLargeScreen} />
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="fixed bottom-0  flex w-full p-2 space-x-2 bg-white max-w-[858px] mx-auto z-[50]">
-            <Button
-              variant={"outline"}
-              className="sm:w-[250px] mx-auto"
-              onClick={() => setIsClicked(false)}
-            >
-              Назад
-            </Button>
-          </div>
+          {!isLargeScreen && (
+            <div className="fixed bottom-0 flex w-full p-2 space-x-2 bg-white max-w-[858px] lg:max-w-[1208px] mx-auto z-[50]">
+              <Button
+                variant={"outline"}
+                className="sm:w-[250px] mx-auto"
+                onClick={() => setIsClicked(false)}
+              >
+                Назад
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </>

@@ -89,11 +89,12 @@ const SliderImages = ({
         <FullScreenImages
           trigger={
             openIsAffordable ? (
-              <div className="">
+              <div className="bg-grey ">
                 {imagesSlised.length > 1 && (
                   <Slider ref={sliderRef} {...settings}>
                     {imagesSlised.map((image, index) => (
                       <div
+                        className="rounded-xl"
                         key={index}
                         onClick={() => setFullscreenIndex(index)}
                       >

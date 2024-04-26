@@ -4,7 +4,7 @@ import comfort from "./assets/car_icons/comfort.png";
 import comfortPlus from "./assets/car_icons/comfort-plus.png";
 import allClasses from "./assets/car_icons/all-cars.png";
 import business from "./assets/car_icons/business.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OnMap from "@/components/ui/on-map";
 import {
   Body15,
@@ -111,6 +111,10 @@ export const Finder = () => {
   const [parksName, setParksName] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchParkTerm, setSearchParkTerm] = useState("");
+  const [overflow, setOverflow] = useState(false);
+  const [scrollToElement, setScrollToElement] = useState<HTMLElement | null>(
+    null
+  );
 
   const city = useRecoilValue(cityAtom);
 
@@ -218,6 +222,19 @@ export const Finder = () => {
       });
     }
   }, [filters]);
+
+  useEffect(() => {
+    if (scrollToElement) {
+      scrollToElement.scrollIntoView();
+    }
+  }, [scrollToElement]);
+
+  const handleOpenModal = (id: string) => {
+    setOverflow(!overflow);
+    if (overflow) {
+      setScrollToElement(document.getElementById(id));
+    }
+  };
 
   return (
     <>
@@ -819,14 +836,24 @@ export const Finder = () => {
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
         {!filters.onMap && (
-          <div className="grid content-center grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={`grid content-center grid-cols-1 ${
+              overflow ? "overflow-y-hidden h-[500px]" : ""
+            } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
+          >
             {cars.map((car) => (
-              <Card key={car.id} car={car} isLargeScreen={isLargeScreen} />
+              <div className="" id={car.id} key={car.id}>
+                <Card
+                  car={car}
+                  isLargeScreen={isLargeScreen}
+                  open={() => handleOpenModal(String(car.id))}
+                />
+              </div>
             ))}
           </div>
         )}
         <div className={filters.onMap ? "block" : "hidden"}>
-          {<OnMap cars={cars} />}
+          {<OnMap cars={cars} isLargeScreen={isLargeScreen} />}
         </div>
       </div>
     </>

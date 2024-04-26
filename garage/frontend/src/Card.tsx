@@ -20,16 +20,18 @@ import { Separator } from "@/components/ui/separator";
 export const Card = ({
   car,
   isLargeScreen,
+  open,
 }: {
   car: Cars3;
   isLargeScreen: boolean;
+  open: () => void;
 }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
 
   return (
-    <Dialog modal={!isLargeScreen}>
+    <Dialog modal={!isLargeScreen} onOpenChange={open}>
       <DialogTrigger
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}

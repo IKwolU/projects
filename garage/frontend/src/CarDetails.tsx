@@ -145,7 +145,13 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
       <div className="py-6 ">
         <div className="mb-10">
           <div className="justify-between flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
-            <div className="space-y-2 mt-72 lg:mt-0 lg:w-1/3 sm:mt-[460px]">
+            <div
+              className={`${
+                car.images!.length > 1
+                  ? "mt-72 sm:mt-[460px]"
+                  : "mt-60 sm:mt-[340px]"
+              } space-y-2  lg:mt-0 lg:w-1/3 sm:mt-[460px]`}
+            >
               <div className="px-4 py-6 bg-white shadow-xl rounded-xl">
                 <h3 className="hidden text-center lg:block">
                   {car.brand} {car.model} {car.year_produced}
@@ -260,7 +266,11 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 </div>
               </div>
             </div>
-            <div className="lg:space-y-32 lg:w-2/3 ">
+            <div
+              className={`${
+                car.images!.length > 1 ? "lg:space-y-32" : "lg:space-y-2"
+              } lg:w-2/3 `}
+            >
               <div className="absolute top-0 w-full shadow-xl lg:relative h-92">
                 <SliderImages
                   type="click"

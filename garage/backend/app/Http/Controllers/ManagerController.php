@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BookingStatus;
+use App\Enums\CancellationSources;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Enums\FuelType;
@@ -1885,13 +1886,15 @@ public function deleteSchemaManager(Request $request) {
  *         @OA\JsonContent(
  *             @OA\Property(property="bookings", type="array", @OA\Items(
  *                 @OA\Property(property="id", type="integer"),
- *                 @OA\Property(property="status", type="integer"),
+ *                 @OA\Property(property="status", type="string",ref="#/components/schemas/BookingStatus"),
  *                 @OA\Property(property="schema_id", type="integer"),
  *                 @OA\Property(property="car_id", type="integer"),
  *                 @OA\Property(property="driver_id", type="integer"),
  *                 @OA\Property(property="booked_at", type="string"),
  *                 @OA\Property(property="end_date", type="string"),
  *                 @OA\Property(property="park_id", type="integer"),
+ *                 @OA\Property(property="cancellation_source", type="string",ref="#/components/schemas/CancellationSources"),
+ *                 @OA\Property(property="cancellation_reason", type="string"),
  *                 @OA\Property(property="created_at", type="string"),
  *                 @OA\Property(property="updated_at", type="string"),
  *                 @OA\Property(property="car", type="object", properties={
@@ -1999,13 +2002,14 @@ public function deleteSchemaManager(Request $request) {
  */
 public function getParkBookingsManager(Request $request) {
 
-    $bookings = Booking::where('status', BookingStatus::Booked->value)
-    ->where('park_id', $request->park_id)
+    $bookings = Booking::where('park_id', $request->park_id)
     ->with('car', 'driver', 'driver.user', 'schema', 'car.division', 'car.division.city')
     ->orderBy('created_at', 'desc')
     ->get();
 foreach ($bookings as $booking) {
     $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
+    $booking->status = BookingStatus::from($booking->status)->name;
+    $booking->cancellation_source = $booking->cancellation_source?CancellationSources::from($booking->cancellation_source)->name:null;
     $booking->car->vin = $booking->car->car_id;
     unset($booking->driver->user->codem,$booking->car->car_id);
 }

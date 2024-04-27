@@ -3296,6 +3296,13 @@ export enum BookingStatus {
 }
 
 /** The unique identifier of a product in our catalog */
+export enum CancellationSources {
+    Driver = "Driver",
+    Manager = "Manager",
+    System = "System",
+}
+
+/** The unique identifier of a product in our catalog */
 export enum CarClass {
     Economy = "Economy",
     Comfort = "Comfort",
@@ -17278,13 +17285,15 @@ export interface IStatuses {
 
 export class Bookings implements IBookings {
     id?: number;
-    status?: number;
+    status?: BookingStatus;
     schema_id?: number;
     car_id?: number;
     driver_id?: number;
     booked_at?: string;
     end_date?: string;
     park_id?: number;
+    cancellation_source?: CancellationSources;
+    cancellation_reason?: string;
     created_at?: string;
     updated_at?: string;
     car?: Car2;
@@ -17316,6 +17325,8 @@ export class Bookings implements IBookings {
             this.booked_at = _data["booked_at"];
             this.end_date = _data["end_date"];
             this.park_id = _data["park_id"];
+            this.cancellation_source = _data["cancellation_source"];
+            this.cancellation_reason = _data["cancellation_reason"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
             this.car = _data["car"] ? Car2.fromJS(_data["car"]) : <any>undefined;
@@ -17345,6 +17356,8 @@ export class Bookings implements IBookings {
         data["booked_at"] = this.booked_at;
         data["end_date"] = this.end_date;
         data["park_id"] = this.park_id;
+        data["cancellation_source"] = this.cancellation_source;
+        data["cancellation_reason"] = this.cancellation_reason;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
         data["car"] = this.car ? this.car.toJSON() : <any>undefined;
@@ -17356,13 +17369,15 @@ export class Bookings implements IBookings {
 
 export interface IBookings {
     id?: number;
-    status?: number;
+    status?: BookingStatus;
     schema_id?: number;
     car_id?: number;
     driver_id?: number;
     booked_at?: string;
     end_date?: string;
     park_id?: number;
+    cancellation_source?: CancellationSources;
+    cancellation_reason?: string;
     created_at?: string;
     updated_at?: string;
     car?: Car2;

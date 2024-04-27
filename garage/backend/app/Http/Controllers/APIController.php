@@ -14,6 +14,7 @@ use App\Models\Tariff;
 use App\Models\RentTerm;
 use App\Models\Booking;
 use App\Enums\BookingStatus;
+use App\Enums\CancellationSources;
 use App\Enums\SuitEnum;
 use App\Enums\CarStatus;use App\Enums\DayOfWeek;
 use App\Enums\ReferralStatus;
@@ -1477,16 +1478,20 @@ class APIController extends Controller
                     'message' => 'Бронирование не найдено для данного автомобиля',
                 ], 404);
             }
+
+            $reason = null;
+            if ($request->reason) {
+                $reason = $request->reason;
+                $booking->cancellation_reason = $reason;
+            }
+            $booking->cancellation_source = CancellationSources::Manager->value;
             $booking->status = $status;
             $booking->save();
             $car->status = CarStatus::AvailableForBooking->value;
             $car->status_id = $car->old_status_id;
             $car->old_status_id = null;
             $car->save();
-            $reason = null;
-            if ($request->reason) {
-                $reason = $request->reason;
-            }
+
             $this->notifyParkOnBookingStatusChanged(booking_id:$booking->id, is_booked:false,fromDriver:false,reason:$reason);
             return response()->json(['message' => 'Статус бронирования успешно изменен, авто доступно для брони'], 200);
         }

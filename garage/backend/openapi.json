@@ -6857,7 +6857,7 @@
                                                         "type": "integer"
                                                     },
                                                     "status": {
-                                                        "type": "integer"
+                                                        "$ref": "#/components/schemas/BookingStatus"
                                                     },
                                                     "schema_id": {
                                                         "type": "integer"
@@ -6876,6 +6876,12 @@
                                                     },
                                                     "park_id": {
                                                         "type": "integer"
+                                                    },
+                                                    "cancellation_source": {
+                                                        "$ref": "#/components/schemas/CancellationSources"
+                                                    },
+                                                    "cancellation_reason": {
+                                                        "type": "string"
                                                     },
                                                     "created_at": {
                                                         "type": "string"
@@ -7239,6 +7245,15 @@
                     "BookingTimeOver",
                     "RentOver",
                     "RentStart"
+                ]
+            },
+            "CancellationSources": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "string",
+                "enum": [
+                    "Driver",
+                    "Manager",
+                    "System"
                 ]
             },
             "CarClass": {

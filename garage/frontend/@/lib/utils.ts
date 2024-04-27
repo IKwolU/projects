@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import {
+  CancellationSources,
   CarClass,
   DayOfWeek,
   FuelType,
@@ -90,6 +91,17 @@ export const getDayOfWeekDisplayName = (day: DayOfWeek) => {
     [DayOfWeek.Sunday]: "Вск",
   };
   return daysOfWeek[day];
+};
+
+export const getCancelationSourceDisplayName = (
+  source: CancellationSources
+) => {
+  const sources = {
+    [CancellationSources.Driver]: "Отменена водителем",
+    [CancellationSources.Manager]: "Отменена менеджером",
+    [CancellationSources.System]: "Истекла",
+  };
+  return sources[source];
 };
 
 export const getCarClassDisplayName = (carClass: CarClass) => {

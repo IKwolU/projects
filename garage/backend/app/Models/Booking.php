@@ -12,7 +12,7 @@ class Booking extends Model
 
 
     use HasFactory;
-    protected $fillable = ['car_id', 'driver_id', 'booked_at', 'booked_until', 'park_id'];
+    protected $fillable = ['car_id', 'driver_id', 'booked_at', 'booked_until', 'cancellation_reason', 'cancellation_source', 'park_id'];
 
     public function car()
     {

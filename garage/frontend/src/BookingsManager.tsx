@@ -60,7 +60,7 @@ export const BookingManager = () => {
   const [reason, setReason] = useState("Не выбрано");
   const [subReason, setSubReason] = useState("Не выбрано");
   const [commentReason, setCommentReason] = useState("");
-  const [park, setPark] = useRecoilState(parkAtom);
+  const [park] = useRecoilState(parkAtom);
   const [city] = useRecoilState(cityAtom);
 
   const [filters, setFilters] = useState<BookingFilter>({

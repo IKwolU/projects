@@ -19038,6 +19038,7 @@ export interface ITariffs {
 }
 
 export class Car2 implements ICar2 {
+    car_id?: string;
     id?: number;
     division_id?: number;
     park_id?: number;
@@ -19050,7 +19051,6 @@ export class Car2 implements ICar2 {
     brand?: string;
     model?: string;
     year_produced?: number;
-    vin?: string;
     images?: string[];
     status?: number;
     status_id?: number;
@@ -19076,6 +19076,7 @@ export class Car2 implements ICar2 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
+            this.car_id = _data["car_id"];
             this.id = _data["id"];
             this.division_id = _data["division_id"];
             this.park_id = _data["park_id"];
@@ -19088,7 +19089,6 @@ export class Car2 implements ICar2 {
             this.brand = _data["brand"];
             this.model = _data["model"];
             this.year_produced = _data["year_produced"];
-            this.vin = _data["vin"];
             if (Array.isArray(_data["images"])) {
                 this.images = [] as any;
                 for (let item of _data["images"])
@@ -19116,6 +19116,7 @@ export class Car2 implements ICar2 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
+        data["car_id"] = this.car_id;
         data["id"] = this.id;
         data["division_id"] = this.division_id;
         data["park_id"] = this.park_id;
@@ -19128,7 +19129,6 @@ export class Car2 implements ICar2 {
         data["brand"] = this.brand;
         data["model"] = this.model;
         data["year_produced"] = this.year_produced;
-        data["vin"] = this.vin;
         if (Array.isArray(this.images)) {
             data["images"] = [];
             for (let item of this.images)
@@ -19145,6 +19145,7 @@ export class Car2 implements ICar2 {
 }
 
 export interface ICar2 {
+    car_id?: string;
     id?: number;
     division_id?: number;
     park_id?: number;
@@ -19157,7 +19158,6 @@ export interface ICar2 {
     brand?: string;
     model?: string;
     year_produced?: number;
-    vin?: string;
     images?: string[];
     status?: number;
     status_id?: number;

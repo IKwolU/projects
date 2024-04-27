@@ -6891,6 +6891,9 @@
                                                     },
                                                     "car": {
                                                         "properties": {
+                                                            "car_id": {
+                                                                "type": "string"
+                                                            },
                                                             "id": {
                                                                 "type": "integer"
                                                             },
@@ -6926,9 +6929,6 @@
                                                             },
                                                             "year_produced": {
                                                                 "type": "integer"
-                                                            },
-                                                            "vin": {
-                                                                "type": "string"
                                                             },
                                                             "images": {
                                                                 "type": "array",

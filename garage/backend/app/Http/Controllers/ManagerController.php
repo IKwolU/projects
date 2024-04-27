@@ -1898,6 +1898,7 @@ public function deleteSchemaManager(Request $request) {
  *                 @OA\Property(property="created_at", type="string"),
  *                 @OA\Property(property="updated_at", type="string"),
  *                 @OA\Property(property="car", type="object", properties={
+ *                     @OA\Property(property="car_id", type="string"),
  *                     @OA\Property(property="id", type="integer"),
  *                     @OA\Property(property="division_id", type="integer"),
  *                     @OA\Property(property="park_id", type="integer"),
@@ -1910,7 +1911,6 @@ public function deleteSchemaManager(Request $request) {
  *                     @OA\Property(property="brand", type="string"),
  *                     @OA\Property(property="model", type="string"),
  *                     @OA\Property(property="year_produced", type="integer"),
- *                     @OA\Property(property="vin", type="string"),
  *                     @OA\Property(property="images", type="array", @OA\Items(type="string")),
  *                     @OA\Property(property="status", type="integer"),
  *                     @OA\Property(property="status_id", type="integer"),
@@ -2010,8 +2010,7 @@ foreach ($bookings as $booking) {
     $booking->end_date = Carbon::parse($booking->booked_until)->toIso8601ZuluString();
     $booking->status = BookingStatus::from($booking->status)->name;
     $booking->cancellation_source = $booking->cancellation_source?CancellationSources::from($booking->cancellation_source)->name:null;
-    $booking->car->vin = $booking->car->car_id;
-    unset($booking->driver->user->codem,$booking->car->car_id);
+    unset($booking->driver->user->code);
 }
     return response()->json(['bookings' => $bookings], 200);
 }

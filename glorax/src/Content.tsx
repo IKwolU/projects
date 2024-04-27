@@ -136,18 +136,24 @@ function Content() {
                         className="flex flex-col items-center justify-center w-full p-3 pt-6 space-y-2 bg-lightblue rounded-3xl h-[420px]"
                         key={`choice_${i}`}
                       >
-                        <img
-                          src={fact.image}
-                          className="object-cover object-center w-64 h-64 mx-auto rounded-2xl"
-                          alt=""
-                        />
+                        {fact.image && (
+                          <img
+                            src={fact.image}
+                            className="object-cover object-center w-64 h-64 mx-auto rounded-2xl"
+                            alt=""
+                          />
+                        )}
                         {fact.type === "text" && (
                           <h4 className="h-4 px-0 pb-3 text-sm font-semibold text-black sm:px-4">
                             {fact.title}
                           </h4>
                         )}
                         {fact.type === "text" && (
-                          <p className="h-24 px-0 pb-3 overflow-y-auto text-sm text-black sm:px-4 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
+                          <p
+                            className={`${
+                              fact.image ? "h-24" : "h-[356px]"
+                            } px-0 pb-3 overflow-y-auto text-sm text-black sm:px-4 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide`}
+                          >
                             {fact.text}
                           </p>
                         )}

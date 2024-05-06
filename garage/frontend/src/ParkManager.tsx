@@ -9,7 +9,7 @@ import { RentTermManager } from "./RentTermManager";
 import { TariffManager } from "./TariffManager";
 import { CarsManager } from "./CarsManager";
 import { InfoManager } from "./InfoManager";
-import { BookingsManager } from "./BookingsManager";
+import { BookingManager } from "./BookingsManager";
 import { StatusesManager } from "./StatusesManager";
 import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -103,7 +103,7 @@ export const ParkManager = () => {
         <Route path={`/tariffs`} element={<TariffManager />} />
         <Route path={`/cars`} element={<CarsManager />} />
         <Route path={`/statuses`} element={<StatusesManager />} />
-        <Route path={`/bookings`} element={<BookingsManager />} />
+        <Route path={`/bookings`} element={<BookingManager />} />
       </Routes>
     </>
   );

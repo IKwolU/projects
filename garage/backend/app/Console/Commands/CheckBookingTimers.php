@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\BookingStatus;
+use App\Enums\CancellationSources;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Http\Controllers\APIController;
@@ -40,6 +41,7 @@ class CheckBookingTimers extends Command
                 if ($booking->booked_until < $timeNow) {
                     $booking->status = BookingStatus::BookingTimeOver->value;
                     $booking->car->status = CarStatus::AvailableForBooking->value;
+                    $booking->cancellation_source = CancellationSources::System->value;
                     $booking->car->save();
                     $booking->save();
                     $apiController->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, reason: 'Истек срок бронирования');

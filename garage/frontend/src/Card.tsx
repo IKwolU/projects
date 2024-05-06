@@ -16,15 +16,22 @@ import SliderImages from "@/components/ui/slider-images";
 // import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 
-export const Card = ({ car }: { car: Cars3 }) => {
+export const Card = ({
+  car,
+  isLargeScreen,
+  open,
+}: {
+  car: Cars3;
+  isLargeScreen: boolean;
+  open: () => void;
+}) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
 
   return (
-    <Dialog>
+    <Dialog modal={!isLargeScreen} onOpenChange={open}>
       <DialogTrigger
         asChild
         onClick={() => ym("reachGoal", "click_card", 96683881)}
@@ -95,25 +102,30 @@ export const Card = ({ car }: { car: Cars3 }) => {
               </div>
               <Separator className="my-2" />
 
-              <div className="flex flex-col justify-start gap-1">
-                <span className="flex items-center h-full bg-white rounded-xl">
+              <div className="flex justify-start gap-1">
+                <span className="flex items-center h-full rounded-xl">
                   <span className="flex items-center gap-2">
                     <span className="text-sm text-zinc-400">
                       {Number(car.rent_term!.deposit_amount_total) !== 0 && (
-                        <Badge variant="card" className="px-0 py-0 bg-grey ">
-                          <span className="flex items-center h-full px-2 bg-white rounded-xl md:text-lg">
+                        <div className="flex items-center px-0 py-0 text-sm">
+                          <span className="flex items-center h-full gap-2 text-sm rounded-xl ">
                             Депозит{" "}
-                            {formatRoubles(
-                              car.rent_term!.deposit_amount_total!
-                            )}
+                            <span className="w-1 h-1 rounded-full bg-zinc-400"></span>{" "}
+                            <span className="text-black">
+                              {" "}
+                              {formatRoubles(
+                                car.rent_term!.deposit_amount_total!
+                              )}
+                            </span>
                           </span>
-                          <span className="flex items-center h-full px-2 text md:text-lg">
+                          <span className="w-1 h-1 mx-2 rounded-full bg-zinc-400 "></span>{" "}
+                          <span className="flex items-center h-full gap-2 text-zinc-400 text ">
                             {formatRoubles(
                               car.rent_term!.deposit_amount_daily!
                             )}
-                            /день
+                            <span>в день</span>
                           </span>
-                        </Badge>
+                        </div>
                       )}
                       {Number(car.rent_term!.deposit_amount_total) === 0 && (
                         <div className="flex items-center w-full gap-2 ">
@@ -170,7 +182,11 @@ export const Card = ({ car }: { car: Cars3 }) => {
       </DialogTrigger>
       <DialogContent
         goBackContent={
-          <h1 className="my-0 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+          isLargeScreen ? (
+            <h1 className="my-0 font-normal text-center">Назад</h1>
+          ) : (
+            <h1 className="my-0 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+          )
         }
         className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
       >

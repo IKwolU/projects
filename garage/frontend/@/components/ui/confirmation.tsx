@@ -33,7 +33,7 @@ const Confirmation = ({
     <>
       {isOpen && (
         <div className="fixed top-0 left-0 z-[53] flex items-center justify-center w-full h-full">
-          <div className="flex flex-col items-center justify-center max-w-xs px-8 py-4 text-xl text-center bg-zinc-100 border border-grey shadow min-w-80 rounded-xl">
+          <div className="flex flex-col items-center justify-center max-w-xs px-8 py-4 text-xl text-center border shadow bg-zinc-100 border-grey min-w-80 rounded-xl">
             {title}
             <div className="">{text}</div>
             <div className="flex w-full mt-2 space-x-2 ">

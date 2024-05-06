@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BookingStatus;
+use App\Enums\CancellationSources;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Enums\FuelType;
@@ -494,6 +495,13 @@ class DriverController extends Controller
         //date_default_timezone_set('UTC');
         $car = $booking->car;
         $booking->booked_until = Carbon::now()->toIso8601ZuluString();
+
+        $reason = null;
+        if ($request->reason) {
+            $reason = $request->reason;
+            $booking->cancellation_reason = $reason;
+        }
+        $booking->cancellation_source = CancellationSources::Driver->value;
         $booking->status = BookingStatus::UnBooked->value;
         $booking->save();
 
@@ -504,7 +512,9 @@ class DriverController extends Controller
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
         $api = new APIController;
-        $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true, reason: $request->reason);
+
+
+        $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true, reason: $reason);
         return response()->json(['message' => 'Бронирование автомобиля успешно отменено'], 200);
     }
 

@@ -111,6 +111,12 @@ export const DriverLogin = () => {
     setCode(parseInt(e.target.value));
 
   const handleInput = ({ target: { value } }: any) => setPhone(value);
+  const handleKeyPress = (event:any) => {
+    const currentValue = event.target.value;
+    if (currentValue.length >= 4) {
+      event.preventDefault(); 
+    }
+  };
 
   return (
     <>
@@ -138,6 +144,7 @@ export const DriverLogin = () => {
                 placeholder="_ _ _ _"
                 onFocus={handleFocus}
                 autoFocus={true}
+                onKeyDown={handleKeyPress}
               />
               {codeHasError && (
                 <p className="my-4 text-lg text-center text-red">

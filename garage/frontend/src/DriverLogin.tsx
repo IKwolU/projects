@@ -111,7 +111,7 @@ export const DriverLogin = () => {
     setCode(parseInt(e.target.value));
 
   const handleInput = ({ target: { value } }: any) => setPhone(value);
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event:any) => {
     const currentValue = event.target.value;
     if (currentValue.length >= 4) {
       event.preventDefault(); 

@@ -144,7 +144,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
       {isBooked && <BookingAlert />}
       <div className="py-6 ">
         <div className="mb-10">
-          <div className="justify-between flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
+          <div className="justify-between  flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
             <div
               className={`${
                 car.images!.length > 1
@@ -267,11 +267,11 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               </div>
             </div>
             <div
-              className={`${
+              className={` ${
                 car.images!.length > 1 ? "lg:space-y-32" : "lg:space-y-2"
               } lg:w-2/3 `}
             >
-              <div className="absolute top-0 w-full shadow-xl lg:relative h-92">
+              <div className="absolute top-0 w-full shadow-xl -z-10 lg:relative h-92">
                 <SliderImages
                   type="click"
                   openIsAffordable={true}

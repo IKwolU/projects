@@ -144,7 +144,7 @@ export const DriverLogin = () => {
                 placeholder="_ _ _ _"
                 onFocus={handleFocus}
                 autoFocus={true}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
               />
               {codeHasError && (
                 <p className="my-4 text-lg text-center text-red">

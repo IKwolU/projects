@@ -621,7 +621,7 @@ export const BookingManager = () => {
             {filteredBookings?.map(function (booking, i) {
               return (
                 <>
-                  {booking && (
+                  {(booking && booking.schema)&& (
                     <TableRow key={`booking_${i}`}>
                       <TableItem>
                         {format(booking.booked_at!, "dd.MM.yyyy")}

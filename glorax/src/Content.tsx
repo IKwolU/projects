@@ -3,7 +3,11 @@ import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
 import content from "./assets/content.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAnglesRight,
+  faCircleQuestion,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../public/img/logoGlorax.png";
 import choice1 from "../public/img//choice-img-1.png";
 import choice2 from "../public/img//choice-img-2.png";
@@ -18,7 +22,8 @@ function Content() {
   const [isContentShow, setIsContentShow] = useState(true);
   const [, setAudioTime] = useState(0);
   const [currentTime] = useRecoilState(currentTimeAtom);
-
+  const [questionsClicked, setQuestionsClicked] = useState(false);
+  const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
 
   const handleAudioTimeUpdate = () => {
@@ -42,8 +47,90 @@ function Content() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-50 flex w-full h-8">
+      {questionsClicked && (
+        <div
+          onClick={(e) =>
+            e.target === e.currentTarget ? setQuestionsClicked(false) : null
+          }
+          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-6 md:bottom-0 bg-black bg-opacity-40 justify-center items-center"
+        >
+          <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2">
+            <FontAwesomeIcon
+              icon={faXmark}
+              className="text-zinc-800"
+              onClick={() => setQuestionsClicked(false)}
+            />
+          </div>
+          <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-white rounded-t-3xl"></div>
+          <div className=" relative px-4 py-2 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
+            {[
+              {
+                question: "С чего начать (путешествие/приключение/изучение)?",
+                answer: "1234",
+              },
+              {
+                question: "Как вернуться назад?",
+                answer: "1234",
+              },
+              {
+                question: "Можно ли изменить маршрут?",
+                answer: "1234",
+              },
+              {
+                question: "Сколько по времени займет маршрут/аудио?",
+                answer: "1234",
+              },
+              {
+                question: "Можно ли пройти путь заново?",
+                answer: "1234",
+              },
+              {
+                question:
+                  "Есть ли ограничения по времени для прохождения маршрута?",
+                answer: "1234",
+              },
+              {
+                question: "Что такое иммерсивный маршрут?",
+                answer: "1234",
+              },
+              {
+                question: "Могу ли вернуться к маршруту позже?",
+                answer: "1234",
+              },
+              {
+                question:
+                  "Как я могу обратиться за технической поддержкой или сообщить об ошибке?",
+                answer: "1234",
+              },
+              {
+                question:
+                  "Какие дополнительные функции и возможности доступны на маршрутах?",
+                answer: "1234",
+              },
+            ].map(({ question, answer }, i) => (
+              <div className="">
+                <p onClick={() => setQuestionId(i)}>
+                  {i + 1}) {question}
+                </p>
+                {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
+              </div>
+            ))}
+          </div>
+          <div className="bottom-0 z-10 h-10 -mt-10 w-[280px] sm:w-[350px] from-white bg-gradient-to-t to-transparent rounded-b-2xl"></div>
+        </div>
+      )}
+      <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
+        <FontAwesomeIcon
+          onClick={() => setQuestionsClicked(!questionsClicked)}
+          icon={faCircleQuestion}
+          className="w-8 h-8 transition-opacity opacity-50 cursor-pointer text-blue hover:opacity-100 active:opacity-100"
+        />
+      </div>
+      <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
         <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
+      </div>
+      <div className="fixed bottom-1 z-50 flex w-[280px] text-sm right-10 text-zinc-500">
+        <p>© 2024. GloraX. Все права защищены</p>
       </div>
       {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>
       <div className="fixed top-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>
@@ -66,7 +153,7 @@ function Content() {
               }`}
             >
               <div className="p-4 overflow-y-auto">
-                <div className="flex items-center h-12 -ml-2">
+                <div className="flex items-center justify-between h-12 -ml-2">
                   <img
                     src={logo}
                     alt=""

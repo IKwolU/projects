@@ -305,7 +305,7 @@ function CanvasComponent() {
         scale={[1, 1, 1]}
         file="/models/test11.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-        position={[0, -8, 0]}
+        position={[0, -6, 0]}
         opacity={0.93}
         rotate={[0, 0, 0]}
         isOpacity={false}

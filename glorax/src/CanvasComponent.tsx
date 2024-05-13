@@ -303,7 +303,7 @@ function CanvasComponent() {
 
       <OBJModel
         scale={[1, 1, 1]}
-        file="/models/test11.gltf"
+        file="/models/test13.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
         position={[0, -6, 0]}
         opacity={0.93}
@@ -395,7 +395,7 @@ function CanvasComponent() {
       </mesh>
       <OrbitControls
         maxPolarAngle={Math.PI / 2.0}
-        minDistance={0}
+        minDistance={14}
         maxDistance={20}
         target={[0, 1, 0]}
         ref={controlsRef}

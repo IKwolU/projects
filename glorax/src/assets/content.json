@@ -10,6 +10,20 @@
     "start_time": 5,
     "end_time": 100,
     "choice__time": 100,
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
     "navigation": [
       {
         "time_start": 5.5,

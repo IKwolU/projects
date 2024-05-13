@@ -341,10 +341,10 @@ function CanvasComponent() {
                 {currentTime > item.time_start &&
                   currentTime < item.time_end && (
                     <OBJModel
-                      file="/models/sharik.gltf"
+                      file="/models/navinew.gltf"
                       texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                       position={item.position}
-                      scale={[5, 5, 5]}
+                      scale={[25, 25, 25]}
                       opacity={1}
                       rotate={item.rotate}
                       isOpacity={true}

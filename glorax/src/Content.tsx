@@ -62,7 +62,7 @@ function Content() {
             />
           </div>
           <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-white rounded-t-3xl"></div>
-          <div className=" relative px-4 py-2 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
+          <div className=" relative pb-4 px-4 py-2 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
             {[
               {
                 question: "С чего начать (путешествие/приключение/изучение)?",
@@ -116,7 +116,7 @@ function Content() {
               </div>
             ))}
           </div>
-          <div className="bottom-0 z-10 h-10 -mt-10 w-[280px] sm:w-[350px] from-white bg-gradient-to-t to-transparent rounded-b-2xl"></div>
+          <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-white bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
       <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">

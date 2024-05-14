@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import {
   Body34,
   BookingStatus,
@@ -33,6 +33,7 @@ import {
 import { useRecoilState } from "recoil";
 import { cityAtom, parkAtom } from "./atoms";
 import { format } from "date-fns";
+import { BookingKanban } from "./BookingKanban";
 
 const storedApprovedBookings = localStorage.getItem("approvedBookings");
 const initialApprovedBookings = storedApprovedBookings
@@ -600,7 +601,7 @@ export const BookingManager = () => {
           </Select>
         </div>
       </div>
-      <div className="flex justify-between w-full mt-4 space-x-2 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
+      {/* <div className="flex justify-between w-full mt-4 space-x-2 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
         <Table>
           <TableHead>
             <TableRow>
@@ -669,6 +670,10 @@ export const BookingManager = () => {
             })}
           </TableBody>
         </Table>
+      </div> */}
+
+      <div className="flex justify-between w-full mt-4 space-x-2 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]s">
+        <BookingKanban />
       </div>
     </>
   );

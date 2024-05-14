@@ -9,12 +9,14 @@ use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
+use App\Models\Application;
 use App\Models\Booking;
 use App\Models\Car;
 use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
 use App\Models\RentTerm;
+use App\Models\Request as ModelsRequest;
 use App\Models\Schema;
 use App\Models\Status;
 use App\Models\Tariff;
@@ -2110,7 +2112,129 @@ foreach ($bookings as $booking) {
         }
         return response()->json(['message' => 'Статусы успешно обновлены'], 200);
     }
-
+/**
+ * Получение заявок
+ *
+ * Метод для получения списка заявок
+ *
+ * @OA\Get(
+ *     path="manager/requests",
+ *     operationId="getParkRequestsManager",
+ *     summary="Получение заявок",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+    public function getParkRequestsManager(Request $request) {
+        $user = Auth::guard('sanctum')->user();
+        $applications = Application::where('park_id',$user->manager->park_id)->get();
+        return response()->json(['applications' => $applications], 200);
+    }
+/**
+ * Создание заявки
+ *
+ * Метод для создания заявки
+ *
+ * @OA\post(
+ *     path="manager/requests",
+ *     operationId="createRequestsManager",
+ *     summary="Создание заявки",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function createRequestsManager(Request $request) {
+    // $user = Auth::guard('sanctum')->user();
+    // $applications = Application::where('park_id',$user->manager->park_id)->get();
+    // return response()->json(['applications' => $applications], 200);
+}
+/**
+ * Изменение заявки
+ *
+ * Метод для изменения заявки
+ *
+ * @OA\put(
+ *     path="manager/requests",
+ *     operationId="updateRequestsManager",
+ *     summary="Изменение заявки",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function updateRequestsManager(Request $request) {
+    // $user = Auth::guard('sanctum')->user();
+    // $applications = Application::where('park_id',$user->manager->park_id)->get();
+    // return response()->json(['applications' => $applications], 200);
+}
     static function checkCarDataIsFilled($car) {
         $requiredFields = ['division_id', 'park_id', 'tariff_id', 'license_plate', 'mileage', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images'];
         foreach ($requiredFields as $field) {

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RequestLog extends Model
+class ApplicationLog extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'manager_id',
-        'request_id',
+        'application_id',
         'type',
         'content',
     ];
@@ -23,6 +23,6 @@ class RequestLog extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(Application::class);
     }
 }

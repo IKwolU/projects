@@ -12,7 +12,6 @@ import { useRecoilState } from "recoil";
 import { userAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { YMInitializer } from "react-yandex-metrika";
-// import Echo from "laravel-echo";
 
 import {
   faArrowRightFromBracket,
@@ -53,17 +52,6 @@ function App() {
           const userData = await client.getUser();
 
           setUser(userData.user!);
-
-          // echo
-          //   .private(`user.${userData.user!.id}`)
-          //   .listen(".BookingStatusChanged", (e: any) => {
-          //     console.log("Booking status changed:", e.booking);
-          //     // Здесь вы можете обработать сообщение, полученное от события
-          //   });
-
-          // return () => {
-          //   echo.disconnect();
-          // };
         } catch (error) {
           //
         } finally {

@@ -14,6 +14,7 @@ import { StatusesManager } from "./StatusesManager";
 import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import Echo from "laravel-echo";
 
 type MainMenuItem = {
   name: string;
@@ -35,6 +36,17 @@ export const ParkManager = () => {
       const getPark = async () => {
         const parkData: IPark2 = await client.getParkManager();
         setPark(parkData.park);
+
+        Echo.private(`ParkKanban.${parkData.id}`).listen(
+          "KanbanUpdated",
+          (e: any) => {
+            console.log("changed");
+          }
+        );
+
+        return () => {
+          Echo.disconnect();
+        };
       };
 
       getPark();

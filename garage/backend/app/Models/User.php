@@ -46,4 +46,8 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->hasOne(Driver::class);
     }
+    public function manager()
+    {
+        return $this->hasOne(Manager::class);
+    }
 }

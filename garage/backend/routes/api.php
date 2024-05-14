@@ -70,4 +70,16 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::get('manager/bookings', [ManagerController::class, 'getParkBookingsManager']);
     Route::delete('manager/schema', [ManagerController::class, 'deleteSchemaManager']);
     Route::post('manager/test', [ManagerController::class, 'test']);
+
+    //получение списка заявок
+    //создание заявки
+    //изменение заявки
+    //создание уведомления
+    //изменение уведомления
+    Route::get('manager/requests', [ManagerController::class, 'getParkRequestsManager']);
+    Route::post('manager/requests', [ManagerController::class, 'createRequestsManager']);
+    Route::put('manager/requests', [ManagerController::class, 'updateRequestsManager']);
+    Route::post('manager/notifications', [ManagerController::class, 'createNotificationManager']);
+    Route::get('manager/notifications', [ManagerController::class, 'getParkNotificationManager']);
+    Route::put('manager/notifications', [ManagerController::class, 'updateNotificationManager']);
 });

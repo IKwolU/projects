@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('request_logs', function (Blueprint $table) {
+        Schema::create('application_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('manager_id');
-            $table->unsignedBigInteger('request_id');
+            $table->unsignedBigInteger('application_id');
             $table->string('type');
             $table->json('content');
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('request_logs');
+        Schema::dropIfExists('application_logs');
     }
 };

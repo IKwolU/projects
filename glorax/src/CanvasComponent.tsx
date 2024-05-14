@@ -16,6 +16,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
 import { contentIdAtom, currentTimeAtom } from "./atoms";
+import { url } from "inspector";
 // import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 interface OBJModelProps {
@@ -260,13 +261,7 @@ function CanvasComponent() {
       className="w-full h-full bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
       camera={{ position: [-60, 30, -35] }}
       shadows
-      // style={{
-      //   background:
-      //     'linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.6)), url("/img/card-bg-1.png")',
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundSize: "cover",
-      //   backgroundPosition: "center",
-      // }}
+      style={{}}
     >
       <perspectiveCamera
         ref={cameraRef}

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApplicationLogType;
-use App\Enums\ApplicationStatus;
+use App\Enums\ApplicationStage;
 use App\Models\Application;
 use App\Models\ApplicationLogs;
 use Illuminate\Http\Request;
@@ -30,10 +30,10 @@ class KanbanController extends Controller
         }
         if ($request->manager_id) {
             $application->manager_id=$request->manager_id;
-            $application->current_status=ApplicationStatus::InProgress->value;
+            $application->current_stage=ApplicationStage::InProgress->value;
         }
         if (!$request->manager_id) {
-            $application->current_status=ApplicationStatus::New->value;
+            $application->current_stage=ApplicationStage::New->value;
         }
         $application->save();
         return $application->id;

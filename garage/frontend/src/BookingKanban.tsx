@@ -1,8 +1,14 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { KanbanColumn } from "./KanbanColumn";
+import { client } from "./backend";
+import { ApplicationStage, Applications, Body42 } from "./api-client";
+import { getApplicationStageDisplayName } from "@/lib/utils";
+import { set } from "ramda";
 
 export const BookingKanban = () => {
+  const [applications, setApplications] = useState<Applications[]>([]);
+
   const items = [
     { id: "1", content: "Первая плашка" },
     { id: "2", content: "Вторая плашка" },
@@ -22,28 +28,68 @@ export const BookingKanban = () => {
       items: ["3", "4"],
     },
   };
+  const getApplications = async () => {
+    const data = await client.getParkApplicationsManager();
+    setApplications(data.applications!);
+  };
+
+  const changeApplicationData = async (id: number, item, itemData) => {
+    await client.updateApplicationManager(
+      new Body42({ id: id, [item]: itemData })
+    );
+
+    setApplications(
+      applications
+        .filter((x) => x.id !== id)
+        .concat(
+          new Applications({
+            ...applications.filter((x) => x.id === id),
+            [item]: itemData,
+          })
+        )
+    );
+  };
+
+  useEffect(() => {
+    getApplications();
+  }, []);
 
   const order = ["new", "inWork"];
 
-  const onDragEnd = () => {
-    return;
+  const onDragEnd = (result) => {
+    const { source, destination, draggableId } = result;
+
+    if (!destination) {
+      return; // Item was not dropped in a droppable area
+    }
+
+    const sourceColumn = source.droppableId;
+    const destinationColumn = destination.droppableId;
+    changeApplicationData(draggableId, "current_stage", destinationColumn);
   };
+
+  if (!applications) {
+    return <></>;
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      {order.map((id) => {
-        const column = columns[id];
-        const tasks = items.filter((x) => column.items.includes(x.id));
-        return (
-          <div key={column.id}>
-            <div className="">{column.title}</div>
-            <Droppable droppableId={column.id} key={column.id}>
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {tasks.map((task, index) => (
+      {Object.keys(ApplicationStage).map((column: any) => (
+        <div key={column} className="p-1 border-2 border-pale rounded-xl">
+          <div className="">{getApplicationStageDisplayName(column)}</div>
+          <Droppable droppableId={column} key={column}>
+            {(provided) => (
+              <div
+                className="w-full h-full"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {applications
+                  .filter((x) => x.current_stage === column)
+                  .map((task, index) => (
                     <Draggable
                       key={task.id}
-                      draggableId={task.id}
+                      draggableId={String(task.id)}
                       index={index}
                     >
                       {(provided) => (
@@ -51,20 +97,19 @@ export const BookingKanban = () => {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className=""
+                          className="w-full h-8 border-2 border-pale rounded-xl"
                         >
-                          {task.content}
+                          {task.id}
                         </div>
                       )}
                     </Draggable>
                   ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
-        );
-      })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
+      ))}
     </DragDropContext>
   );
 };

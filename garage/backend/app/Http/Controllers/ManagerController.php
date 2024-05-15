@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ApplicationLogType;
+use App\Enums\ApplicationStage;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationSources;
 use App\Enums\CarClass;
@@ -2136,7 +2137,7 @@ foreach ($bookings as $booking) {
  *                 @OA\Property(property="booking_id", type="integer", nullable=true),
  *                 @OA\Property(property="planned_arrival", type="string"),
  *                 @OA\Property(property="reason_for_rejection", type="string", nullable=true),
- *                 @OA\Property(property="current_status", type="integer", ref="#/components/schemas/ApplicationStatus"),
+ *                 @OA\Property(property="current_stage", type="string", ref="#/components/schemas/ApplicationStage"),
  *                 @OA\Property(property="user_id", type="integer", nullable=true),
  *                 @OA\Property(property="created_at", type="string"),
  *                 @OA\Property(property="updated_at", type="string")
@@ -2166,6 +2167,9 @@ public function getParkApplicationsManager(Request $request) {
     $user = Auth::guard('sanctum')->user();
     $divisionIds = Division::where('park_id', $user->manager->park_id)->pluck('id')->toArray();
     $applications = Application::whereIn('division_id', $divisionIds)->get();
+    foreach ($applications as $application) {
+        $application->current_stage = ApplicationStage::from($application->current_stage)->name;
+    }
     return response()->json(['applications' => $applications], 200);
 }
 /**
@@ -2283,9 +2287,9 @@ public function createApplicationManager(Request $request) {
  *                 type="sting",nullable=true
  *             ),
  * @OA\Property(
- *                 property="current_status",
+ *                 property="current_stage",
  *                 description="текущий статус",
- *                 type="sting",nullable=true, ref="#/components/schemas/ApplicationStatus")
+ *                 type="sting",nullable=true, ref="#/components/schemas/ApplicationStage")
  *             ),
  * @OA\Property(
  *                 property="planned_arrival",
@@ -2350,12 +2354,12 @@ public function updateApplicationManager(Request $request) {
         if ($request->reason_for_rejection) {
             updateFieldAndCreateLog($request, $application->reason_for_rejection, $request->reason_for_rejection, 'reason_for_rejection', $kanban);
         }
-        if ($request->current_status) {
-            $old = $application->current_status;
-            $application->current_status=ApplicationStatus::{$request->current_status}->value;
+        if ($request->current_stage) {
+            $old = $application->current_stage;
+            $application->current_stage=ApplicationStage::{$request->current_stage}->value;
             $request->merge([
                 'type' => ApplicationLogType::Stage->value,
-                'new_stage' => $application->current_status,
+                'new_stage' => $application->current_stage,
                 'old_stage' => $old,
             ]);
             $kanban->createApplicationsLogItem($request);

@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import {
+  ApplicationStage,
   CancellationSources,
   CarClass,
   DayOfWeek,
@@ -119,4 +120,20 @@ export const getCarClassDisplayName = (carClass: CarClass) => {
   }
 
   return "Эконом";
+};
+
+export const getApplicationStageDisplayName = (stage: ApplicationStage) => {
+  const stages = {
+    [ApplicationStage.New]: "Новая заявка",
+    [ApplicationStage.InProgress]: "В работе",
+    [ApplicationStage.NoAnswer]: "Не берет трубку",
+    [ApplicationStage.Thinking]: "Думает",
+    [ApplicationStage.ReservationCanceled]: "Отменил бронь",
+    [ApplicationStage.ReservationConfirmed]: "Подтвердил бронь",
+    [ApplicationStage.ArrivedAtOffice]: "Дошел в офис",
+    [ApplicationStage.ArrivedAtOfficeNoCar]: "Дошел в офис не взял авто",
+    [ApplicationStage.CarRented]: "Взял авто",
+    [ApplicationStage.NotRealized]: "Не реализовано",
+  };
+  return stages[stage];
 };

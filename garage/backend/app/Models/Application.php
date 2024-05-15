@@ -16,7 +16,7 @@ class Application extends Model
         'booking_id',
         'planned_arrival',
         'reason_for_rejection',
-        'current_status',
+        'current_stage',
         'user_id',
     ];
 

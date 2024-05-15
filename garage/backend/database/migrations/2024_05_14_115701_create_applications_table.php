@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('booking_id')->nullable();
             $table->dateTime('planned_arrival')->nullable();
             $table->text('reason_for_rejection')->nullable();
-            $table->string('current_status')->default('pending');
+            $table->string('current_stage')->default('pending');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

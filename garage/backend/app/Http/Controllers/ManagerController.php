@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ApplicationLogType;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationSources;
 use App\Enums\CarClass;
@@ -10,6 +11,8 @@ use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
 use App\Models\Application;
+use App\Models\ApplicationLog;
+use App\Models\ApplicationLogs;
 use App\Models\Booking;
 use App\Models\Car;
 use App\Models\Division;
@@ -334,7 +337,7 @@ class ManagerController extends Controller
 
     public function updateParkInfoManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/parks', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/parks', 'PUT', $request->all(), $request->key);
     }
     /**
      * Добавить несколько автомобилей
@@ -410,7 +413,7 @@ class ManagerController extends Controller
             $newCars[] = $car;
         }
         $request->merge(['cars' => $newCars]);
-        return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
+        return $this->callRoute('/cars', 'POST', $request->all(), $request->key);
     }
 
     /**
@@ -474,7 +477,7 @@ class ManagerController extends Controller
         $request->merge([
             'fuel_type'=>FuelType::{$request->fuel_type}->value
         ]);
-        return $this->callRouteWithApiKey('/cars', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -539,7 +542,7 @@ class ManagerController extends Controller
      */
     public function updateCarRentTermManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/cars/rent-term', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars/rent-term', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -603,7 +606,7 @@ class ManagerController extends Controller
     public function updateCarStatusManager(Request $request)
     {
         $request->merge(['status'=>CarStatus::{$request->status}->value]);
-        return $this->callRouteWithApiKey('/cars/status', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars/status', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -687,7 +690,7 @@ class ManagerController extends Controller
      */
     public function createOrUpdateRentTermManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/parks/rent-terms', 'POST', $request->all(), $request->key);
+        return $this->callRoute('/parks/rent-terms', 'POST', $request->all(), $request->key);
     }
 
     /**
@@ -770,7 +773,7 @@ class ManagerController extends Controller
      */
     public function createParkDivisionManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/parks/division', 'POST', $request->all(), $request->key);
+        return $this->callRoute('/parks/division', 'POST', $request->all(), $request->key);
     }
 
     /**
@@ -844,7 +847,7 @@ class ManagerController extends Controller
         $request->merge([
             'class'=>CarClass::{$request->class}->value
         ]);
-        return $this->callRouteWithApiKey('/parks/tariff', 'POST', $request->all(), $request->key);
+        return $this->callRoute('/parks/tariff', 'POST', $request->all(), $request->key);
     }
 
     /**
@@ -906,7 +909,7 @@ class ManagerController extends Controller
      */
     public function updateTariffManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/parks/tariff', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/parks/tariff', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -994,7 +997,7 @@ class ManagerController extends Controller
      */
     public function updateParkDivisionManager(Request $request)
     {
-        return $this->callRouteWithApiKey('/parks/division', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/parks/division', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -1061,13 +1064,12 @@ class ManagerController extends Controller
      */
     public function updateCarBookingStatusManager(Request $request)
     {
-
         $request->merge([
             'car_id' => $request->vin,
             'class' => BookingStatus::{$request->status}->value
      ]);
 
-        return $this->callRouteWithApiKey('/cars/booking', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars/booking', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -1133,7 +1135,7 @@ class ManagerController extends Controller
     public function BookProlongationManager(Request $request)
     {
         $request->merge(['car_id' => $request->vin]);
-        return $this->callRouteWithApiKey('/cars/booking/prolongation', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars/booking/prolongation', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -1202,7 +1204,7 @@ class ManagerController extends Controller
             'car_id' => $request->vin,
             'new_car_id' => $request->new_vin
         ]);
-        return $this->callRouteWithApiKey('/cars/booking/replace', 'PUT', $request->all(), $request->key);
+        return $this->callRoute('/cars/booking/replace', 'PUT', $request->all(), $request->key);
     }
 
     /**
@@ -1280,7 +1282,7 @@ class ManagerController extends Controller
             'cars' => $cars
         ]);
 
-        return $this->callRouteWithApiKey('/cars', 'POST', $request->all(), $request->key);
+        return $this->callRoute('/cars', 'POST', $request->all(), $request->key);
     }
 
     /**
@@ -2118,22 +2120,34 @@ foreach ($bookings as $booking) {
  * Метод для получения списка заявок
  *
  * @OA\Get(
- *     path="manager/requests",
- *     operationId="getParkRequestsManager",
+ *     path="manager/applications",
+ *     operationId="getParkApplicationsManager",
  *     summary="Получение заявок",
  *     tags={"Manager"},
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="applications", type="array", @OA\Items(
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="manager_id", type="integer"),
+ *                 @OA\Property(property="division_id", type="integer"),
+ *                 @OA\Property(property="advertising_source", type="string"),
+ *                 @OA\Property(property="booking_id", type="integer", nullable=true),
+ *                 @OA\Property(property="planned_arrival", type="string"),
+ *                 @OA\Property(property="reason_for_rejection", type="string", nullable=true),
+ *                 @OA\Property(property="current_status", type="integer", ref="#/components/schemas/ApplicationStatus"),
+ *                 @OA\Property(property="user_id", type="integer", nullable=true),
+ *                 @OA\Property(property="created_at", type="string"),
+ *                 @OA\Property(property="updated_at", type="string")
+ *             ))
  *         )
  *     ),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
  *         )
  *     ),
  *     @OA\Response(
@@ -2148,33 +2162,53 @@ foreach ($bookings as $booking) {
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-    public function getParkRequestsManager(Request $request) {
-        $user = Auth::guard('sanctum')->user();
-        $applications = Application::where('park_id',$user->manager->park_id)->get();
-        return response()->json(['applications' => $applications], 200);
-    }
+public function getParkApplicationsManager(Request $request) {
+    $user = Auth::guard('sanctum')->user();
+    $divisionIds = Division::where('park_id', $user->manager->park_id)->pluck('id')->toArray();
+    $applications = Application::whereIn('division_id', $divisionIds)->get();
+    return response()->json(['applications' => $applications], 200);
+}
 /**
  * Создание заявки
  *
  * Метод для создания заявки
  *
  * @OA\post(
- *     path="manager/requests",
- *     operationId="createRequestsManager",
+ *     path="manager/application",
+ *     operationId="createApplicationManager",
  *     summary="Создание заявки",
  *     tags={"Manager"},
+ * @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="phone",
+ *                 description="телефон",
+ *                 type="string",nullable=true
+ *             ),@OA\Property(
+ *                 property="division_id",
+ *                 description="id подразделения",
+ *                 type="integer",nullable=true
+ *             ),@OA\Property(
+ *                 property="advertising_source",
+ *                 description="источник рекламы",
+ *                 type="sting",nullable=true
+ *             ),@OA\Property(
+ *                 property="planned_arrival",
+ *                 description="дата и время когда планирует прийти",
+ *                 type="datetime",nullable=true
+ *             ))),
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="message", type="string")
  *         )
  *     ),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *             @OA\Property(property="message", type="string", example="")
  *         )
  *     ),
  *     @OA\Response(
@@ -2189,10 +2223,32 @@ foreach ($bookings as $booking) {
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-public function createRequestsManager(Request $request) {
-    // $user = Auth::guard('sanctum')->user();
-    // $applications = Application::where('park_id',$user->manager->park_id)->get();
-    // return response()->json(['applications' => $applications], 200);
+public function createApplicationManager(Request $request) {
+    $user = Auth::guard('sanctum')->user();
+    $managerId = $user->manager->id;
+    $driver_user_id =null;
+    if ($request->phone) {
+        $driver_user= User::where('phone',$request->phone)->firstOrCreate();
+        if (!$driver_user->phone) {
+            $driver_user->phone=$request->phone;
+            $driver_user->save();
+        }
+        $driver_user_id=$driver_user->id;
+    }
+    $request->merge([
+        'manager_id' => $managerId,
+        'driver_user_id'=> $driver_user_id,
+    ]);
+    $kanban = new KanbanController;
+    $applicationId = $kanban->createApplication($request);
+    $request->merge([
+        'type'=>ApplicationLogType::Create->value,
+        'creator'=>'Менеджер',
+        'creator_id'=>$managerId,
+        'id'=>$applicationId
+    ]);
+    $kanban->createApplicationsLogItem($request);
+    return response()->json(['success' => true]);
 }
 /**
  * Изменение заявки
@@ -2200,22 +2256,54 @@ public function createRequestsManager(Request $request) {
  * Метод для изменения заявки
  *
  * @OA\put(
- *     path="manager/requests",
- *     operationId="updateRequestsManager",
+ *     path="manager/application",
+ *     operationId="updateApplicationManager",
  *     summary="Изменение заявки",
  *     tags={"Manager"},
+ * @OA\RequestBody(
+ *         @OA\JsonContent(
+*       @OA\Property(
+ *                 property="id",
+ *                 description="id заявки",
+ *                 type="integer",nullable=false
+ *             ),
+*       @OA\Property(
+ *                 property="division_id",
+ *                 description="id подразделения",
+ *                 type="integer",nullable=true
+ *             ),
+ * @OA\Property(
+ *                 property="advertising_source",
+ *                 description="источник рекламы",
+ *                 type="sting",nullable=true
+ *             ),
+ * @OA\Property(
+ *                 property="reason_for_rejection",
+ *                 description="причина отказа от авто",
+ *                 type="sting",nullable=true
+ *             ),
+ * @OA\Property(
+ *                 property="current_status",
+ *                 description="текущий статус",
+ *                 type="sting",nullable=true, ref="#/components/schemas/ApplicationStatus")
+ *             ),
+ * @OA\Property(
+ *                 property="planned_arrival",
+ *                 description="дата и время когда планирует прийти",
+ *                 type="datetime",nullable=true
+ *             )),
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="message", type="string")
  *         )
  *     ),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
  *         @OA\JsonContent(
- //*             @OA\Property(property="message", type="string", example="Укажите rent_term_id и car_ids")
+ *             @OA\Property(property="message", type="string", example="")
  *         )
  *     ),
  *     @OA\Response(
@@ -2230,11 +2318,242 @@ public function createRequestsManager(Request $request) {
  * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
-public function updateRequestsManager(Request $request) {
-    // $user = Auth::guard('sanctum')->user();
-    // $applications = Application::where('park_id',$user->manager->park_id)->get();
-    // return response()->json(['applications' => $applications], 200);
+public function updateApplicationManager(Request $request) {
+    $request->validate([
+        'id' => 'required|integer'
+    ]);
+
+    $user = Auth::guard('sanctum')->user();
+    $managerId = $user->manager->id;
+    $application = Application::find($request->id);
+
+    $kanban = new KanbanController;
+    $request->merge([
+        'manager_id' => $managerId
+    ]);
+    if (!$application) {
+        return response()->json(['success' => true]);
+    }
+        if ($request->division_id)
+        {
+            updateFieldAndCreateLog($request, $application->division_id, $request->division_id, 'division_id',  $kanban);
+        }
+        if ($request->advertising_source) {
+            updateFieldAndCreateLog($request, $application->advertising_source, $request->advertising_source, 'advertising_source',  $kanban);
+        }
+        if ($request->planned_arrival) {
+            updateFieldAndCreateLog($request, $application->planned_arrival, $request->planned_arrival, 'planned_arrival',  $kanban);
+        }
+        if ($application->manager_id!==$managerId) {
+            updateFieldAndCreateLog($request, $application->manager_id, $managerId, 'manager_id', $kanban);
+        }
+        if ($request->reason_for_rejection) {
+            updateFieldAndCreateLog($request, $application->reason_for_rejection, $request->reason_for_rejection, 'reason_for_rejection', $kanban);
+        }
+        if ($request->current_status) {
+            $old = $application->current_status;
+            $application->current_status=ApplicationStatus::{$request->current_status}->value;
+            $request->merge([
+                'type' => ApplicationLogType::Stage->value,
+                'new_stage' => $application->current_status,
+                'old_stage' => $old,
+            ]);
+            $kanban->createApplicationsLogItem($request);
+        }
+        $application->save();
+        return response()->json(['success' => true]);
 }
+
+/**
+ * Получение логов заявки
+ *
+ * Метод для получения логов заввки
+ *
+ * @OA\Get(
+ *     path="manager/application/log",
+ *     operationId="getParkApplicationsLogItemsManager",
+ *     summary="Получение логов заявки",
+ *     tags={"Manager"},
+  * @OA\RequestBody(
+ *         @OA\JsonContent(
+*       @OA\Property(
+ *                 property="id",
+ *                 description="id заявки",
+ *                 type="integer",nullable=false
+ *             ))),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function getParkApplicationsLogItemsManager(Request $request) {
+    $logs = ApplicationLogs::where('application_id',$request->id)->get();
+    return response()->json(['logs' => $logs], 200);
+}
+/**
+ * Получение уведомлений
+ *
+ * Метод для получения уведомлений
+ *
+ * @OA\Get(
+ *     path="manager/notifications",
+ *     operationId="getNotificationsManager",
+ *     summary="Получение уведомлений",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function getNotificationsManager(Request $request) {
+    $notifications = ApplicationLogs::where('type', ApplicationLogType::Notification->value)
+                                    ->where('content->result', null)
+                                    ->whereJsonContains('content', ['reason' => null])
+                                    ->get();
+
+    return response()->json(['notifications' => $notifications], 200);
+}
+/**
+ * Создание уведомлений
+ *
+ * Метод для создания уведомлений
+ *
+ * @OA\Post(
+ *     path="manager/notification",
+ *     operationId="createNotificationManager",
+ *     summary="Создание уведомлений",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function createNotificationManager(Request $request) {
+
+    $user = Auth::guard('sanctum')->user();
+    $managerId = $user->manager->id;
+
+    $kanban = new KanbanController;
+    $request->merge([
+        'manager_id' => $managerId,
+        'type'=> ApplicationLogType::Notification->value
+    ]);
+
+    return $kanban->createApplicationsLogItem($request);
+}
+/**
+ * Изменение уведомлений
+ *
+ * Метод для изменение уведомлений
+ *
+ * @OA\Put(
+ *     path="manager/notification",
+ *     operationId="updateNotificationManager",
+ *     summary="Изменение уведомлений",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function updateNotificationManager(Request $request) {
+
+    $user = Auth::guard('sanctum')->user();
+    $managerId = $user->manager->id;
+
+    $kanban = new KanbanController;
+    $request->merge([
+        'manager_id' => $managerId,
+        'type'=> ApplicationLogType::Notification->value
+    ]);
+
+    return $kanban->updateApplicationsLogItem($request);
+}
+
     static function checkCarDataIsFilled($car) {
         $requiredFields = ['division_id', 'park_id', 'tariff_id', 'license_plate', 'mileage', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images'];
         foreach ($requiredFields as $field) {
@@ -2247,10 +2566,10 @@ public function updateRequestsManager(Request $request) {
     }
 
 
-     private function callRouteWithApiKey($url, $method, $requestData, $apiKey)
+     private function callRoute($url, $method, $requestData, $apiKey = null)
      {
          $subRequest = Request::create($url, $method, $requestData);
-         $subRequest->headers->set('X-API-key', $apiKey);
+         $apiKey &&$subRequest->headers->set('X-API-key', $apiKey);
          $response = app()->handle($subRequest);
          return $response;
      }
@@ -2301,4 +2620,18 @@ public function updateRequestsManager(Request $request) {
         curl_close($ch);
         return $response;
      }
+
+     private function updateFieldAndCreateLog($request, $field, $oldValue, $newValue, $columnName,  $kanban) {
+        if ($newValue) {
+            $old = $oldValue;
+            $field = $newValue;
+            $request->merge([
+                'type' => ApplicationLogType::Content->value,
+                'column' => $columnName,
+                'old_content' => $old,
+                'new_content' => $newValue
+            ]);
+            $kanban->createApplicationsLogItem($request);
+        }
+    }
 }

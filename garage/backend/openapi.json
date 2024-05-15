@@ -7232,10 +7232,575 @@
                     }
                 }
             }
+        },
+        "manager/applications": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение заявок",
+                "description": "Получение заявок\n\nМетод для получения списка заявок",
+                "operationId": "getParkApplicationsManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "applications": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "manager_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "division_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "advertising_source": {
+                                                        "type": "string"
+                                                    },
+                                                    "booking_id": {
+                                                        "type": "integer",
+                                                        "nullable": true
+                                                    },
+                                                    "planned_arrival": {
+                                                        "type": "string"
+                                                    },
+                                                    "reason_for_rejection": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "current_status": {
+                                                        "$ref": "#/components/schemas/ApplicationStatus"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "nullable": true
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Укажите rent_term_id и car_ids"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "manager/application": {
+            "put": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Изменение заявки",
+                "description": "Изменение заявки\n\nМетод для изменения заявки",
+                "operationId": "updateApplicationManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "id заявки",
+                                        "type": "integer",
+                                        "nullable": false
+                                    },
+                                    "division_id": {
+                                        "description": "id подразделения",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "advertising_source": {
+                                        "description": "источник рекламы",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "reason_for_rejection": {
+                                        "description": "причина отказа от авто",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "current_status": {
+                                        "oneOf": [
+                                            {
+                                                "$ref": "#/components/schemas/ApplicationStatus"
+                                            }
+                                        ],
+                                        "nullable": true,
+                                        "description": "текущий статус",
+                                        "type": "sting"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Создание заявки",
+                "description": "Создание заявки\n\nМетод для создания заявки",
+                "operationId": "createApplicationManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "description": "телефон",
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "division_id": {
+                                        "description": "id подразделения",
+                                        "type": "integer",
+                                        "nullable": true
+                                    },
+                                    "advertising_source": {
+                                        "description": "источник рекламы",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "planned_arrival": {
+                                        "description": "дата и время когда планирует прийти",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "manager/application/log": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение логов заявки",
+                "description": "Получение логов заявки\n\nМетод для получения логов заввки",
+                "operationId": "getParkApplicationsLogItemsManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "id заявки",
+                                        "type": "integer",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "manager/notifications": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение уведомлений",
+                "description": "Получение уведомлений\n\nМетод для получения уведомлений",
+                "operationId": "getNotificationsManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "manager/notification": {
+            "put": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Изменение уведомлений",
+                "description": "Изменение уведомлений\n\nМетод для изменение уведомлений",
+                "operationId": "updateNotificationManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Создание уведомлений",
+                "description": "Создание уведомлений\n\nМетод для создания уведомлений",
+                "operationId": "createNotificationManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "ApplicationLogType": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "string",
+                "enum": [
+                    "Create",
+                    "Stage",
+                    "Content",
+                    "Notification"
+                ]
+            },
+            "ApplicationStatus": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "string",
+                "enum": [
+                    "New",
+                    "InProgress",
+                    "NoAnswer",
+                    "Thinking",
+                    "ReservationCanceled",
+                    "ReservationConfirmed",
+                    "ArrivedAtOffice",
+                    "ArrivedAtOfficeNoCar",
+                    "CarRented",
+                    "NotRealized"
+                ]
+            },
             "BookingStatus": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",

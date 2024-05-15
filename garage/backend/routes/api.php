@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
+use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Broadcast;
 use PHPUnit\Framework\Attributes\Group;
@@ -34,6 +35,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
     Route::post('admin/park', [AdminController::class, 'createPark']);
     Route::post('driver/booking/check', [DriverController::class, 'checkActiveBookingDriver']);
+
     Broadcast::routes();
 });
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
@@ -76,10 +78,11 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     //изменение заявки
     //создание уведомления
     //изменение уведомления
-    Route::get('manager/requests', [ManagerController::class, 'getParkRequestsManager']);
-    Route::post('manager/requests', [ManagerController::class, 'createRequestsManager']);
-    Route::put('manager/requests', [ManagerController::class, 'updateRequestsManager']);
-    Route::post('manager/notifications', [ManagerController::class, 'createNotificationManager']);
-    Route::get('manager/notifications', [ManagerController::class, 'getParkNotificationManager']);
-    Route::put('manager/notifications', [ManagerController::class, 'updateNotificationManager']);
+    Route::get('manager/applications', [ManagerController::class, 'getParkApplicationsManager']);
+    Route::post('manager/notification', [ManagerController::class, 'createNotificationManager']);
+    Route::get('manager/notifications', [ManagerController::class, 'getNotificationsManager']);
+    Route::put('manager/notification', [ManagerController::class, 'updateNotificationManager']);
+    Route::post('manager/application', [ManagerController::class, 'createApplicationManager']);
+    Route::put('manager/application', [ManagerController::class, 'updateApplicationManager']);
+    Route::get('manager/application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
 });

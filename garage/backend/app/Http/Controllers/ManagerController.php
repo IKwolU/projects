@@ -2140,7 +2140,59 @@ foreach ($bookings as $booking) {
  *                 @OA\Property(property="current_stage", type="string", ref="#/components/schemas/ApplicationStage"),
  *                 @OA\Property(property="user_id", type="integer", nullable=true),
  *                 @OA\Property(property="created_at", type="string"),
- *                 @OA\Property(property="updated_at", type="string")
+ *                 @OA\Property(property="updated_at", type="string"),
+ *                 @OA\Property(property="user", type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="phone", type="string"),
+ *                     @OA\Property(property="name", type="string"),
+ *                     @OA\Property(property="email", type="string")
+ *                 }),
+ *                 @OA\Property(property="booking", nullable=true, type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="status", type="integer"),
+ *                     @OA\Property(property="car_id", type="integer"),
+ *                     @OA\Property(property="car", type="object", properties={
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="license_plate", type="string"),
+ *                         @OA\Property(property="brand", type="string"),
+ *                         @OA\Property(property="model", type="string"),
+ *                         @OA\Property(property="year_produced", type="integer"),
+ *                         @OA\Property(property="car_id", type="string")
+ *                     }),
+ *                     @OA\Property(property="schema_id", type="integer"),
+ *                     @OA\Property(property="schema", type="object", properties={
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="daily_amount", type="integer"),
+ *                         @OA\Property(property="non_working_days", type="integer"),
+ *                         @OA\Property(property="working_days", type="integer")
+ *                     }),
+ *                     @OA\Property(property="driver_id", type="integer"),
+ *                     @OA\Property(property="booked_at", type="string"),
+ *                     @OA\Property(property="booked_until", type="string"),
+ *                     @OA\Property(property="park_id", type="integer"),
+ *                     @OA\Property(property="cancellation_source", type="integer"),
+ *                     @OA\Property(property="cancellation_reason", type="string")
+ *                 }),
+ *                 @OA\Property(property="division", type="object", properties={
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="city_id", type="integer"),
+ *                     @OA\Property(property="name", type="string"),
+ *                     @OA\Property(property="phone", type="string"),
+ *                     @OA\Property(property="city", type="object", properties={
+ *                         @OA\Property(property="name", type="integer")
+ *                     }),
+ *                     @OA\Property(property="manager", type="object", properties={
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="user_id", type="integer"),
+ *                         @OA\Property(property="user", type="object", properties={
+ *                             @OA\Property(property="id", type="integer"),
+ *                             @OA\Property(property="user_status", type="integer"),
+ *                             @OA\Property(property="phone", type="string"),
+ *                             @OA\Property(property="name", type="string"),
+ *                             @OA\Property(property="email", type="string")
+ *                         })
+ *                     })
+ *                 })
  *             ))
  *         )
  *     ),
@@ -2166,10 +2218,41 @@ foreach ($bookings as $booking) {
 public function getParkApplicationsManager(Request $request) {
     $user = Auth::guard('sanctum')->user();
     $divisionIds = Division::where('park_id', $user->manager->park_id)->pluck('id')->toArray();
-    $applications = Application::whereIn('division_id', $divisionIds)->get();
+
+    $applications = Application::whereIn('division_id', $divisionIds)
+        ->with([
+            'user' => function ($query) {
+                $query->select('id', 'user_status', 'phone', 'name', 'email');
+            },
+            'booking' => function ($query) {
+                $query->select('id', 'status', 'car_id', 'schema_id', 'driver_id', 'booked_at', 'booked_until', 'park_id', 'cancellation_source', 'cancellation_reason');
+            },
+            'booking.car' => function ($query) {
+                $query->select('id', 'license_plate', 'brand', 'model', 'year_produced', 'car_id');
+            },
+            'booking.schema' => function ($query) {
+                $query->select('id', 'daily_amount', 'non_working_days', 'working_days');
+            },
+            'division' => function ($query) {
+                $query->select('id', 'city_id', 'name', 'phone');
+            },
+            'manager' => function ($query) {
+                $query->select('id', 'user_id');
+            },
+            'manager.user' => function ($query) {
+                $query->select('id', 'user_status', 'phone', 'name', 'email');
+            },
+            'division.city' => function ($query) {
+                $query->select('id','name');
+            }
+        ])
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
     foreach ($applications as $application) {
         $application->current_stage = ApplicationStage::from($application->current_stage)->name;
     }
+
     return response()->json(['applications' => $applications], 200);
 }
 /**
@@ -2205,7 +2288,7 @@ public function getParkApplicationsManager(Request $request) {
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="id", type="integer")
  *         )
  *     ),
  *     @OA\Response(
@@ -2252,7 +2335,7 @@ public function createApplicationManager(Request $request) {
         'id'=>$applicationId
     ]);
     $kanban->createApplicationsLogItem($request);
-    return response()->json(['success' => true]);
+    return response()->json(['id' => $applicationId]);
 }
 /**
  * Изменение заявки
@@ -2360,7 +2443,7 @@ public function updateApplicationManager(Request $request) {
             $request->merge([
                 'type' => ApplicationLogType::Stage->value,
                 'new_stage' => $application->current_stage,
-                'old_stage' => $old,
+                'old_stage' => ApplicationStage::from($old)->name,
             ]);
             $kanban->createApplicationsLogItem($request);
         }
@@ -2373,7 +2456,7 @@ public function updateApplicationManager(Request $request) {
  *
  * Метод для получения логов заввки
  *
- * @OA\Get(
+ * @OA\Post(
  *     path="manager/application/log",
  *     operationId="getParkApplicationsLogItemsManager",
  *     summary="Получение логов заявки",
@@ -2385,13 +2468,34 @@ public function updateApplicationManager(Request $request) {
  *                 description="id заявки",
  *                 type="integer",nullable=false
  *             ))),
- *     @OA\Response(
- *         response=200,
- *         description="Успешно",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string")
- *         )
- *     ),
+  * @OA\Response(
+ *     response=200,
+ *     description="Успешно",
+ *     @OA\JsonContent(
+ *         @OA\Property(property="logs", type="array",
+*             @OA\Items(
+*                 @OA\Property(property="id", type="integer"),
+*                 @OA\Property(property="manager_id", type="integer"),
+*                 @OA\Property(property="application_id", type="integer"),
+*                 @OA\Property(property="type", type="string"),
+*                 @OA\Property(property="content", type="object"),
+*                 @OA\Property(property="created_at", type="string"),
+*                 @OA\Property(property="updated_at", type="string"),
+*                 @OA\Property(property="application", type="object", properties={
+*                     @OA\Property(property="id", type="integer"),
+*                     @OA\Property(property="manager_id", type="integer")}),
+*                 @OA\Property(property="manager", type="object",properties={
+*                     @OA\Property(property="id", type="integer"),
+*                     @OA\Property(property="user_id", type="integer"),
+*                     @OA\Property(property="user", type="object",properties={
+*                         @OA\Property(property="id", type="integer"),
+*                         @OA\Property(property="name", type="string")
+*                     })
+*                 })
+*             )
+*         )
+*     )
+* ),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
@@ -2412,7 +2516,20 @@ public function updateApplicationManager(Request $request) {
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
 public function getParkApplicationsLogItemsManager(Request $request) {
-    $logs = ApplicationLogs::where('application_id',$request->id)->get();
+    $logs = ApplicationLogs::where('application_id',$request->id)->with([
+        'application' => function ($query) {
+            $query->select('id', 'manager_id');
+        },
+        'manager' => function ($query) {
+            $query->select('id', 'user_id');
+        },
+        'manager.user' => function ($query) {
+            $query->select('id', 'name');
+        }
+        ])->get();
+    foreach ($logs as $log ) {
+        $log->type = ApplicationLogType::from($log->type)->name;
+    }
     return response()->json(['logs' => $logs], 200);
 }
 /**
@@ -2627,12 +2744,10 @@ public function updateNotificationManager(Request $request) {
 
      private function updateFieldAndCreateLog($request, $field, $oldValue, $newValue, $columnName,  $kanban) {
         if ($newValue) {
-            $old = $oldValue;
-            $field = $newValue;
             $request->merge([
                 'type' => ApplicationLogType::Content->value,
-                'column' => $columnName,
-                'old_content' => $old,
+                'column' => $field,
+                'old_content' => $oldValue,
                 'new_content' => $newValue
             ]);
             $kanban->createApplicationsLogItem($request);

@@ -21,7 +21,7 @@ class ApplicationLogs extends Model
         return $this->belongsTo(Manager::class);
     }
 
-    public function request()
+    public function application()
     {
         return $this->belongsTo(Application::class);
     }

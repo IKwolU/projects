@@ -672,7 +672,7 @@ export const BookingManager = () => {
         </Table>
       </div> */}
 
-      <div className="flex justify-between w-full mt-4 space-x-1 sm:mx-0 sm:w-full sm:space-x-1 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
+      <div className="flex justify-between w-full max-w-full mt-4 space-x-1 overflow-x-auto sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">
         <BookingKanban />
       </div>
     </>

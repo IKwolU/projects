@@ -84,5 +84,5 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::put('manager/notification', [ManagerController::class, 'updateNotificationManager']);
     Route::post('manager/application', [ManagerController::class, 'createApplicationManager']);
     Route::put('manager/application', [ManagerController::class, 'updateApplicationManager']);
-    Route::get('manager/application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
+    Route::post('manager/application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
 });

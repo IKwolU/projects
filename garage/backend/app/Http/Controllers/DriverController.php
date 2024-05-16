@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ApplicationLogType;
+use App\Enums\ApplicationStage;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationSources;
 use App\Enums\CarClass;
@@ -9,6 +11,7 @@ use App\Enums\CarStatus;
 use App\Enums\FuelType;
 use App\Enums\TransmissionType;
 use App\Enums\UserStatus;
+use App\Models\Application;
 use App\Models\Booking;
 use App\Models\Car;
 use Illuminate\Http\Request;
@@ -360,6 +363,9 @@ class DriverController extends Controller
             }])
             ->select('deposit_amount_daily', 'deposit_amount_total', 'minimum_period_days', 'is_buyout_possible', 'id')
             ->first();
+
+$divisionId=$car->division->id;
+
         unset(
             $booked->created_at,
             $booked->updated_at,
@@ -394,6 +400,21 @@ class DriverController extends Controller
         foreach ($booked->rent_term->schemas as $schema) {
             unset($schema->created_at, $schema->updated_at, $schema->id, $schema->rent_term_id);
         }
+
+        $kanban = new KanbanController;
+        $request->merge([
+            'division_id' => $divisionId,
+            'driver_user_id'=> $user->id,
+            'booking_id'=>$booking->id
+        ]);
+        $applicationId = $kanban->createApplication($request);
+        $request->merge([
+            'type'=>ApplicationLogType::Create->value,
+            'creator'=>'Водитель',
+            'creator_id'=>$user->id,
+            'id'=>$applicationId
+        ]);
+        $kanban->createApplicationsLogItem($request);
 
         $api = new APIController;
         $api->notifyParkOnBookingStatusChanged($booking->id, true, $schema);
@@ -511,9 +532,21 @@ class DriverController extends Controller
         }
         $car->status = CarStatus::AvailableForBooking->value;
         $car->save();
+
+        $kanban = new KanbanController;
+        $application= Application::where('booking_id',$booking->id)->first();
+        $request->merge([
+            'type'=>ApplicationLogType::Content->value,
+            'column'=>'current_stage',
+            'old_content'=>$application->current_stage,
+            'new_content'=>ApplicationStage::ReservationCanceled->value,
+            'id'=>$application->id
+        ]);
+        $application->current_stage =ApplicationStage::ReservationCanceled->value;
+        $application->save();
+        $kanban->createApplicationsLogItem($request);
+
         $api = new APIController;
-
-
         $api->notifyParkOnBookingStatusChanged(booking_id: $booking->id, is_booked: false, fromDriver: true, reason: $reason);
         return response()->json(['message' => 'Бронирование автомобиля успешно отменено'], 200);
     }
@@ -599,6 +632,9 @@ class DriverController extends Controller
      * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор брони для проверки
      * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом проверки активной брони (true/false)
      */
+
+
+
     public function checkActiveBookingDriver(Request $request)
     {
         $bookingStatus = Booking::where('id', $request->id)->select('id', 'status')->first()->status;

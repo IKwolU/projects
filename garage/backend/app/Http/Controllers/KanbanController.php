@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ApplicationLogType;
 use App\Enums\ApplicationStage;
+use App\Events\KanbanUpdated;
 use App\Models\Application;
 use App\Models\ApplicationLogs;
 use Illuminate\Http\Request;
@@ -72,6 +73,8 @@ class KanbanController extends Controller
             ]);
         }
         $logItem->save();
+        event(new KanbanUpdated($request->id));
+
         return response()->json(['success' => true]);
     }
 

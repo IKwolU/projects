@@ -38,8 +38,7 @@ class KanbanUpdated implements ShouldBroadcast
         if ($user->user_type!==UserType::Manager->value) {
             return [];
         }
-        $parkId = Park::where('id',$user->manager->park_id);
-
+        $parkId = Park::where('id',$user->manager->park_id)->first()->id;
     if ($parkId) {
         return [
             new PrivateChannel('ParkKanban.'.$parkId),
@@ -48,8 +47,5 @@ class KanbanUpdated implements ShouldBroadcast
 
     return [];
     }
-    public function broadcastAs()
-    {
-        return 'KanbanUpdated';
-    }
+
 }

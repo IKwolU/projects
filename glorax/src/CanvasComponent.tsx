@@ -221,26 +221,26 @@ function CanvasComponent() {
       checkTextureLoaded();
     }, [gltf, texture]);
 
-    useFrame(() => {
-      if (sphereRef.current) {
-        // Получаем позицию и поворот камеры
-        const { rotation } = camera;
+    // useFrame(() => {
+    //   if (sphereRef.current) {
+    //     // Получаем позицию и поворот камеры
+    //     const { rotation } = camera;
 
-        // Обновляем поворот объекта в соответствии с поворотом камеры
-        sphereRef.current.rotation.x = rotation.x;
-        sphereRef.current.rotation.y = rotation.y;
-        sphereRef.current.rotation.z = rotation.z;
-      }
-      if (aboutRef.current) {
-        // Получаем позицию и поворот камеры
-        const { rotation } = camera;
+    //     // Обновляем поворот объекта в соответствии с поворотом камеры
+    //     sphereRef.current.rotation.x = rotation.x;
+    //     sphereRef.current.rotation.y = rotation.y;
+    //     sphereRef.current.rotation.z = rotation.z;
+    //   }
+    //   if (aboutRef.current) {
+    //     // Получаем позицию и поворот камеры
+    //     const { rotation } = camera;
 
-        // Обновляем поворот объекта в соответствии с поворотом камеры
-        aboutRef.current.rotation.x = rotation.x;
-        aboutRef.current.rotation.y = rotation.y;
-        aboutRef.current.rotation.z = rotation.z;
-      }
-    });
+    //     // Обновляем поворот объекта в соответствии с поворотом камеры
+    //     aboutRef.current.rotation.x = rotation.x;
+    //     aboutRef.current.rotation.y = rotation.y;
+    //     aboutRef.current.rotation.z = rotation.z;
+    //   }
+    // });
 
     if (!isTextureLoaded) {
       return null;
@@ -275,7 +275,7 @@ function CanvasComponent() {
   return (
     <>
       {loadedTextures.length < 3 && (
-        <div className="fixed w-full h-full z-[60] bg-white flex justify-center items-center">
+        <div className="fixed w-full h-full z-[10] bg-[#FFF8ED] flex justify-center items-center">
           <div className="flex items-center justify-center gap-6">
             {/* <img src="./img/glora.png" alt="" />
             <img
@@ -333,8 +333,8 @@ function CanvasComponent() {
       )}
 
       <Canvas
-        className="w-full h-full bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
-        camera={{ position: [-60, 30, -35] }}
+        className="w-full h-full  bg-[#FFF8ED]"
+        camera={{ position: [-60, 14, -35] }}
         shadows
         style={{}}
       >
@@ -375,7 +375,7 @@ function CanvasComponent() {
           scale={[1, 1, 1]}
           file="/models/test13.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-          position={[0, -6, 0]}
+          position={[0, -5, 0]}
           opacity={0.93}
           rotate={[0, 0, 0]}
           isOpacity={false}
@@ -445,11 +445,11 @@ function CanvasComponent() {
                 position={[0, 0, 0]}
                 scale={[20, 20, 20]}
                 opacity={0.93}
-                rotate={[90, 0, 0]}
+                rotate={[-0, 0, 0]}
                 isOpacity={false}
               />
               <meshStandardMaterial
-                color={"white"}
+                color={"#FFC226"}
                 roughnessMap={glassTexture}
               />
             </mesh>
@@ -468,8 +468,8 @@ function CanvasComponent() {
         </mesh>
         <OrbitControls
           maxPolarAngle={Math.PI / 2.0}
-          minDistance={14}
-          maxDistance={20}
+          minDistance={15}
+          maxDistance={17}
           target={[0, 1, 0]}
           ref={controlsRef}
           enablePan={false}

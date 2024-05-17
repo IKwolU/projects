@@ -89,7 +89,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
     }, 1000);
   };
 
-  const handleSeekEnd: MouseEventHandler<HTMLInputElement> = (e) => {
+  const handleSeekEnd = (e: any) => {
     if (audioRef.current) {
       const seekTime =
         (parseInt(e.currentTarget.value) / 100) * audioRef.current!.duration;
@@ -102,9 +102,9 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
 
   const handleSeek = (e: ChangeEvent<HTMLInputElement>) => {
     if (isSeeking) {
-      // const seekTime =
-      // (parseInt(e.target.value) / 100) * audioRef.current!.duration;
-      // setCurrentTime(seekTime);
+      const seekTime =
+        (parseInt(e.target.value) / 100) * audioRef.current!.duration;
+      setCurrentTime(seekTime);
       setProgress(parseInt(e.target.value));
     }
   };
@@ -173,9 +173,11 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
           max="100"
           value={progress}
           onMouseDown={handleSeekStart}
+          onTouchStart={handleSeekStart}
           onMouseUp={handleSeekEnd}
+          onTouchEnd={handleSeekEnd}
           onChange={handleSeek}
-          className="w-full h-1 rounded appearance-none bg-blue w-[90%]"
+          className=" h-1 rounded appearance-none bg-blue w-[90%]"
         />
         <div className="flex items-center justify-between w-full text-sm">
           <span className="text-zinc-600">

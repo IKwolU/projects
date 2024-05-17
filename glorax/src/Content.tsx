@@ -47,12 +47,15 @@ function Content() {
 
   return (
     <>
+      <div className="fixed z-[53] flex w-24 flex-col h-10  px-1 sm:px-2  top-0 left-0 bg-opacity-40 justify-center items-center">
+        <img src="./img/menu.png" alt="" className="object-contain w-full" />
+      </div>
       {questionsClicked && (
         <div
           onClick={(e) =>
             e.target === e.currentTarget ? setQuestionsClicked(false) : null
           }
-          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-6 md:bottom-0 bg-black bg-opacity-40 justify-center items-center"
+          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center"
         >
           <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2">
             <FontAwesomeIcon
@@ -119,16 +122,16 @@ function Content() {
           <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-white bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
-      <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
+      {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
         <FontAwesomeIcon
           onClick={() => setQuestionsClicked(!questionsClicked)}
           icon={faCircleQuestion}
           className="w-8 h-8 transition-opacity opacity-50 cursor-pointer text-blue hover:opacity-100 active:opacity-100"
         />
-      </div>
-      <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
+      </div> */}
+      {/* <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
         <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
-      </div>
+      </div> */}
       <div className="fixed bottom-1 z-50 flex w-[280px] text-sm right-10 text-zinc-500">
         <p>© 2024. GloraX. Все права защищены</p>
       </div>

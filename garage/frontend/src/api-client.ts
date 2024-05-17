@@ -6837,6 +6837,8 @@ export class Body42 implements IBody42 {
     advertising_source?: any | undefined;
     /** причина отказа от авто */
     reason_for_rejection?: any | undefined;
+    /** Имя пользователя */
+    user_name?: any | undefined;
     /** текущий статус */
     current_stage?: ApplicationStage | undefined;
 
@@ -6861,6 +6863,7 @@ export class Body42 implements IBody42 {
             this.division_id = _data["division_id"];
             this.advertising_source = _data["advertising_source"];
             this.reason_for_rejection = _data["reason_for_rejection"];
+            this.user_name = _data["user_name"];
             this.current_stage = _data["current_stage"];
         }
     }
@@ -6882,6 +6885,7 @@ export class Body42 implements IBody42 {
         data["division_id"] = this.division_id;
         data["advertising_source"] = this.advertising_source;
         data["reason_for_rejection"] = this.reason_for_rejection;
+        data["user_name"] = this.user_name;
         data["current_stage"] = this.current_stage;
         return data;
     }
@@ -6896,6 +6900,8 @@ export interface IBody42 {
     advertising_source?: any | undefined;
     /** причина отказа от авто */
     reason_for_rejection?: any | undefined;
+    /** Имя пользователя */
+    user_name?: any | undefined;
     /** текущий статус */
     current_stage?: ApplicationStage | undefined;
 

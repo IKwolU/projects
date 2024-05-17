@@ -10,10 +10,16 @@ import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
-import { getApplicationStageDisplayName } from "@/lib/utils";
+import {
+  getApplicationFieldDisplayName,
+  getApplicationStageDisplayName,
+} from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { useRecoilState } from "recoil";
+import { applicationsAtom } from "./atoms";
+import Confirmation from "@/components/ui/confirmation";
 
 interface Details {
   applicationDetails: Applications;
@@ -22,6 +28,8 @@ interface Details {
 
 export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   const [applicationLogs, setApplicationsLogs] = useState<Logs[]>();
+  const [applications, setApplications] = useRecoilState(applicationsAtom);
+
   const lastElement = useRef<HTMLDivElement>(null);
   const [plannedArrival, setPlannedArrival] = useState(
     applicationDetails!.planned_arrival
@@ -126,10 +134,27 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                         onChange={(e) => setUserName(e.target.value)}
                         placeholder={applicationDetails!.user?.name}
                       />
-                      <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
-                      />
+                      <div className="">
+                        <Confirmation
+                          accept={() =>
+                            changeApplicationData(
+                              applicationDetails!.id!,
+                              "user_name",
+                              userName
+                            )
+                          }
+                          cancel={() => {}}
+                          title="Вы хотите изменить ФИО учетной записи водителя?"
+                          trigger={
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                            />
+                          }
+                          type="green"
+                        />
+                      </div>
+
                       <div
                         className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
                           applicationDetails.user?.name === userName
@@ -164,7 +189,11 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       <Input
                         className="m-0 w-44"
                         type="datetime-local"
-                        value={applicationDetails!.planned_arrival}
+                        value={
+                          plannedArrival
+                            ? plannedArrival
+                            : applicationDetails!.planned_arrival
+                        }
                         onChange={(e) => setPlannedArrival(e.target.value)}
                         placeholder={
                           applicationDetails!.planned_arrival &&
@@ -215,7 +244,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       title: "Условия аренды",
                       content: `${
                         applicationDetails!.booking.schema?.working_days
-                      } ${
+                      }/${
                         applicationDetails!.booking.schema?.non_working_days
                       } ${applicationDetails!.booking.schema?.daily_amount}`,
                     },
@@ -286,17 +315,19 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                   ref={applicationLogs.length === i + 1 ? lastElement : null}
                 >
                   {log.type !== ApplicationLogType.Notification && (
-                    <div className="flex space-x-2 text-sm">
+                    <div className="flex items-center space-x-2 text-sm">
                       <div className="">
-                        {format(log.created_at!, "dd.MM.yyyy HH:mm")}
-                      </div>
-                      {log.type !== ApplicationLogType.Create && (
-                        <div className="">
-                          {log.manager
-                            ? log.manager.user!.name + ","
-                            : "Нет ответственного,"}
+                        <div className="text-nowrap ">
+                          {format(log.created_at!, "dd.MM.yyyy HH:mm")}
                         </div>
-                      )}
+                        {log.type !== ApplicationLogType.Create && (
+                          <div className="">
+                            {log.manager
+                              ? log.manager.user!.name
+                              : "Нет ответственного,"}
+                          </div>
+                        )}
+                      </div>
                       {log.type === ApplicationLogType.Stage && (
                         <div className="inline space-x-2">
                           изменен этап с{" "}
@@ -311,15 +342,15 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       )}
                       {log.type === ApplicationLogType.Content && (
                         <div className="inline space-x-2">
-                          изменено поле{" "}
+                          <span>Изменено поле</span>
                           <span className="font-semibold">
-                            {content.column}
+                            {getApplicationFieldDisplayName(content.column)}
                           </span>
-                          значение
+                          <span>значение</span>
                           <span className="font-semibold">
                             {content.old_content}
                           </span>
-                          изменено на
+                          <span>изменено на</span>
                           <span className="font-semibold">
                             {content.new_content}
                           </span>

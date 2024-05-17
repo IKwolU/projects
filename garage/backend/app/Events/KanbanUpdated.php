@@ -17,6 +17,8 @@ class KanbanUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
+
     /**
      * Create a new event instance.
      */
@@ -45,5 +47,9 @@ class KanbanUpdated implements ShouldBroadcast
     }
 
     return [];
+    }
+    public function broadcastAs()
+    {
+        return 'KanbanUpdated';
     }
 }

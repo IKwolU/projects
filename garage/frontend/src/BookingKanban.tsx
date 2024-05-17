@@ -127,7 +127,7 @@ export const BookingKanban = () => {
     return <></>;
   }
 
-  const sortedApplications = applications.sort(
+  const sortedApplications = [...applications].sort(
     (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
   );
 

@@ -15,6 +15,7 @@ import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
 type MainMenuItem = {
   name: string;
@@ -36,17 +37,29 @@ export const ParkManager = () => {
       const getPark = async () => {
         const parkData: IPark2 = await client.getParkManager();
         setPark(parkData.park);
+        // const pusher = Pusher.getInstance();
 
-        Echo.private(`ParkKanban.${parkData.id}`).listen(
-          "KanbanUpdated",
-          (e: any) => {
-            console.log("changed");
-          }
-        );
+        // await pusher.init({
+        //   apiKey: "8cbf3c5a14c45c1cb9b2",
+        //   cluster: "eu",
+        // });
 
-        return () => {
-          Echo.disconnect();
-        };
+        // await pusher.connect();
+        // await pusher.subscribe({
+        //   channelName: `ParkKanban.${parkData.id}`,
+        //   onEvent: (event: PusherEvent) => {
+        //     console.log(`KanbanUpdated: ${event}`);
+        //   },
+        // });
+
+        const pusher = new Pusher("8cbf3c5a14c45c1cb9b2", {
+          cluster: "eu",
+        });
+
+        const channel = pusher.subscribe(`ParkKanban.${parkData.id}`);
+        channel.bind(`KanbanUpdated`, function (data) {
+          console.log("Event received:", data);
+        });
       };
 
       getPark();

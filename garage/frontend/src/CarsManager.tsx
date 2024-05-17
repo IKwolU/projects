@@ -177,7 +177,6 @@ export const CarsManager = () => {
       const file: any = await resizeFile(fileList[0]);
       const image = await resizeFile(file);
       setPhotos([...photos, file as File]);
-      console.log(image);
     } catch (err) {
       console.log(err);
     }

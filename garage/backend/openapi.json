@@ -7515,6 +7515,11 @@
                                         "type": "sting",
                                         "nullable": true
                                     },
+                                    "user_name": {
+                                        "description": "Имя пользователя",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
                                     "current_stage": {
                                         "oneOf": [
                                             {

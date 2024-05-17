@@ -137,3 +137,25 @@ export const getApplicationStageDisplayName = (stage: ApplicationStage) => {
   };
   return stages[stage];
 };
+export const getApplicationFieldDisplayName = (field: string) => {
+  switch (field) {
+    case "planned_arrival":
+      return "Планирует прийти";
+      break;
+    case "user_name":
+      return "ФИО";
+      break;
+    case "manager_id":
+      return "Идентификатор менеджера";
+      break;
+    case "manager_name":
+      return "Менеджер";
+      break;
+    case "reason_for_rejection":
+      return "Причина отказа от авто";
+      break;
+    default:
+      return "";
+      break;
+  }
+};

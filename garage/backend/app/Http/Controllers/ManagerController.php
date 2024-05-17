@@ -2370,6 +2370,11 @@ public function createApplicationManager(Request $request) {
  *                 type="sting",nullable=true
  *             ),
  * @OA\Property(
+ *                 property="user_name",
+ *                 description="Имя пользователя",
+ *                 type="sting",nullable=true
+ *             ),
+ * @OA\Property(
  *                 property="current_stage",
  *                 description="текущий статус",
  *                 type="sting",nullable=true, ref="#/components/schemas/ApplicationStage")
@@ -2421,21 +2426,35 @@ public function updateApplicationManager(Request $request) {
     if (!$application) {
         return response()->json(['success' => true]);
     }
+        if ($request->user_name)
+        {
+            $userDriver = User::where('id',$application->user_id)->first();
+            $this->updateFieldAndCreateLog($request, $userDriver->name, $request->user_name, 'user_name',  $kanban);
+            $userDriver->name=$request->user_name;
+            $userDriver->save();
+        }
         if ($request->division_id)
         {
-            updateFieldAndCreateLog($request, $application->division_id, $request->division_id, 'division_id',  $kanban);
+            $this->updateFieldAndCreateLog($request, $application->division_id, $request->division_id, 'division_id',  $kanban);
+            $application->division_id=$request->division_id;
         }
         if ($request->advertising_source) {
-            updateFieldAndCreateLog($request, $application->advertising_source, $request->advertising_source, 'advertising_source',  $kanban);
+            $this->updateFieldAndCreateLog($request, $application->advertising_source, $request->advertising_source, 'advertising_source',  $kanban);
+            $application->advertising_source=$request->advertising_source;
         }
         if ($request->planned_arrival) {
-            updateFieldAndCreateLog($request, $application->planned_arrival, $request->planned_arrival, 'planned_arrival',  $kanban);
+            $this->updateFieldAndCreateLog($request, $application->planned_arrival, $request->planned_arrival, 'planned_arrival',  $kanban);
+            $application->planned_arrival=$request->planned_arrival;
         }
         if ($application->manager_id!==$managerId) {
-            updateFieldAndCreateLog($request, $application->manager_id, $managerId, 'manager_id', $kanban);
+            $this->updateFieldAndCreateLog($request, $application->manager_id, $managerId, 'manager_id', $kanban);
+            $manager = Manager::where('id',$application->manager_id)->first();
+            $this->updateFieldAndCreateLog($request, $manager?$manager->name:'Без менеджера', $user->name, 'manager_name', $kanban);
+            $application->manager_id=$managerId;
         }
         if ($request->reason_for_rejection) {
-            updateFieldAndCreateLog($request, $application->reason_for_rejection, $request->reason_for_rejection, 'reason_for_rejection', $kanban);
+            $this->updateFieldAndCreateLog($request, $application->reason_for_rejection, $request->reason_for_rejection, 'reason_for_rejection', $kanban);
+            $application->reason_for_rejection=$request->reason_for_rejection;
         }
         if ($request->current_stage) {
             $old = $application->current_stage;
@@ -2742,8 +2761,8 @@ public function updateNotificationManager(Request $request) {
         return $response;
      }
 
-     private function updateFieldAndCreateLog($request, $field, $oldValue, $newValue, $columnName,  $kanban) {
-        if ($newValue) {
+     private function updateFieldAndCreateLog($request,  $oldValue, $newValue, $field,  $kanban) {
+        if ($newValue !== $oldValue) {
             $request->merge([
                 'type' => ApplicationLogType::Content->value,
                 'column' => $field,

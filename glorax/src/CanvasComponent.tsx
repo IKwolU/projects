@@ -38,6 +38,7 @@ function CanvasComponent() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const handleClick = (position: number[], index: number) => {
   //   setContentId(index);
   // if (controlsRef.current) {
@@ -147,6 +148,21 @@ function CanvasComponent() {
   //     />
   //   );
   // }
+  const images = [
+    "./img/g1.png",
+    "./img/l2.png",
+    "./img/o3.png",
+    "./img/r4.png",
+    "./img/a5.png",
+    "./img/xxglora.png",
+  ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   function OBJModel({
     file,
@@ -257,55 +273,114 @@ function CanvasComponent() {
   }
 
   return (
-    <Canvas
-      className="w-full h-full bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
-      camera={{ position: [-60, 30, -35] }}
-      shadows
-      style={{}}
-    >
-      <perspectiveCamera
-        ref={cameraRef}
-        position={[0, 0, 5]}
-        fov={75}
-        aspect={window.innerWidth / window.innerHeight}
-        near={0.1}
-        far={1000}
-      />
-      <directionalLight
-        position={[12000, 5000, 12000]}
-        castShadow
-        intensity={3}
-        // color="#fff0de"
-      />
-      <directionalLight
-        position={[-12000, 5000, -12000]}
-        castShadow
-        intensity={3}
-        // color="#fff0de"
-      />
-      <directionalLight
-        position={[12000, 50, -12000]}
-        castShadow
-        intensity={3}
-        // color="#fff0de"
-      />
-      <directionalLight
-        position={[-12000, 50, 12000]}
-        castShadow
-        intensity={1}
-        // color="#fff0de"
-      />
+    <>
+      {loadedTextures.length < 3 && (
+        <div className="fixed w-full h-full z-[60] bg-white flex justify-center items-center">
+          <div className="flex items-center justify-center gap-6">
+            {/* <img src="./img/glora.png" alt="" />
+            <img
+              src="./img/xxglora.png"
+              alt=""
+              className="animate-[spin_4s_linear_infinite]"
+            /> */}
+            {/* <img
+              src="./img/g1.png"
+              alt=""
+              className="animate-[show_20s_ease-in-out_infinite]"
+            />
+            <img
+              src="./img/l2.png"
+              alt=""
+              className="animate-[show_18s_ease-in-out_infinite]"
+            />
+            <img
+              src="./img/o3.png"
+              alt=""
+              className="animate-[show_16s_ease-in-out_infinite]"
+            />
+            <img
+              src="./img/r4.png"
+              alt=""
+              className="animate-[show_14s_ease-in-out_infinite]"
+            />
+            <img
+              src="./img/a5.png"
+              alt=""
+              className="animate-[show_12s_ease-in-out_infinite]"
+            />
+            <img
+              src="./img/xxglora.png"
+              alt=""
+              className="animate-[show_10s_ease-in-out_infinite]"
+            /> */}
+            <div
+              className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2
+          "
+            >
+              {images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt=""
+                  className={`animate-[show_2s]  h-full object-contain ${
+                    index <= currentImageIndex ? "visible" : "hidden"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
-      <OBJModel
-        scale={[1, 1, 1]}
-        file="/models/test13.gltf"
-        texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-        position={[0, -6, 0]}
-        opacity={0.93}
-        rotate={[0, 0, 0]}
-        isOpacity={false}
-      />
-      {/* <OBJModel
+      <Canvas
+        className="w-full h-full bg-no-repeat bg-[length:120%_120%] bg-center bg-gray-100"
+        camera={{ position: [-60, 30, -35] }}
+        shadows
+        style={{}}
+      >
+        <perspectiveCamera
+          ref={cameraRef}
+          position={[0, 0, 5]}
+          fov={75}
+          aspect={window.innerWidth / window.innerHeight}
+          near={0.1}
+          far={1000}
+        />
+        <directionalLight
+          position={[12000, 5000, 12000]}
+          castShadow
+          intensity={3}
+          // color="#fff0de"
+        />
+        <directionalLight
+          position={[-12000, 5000, -12000]}
+          castShadow
+          intensity={3}
+          // color="#fff0de"
+        />
+        <directionalLight
+          position={[12000, 50, -12000]}
+          castShadow
+          intensity={3}
+          // color="#fff0de"
+        />
+        <directionalLight
+          position={[-12000, 50, 12000]}
+          castShadow
+          intensity={1}
+          // color="#fff0de"
+        />
+
+        <OBJModel
+          scale={[1, 1, 1]}
+          file="/models/test13.gltf"
+          texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+          position={[0, -6, 0]}
+          opacity={0.93}
+          rotate={[0, 0, 0]}
+          isOpacity={false}
+        />
+        {/* <OBJModel
         scale={[1, 1, 1]}
         file="/models/planelast3.gltf"
         texture={ColorToTexture(new THREE.Color(65, 105, 225))}
@@ -314,15 +389,15 @@ function CanvasComponent() {
         rotate={[0, 0, 0]}
         isOpacity={true}
       /> */}
-      {/* <OBJModel
+        {/* <OBJModel
             file="/models/man.glb"
             texture={ColorToTexture(new THREE.Color(0, 0, 0))}
             position={[-2, -2, 2]}
           /> */}
-      {currentTime > content[0].start_time &&
-        currentTime < content[0].end_time && (
-          <>
-            {/* <OBJModel
+        {currentTime > content[0].start_time &&
+          currentTime < content[0].end_time && (
+            <>
+              {/* <OBJModel
               file="/models/navigation.gltf"
               texture={ColorToTexture(new THREE.Color(65, 105, 225))}
               position={[0, -8.3, 0]}
@@ -331,72 +406,76 @@ function CanvasComponent() {
               rotate={[0, 0, 0]}
               isOpacity={true}
             /> */}
-            {content[0].navigation.map((item, i) => (
-              <React.Fragment key={i}>
-                {currentTime > item.time_start &&
-                  currentTime < item.time_end && (
-                    <OBJModel
-                      file="/models/navinew.gltf"
-                      texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                      position={item.position}
-                      scale={[25, 25, 25]}
-                      opacity={1}
-                      rotate={item.rotate}
-                      isOpacity={true}
-                    />
-                  )}
-              </React.Fragment>
-            ))}
-          </>
-        )}
-      <meshStandardMaterial map={glassTexture} />
-      {content.map((x: any, i: number) => (
-        <React.Fragment key={i}>
-          <mesh
-            ref={sphereRef}
-            position={[
-              x.position[0] - (x.rotate ? -1 : 1),
-              x.position[1] + 5,
-              x.position[2] + (x.rotate ? -1 : 1),
-            ]}
-            onClick={() =>
-              // handleClick([x.position[0], x.position[1], x.position[2]], i)
-              setContentId(i)
-            }
-          >
-            <OBJModel
-              file="/models/x logo glorax.gltf"
-              texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-              position={[0, 0, 0]}
-              scale={[20, 20, 20]}
-              opacity={0.93}
-              rotate={[90, 0, 0]}
-              isOpacity={false}
-            />
-            <meshStandardMaterial color={"white"} roughnessMap={glassTexture} />
-          </mesh>
-        </React.Fragment>
-      ))}
-      <mesh>
-        <OBJModel
-          file="/models/x logo glorax-premium.gltf"
-          texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-          position={[14.3, 13, 6]}
-          scale={[35, 35, 35]}
-          opacity={0.93}
-          rotate={[85, 13, 120]}
-          isOpacity={false}
+              {content[0].navigation.map((item, i) => (
+                <React.Fragment key={i}>
+                  {currentTime > item.time_start &&
+                    currentTime < item.time_end && (
+                      <OBJModel
+                        file="/models/navinew.gltf"
+                        texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                        position={item.position}
+                        scale={[25, 25, 25]}
+                        opacity={1}
+                        rotate={item.rotate}
+                        isOpacity={true}
+                      />
+                    )}
+                </React.Fragment>
+              ))}
+            </>
+          )}
+        <meshStandardMaterial map={glassTexture} />
+        {content.map((x: any, i: number) => (
+          <React.Fragment key={i}>
+            <mesh
+              ref={sphereRef}
+              position={[
+                x.position[0] - (x.rotate ? -1 : 1),
+                x.position[1] + 5,
+                x.position[2] + (x.rotate ? -1 : 1),
+              ]}
+              onClick={() =>
+                // handleClick([x.position[0], x.position[1], x.position[2]], i)
+                setContentId(i)
+              }
+            >
+              <OBJModel
+                file="/models/x logo glorax.gltf"
+                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                position={[0, 0, 0]}
+                scale={[20, 20, 20]}
+                opacity={0.93}
+                rotate={[90, 0, 0]}
+                isOpacity={false}
+              />
+              <meshStandardMaterial
+                color={"white"}
+                roughnessMap={glassTexture}
+              />
+            </mesh>
+          </React.Fragment>
+        ))}
+        <mesh>
+          <OBJModel
+            file="/models/x logo glorax-premium.gltf"
+            texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+            position={[14.3, 13, 6]}
+            scale={[35, 35, 35]}
+            opacity={0.93}
+            rotate={[85, 13, 120]}
+            isOpacity={false}
+          />
+        </mesh>
+        <OrbitControls
+          maxPolarAngle={Math.PI / 2.0}
+          minDistance={14}
+          maxDistance={20}
+          target={[0, 1, 0]}
+          ref={controlsRef}
+          enablePan={false}
         />
-      </mesh>
-      <OrbitControls
-        maxPolarAngle={Math.PI / 2.0}
-        minDistance={14}
-        maxDistance={20}
-        target={[0, 1, 0]}
-        ref={controlsRef}
-        enablePan={false}
-      />
-    </Canvas>
+      </Canvas>
+    </>
   );
 }
 

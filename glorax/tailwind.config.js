@@ -1,4 +1,4 @@
-const { fontFamily } = require("tailwindcss/defaultTheme")
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -19,8 +19,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        blue: '#3200F0',
-        lightblue: '#F2F8FE',
+        blue: "#3200F0",
+        lightblue: "#F2F8FE",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -72,6 +72,10 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        show: {
+          "0%, 10%": { opacity: "0" },
+          "20,1%, 100%": { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -79,5 +83,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide"),],
-}
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
+};

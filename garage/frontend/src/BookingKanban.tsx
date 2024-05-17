@@ -26,6 +26,8 @@ import {
 import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
+import { useRecoilState } from "recoil";
+import { applicationsAtom } from "./atoms";
 
 interface Division {
   id: number;
@@ -37,7 +39,8 @@ interface Details {
 }
 
 export const BookingKanban = () => {
-  const [applications, setApplications] = useState<Applications[]>([]);
+  const [applications, setApplications] = useRecoilState(applicationsAtom);
+
   const [newApplicationPhone, setNewApplicationPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDetails, setShowDetails] = useState<Details>({
@@ -120,6 +123,10 @@ export const BookingKanban = () => {
     );
   };
 
+  if (!applications) {
+    return <></>;
+  }
+
   const sortedApplications = applications.sort(
     (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
   );
@@ -135,15 +142,11 @@ export const BookingKanban = () => {
     }, [])
     .map((division: any) => ({ id: division.id, name: division.name }));
 
-  if (!applications) {
-    return <></>;
-  }
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {showDetails.isShowed && (
         <BookingKanbanItem
-          applicationDetails={showDetails.applicationDetails}
+          applicationDetails={showDetails.applicationDetails!}
           close={() =>
             setShowDetails({ isShowed: false, applicationDetails: null })
           }

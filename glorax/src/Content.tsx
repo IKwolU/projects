@@ -25,6 +25,7 @@ function Content() {
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
+  const [menuOpen, menuOpenSet] = useState(false);
 
   const handleAudioTimeUpdate = () => {
     setAudioTime(currentTime);
@@ -47,9 +48,32 @@ function Content() {
 
   return (
     <>
-      <div className="fixed z-[53] flex w-24 flex-col h-10  px-1 sm:px-2  top-0 left-0 bg-opacity-40 justify-center items-center">
-        <img src="./img/menu.png" alt="" className="object-contain w-full" />
+      <div
+        onClick={() => menuOpenSet(!menuOpen)}
+        className="cursor-pointer fixed bottom-12 z-[53] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+      >
+        <img src="./img/menu.png" alt="" className="object-contain w-32" />
       </div>
+      {menuOpen && (
+        <div className="text-xl fixed bottom-24 cursor-pointer flex w-full justify-center items-center">
+          <div className="bg-white rounded p-4 shadow border border-t-2 border-b-0 border-gray-500/10"> 
+            {[
+              "Дом 1",
+              "Дом 2",
+              "Дом 3",
+              "Дом 4",
+              "Дом 5",
+              "Дом 6",
+              "Иммерсивная прогулка",
+              "Справка",
+            ].map((x) => (
+              <div className="mb-2 p-0.5 px-2 text-gray-800 hover:bg-blue rounded hover:text-white">
+                {x}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {questionsClicked && (
         <div
           onClick={(e) =>
@@ -132,7 +156,7 @@ function Content() {
       {/* <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
         <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
       </div> */}
-      <div className="fixed bottom-1 z-50 flex w-[280px] text-sm right-10 text-zinc-500">
+      <div className="fixed bottom-1 z-50 flex w-full justify-center text-sm text-zinc-500 my-2">
         <p>© 2024. GloraX. Все права защищены</p>
       </div>
       {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>

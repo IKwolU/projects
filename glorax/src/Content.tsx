@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
 import content from "./assets/content.json";
@@ -26,6 +26,8 @@ function Content() {
   const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
   const [menuOpen, menuOpenSet] = useState(false);
+  const [isHelpShowed, setIsHelpShowed] = useState(false);
+  const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
 
   const handleAudioTimeUpdate = () => {
     setAudioTime(currentTime);
@@ -46,11 +48,42 @@ function Content() {
     arrows: true,
   };
 
+  useEffect(() => {
+    if (!isSideAutoClosed && currentTime > content[0].help_time) {
+      setIsHelpShowed(true);
+      setIsContentShow(false);
+      setIsSideAutoClosed(true);
+    }
+  }, [currentTime]);
+
   return (
     <>
+      {isHelpShowed && (
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full">
+          <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto text-black flex flex-col">
+            <div className="mx-auto w-fit">
+              <p>Ваша прогулка займет:</p>
+              <p>Время: 7мин</p>
+              <p>Протяженность: 1,7км</p>
+            </div>
+            <div className="h-[2px] w-[80%] bg-gray-500 rounded mx-auto"></div>
+            <img
+              src="./img/helpmage.png"
+              alt=""
+              className="object-contain w-full h-40"
+            />
+            <button
+              className="px-4 py-1 mx-auto text-white rounded bg-blue"
+              onClick={() => setIsHelpShowed(false)}
+            >
+              Продолжить
+            </button>
+          </div>
+        </div>
+      )}
       <div
         onClick={() => menuOpenSet(!menuOpen)}
-        className="fixed bottom-12 z-[53] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+        className="fixed bottom-12 z-[50] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
         <img
           src="./img/menu.png"
@@ -155,7 +188,7 @@ function Content() {
                   onClick={() => setQuestionId(i)}
                   className="p-1 transition-colors rounded cursor-pointer hover:bg-blue hover:text-white"
                 >
-                  {i + 1}) {question}
+                  {i + 1} {question}
                 </p>
                 {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
               </div>

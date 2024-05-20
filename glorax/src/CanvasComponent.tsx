@@ -275,7 +275,7 @@ function CanvasComponent() {
   return (
     <>
       {loadedTextures.length < 3 && (
-        <div className="fixed w-full h-full z-[10] bg-[#FFF8ED] flex justify-center items-center">
+        <div className="fixed w-full h-full z-[60] bg-[#FFF8ED] flex justify-center items-center">
           <div className="flex items-center justify-center gap-6">
             {/* <img src="./img/glora.png" alt="" />
             <img
@@ -375,7 +375,7 @@ function CanvasComponent() {
           scale={[1, 1, 1]}
           file="/models/test13.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-          position={[0, -5, 0]}
+          position={[0, -4, 0]}
           opacity={0.93}
           rotate={[0, 0, 0]}
           isOpacity={false}
@@ -445,7 +445,7 @@ function CanvasComponent() {
                 position={[0, 0, 0]}
                 scale={[20, 20, 20]}
                 opacity={0.93}
-                rotate={[-0, 0, 0]}
+                rotate={[90, 0, 120]}
                 isOpacity={false}
               />
               <meshStandardMaterial
@@ -463,6 +463,17 @@ function CanvasComponent() {
             scale={[35, 35, 35]}
             opacity={0.93}
             rotate={[85, 13, 120]}
+            isOpacity={false}
+          />
+        </mesh>
+        <mesh>
+          <OBJModel
+            file="/models/x logo.gltf"
+            texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+            position={[0, 0, 8.8]}
+            scale={[20, 20, 20]}
+            opacity={0.93}
+            rotate={[0, 80, 0]}
             isOpacity={false}
           />
         </mesh>

@@ -50,13 +50,22 @@ function Content() {
     <>
       <div
         onClick={() => menuOpenSet(!menuOpen)}
-        className="cursor-pointer fixed bottom-12 z-[53] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+        className="fixed bottom-12 z-[53] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
-        <img src="./img/menu.png" alt="" className="object-contain w-32" />
+        <img
+          src="./img/menu.png"
+          alt=""
+          className="object-contain w-32 cursor-pointer "
+        />
       </div>
       {menuOpen && (
-        <div className="text-xl fixed bottom-24 cursor-pointer flex w-full justify-center items-center">
-          <div className="bg-white rounded p-4 shadow border border-t-2 border-b-0 border-gray-500/10"> 
+        <div
+          className="fixed top-0 bottom-0 left-0 flex items-end justify-center w-full text-xl"
+          onClick={(e) =>
+            e.target === e.currentTarget && menuOpenSet(!menuOpen)
+          }
+        >
+          <div className="p-4 bg-white border border-t-2 border-b-0 rounded shadow mb-28 border-gray-500/10">
             {[
               "Дом 1",
               "Дом 2",
@@ -67,7 +76,13 @@ function Content() {
               "Иммерсивная прогулка",
               "Справка",
             ].map((x) => (
-              <div className="mb-2 p-0.5 px-2 text-gray-800 hover:bg-blue rounded hover:text-white">
+              <div
+                key={x}
+                className="mb-2 p-0.5 px-2 text-gray-800 hover:bg-blue rounded hover:text-white cursor-pointer transition-colors "
+                onClick={() =>
+                  x === "Справка" && setQuestionsClicked(!questionsClicked)
+                }
+              >
                 {x}
               </div>
             ))}
@@ -81,7 +96,7 @@ function Content() {
           }
           className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center"
         >
-          <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2">
+          <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2 cursor-pointer">
             <FontAwesomeIcon
               icon={faXmark}
               className="text-zinc-800"
@@ -89,7 +104,7 @@ function Content() {
             />
           </div>
           <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-white rounded-t-3xl"></div>
-          <div className=" relative pb-4 px-4 py-2 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
+          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
             {[
               {
                 question: "С чего начать (путешествие/приключение/изучение)?",
@@ -136,7 +151,10 @@ function Content() {
               },
             ].map(({ question, answer }, i) => (
               <div className="">
-                <p onClick={() => setQuestionId(i)}>
+                <p
+                  onClick={() => setQuestionId(i)}
+                  className="p-1 transition-colors rounded cursor-pointer hover:bg-blue hover:text-white"
+                >
                   {i + 1}) {question}
                 </p>
                 {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
@@ -156,7 +174,7 @@ function Content() {
       {/* <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
         <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
       </div> */}
-      <div className="fixed bottom-1 z-50 flex w-full justify-center text-sm text-zinc-500 my-2">
+      <div className="fixed z-50 flex justify-center w-full my-2 text-sm bottom-1 text-zinc-500">
         <p>© 2024. GloraX. Все права защищены</p>
       </div>
       {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>

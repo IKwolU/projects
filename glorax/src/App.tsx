@@ -9,7 +9,7 @@ function App() {
     <RecoilRoot>
       <div className="w-screen h-screen overflow-hidden">
         <div className="w-screen h-screen">
-          {/* <CanvasComponent /> */}
+          <CanvasComponent />
         </div>
         <Content />
       </div>

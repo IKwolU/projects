@@ -73,7 +73,6 @@ class KanbanController extends Controller
             ]);
         }
         $logItem->save();
-        event(new KanbanUpdated($request->id));
 
         return response()->json(['success' => true]);
     }
@@ -95,4 +94,7 @@ class KanbanController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+
 }

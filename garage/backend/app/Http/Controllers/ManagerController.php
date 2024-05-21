@@ -213,7 +213,7 @@ class ManagerController extends Controller
 
         $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'cars', 'divisions.cars.booking')->first();
 
-        unset($park->API_key);
+        unset($park->API_key,$park->password_1c,$park->login_1c);
         foreach ($park->divisions as $division) {
             $division->working_hours = json_decode($division->working_hours);
             $city = $division->city->name;
@@ -2785,13 +2785,14 @@ public function updateNotificationManager(Request $request) {
     }
 
      private function getCarsFromParkClient($parkId) {
-        $url = Park::where('id', $parkId)->select('url')->first()->url;
+        $park = Park::where('id', $parkId)->select('url')->first();
+        $url=$park->url;
         $url .= '/hs/Car/v1/Get';
 
 
         $user = Auth::guard('sanctum')->user();
-        $username = $user->name;
-        $password = $user->password;
+        $username = $park->login_1c;
+        $password = $park->password_1c;
         $auth = base64_encode($username . ':' . $password);
 
         $ch = curl_init($url);

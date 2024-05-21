@@ -30,7 +30,7 @@ import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
-import { applicationsAtom } from "./atoms";
+import { applicationsAtom, parkAtom } from "./atoms";
 import { useTimer } from "react-timer-hook";
 import { UploadCloud } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,6 +54,7 @@ export const BookingKanban = () => {
   const [notifications, setNotifications] = useState<Notifications[]>([]);
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [notificationResult, setNotificationResult] = useState("");
+  const [park] = useRecoilState(parkAtom);
   const [idOpenAndCreateNotification, setIdOpenAndCreateNotification] =
     useState<number | null>(null);
   const [newNotification, setNewNotification] = useState({
@@ -210,16 +211,10 @@ export const BookingKanban = () => {
     (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
   );
 
-  const uniqueDivisions: Division[] = applications
-    .filter((application: any) => application.division)
-    .reduce((uniqueDivisions: Division[], application: any) => {
-      const division: any = application.division;
-      if (!uniqueDivisions.some((div: Division) => div.id === division.id)) {
-        uniqueDivisions.push(division);
-      }
-      return uniqueDivisions;
-    }, [])
-    .map((division: any) => ({ id: division.id, name: division.name }));
+  const uniqueDivisions: Division[] = park.divisions!.map((division: any) => ({
+    id: division.id,
+    name: division.name,
+  }));
 
   return (
     <div className="flex justify-between w-full max-w-full mt-4 space-x-1 overflow-x-auto sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">

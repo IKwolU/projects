@@ -1443,7 +1443,9 @@ class ManagerController extends Controller
                 'status_name' => $request->status_name,
                 'status_value' => CarStatus::{$request->status_name}->value
             ]);
-
+$cars = Car::where('park_id', $request->park_id)->where('status_id', $request->id)->update([
+    'status' => CarStatus::{$request->status_name}->value
+]);
         return response()->json(['message' => 'Статус успешно обновлен'], 200);
     }
 
@@ -2120,11 +2122,18 @@ foreach ($bookings as $booking) {
  *
  * Метод для получения списка заявок
  *
- * @OA\Get(
+ * @OA\Post(
  *     path="manager/applications",
  *     operationId="getParkApplicationsManager",
  *     summary="Получение заявок",
  *     tags={"Manager"},
+  *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="last_update_time",
+ *                 description="Время последнего обновления",
+ *                 type="timestamp"
+ *             ))),
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
@@ -2217,9 +2226,10 @@ foreach ($bookings as $booking) {
  */
 public function getParkApplicationsManager(Request $request) {
     $user = Auth::guard('sanctum')->user();
-    $divisionIds = Division::where('park_id', $user->manager->park_id)->pluck('id')->toArray();
 
-    $applications = Application::whereIn('division_id', $divisionIds)
+    $applicationsQuery = Application::whereHas('division', function ($query) use ($user) {
+            $query->where('park_id', $user->manager->park_id);
+        })
         ->with([
             'user' => function ($query) {
                 $query->select('id', 'user_status', 'phone', 'name', 'email');
@@ -2246,8 +2256,13 @@ public function getParkApplicationsManager(Request $request) {
                 $query->select('id','name');
             }
         ])
-        ->orderBy('updated_at', 'desc')
-        ->get();
+        ->orderBy('updated_at', 'desc');
+
+    if ($request->has('last_update_time')) {
+        $applicationsQuery->where('updated_at', '>', $request->last_update_time);
+    }
+
+    $applications = $applicationsQuery->get();
 
     foreach ($applications as $application) {
         $application->current_stage = ApplicationStage::from($application->current_stage)->name;
@@ -2486,6 +2501,11 @@ public function updateApplicationManager(Request $request) {
  *                 property="id",
  *                 description="id заявки",
  *                 type="integer",nullable=false
+ *             ),
+ *       @OA\Property(
+ *                 property="last_update_time",
+ *                 description="время последнего обновления",
+ *                 type="timestamp",nullable=false
  *             ))),
   * @OA\Response(
  *     response=200,
@@ -2545,7 +2565,11 @@ public function getParkApplicationsLogItemsManager(Request $request) {
         'manager.user' => function ($query) {
             $query->select('id', 'name');
         }
-        ])->get();
+    ])->orderBy('updated_at', 'asc');
+    if ($request->has('last_update_time')) {
+        $logs->where('updated_at', '>', $request->last_update_time);
+    }
+    $logs=$logs->get();
     foreach ($logs as $log ) {
         $log->type = ApplicationLogType::from($log->type)->name;
     }
@@ -2561,13 +2585,18 @@ public function getParkApplicationsLogItemsManager(Request $request) {
  *     operationId="getNotificationsManager",
  *     summary="Получение уведомлений",
  *     tags={"Manager"},
- *     @OA\Response(
+*     @OA\Response(
  *         response=200,
- *         description="Успешно",
+ *         description="Success",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string")
- *         )
- *     ),
+ *             @OA\Property(property="notifications", type="array",
+ *                 @OA\Items(
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="application_id", type="integer"),
+ *                     @OA\Property(property="content", type="string"),
+ *                     @OA\Property(property="created_at", type="string")
+ *                 )
+ *             ))),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
@@ -2588,10 +2617,13 @@ public function getParkApplicationsLogItemsManager(Request $request) {
  * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
  */
 public function getNotificationsManager(Request $request) {
+    $user = Auth::guard('sanctum')->user();
     $notifications = ApplicationLogs::where('type', ApplicationLogType::Notification->value)
-                                    ->where('content->result', null)
-                                    ->whereJsonContains('content', ['reason' => null])
-                                    ->get();
+    ->whereHas('application', function ($query) use ($user) {
+        $query->whereHas('division', function ($query) use ($user) {
+            $query->where('park_id', $user->manager->park_id);
+        });
+    })->whereJsonContains('content->result', null)->get();
 
     return response()->json(['notifications' => $notifications], 200);
 }
@@ -2605,11 +2637,21 @@ public function getNotificationsManager(Request $request) {
  *     operationId="createNotificationManager",
  *     summary="Создание уведомлений",
  *     tags={"Manager"},
+   * @OA\RequestBody(
+*         @OA\JsonContent(
+
+*                         @OA\Property(property="message", type="text"),
+*                         @OA\Property(property="date", type="timestamp"),
+*                         @OA\Property(property="result", type="text"),
+  *                      @OA\Property(property="id", type="integer")
+
+    *          )),
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string")
+ *             @OA\Property(property="message", type="string"),
+ *             @OA\Property(property="id", type="integer")
  *         )
  *     ),
  *     @OA\Response(
@@ -2654,6 +2696,11 @@ public function createNotificationManager(Request $request) {
  *     operationId="updateNotificationManager",
  *     summary="Изменение уведомлений",
  *     tags={"Manager"},
+     * @OA\RequestBody(
+*         @OA\JsonContent(
+  *                      @OA\Property(property="result", type="text"),
+  *                      @OA\Property(property="id", type="integer")
+* )),
  *     @OA\Response(
  *         response=200,
  *         description="Успешно",
@@ -2688,7 +2735,7 @@ public function updateNotificationManager(Request $request) {
     $kanban = new KanbanController;
     $request->merge([
         'manager_id' => $managerId,
-        'type'=> ApplicationLogType::Notification->value
+        'type'=> ApplicationLogType::Notification->name
     ]);
 
     return $kanban->updateApplicationsLogItem($request);

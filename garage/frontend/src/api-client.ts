@@ -3287,15 +3287,20 @@ export class Client {
 
     /**
      * Получение заявок
+     * @param body (optional) 
      * @return Успешно
      */
-    getParkApplicationsManager(): Promise<Anonymous189> {
+    getParkApplicationsManager(body: Body42 | undefined): Promise<Anonymous189> {
         let url_ = this.baseUrl + "/manager/applications";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -3342,7 +3347,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    updateApplicationManager(body: Body42 | undefined): Promise<Anonymous192> {
+    updateApplicationManager(body: Body43 | undefined): Promise<Anonymous192> {
         let url_ = this.baseUrl + "/manager/application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3399,7 +3404,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    createApplicationManager(body: Body43 | undefined): Promise<Anonymous195> {
+    createApplicationManager(body: Body44 | undefined): Promise<Anonymous195> {
         let url_ = this.baseUrl + "/manager/application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3456,7 +3461,7 @@ export class Client {
      * @param body (optional) 
      * @return Успешно
      */
-    getParkApplicationsLogItemsManager(body: Body44 | undefined): Promise<Anonymous198> {
+    getParkApplicationsLogItemsManager(body: Body45 | undefined): Promise<Anonymous198> {
         let url_ = this.baseUrl + "/manager/application/log";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3510,7 +3515,7 @@ export class Client {
 
     /**
      * Получение уведомлений
-     * @return Успешно
+     * @return Success
      */
     getNotificationsManager(): Promise<Anonymous201> {
         let url_ = this.baseUrl + "/manager/notifications";
@@ -3562,15 +3567,20 @@ export class Client {
 
     /**
      * Изменение уведомлений
+     * @param body (optional) 
      * @return Успешно
      */
-    updateNotificationManager(): Promise<Anonymous204> {
+    updateNotificationManager(body: Body46 | undefined): Promise<Anonymous204> {
         let url_ = this.baseUrl + "/manager/notification";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
+            body: content_,
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -3614,15 +3624,20 @@ export class Client {
 
     /**
      * Создание уведомлений
+     * @param body (optional) 
      * @return Успешно
      */
-    createNotificationManager(): Promise<Anonymous207> {
+    createNotificationManager(body: Body47 | undefined): Promise<Anonymous207> {
         let url_ = this.baseUrl + "/manager/notification";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
+            body: content_,
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -6829,6 +6844,56 @@ export interface IBody41 {
 }
 
 export class Body42 implements IBody42 {
+    /** Время последнего обновления */
+    last_update_time?: any;
+
+    [key: string]: any;
+
+    constructor(data?: IBody42) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.last_update_time = _data["last_update_time"];
+        }
+    }
+
+    static fromJS(data: any): Body42 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body42();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["last_update_time"] = this.last_update_time;
+        return data;
+    }
+}
+
+export interface IBody42 {
+    /** Время последнего обновления */
+    last_update_time?: any;
+
+    [key: string]: any;
+}
+
+export class Body43 implements IBody43 {
     /** id заявки */
     id?: number;
     /** id подразделения */
@@ -6844,7 +6909,7 @@ export class Body42 implements IBody42 {
 
     [key: string]: any;
 
-    constructor(data?: IBody42) {
+    constructor(data?: IBody43) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6868,9 +6933,9 @@ export class Body42 implements IBody42 {
         }
     }
 
-    static fromJS(data: any): Body42 {
+    static fromJS(data: any): Body43 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body42();
+        let result = new Body43();
         result.init(data);
         return result;
     }
@@ -6891,7 +6956,7 @@ export class Body42 implements IBody42 {
     }
 }
 
-export interface IBody42 {
+export interface IBody43 {
     /** id заявки */
     id?: number;
     /** id подразделения */
@@ -6908,7 +6973,7 @@ export interface IBody42 {
     [key: string]: any;
 }
 
-export class Body43 implements IBody43 {
+export class Body44 implements IBody44 {
     /** телефон */
     phone?: string | undefined;
     /** id подразделения */
@@ -6920,7 +6985,7 @@ export class Body43 implements IBody43 {
 
     [key: string]: any;
 
-    constructor(data?: IBody43) {
+    constructor(data?: IBody44) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6942,9 +7007,9 @@ export class Body43 implements IBody43 {
         }
     }
 
-    static fromJS(data: any): Body43 {
+    static fromJS(data: any): Body44 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body43();
+        let result = new Body44();
         result.init(data);
         return result;
     }
@@ -6963,7 +7028,7 @@ export class Body43 implements IBody43 {
     }
 }
 
-export interface IBody43 {
+export interface IBody44 {
     /** телефон */
     phone?: string | undefined;
     /** id подразделения */
@@ -6976,13 +7041,15 @@ export interface IBody43 {
     [key: string]: any;
 }
 
-export class Body44 implements IBody44 {
+export class Body45 implements IBody45 {
     /** id заявки */
     id?: number;
+    /** время последнего обновления */
+    last_update_time?: any;
 
     [key: string]: any;
 
-    constructor(data?: IBody44) {
+    constructor(data?: IBody45) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6998,12 +7065,13 @@ export class Body44 implements IBody44 {
                     this[property] = _data[property];
             }
             this.id = _data["id"];
+            this.last_update_time = _data["last_update_time"];
         }
     }
 
-    static fromJS(data: any): Body44 {
+    static fromJS(data: any): Body45 {
         data = typeof data === 'object' ? data : {};
-        let result = new Body44();
+        let result = new Body45();
         result.init(data);
         return result;
     }
@@ -7015,12 +7083,127 @@ export class Body44 implements IBody44 {
                 data[property] = this[property];
         }
         data["id"] = this.id;
+        data["last_update_time"] = this.last_update_time;
         return data;
     }
 }
 
-export interface IBody44 {
+export interface IBody45 {
     /** id заявки */
+    id?: number;
+    /** время последнего обновления */
+    last_update_time?: any;
+
+    [key: string]: any;
+}
+
+export class Body46 implements IBody46 {
+    result?: any;
+    id?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IBody46) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.result = _data["result"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): Body46 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body46();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["result"] = this.result;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBody46 {
+    result?: any;
+    id?: number;
+
+    [key: string]: any;
+}
+
+export class Body47 implements IBody47 {
+    message?: any;
+    date?: any;
+    result?: any;
+    id?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IBody47) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.message = _data["message"];
+            this.date = _data["date"];
+            this.result = _data["result"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): Body47 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body47();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["message"] = this.message;
+        data["date"] = this.date;
+        data["result"] = this.result;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBody47 {
+    message?: any;
+    date?: any;
+    result?: any;
     id?: number;
 
     [key: string]: any;
@@ -16835,7 +17018,7 @@ export interface IAnonymous200 {
 }
 
 export class Anonymous201 implements IAnonymous201 {
-    message?: string;
+    notifications?: Notifications[];
 
     [key: string]: any;
 
@@ -16854,7 +17037,11 @@ export class Anonymous201 implements IAnonymous201 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            if (Array.isArray(_data["notifications"])) {
+                this.notifications = [] as any;
+                for (let item of _data["notifications"])
+                    this.notifications!.push(Notifications.fromJS(item));
+            }
         }
     }
 
@@ -16871,13 +17058,17 @@ export class Anonymous201 implements IAnonymous201 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        if (Array.isArray(this.notifications)) {
+            data["notifications"] = [];
+            for (let item of this.notifications)
+                data["notifications"].push(item.toJSON());
+        }
         return data;
     }
 }
 
 export interface IAnonymous201 {
-    message?: string;
+    notifications?: Notifications[];
 
     [key: string]: any;
 }
@@ -17124,6 +17315,7 @@ export interface IAnonymous206 {
 
 export class Anonymous207 implements IAnonymous207 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 
@@ -17143,6 +17335,7 @@ export class Anonymous207 implements IAnonymous207 {
                     this[property] = _data[property];
             }
             this.message = _data["message"];
+            this.id = _data["id"];
         }
     }
 
@@ -17160,12 +17353,14 @@ export class Anonymous207 implements IAnonymous207 {
                 data[property] = this[property];
         }
         data["message"] = this.message;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IAnonymous207 {
     message?: string;
+    id?: number;
 
     [key: string]: any;
 }
@@ -19186,6 +19381,66 @@ export interface ILogs {
     updated_at?: string;
     application?: Application;
     manager?: Manager;
+
+    [key: string]: any;
+}
+
+export class Notifications implements INotifications {
+    id?: number;
+    application_id?: number;
+    content?: string;
+    created_at?: string;
+
+    [key: string]: any;
+
+    constructor(data?: INotifications) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.application_id = _data["application_id"];
+            this.content = _data["content"];
+            this.created_at = _data["created_at"];
+        }
+    }
+
+    static fromJS(data: any): Notifications {
+        data = typeof data === 'object' ? data : {};
+        let result = new Notifications();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["application_id"] = this.application_id;
+        data["content"] = this.content;
+        data["created_at"] = this.created_at;
+        return data;
+    }
+}
+
+export interface INotifications {
+    id?: number;
+    application_id?: number;
+    content?: string;
+    created_at?: string;
 
     [key: string]: any;
 }

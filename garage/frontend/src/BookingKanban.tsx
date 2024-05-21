@@ -7,7 +7,9 @@ import {
   Applications,
   Body42,
   Body43,
+  Body46,
   Division2,
+  Notifications,
 } from "./api-client";
 import { getApplicationStageDisplayName } from "@/lib/utils";
 import { set } from "ramda";
@@ -28,6 +30,8 @@ import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
 import { applicationsAtom } from "./atoms";
+import { useTimer } from "react-timer-hook";
+import { UploadCloud } from "lucide-react";
 
 interface Division {
   id: number;
@@ -43,6 +47,9 @@ export const BookingKanban = () => {
 
   const [newApplicationPhone, setNewApplicationPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [updatedCount, setUpdatedCount] = useState(0);
+  const [notifications, setNotifications] = useState<Notifications[]>();
+  const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [showDetails, setShowDetails] = useState<Details>({
     isShowed: false,
     applicationDetails: null,
@@ -56,8 +63,12 @@ export const BookingKanban = () => {
     })
   );
 
+  const updateIntervalInSeconds = 60;
+
   const getApplications = async () => {
-    const data = await client.getParkApplicationsManager();
+    const data = await client.getParkApplicationsManager(
+      new Body42({ last_update_time: undefined })
+    );
     setApplications(data.applications!);
     setNewApplication(
       new Body43({
@@ -68,6 +79,49 @@ export const BookingKanban = () => {
     );
   };
 
+  const getNotification = async () => {
+    const data = await client.getNotificationsManager();
+    setNotifications(data.notifications);
+  };
+
+  useEffect(() => {
+    getApplications();
+    getNotification();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setUpdatedCount((prevCount) => prevCount + 1);
+    }, updateIntervalInSeconds * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    checkApplications();
+  }, [updatedCount]);
+
+  const checkApplications = async () => {
+    const data = await client.getParkApplicationsManager(
+      new Body42({ last_update_time: lastUpdateTime })
+    );
+
+    if (data.applications!.length > 0) {
+      setApplications([
+        ...applications.filter(
+          (x) => !data.applications!.map((a) => a.id).includes(x.id!)
+        ),
+        ...data.applications!,
+      ]);
+      lastUpdateTime.setSeconds(
+        lastUpdateTime.getSeconds() + updateIntervalInSeconds
+      );
+      setLastUpdateTime(lastUpdateTime);
+    }
+  };
+
   const createNewApplication = async () => {
     const data = await client.createApplicationManager(
       new Body43({
@@ -75,18 +129,8 @@ export const BookingKanban = () => {
         phone: newApplicationPhone,
       })
     );
-    setApplications([
-      ...applications,
-      new Applications({
-        advertising_source: newApplication.advertising_source,
-        division_id: newApplication.division_id,
-        planned_arrival: String(newApplication.planned_arrival),
-        phone: newApplicationPhone,
-        id: data.id,
-        updated_at: new Date().toString(),
-        current_stage: ApplicationStage.InProgress,
-      }),
-    ]);
+
+    getApplications();
   };
 
   const changeApplicationData = async (id: number, item, itemData) => {
@@ -102,10 +146,6 @@ export const BookingKanban = () => {
       new Body42({ id: id, [item]: itemData })
     );
   };
-
-  useEffect(() => {
-    getApplications();
-  }, []);
 
   const onDragEnd = (result) => {
     const { source, destination, draggableId } = result;

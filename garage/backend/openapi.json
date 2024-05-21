@@ -7234,13 +7234,28 @@
             }
         },
         "manager/applications": {
-            "get": {
+            "post": {
                 "tags": [
                     "Manager"
                 ],
                 "summary": "Получение заявок",
                 "description": "Получение заявок\n\nМетод для получения списка заявок",
                 "operationId": "getParkApplicationsManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "last_update_time": {
+                                        "description": "Время последнего обновления",
+                                        "type": "timestamp"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Успешно",
@@ -7693,6 +7708,11 @@
                                         "description": "id заявки",
                                         "type": "integer",
                                         "nullable": false
+                                    },
+                                    "last_update_time": {
+                                        "description": "время последнего обновления",
+                                        "type": "timestamp",
+                                        "nullable": false
                                     }
                                 },
                                 "type": "object"
@@ -7820,13 +7840,30 @@
                 "operationId": "getNotificationsManager",
                 "responses": {
                     "200": {
-                        "description": "Успешно",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
-                                            "type": "string"
+                                        "notifications": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "application_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -7877,6 +7914,23 @@
                 "summary": "Изменение уведомлений",
                 "description": "Изменение уведомлений\n\nМетод для изменение уведомлений",
                 "operationId": "updateNotificationManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "result": {
+                                        "type": "text"
+                                    },
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Успешно",
@@ -7934,6 +7988,29 @@
                 "summary": "Создание уведомлений",
                 "description": "Создание уведомлений\n\nМетод для создания уведомлений",
                 "operationId": "createNotificationManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "message": {
+                                        "type": "text"
+                                    },
+                                    "date": {
+                                        "type": "timestamp"
+                                    },
+                                    "result": {
+                                        "type": "text"
+                                    },
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Успешно",
@@ -7943,6 +8020,9 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
                                         }
                                     },
                                     "type": "object"

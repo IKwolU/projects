@@ -1,14 +1,18 @@
 import { Button } from "@/components/ui/button";
 import {
+  Application,
   ApplicationLogType,
   Applications,
   Body42,
   Body44,
+  Body45,
+  Body47,
   Logs,
+  Manager,
 } from "./api-client";
 import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
-import { format } from "date-fns";
+import { format, parseJSON } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import {
   getApplicationFieldDisplayName,
@@ -20,6 +24,10 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState } from "recoil";
 import { applicationsAtom } from "./atoms";
 import Confirmation from "@/components/ui/confirmation";
+import {
+  faCircleCheck,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Details {
   applicationDetails: Applications;
@@ -29,8 +37,9 @@ interface Details {
 export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   const [applicationLogs, setApplicationsLogs] = useState<Logs[]>();
   const [applications, setApplications] = useRecoilState(applicationsAtom);
-
+  const [updatedCount, setUpdatedCount] = useState(0);
   const lastElement = useRef<HTMLDivElement>(null);
+  const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [plannedArrival, setPlannedArrival] = useState(
     applicationDetails!.planned_arrival
   );
@@ -38,6 +47,47 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
     applicationDetails!.reason_for_rejection
   );
   const [userName, setUserName] = useState(applicationDetails!.user?.name);
+  const [newNotification, setNewNotification] = useState({
+    date: undefined as string | undefined,
+    message: undefined as string | undefined,
+  });
+  const [notificationResult, setNotificationResult] = useState("");
+
+  const updateIntervalInSeconds = 60;
+
+  const createNotification = async () => {
+    const data = await client.createNotificationManager(
+      new Body47({
+        date: newNotification.date,
+        message: newNotification.message,
+        result: null,
+        id: applicationDetails.id,
+      })
+    );
+    setNewNotification({ date: undefined, message: undefined });
+    getApplicationLogs();
+  };
+
+  const updateNotification = async (id: number) => {
+    const content = JSON.parse(
+      applicationLogs!.find((x) => x.id! === id)!.content
+    );
+
+    client.updateNotificationManager(
+      new Body47({ result: notificationResult, id: id })
+    );
+    setApplicationsLogs([
+      ...applicationLogs!.filter((x) => x.id !== id),
+      new Logs({
+        ...applicationLogs!.find((x) => x.id === id),
+        content: JSON.stringify({
+          date: content.date,
+          message: content.message,
+          result: notificationResult,
+        }),
+      }),
+    ]);
+  };
 
   const changeApplicationData = async (id: number, item, itemData) => {
     setApplications([
@@ -51,16 +101,20 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
     await client.updateApplicationManager(
       new Body42({ id: id, [item]: itemData })
     );
+    getApplicationLogs();
+  };
+
+  const getApplicationLogs = async () => {
+    const data = await client.getParkApplicationsLogItemsManager(
+      new Body45({
+        id: applicationDetails!.id,
+        last_update_time: undefined,
+      })
+    );
+    setApplicationsLogs(data.logs!);
   };
 
   useEffect(() => {
-    const getApplicationLogs = async () => {
-      const data = await client.getParkApplicationsLogItemsManager(
-        new Body44({ id: applicationDetails!.id })
-      );
-      setApplicationsLogs(data.logs!);
-    };
-
     getApplicationLogs();
   }, []);
 
@@ -70,13 +124,49 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
     }
   }, [applicationLogs]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setUpdatedCount((prevCount) => prevCount + 1);
+    }, updateIntervalInSeconds * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    checkApplicationLogs();
+  }, [updatedCount]);
+
+  const checkApplicationLogs = async () => {
+    const data = await client.getParkApplicationsLogItemsManager(
+      new Body45({
+        last_update_time: lastUpdateTime,
+        id: applicationDetails!.id,
+      })
+    );
+
+    if (data.logs!.length > 0) {
+      setApplicationsLogs([
+        ...applicationLogs!.filter(
+          (x) => !data.logs!.map((a) => a.id).includes(x.id!)
+        ),
+        ...data.logs!,
+      ]);
+      lastUpdateTime.setSeconds(
+        lastUpdateTime.getSeconds() + updateIntervalInSeconds
+      );
+      setLastUpdateTime(lastUpdateTime);
+    }
+  };
+
   if (!applicationLogs) {
     return <></>;
   }
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-[51] w-full h-full bg-lightgrey">
+      <div className="fixed top-0 left-0 z-[51] w-full h-full bg-lightgrey mt-8">
         <div className="flex gap-2 p-2 max-w-[1208px] m-auto">
           <div className="w-1/2 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[800px] bg-white">
             <div className="flex justify-between mb-2">
@@ -304,77 +394,180 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
               </div>
             </div>
           </div>
-          <div className="w-1/2 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[800px] bg-white">
-            <div className="text-xl text-center">История изменений</div>
-            {applicationLogs!.map((log, i) => {
-              const content = JSON.parse(log.content);
-              return (
-                <div
-                  className=""
-                  key={log.id}
-                  ref={applicationLogs.length === i + 1 ? lastElement : null}
-                >
-                  {log.type !== ApplicationLogType.Notification && (
-                    <div className="flex items-center space-x-2 text-sm">
-                      <div className="">
-                        <div className="text-nowrap ">
-                          {format(log.created_at!, "dd.MM.yyyy HH:mm")}
+          <div className="flex flex-col justify-between w-1/2 pt-2 bg-white border-2 border-pale rounded-xl">
+            <div className="text-xl text-center ">История изменений</div>
+            <div className="overflow-x-auto h-[700px] p-4">
+              {applicationLogs!.map((log, i) => {
+                const content = JSON.parse(log.content);
+                return (
+                  <div
+                    className=""
+                    key={log.id}
+                    ref={applicationLogs.length === i + 1 ? lastElement : null}
+                  >
+                    {log.type !== ApplicationLogType.Notification && (
+                      <div className="flex items-center space-x-2 text-sm">
+                        <div className="">
+                          <div className="text-nowrap ">
+                            {format(log.created_at!, "dd.MM.yyyy HH:mm")}
+                          </div>
+                          {log.type !== ApplicationLogType.Create && (
+                            <div className="">
+                              {log.manager
+                                ? log.manager.user!.name
+                                : "Нет ответственного,"}
+                            </div>
+                          )}
                         </div>
-                        {log.type !== ApplicationLogType.Create && (
-                          <div className="">
-                            {log.manager
-                              ? log.manager.user!.name
-                              : "Нет ответственного,"}
+                        {log.type === ApplicationLogType.Stage && (
+                          <div className="inline space-x-2">
+                            изменен этап с{" "}
+                            <span className="font-semibold">
+                              {getApplicationStageDisplayName(
+                                content.old_stage!
+                              )}
+                            </span>{" "}
+                            на{" "}
+                            <span className="font-semibold">
+                              {getApplicationStageDisplayName(
+                                content.new_stage!
+                              )}
+                            </span>
+                          </div>
+                        )}
+                        {log.type === ApplicationLogType.Content && (
+                          <div className="inline space-x-2">
+                            <span>Изменено поле</span>
+                            <span className="font-semibold">
+                              {getApplicationFieldDisplayName(content.column)}
+                            </span>
+                            <span>значение</span>
+                            <span className="font-semibold">
+                              {content.old_content}
+                            </span>
+                            <span>изменено на</span>
+                            <span className="font-semibold">
+                              {content.new_content}
+                            </span>
+                          </div>
+                        )}
+                        {log.type === ApplicationLogType.Create && (
+                          <div className="flex gap-2 flex-nowrap">
+                            <div>{content.creator}</div>
+                            {content.creator === "Менеджер"
+                              ? log.manager!.user!.name
+                              : applicationDetails!.user?.phone}
+                            <div>создал заявку</div>
                           </div>
                         )}
                       </div>
-                      {log.type === ApplicationLogType.Stage && (
-                        <div className="inline space-x-2">
-                          изменен этап с{" "}
-                          <span className="font-semibold">
-                            {getApplicationStageDisplayName(content.old_stage!)}
-                          </span>{" "}
-                          на{" "}
-                          <span className="font-semibold">
-                            {getApplicationStageDisplayName(content.new_stage!)}
-                          </span>
+                    )}
+                    {log.type === ApplicationLogType.Notification && (
+                      <div
+                        className={` relative border-2 flex space-x-4  items-center  ${
+                          content.result ? "border-green-500" : "border-red"
+                        } rounded`}
+                      >
+                        <div className="absolute top-0 right-0 p-1 text-xs ">
+                          {format(log.updated_at!, "dd.MM.yyyy HH:mm")}
                         </div>
-                      )}
-                      {log.type === ApplicationLogType.Content && (
-                        <div className="inline space-x-2">
-                          <span>Изменено поле</span>
-                          <span className="font-semibold">
-                            {getApplicationFieldDisplayName(content.column)}
-                          </span>
-                          <span>значение</span>
-                          <span className="font-semibold">
-                            {content.old_content}
-                          </span>
-                          <span>изменено на</span>
-                          <span className="font-semibold">
-                            {content.new_content}
-                          </span>
+                        <div
+                          className={`border-r-2 p-2 flex flex-col w-32 justify-center items-center ${
+                            content.result ? "border-green-500" : "border-red"
+                          }`}
+                        >
+                          {content.result && (
+                            <FontAwesomeIcon
+                              icon={faCircleCheck}
+                              className="h-10 text-green-500"
+                            />
+                          )}
+                          {!content.result && (
+                            <FontAwesomeIcon
+                              icon={faTriangleExclamation}
+                              className="h-10 text-red"
+                            />
+                          )}
+                          <div className="text-sm">
+                            {format(content.date, "dd.MM.yyyy HH:mm")}
+                          </div>
                         </div>
-                      )}
-                      {log.type === ApplicationLogType.Create && (
-                        <div className="flex gap-2 flex-nowrap">
-                          <div>{content.creator}</div>
-                          {content.creator === "Менеджер"
-                            ? log.manager!.user!.name
-                            : applicationDetails!.user?.phone}
-                          <div>создал заявку</div>
+                        <div className="">
+                          <div
+                            className={`${content.result && "line-through"}`}
+                          >
+                            {content.message}
+                          </div>
+                          {content.result && (
+                            <div className="">{content.result}</div>
+                          )}
+                          {!content.result && (
+                            <div className="flex items-center space-x-2">
+                              <Input
+                                className="w-64 m-0"
+                                type="text"
+                                onChange={(e) =>
+                                  setNotificationResult(e.target.value)
+                                }
+                                placeholder="Результат"
+                              />
+                              <FontAwesomeIcon
+                                onClick={() => updateNotification(log.id!)}
+                                icon={faPenToSquare}
+                                className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                              />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  )}
-                  <Separator />
-                </div>
-              );
-            })}
+                      </div>
+                    )}
+                    <Separator />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-
-        <Button onClick={close} className="">
+        <div className="max-w-[1208px]  mx-auto p-2  ">
+          <div className="flex items-center justify-between p-2 space-x-2 bg-white border-2 border-pale rounded-xl">
+            {" "}
+            <span>Создать напоминание:</span>{" "}
+            <Input
+              className="m-0 w-44"
+              type="datetime-local"
+              value={
+                newNotification.date ? newNotification.date : String(new Date())
+              }
+              onChange={(e) =>
+                setNewNotification({ ...newNotification, date: e.target.value })
+              }
+              placeholder={
+                newNotification.date &&
+                format(newNotification.date, "dd.MM.yyyy HH:mm")
+              }
+            />
+            <Input
+              className="m-0 w-96"
+              type="text"
+              value={newNotification.message ? newNotification.message : ""}
+              onChange={(e) =>
+                setNewNotification({
+                  ...newNotification,
+                  message: e.target.value,
+                })
+              }
+              placeholder="Коментарий"
+            />
+            <Button onClick={createNotification} variant={"manager"}>
+              Создать
+            </Button>
+          </div>
+        </div>
+        <Button
+          onClick={close}
+          variant={"reject"}
+          className="fixed w-24 text-black top-10 left-2"
+        >
           Назад
         </Button>
       </div>

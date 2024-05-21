@@ -52,14 +52,14 @@ export const ParkManager = () => {
         //   },
         // });
 
-        const pusher = new Pusher("8cbf3c5a14c45c1cb9b2", {
-          cluster: "eu",
-        });
+        // const pusher = new Pusher("8cbf3c5a14c45c1cb9b2", {
+        //   cluster: "eu",
+        // });
 
-        const channel = pusher.subscribe(`ParkKanban.${parkData.id}`);
-        channel.bind(`KanbanUpdated`, function (data) {
-          console.log("Event received:", data);
-        });
+        // const channel = pusher.subscribe(`ParkKanban.${parkData.id}`);
+        // channel.bind(`KanbanUpdated`, function (data) {
+        //   console.log("Event received:", data);
+        // });
       };
 
       getPark();

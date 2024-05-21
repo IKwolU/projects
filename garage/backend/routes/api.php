@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     //изменение заявки
     //создание уведомления
     //изменение уведомления
-    Route::get('manager/applications', [ManagerController::class, 'getParkApplicationsManager']);
+    Route::post('manager/applications', [ManagerController::class, 'getParkApplicationsManager']);
     Route::post('manager/notification', [ManagerController::class, 'createNotificationManager']);
     Route::get('manager/notifications', [ManagerController::class, 'getNotificationsManager']);
     Route::put('manager/notification', [ManagerController::class, 'updateNotificationManager']);

@@ -67,18 +67,18 @@ class KanbanController extends Controller
         }
         if ($request->type === ApplicationLogType::Notification->value) {
             $logItem->content = json_encode([
-                "massage" => $request->massage,
+                "message" => $request->message,
                 "date" => $request->date,
                 "result" => null
             ]);
         }
         $logItem->save();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'id'=>$logItem->id]);
     }
 
     public function updateApplicationsLogItem(Request $request) {
-        $logItem = ApplicationLogs::where('application_id', $request->id)->first();
+        $logItem = ApplicationLogs::where('id', $request->id)->first();
 
         if ($request->type === ApplicationLogType::Notification->name) {
             $content = json_decode($logItem->content, true);

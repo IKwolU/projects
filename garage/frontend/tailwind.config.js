@@ -19,12 +19,11 @@ module.exports = {
     extend: {
       typography: (theme) => ({
         DEFAULT: {
-          css: {
-          },
+          css: {},
         },
       }),
       outline: {
-        yellow: '1px solid #fce003',
+        yellow: "1px solid #fce003",
       },
       colors: {
         red: "#ff4930",
@@ -47,10 +46,15 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        transit: {
+          from: "translate-x-full",
+          to: "translate-x-0",
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        transit: "transit 0.3s",
       },
     },
   },

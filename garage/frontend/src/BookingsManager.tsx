@@ -601,7 +601,7 @@ export const BookingManager = () => {
           </Select>
         </div>
       </div>
-      {/* <div className="flex justify-between w-full mt-4 space-x-2 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
+      <div className="flex justify-between w-full mt-4 space-x-2 sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
         <Table>
           <TableHead>
             <TableRow>
@@ -622,7 +622,7 @@ export const BookingManager = () => {
             {filteredBookings?.map(function (booking, i) {
               return (
                 <>
-                  {(booking && booking.schema)&& (
+                  {booking && booking.schema && (
                     <TableRow key={`booking_${i}`}>
                       <TableItem>
                         {format(booking.booked_at!, "dd.MM.yyyy")}
@@ -670,10 +670,6 @@ export const BookingManager = () => {
             })}
           </TableBody>
         </Table>
-      </div> */}
-
-      <div className="flex justify-between w-full max-w-full mt-4 space-x-1 overflow-x-auto sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">
-        <BookingKanban />
       </div>
     </>
   );

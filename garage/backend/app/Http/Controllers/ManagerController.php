@@ -2619,12 +2619,13 @@ public function getParkApplicationsLogItemsManager(Request $request) {
 public function getNotificationsManager(Request $request) {
     $user = Auth::guard('sanctum')->user();
     $notifications = ApplicationLogs::where('type', ApplicationLogType::Notification->value)
-    ->whereHas('application', function ($query) use ($user) {
-        $query->whereHas('division', function ($query) use ($user) {
+        ->whereHas('application.division', function ($query) use ($user) {
             $query->where('park_id', $user->manager->park_id);
-        });
-    })->whereJsonContains('content->result', null)->get();
-
+        })
+        ->where('content->result', null)
+        ->where('content->date', '>=', Carbon::today()->format('Y-m-d 00:00:00'))
+        ->where('content->date', '<=', Carbon::tomorrow()->format('Y-m-d 00:00:00'))
+        ->get();
     return response()->json(['notifications' => $notifications], 200);
 }
 /**

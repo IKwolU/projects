@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
+import { BookingKanban } from "./BookingKanban";
 
 type MainMenuItem = {
   name: string;
@@ -89,6 +90,7 @@ export const ParkManager = () => {
               { name: "Автомобили", path: "/cars" },
               { name: "Статусы", path: "/statuses" },
               { name: "Бронь", path: "/bookings" },
+              { name: "Заявки", path: "/kanban" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="flex ">
                 <Link
@@ -129,6 +131,7 @@ export const ParkManager = () => {
         <Route path={`/cars`} element={<CarsManager />} />
         <Route path={`/statuses`} element={<StatusesManager />} />
         <Route path={`/bookings`} element={<BookingManager />} />
+        <Route path={`/kanban`} element={<BookingKanban />} />
       </Routes>
     </>
   );

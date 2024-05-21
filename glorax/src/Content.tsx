@@ -3,11 +3,7 @@ import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
 import content from "./assets/content.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAnglesRight,
-  faCircleQuestion,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAnglesRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import logo from "../public/img/logoGlorax.png";
 import choice1 from "../public/img//choice-img-1.png";
 import choice2 from "../public/img//choice-img-2.png";
@@ -83,7 +79,7 @@ function Content() {
       )}
       <div
         onClick={() => menuOpenSet(!menuOpen)}
-        className="fixed bottom-12 z-[50] flex w-full px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+        className="fixed top-2 left-0 z-[50] flex w-32 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
         <img
           src="./img/menu.png"
@@ -93,19 +89,19 @@ function Content() {
       </div>
       {menuOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 flex items-end justify-center w-full text-xl"
+          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl"
           onClick={(e) =>
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
         >
-          <div className="p-4 bg-white border border-t-2 border-b-0 rounded shadow mb-28 border-gray-500/10">
+          <div className="p-4 bg-white border border-t-2 border-b-0 rounded shadow border-gray-500/10">
             {[
-              "Дом 1",
-              "Дом 2",
-              "Дом 3",
-              "Дом 4",
-              "Дом 5",
-              "Дом 6",
+              "История дома Башкирова",
+              "История дома Бугрова",
+              "История дома Дягтерёва",
+              "История дома Балакирева",
+              "История дома Килевейна",
+              "История Благовещенских башень",
               "Иммерсивная прогулка",
               "Справка",
             ].map((x) => (

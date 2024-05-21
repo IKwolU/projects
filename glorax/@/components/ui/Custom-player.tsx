@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  ChangeEvent,
-  MouseEventHandler,
-} from "react";
+import React, { useRef, useState, useEffect, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";

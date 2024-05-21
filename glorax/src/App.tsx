@@ -7,7 +7,7 @@ import { RecoilRoot } from "recoil";
 function App() {
   return (
     <RecoilRoot>
-      <div className="w-screen h-screen overflow-hidden">
+      <div className="w-screen h-screen overflow-hidden font-mont">
         <div className="w-screen h-screen">
           <CanvasComponent />
         </div>

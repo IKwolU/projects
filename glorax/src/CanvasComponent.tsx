@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import {
   // MeshStandardMaterial,
   Texture,
@@ -16,7 +16,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
 import { contentIdAtom, currentTimeAtom } from "./atoms";
-import { url } from "inspector";
 // import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 interface OBJModelProps {
@@ -32,13 +31,12 @@ interface OBJModelProps {
 function CanvasComponent() {
   const [, setContentId] = useRecoilState(contentIdAtom);
   const sphereRef = useRef<THREE.Mesh>(null);
-  const aboutRef = useRef<THREE.Mesh>(null);
   const glassTexture = useLoader(TextureLoader, "/models/blueglass2.png");
   const controlsRef = useRef<any>();
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const handleClick = (position: number[], index: number) => {
   //   setContentId(index);
   // if (controlsRef.current) {
@@ -148,21 +146,21 @@ function CanvasComponent() {
   //     />
   //   );
   // }
-  const images = [
-    "./img/g1.png",
-    "./img/l2.png",
-    "./img/o3.png",
-    "./img/r4.png",
-    "./img/a5.png",
-    "./img/xxglora.png",
-  ];
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+  // const images = [
+  //   "./img/g1.png",
+  //   "./img/l2.png",
+  //   "./img/o3.png",
+  //   "./img/r4.png",
+  //   "./img/a5.png",
+  //   "./img/xxglora.png",
+  // ];
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  //   }, 2000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   function OBJModel({
     file,
@@ -175,7 +173,6 @@ function CanvasComponent() {
   }: OBJModelProps) {
     const gltf = useLoader(GLTFLoader, file);
     const [isTextureLoaded, setIsTextureLoaded] = useState(false);
-    const { camera } = useThree();
 
     function checkTextureAlreadyLoaded(textureName: string): boolean {
       return loadedTextures.includes(textureName);
@@ -276,44 +273,44 @@ function CanvasComponent() {
     <>
       {loadedTextures.length < 3 && (
         <div className="fixed w-full h-full z-[60] bg-[#FFF8ED] flex justify-center items-center">
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2">
             {/* <img src="./img/glora.png" alt="" />
             <img
               src="./img/xxglora.png"
               alt=""
               className="animate-[spin_4s_linear_infinite]"
             /> */}
-            {/* <img
+            <img
               src="./img/g1.png"
               alt=""
-              className="animate-[show_20s_ease-in-out_infinite]"
+              className="animate-[show_10s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/l2.png"
               alt=""
-              className="animate-[show_18s_ease-in-out_infinite]"
+              className="animate-[show_9s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/o3.png"
               alt=""
-              className="animate-[show_16s_ease-in-out_infinite]"
+              className="animate-[show_8s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/r4.png"
               alt=""
-              className="animate-[show_14s_ease-in-out_infinite]"
+              className="animate-[show_7s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/a5.png"
               alt=""
-              className="animate-[show_12s_ease-in-out_infinite]"
+              className="animate-[show_6s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/xxglora.png"
               alt=""
-              className="animate-[show_10s_ease-in-out_infinite]"
-            /> */}
-            <div
+              className="animate-[show_5s_ease-in-out_infinite] h-full object-contain"
+            />
+            {/*  <div
               className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2
           "
             >
@@ -326,8 +323,8 @@ function CanvasComponent() {
                     index <= currentImageIndex ? "visible" : "hidden"
                   }`}
                 />
-              ))}
-            </div>
+              ))} 
+            </div>*/}
           </div>
         </div>
       )}
@@ -473,7 +470,7 @@ function CanvasComponent() {
             position={[0, 0, 8.8]}
             scale={[20, 20, 20]}
             opacity={0.93}
-            rotate={[0, 80, 0]}
+            rotate={[90, 0, 120]}
             isOpacity={false}
           />
         </mesh>

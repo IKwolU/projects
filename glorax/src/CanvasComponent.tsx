@@ -271,7 +271,7 @@ function CanvasComponent() {
 
   return (
     <>
-      {loadedTextures.length < 3 && (
+      {loadedTextures.length < 0 && (
         <div className="fixed w-full h-full z-[60] bg-[#FFF8ED] flex justify-center items-center">
           <div className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2">
             {/* <img src="./img/glora.png" alt="" />

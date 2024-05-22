@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { OrbitControls } from "@react-three/drei";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
   // MeshStandardMaterial,
   Texture,
@@ -36,6 +36,7 @@ function CanvasComponent() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
+  const aboutRef = useRef<THREE.Mesh>(null);
   // const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const handleClick = (position: number[], index: number) => {
   //   setContentId(index);
@@ -173,7 +174,7 @@ function CanvasComponent() {
   }: OBJModelProps) {
     const gltf = useLoader(GLTFLoader, file);
     const [isTextureLoaded, setIsTextureLoaded] = useState(false);
-
+    const { camera } = useThree();
     function checkTextureAlreadyLoaded(textureName: string): boolean {
       return loadedTextures.includes(textureName);
     }
@@ -218,27 +219,24 @@ function CanvasComponent() {
       checkTextureLoaded();
     }, [gltf, texture]);
 
-    // useFrame(() => {
-    //   if (sphereRef.current) {
-    //     // Получаем позицию и поворот камеры
-    //     const { rotation } = camera;
-
-    //     // Обновляем поворот объекта в соответствии с поворотом камеры
-    //     sphereRef.current.rotation.x = rotation.x;
-    //     sphereRef.current.rotation.y = rotation.y;
-    //     sphereRef.current.rotation.z = rotation.z;
-    //   }
-    //   if (aboutRef.current) {
-    //     // Получаем позицию и поворот камеры
-    //     const { rotation } = camera;
-
-    //     // Обновляем поворот объекта в соответствии с поворотом камеры
-    //     aboutRef.current.rotation.x = rotation.x;
-    //     aboutRef.current.rotation.y = rotation.y;
-    //     aboutRef.current.rotation.z = rotation.z;
-    //   }
-    // });
-
+    useFrame(() => {
+      if (sphereRef.current) {
+        // Получаем позицию и поворот камеры
+        const { rotation } = camera;
+        // Обновляем поворот объекта в соответствии с поворотом камеры
+        sphereRef.current.rotation.x = rotation.x;
+        sphereRef.current.rotation.y = rotation.y;
+        sphereRef.current.rotation.z = rotation.z;
+      }
+      // if (aboutRef.current) {
+      // Получаем позицию и поворот камеры
+      // const { rotation } = camera;
+      // Обновляем поворот объекта в соответствии с поворотом камеры
+      // aboutRef.current.rotation.x = rotation.x;
+      // aboutRef.current.rotation.y = rotation.y;
+      // aboutRef.current.rotation.z = rotation.z;
+      // }
+    });
     if (!isTextureLoaded) {
       return null;
     }
@@ -271,9 +269,9 @@ function CanvasComponent() {
 
   return (
     <>
-      {loadedTextures.length < 0 && (
+      {loadedTextures.length < 1 && (
         <div className="fixed w-full h-full z-[60] bg-[#FFF8ED] flex justify-center items-center">
-          <div className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2">
+          <div className="flex  justify-center  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2">
             {/* <img src="./img/glora.png" alt="" />
             <img
               src="./img/xxglora.png"
@@ -283,32 +281,32 @@ function CanvasComponent() {
             <img
               src="./img/g1.png"
               alt=""
-              className="animate-[show_10s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showG_5s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/l2.png"
               alt=""
-              className="animate-[show_9s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showL_5s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/o3.png"
               alt=""
-              className="animate-[show_8s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showO_5s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/r4.png"
               alt=""
-              className="animate-[show_7s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showR_5s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/a5.png"
               alt=""
-              className="animate-[show_6s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showA_5s_ease-in-out_infinite] h-full object-contain"
             />
             <img
               src="./img/xxglora.png"
               alt=""
-              className="animate-[show_5s_ease-in-out_infinite] h-full object-contain"
+              className="animate-[showX_5s_ease-in-out_infinite] h-full object-contain"
             />
             {/*  <div
               className="flex  justify-start  lg:w-[1000px] sm:w-[500px] w-[300px] h-10 sm:h-24 lg:h-48 mx-auto px-2
@@ -370,7 +368,7 @@ function CanvasComponent() {
 
         <OBJModel
           scale={[1, 1, 1]}
-          file="/models/test13.gltf"
+          file="/models/pre-finale.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[0, -4, 0]}
           opacity={0.93}
@@ -437,12 +435,12 @@ function CanvasComponent() {
               }
             >
               <OBJModel
-                file="/models/x logo glorax.gltf"
+                file="/models/arrow glorax.gltf"
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                 position={[0, 0, 0]}
                 scale={[20, 20, 20]}
                 opacity={0.93}
-                rotate={[90, 0, 120]}
+                rotate={[90, 0, 0]}
                 isOpacity={false}
               />
               <meshStandardMaterial
@@ -452,7 +450,7 @@ function CanvasComponent() {
             </mesh>
           </React.Fragment>
         ))}
-        <mesh>
+        {/* <mesh>
           <OBJModel
             file="/models/x logo glorax-premium.gltf"
             texture={ColorToTexture(new THREE.Color(65, 105, 225))}
@@ -462,7 +460,7 @@ function CanvasComponent() {
             rotate={[85, 13, 120]}
             isOpacity={false}
           />
-        </mesh>
+        </mesh> */}
         <mesh>
           <OBJModel
             file="/models/x logo.gltf"

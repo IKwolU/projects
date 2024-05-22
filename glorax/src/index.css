@@ -84,18 +84,22 @@ button:focus-visible {
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 24px;
-  height: 24px;
-  background: blue;
+  width: 12px;
+  height: 12px;
+  background: #fff;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .slick-next {
-  right: 70px;
+  right: 90px;
   top: 20%;
 }
-
+.slick-prev {
+  left: 10px;
+  top: 20%;
+  z-index: 50;
+}
 .slick-next:before {
   content: "";
   background-image: url(/public/img/next.svg);
@@ -106,6 +110,23 @@ input[type="range"]::-webkit-slider-thumb {
   width: 100px;
   display: block;
 }
+
+.slick-prev:before {
+  content: "";
+  background-image: url(/public/img/next.svg);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: rotate(180deg);
+  height: 100px;
+  width: 100px;
+  display: block;
+}
+
+.slick-dots li button:before {
+  color: white !important;
+}
+
 Canvas {
 }
 Canvas {

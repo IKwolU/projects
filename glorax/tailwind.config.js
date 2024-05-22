@@ -19,8 +19,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        brown: "#8E6D4F",
         blue: "#3200F0",
         lightblue: "#F2F8FE",
+        lightbrown: "#E9E4DC",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,9 +75,35 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        show: {
-          "0%, 10%": { opacity: "0" },
-          "20,1%, 100%": { opacity: "1" },
+        showG: {
+          "0%, 60%": { opacity: "0" },
+          "60%,  95%": { opacity: "1" },
+          "95%, 100%": { opacity: "0" },
+        },
+        showL: {
+          "0%, 55%": { opacity: "0" },
+          "55%,  90%": { opacity: "1" },
+          "90%, 100%": { opacity: "0" },
+        },
+        showO: {
+          "0%, 50%": { opacity: "0" },
+          "50%,  85%": { opacity: "1" },
+          "85%, 100%": { opacity: "0" },
+        },
+        showR: {
+          "0%, 45%": { opacity: "0" },
+          "45%,  80%": { opacity: "1" },
+          "80%, 100%": { opacity: "0" },
+        },
+        showA: {
+          "0%, 40%": { opacity: "0" },
+          "40%, 75%": { opacity: "1" },
+          "75%, 100%": { opacity: "0" },
+        },
+        showX: {
+          "0%, 35%": { opacity: "0" },
+          "35%, 70%": { opacity: "1" },
+          "70%, 100%": { opacity: "0" },
         },
       },
       animation: {

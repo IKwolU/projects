@@ -52,6 +52,11 @@ function Content() {
     }
   }, [currentTime]);
 
+  const handleQuestionOpen = () => {
+    setQuestionId(-1);
+    setQuestionsClicked(!questionsClicked);
+  };
+
   return (
     <>
       {isHelpShowed && (
@@ -69,7 +74,7 @@ function Content() {
               className="object-contain w-full h-40"
             />
             <button
-              className="px-4 py-1 mx-auto text-white rounded bg-blue"
+              className="px-4 py-1 mx-auto text-white rounded bg-blue "
               onClick={() => setIsHelpShowed(false)}
             >
               Продолжить
@@ -79,12 +84,12 @@ function Content() {
       )}
       <div
         onClick={() => menuOpenSet(!menuOpen)}
-        className="fixed top-2 left-0 z-[50] flex w-32 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+        className="fixed top-2 left-0 z-[50] flex w-24 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
         <img
           src="./img/menu.png"
           alt=""
-          className="object-contain w-32 cursor-pointer "
+          className="object-contain w-24 cursor-pointer "
         />
       </div>
       {menuOpen && (
@@ -94,7 +99,7 @@ function Content() {
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
         >
-          <div className="p-4 bg-white border border-t-2 border-b-0 rounded shadow border-gray-500/10">
+          <div className="p-4 pb-2 bg-white border border-t-2 border-b-0 rounded shadow border-gray-500/10">
             {[
               "История дома Башкирова",
               "История дома Бугрова",
@@ -102,17 +107,19 @@ function Content() {
               "История дома Балакирева",
               "История дома Килевейна",
               "История Благовещенских башень",
-              "Иммерсивная прогулка",
-              "Справка",
+              "Иммерсивный маршрут",
+              "Вопрос | Ответ",
             ].map((x) => (
-              <div
-                key={x}
-                className="mb-2 p-0.5 px-2 text-gray-800 hover:bg-blue rounded hover:text-white cursor-pointer transition-colors "
-                onClick={() =>
-                  x === "Справка" && setQuestionsClicked(!questionsClicked)
-                }
-              >
-                {x}
+              <div key={x}>
+                <div
+                  className="mb-2 pb-2 p-0.5 px-2 text-gray-800 hover:bg-brown  border-none rounded hover:text-white cursor-pointer transition-colors "
+                  onClick={() => x === "Вопрос | Ответ" && handleQuestionOpen()}
+                >
+                  {x}
+                </div>
+                <div
+                  className={`${x !== "Вопрос | Ответ" && "h-px bg-gray-200"}`}
+                ></div>
               </div>
             ))}
           </div>
@@ -121,7 +128,7 @@ function Content() {
       {questionsClicked && (
         <div
           onClick={(e) =>
-            e.target === e.currentTarget ? setQuestionsClicked(false) : null
+            e.target === e.currentTarget ? handleQuestionOpen() : null
           }
           className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center"
         >
@@ -129,11 +136,11 @@ function Content() {
             <FontAwesomeIcon
               icon={faXmark}
               className="text-zinc-800"
-              onClick={() => setQuestionsClicked(false)}
+              onClick={() => handleQuestionOpen()}
             />
           </div>
           <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-white rounded-t-3xl"></div>
-          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide">
+          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
             {[
               {
                 question: "С чего начать (путешествие/приключение/изучение)?",
@@ -182,9 +189,9 @@ function Content() {
               <div className="">
                 <p
                   onClick={() => setQuestionId(i)}
-                  className="p-1 transition-colors rounded cursor-pointer hover:bg-blue hover:text-white"
+                  className="p-1 transition-colors rounded cursor-pointer hover:bg-brown hover:text-white"
                 >
-                  {i + 1} {question}
+                  {question}
                 </p>
                 {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
               </div>
@@ -195,28 +202,28 @@ function Content() {
       )}
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
         <FontAwesomeIcon
-          onClick={() => setQuestionsClicked(!questionsClicked)}
+          onClick={() => handleQuestionOpen()}
           icon={faCircleQuestion}
-          className="w-8 h-8 transition-opacity opacity-50 cursor-pointer text-blue hover:opacity-100 active:opacity-100"
+          className="w-8 h-8 transition-opacity opacity-50 cursor-pointer text-brown hover:opacity-100 active:opacity-100"
         />
       </div> */}
       {/* <div className="fixed left-0 z-50 flex w-full h-8 bottom-6 md:bottom-0">
-        <img src="img/360.svg" className="mx-auto h-7 w-28 text-blue" alt="" />
+        <img src="img/360.svg" className="mx-auto h-7 w-28 text-brown" alt="" />
       </div> */}
       <div className="fixed z-50 flex justify-center w-full my-2 text-sm bottom-1 text-zinc-500">
         <p>© 2024. GloraX. Все права защищены</p>
       </div>
-      {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>
-      <div className="fixed top-0 left-0 z-50 flex w-[80vw] h-10 bg-blue bg-opacity-30"></div>
-      <div className="fixed top-0 right-0 z-50 flex w-10 h-[80vh] bg-blue bg-opacity-30"></div>
-      <div className="fixed top-0 left-0 z-50 flex w-10 h-[80vh] bg-blue bg-opacity-30"></div> */}
+      {/* <div className="fixed bottom-0 left-0 z-50 flex w-[80vw] h-10 bg-brown bg-opacity-30"></div>
+      <div className="fixed top-0 left-0 z-50 flex w-[80vw] h-10 bg-brown bg-opacity-30"></div>
+      <div className="fixed top-0 right-0 z-50 flex w-10 h-[80vh] bg-brown bg-opacity-30"></div>
+      <div className="fixed top-0 left-0 z-50 flex w-10 h-[80vh] bg-brown bg-opacity-30"></div> */}
       {content.map((x, i: number) => (
         <CustomSheet
           key={`sheet${i}`}
           isOpen={contentId === i ? true : false}
           content={
             <div
-              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-white  ${
+              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-brown  ${
                 contentId === i
                   ? `${
                       isContentShow
@@ -226,19 +233,19 @@ function Content() {
                   : "translate-x-full"
               }`}
             >
-              <div className="p-4 overflow-y-auto">
-                <div className="flex items-center justify-between h-12 -ml-2">
+              <div className="overflow-y-auto">
+                <div className="flex items-center justify-between h-12 mt-2 ml-4">
+                  <p className="m-0 -mt-2 font-semibold ">{x.title}</p>
                   <img
                     src={logo}
                     alt=""
-                    className="object-contain h-10 pl-2 "
+                    className="object-contain h-10 pl-4 "
                   />
-                  <p className="m-0 -mt-2 text-black">{x.title}</p>
                 </div>
-                <div className="px-2 mb-4 text-base font-semibold text-black whitespace-pre-line">
+                <div className="px-4 mb-4 text-base font-semibold whitespace-pre-line">
                   {x.description_title}
                 </div>
-                <div className="px-2 mb-4 text-base text-black whitespace-pre-line">
+                <div className="px-4 mb-4 text-base whitespace-pre-line">
                   {x.description}
                 </div>
                 <div className="relative w-full mb-4 rounded-3xl">
@@ -287,46 +294,48 @@ function Content() {
                   )}
                 </div>
 
-                <div className="text-xl font-bold text-black">
+                <div className="text-xl font-bold ">
                   {/* Знаете ли вы что: */}
                 </div>
                 <div className="">
                   <Slider {...settings}>
                     {x.facts.map((fact) => (
                       <div
-                        className="flex flex-col items-center justify-center w-full p-3 pt-6 space-y-2 bg-lightblue rounded-3xl h-[420px]"
+                        className="flex flex-col items-center justify-center w-full  pt-6 space-y-2 h-[420px]"
                         key={`choice_${i}`}
                       >
                         {fact.image && (
                           <img
                             src={fact.image}
-                            className="object-cover object-center w-64 h-64 mx-auto rounded-2xl"
+                            className="object-cover object-center w-full mx-auto h-96 "
                             alt=""
                           />
                         )}
-                        {fact.type === "text" && (
-                          <h4 className="h-4 px-0 pb-3 text-sm font-semibold text-black sm:px-4">
-                            {fact.title}
-                          </h4>
-                        )}
-                        {fact.type === "text" && (
-                          <p
-                            className={`${
-                              fact.image ? "h-24" : "h-[356px]"
-                            } px-0 pb-3 overflow-y-auto text-sm text-black sm:px-4 scrollbar-thin scrollbar-thumb-blue scrollbar-track-lightblue scrollbar-thumb-rounded-full scrollbar-hide`}
-                          >
-                            {fact.text}
-                          </p>
-                        )}
-                        {fact.type === "link" && (
-                          <a
-                            target="_blank"
-                            href={fact.text}
-                            className="block w-full h-24 px-0 pt-6 text-sm text-black sm:px-4 "
-                          >
-                            {fact.title}
-                          </a>
-                        )}
+                        <div className="px-4">
+                          {fact.type === "text" && (
+                            <h4 className="h-4 px-0 pb-3 text-sm font-semibold sm:px-4">
+                              {fact.title}
+                            </h4>
+                          )}
+                          {fact.type === "text" && (
+                            <p
+                              className={`${
+                                fact.image ? "h-24" : "h-[356px]"
+                              } px-0 pb-3 overflow-y-auto text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
+                            >
+                              {fact.text}
+                            </p>
+                          )}
+                          {fact.type === "link" && (
+                            <a
+                              target="_blank"
+                              href={fact.text}
+                              className="block w-full h-24 px-2 pt-6 text-sm sm:px-4 "
+                            >
+                              {fact.title}
+                            </a>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </Slider>
@@ -334,11 +343,11 @@ function Content() {
               </div>
               <div
                 onClick={() => setIsContentShow(!isContentShow)}
-                className="flex items-center justify-center h-full px-2 text-black rounded-lg cursor-pointer bg-lightblue"
+                className="flex items-center justify-center h-full px-2 text-black rounded-lg cursor-pointer bg-lightbrown"
               >
                 <FontAwesomeIcon
                   icon={faAnglesRight}
-                  className={`h-7 transition-transform text-blue ${
+                  className={`h-7 transition-transform text-brown ${
                     isContentShow ? "" : "rotate-180"
                   }`}
                 />

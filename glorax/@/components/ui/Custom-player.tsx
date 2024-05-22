@@ -1,6 +1,15 @@
 import React, { useRef, useState, useEffect, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faForward, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRotateBack,
+  faArrowRotateForward,
+  faArrowRotateLeft,
+  faCirclePause,
+  faCirclePlay,
+  faForward,
+  faPlay,
+  faStop,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { currentTimeAtom } from "../../../src/atoms";
 type CustomAudioPlayerProps = {
@@ -114,67 +123,23 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
           className="hidden w-full h-auto appearance-none"
         ></audio>
       </div>
-      <div className="flex flex-col items-center px-4 pt-4 pb-3 space-y-4 shadow-md rounded-3xl bg-lightblue">
-        <div className="flex justify-between w-[90%]">
-          <div className="relative ">
-            <button
-              onClick={handleBackClick}
-              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
-            >
-              <FontAwesomeIcon
-                icon={faForward}
-                className="h-12 rotate-180 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none"
-              />
-            </button>
-            {backClicked && (
-              <div className="absolute -top-3 -left-2 text-zinc-600">-30</div>
-            )}
-          </div>
-          <button
-            onClick={handlePlayPause}
-            className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
-          >
-            {isPlaying ? (
-              <FontAwesomeIcon
-                icon={faStop}
-                className="h-12 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none"
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faPlay}
-                className="h-12 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
-              />
-            )}
-          </button>
-          <div className="relative">
-            <button
-              onClick={handleNextClick}
-              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
-            >
-              <FontAwesomeIcon
-                icon={faForward}
-                className="h-12 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none"
-              />
-            </button>
-            {nextClicked && (
-              <div className="absolute -top-3 -right-2 text-zinc-600">+30</div>
-            )}
-          </div>
+      <div className="px-4 pt-4 pb-3 rounded-3xl">
+        <div className="flex">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={progress}
+            onMouseDown={handleSeekStart}
+            onTouchStart={handleSeekStart}
+            onMouseUp={handleSeekEnd}
+            onTouchEnd={handleSeekEnd}
+            onChange={handleSeek}
+            className=" h-[2px] rounded appearance-none bg-white w-[90%] mx-auto mb-2"
+          />
         </div>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={progress}
-          onMouseDown={handleSeekStart}
-          onTouchStart={handleSeekStart}
-          onMouseUp={handleSeekEnd}
-          onTouchEnd={handleSeekEnd}
-          onChange={handleSeek}
-          className=" h-1 rounded appearance-none bg-blue w-[90%]"
-        />
-        <div className="flex items-center justify-between w-full text-sm">
-          <span className="text-zinc-600">
+        <div className="flex items-center justify-between w-full text-[10px]">
+          <span className="">
             {audioRef.current
               ? `${String(
                   Math.floor(audioRef.current.currentTime / 60)
@@ -183,7 +148,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
                 ).padStart(2, "0")}`
               : "00:00"}
           </span>
-          <span className="text-zinc-600">
+          <span className="">
             {audioRef.current
               ? `${String(Math.floor(audioRef.current.duration / 60)).padStart(
                   2,
@@ -193,6 +158,53 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
                 ).padStart(2, "0")}`
               : "00:00"}
           </span>
+        </div>
+        <div className="flex justify-between w-[50%] -mt-2 mx-auto items-center">
+          <div className="relative ">
+            <button
+              onClick={handleBackClick}
+              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+            >
+              <FontAwesomeIcon
+                icon={faArrowRotateLeft}
+                className="h-5 text-white rotate-180 border-none scale-[-1,1] focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              />
+            </button>
+            {backClicked && (
+              <div className="absolute top-[2px] text-[10px] -left-6">-30</div>
+            )}
+          </div>
+          <button
+            onClick={handlePlayPause}
+            className="relative border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+          >
+            {isPlaying ? (
+              <FontAwesomeIcon
+                icon={faCirclePause}
+                className="h-8 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faCirclePlay}
+                className="h-8 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              />
+            )}
+            <span className="absolute w-4 h-4 bg-white rounded-full top-2 left-2 -z-10"></span>
+          </button>
+          <div className="relative">
+            <button
+              onClick={handleNextClick}
+              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+            >
+              <FontAwesomeIcon
+                icon={faArrowRotateForward}
+                className="h-5 text-white border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+              />
+            </button>
+            {nextClicked && (
+              <div className="absolute top-[2px] text-[10px] -right-6">+30</div>
+            )}
+          </div>
         </div>
       </div>
       {/* <p>

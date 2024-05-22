@@ -3738,6 +3738,20 @@
                                                 "type": "object"
                                             }
                                         },
+                                        "avito_ids": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "park": {
+                                                        "type": "string"
+                                                    },
+                                                    "avito_id": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
                                         "parks": {
                                             "type": "array",
                                             "items": {
@@ -3870,6 +3884,10 @@
                                                     },
                                                     "about": {
                                                         "description": "Описание парка",
+                                                        "type": "string"
+                                                    },
+                                                    "avito_id": {
+                                                        "description": "id avito",
                                                         "type": "string"
                                                     },
                                                     "created_at": {

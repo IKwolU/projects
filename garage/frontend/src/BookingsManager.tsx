@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   Body34,
   BookingStatus,
@@ -33,7 +33,7 @@ import {
 import { useRecoilState } from "recoil";
 import { cityAtom, parkAtom } from "./atoms";
 import { format } from "date-fns";
-import { BookingKanban } from "./BookingKanban";
+// import { BookingKanban } from "./BookingKanban";
 
 const storedApprovedBookings = localStorage.getItem("approvedBookings");
 const initialApprovedBookings = storedApprovedBookings

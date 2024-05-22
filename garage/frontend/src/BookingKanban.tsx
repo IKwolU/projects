@@ -1,38 +1,25 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import React, { useEffect, useState } from "react";
-import { KanbanColumn } from "./KanbanColumn";
+import { useEffect, useState } from "react";
 import { client } from "./backend";
 import {
   ApplicationStage,
   Applications,
   Body42,
   Body43,
-  Body46,
   Body47,
-  Division2,
   Notifications,
 } from "./api-client";
 import { getApplicationStageDisplayName } from "@/lib/utils";
-import { set } from "ramda";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import PhoneInput from "@/components/ui/phone-input";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
 import { applicationsAtom, parkAtom } from "./atoms";
-import { useTimer } from "react-timer-hook";
-import { UploadCloud } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
@@ -150,7 +137,7 @@ export const BookingKanban = () => {
   };
 
   const createNewApplication = async () => {
-    const data = await client.createApplicationManager(
+    await client.createApplicationManager(
       new Body43({
         ...newApplication,
         phone: newApplicationPhone,
@@ -160,7 +147,11 @@ export const BookingKanban = () => {
     getApplications();
   };
 
-  const changeApplicationData = async (id: number, item, itemData) => {
+  const changeApplicationData = async (
+    id: number,
+    item: any,
+    itemData: any
+  ) => {
     setApplications([
       ...applications.filter((x) => x.id !== id),
       new Applications({
@@ -181,14 +172,14 @@ export const BookingKanban = () => {
     getNotification();
   };
 
-  const onDragEnd = (result) => {
-    const { source, destination, draggableId } = result;
+  const onDragEnd = (result: any) => {
+    const { destination, draggableId } = result;
 
     if (!destination) {
       return; // Item was not dropped in a droppable area
     }
 
-    const sourceColumn = source.droppableId;
+    // const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
     changeApplicationData(
       Number(draggableId),
@@ -207,9 +198,11 @@ export const BookingKanban = () => {
     return <></>;
   }
 
-  const sortedApplications = [...applications].sort(
-    (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-  );
+  const sortedApplications = [...applications].sort((a, b) => {
+    const left = new Date(b.updated_at) as any;
+    const right = new Date(a.updated_at) as any;
+    return left - right;
+  });
 
   const uniqueDivisions: Division[] = park.divisions!.map((division: any) => ({
     id: division.id,

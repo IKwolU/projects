@@ -568,6 +568,11 @@ $divisionId=$car->division->id;
      *                             @OA\Property(property="name", type="string"),
      *                             @OA\Property(property="models", type="array", @OA\Items(type="string")),
      *                         )),
+     * @OA\Property(property="avito_ids", type="array",
+     * @OA\Items(
+     *                             @OA\Property(property="park", type="string"),
+     *                             @OA\Property(property="avito_id", type="string"),
+     *                         )),
      *                 @OA\Property(property="parks", type="array", @OA\Items(type="string")),
      *                 )
      *     ),
@@ -585,7 +590,12 @@ $divisionId=$car->division->id;
      */
     public function getFinderFilterData()
     {
-        $cars = Car::orderBy('brand')->orderBy('model')->get();
+        $cars = Car::with(['division' => function ($query) {
+            $query->select('id', 'park_id');
+        }])
+        ->orderBy('brand')
+        ->orderBy('model')
+        ->get(['id', 'brand', 'model', 'division_id']);
 
         $brandList = $cars->groupBy('brand')->map(function ($group) {
             return [
@@ -594,9 +604,22 @@ $divisionId=$car->division->id;
             ];
         })->values()->all();
 
-        $parkList = Park::orderBy('park_name')->pluck('park_name')->all();
+        $parkList = $cars->pluck('division.park.park_name')->unique()->sort()->values()->all();
+        $avito_ids = $cars->pluck('division.park.avito_id', 'division.park.park_name')->all();
+        $avito_ids = [];
+        foreach ($cars as $car) {
+            if ($car->division && $car->division->park) {
+                $parkName = $car->division->park->park_name;
+                $avitoId = $car->division->park->avito_id;
 
-        return response()->json(['brands' => $brandList, 'parks' => $parkList]);
+                if (!array_key_exists($parkName, $avito_ids)) {
+                    $avito_ids[$parkName] = ['park' => $parkName, 'avito_id' => $avitoId];
+                }
+            }
+        }
+
+        $avito_ids = array_values($avito_ids);
+        return response()->json(['brands' => $brandList, 'parks' => $parkList, 'avito_ids' => $avito_ids]);
     }
 
     /**

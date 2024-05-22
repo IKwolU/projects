@@ -175,7 +175,7 @@ export const CarsManager = () => {
   const handlePhotos = async (fileList: FileList) => {
     try {
       const file: any = await resizeFile(fileList[0]);
-      const image = await resizeFile(file);
+      await resizeFile(file);
       setPhotos([...photos, file as File]);
     } catch (err) {
       console.log(err);
@@ -623,16 +623,18 @@ export const CarsManager = () => {
                 ?.name || "еще нет"}
             </p>
             {!selected.images && <p>Фото: еще нет</p>}
-            {selected.images && (
-              <SliderImages
-                classImages=""
-                type="click"
-                classPaginationImages=""
-                images={selected.images}
-                openIsAffordable={false}
-              />
-            )}
-            <p>
+            <div className={`${selected.images && "pb-32"}`}>
+              {selected.images && (
+                <SliderImages
+                  classImages=""
+                  type="click"
+                  classPaginationImages=""
+                  images={selected.images}
+                  openIsAffordable={false}
+                />
+              )}
+            </div>
+            <p className="">
               Условия аренды:{" "}
               {park.rent_terms!.find((x) => x.id === selected.rent_term_id!)
                 ?.name || "еще нет"}

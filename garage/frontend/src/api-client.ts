@@ -11507,6 +11507,7 @@ export interface IAnonymous87 {
 
 export class Anonymous88 implements IAnonymous88 {
     brands?: Brands[];
+    avito_ids?: Avito_ids[];
     parks?: string[];
 
     [key: string]: any;
@@ -11530,6 +11531,11 @@ export class Anonymous88 implements IAnonymous88 {
                 this.brands = [] as any;
                 for (let item of _data["brands"])
                     this.brands!.push(Brands.fromJS(item));
+            }
+            if (Array.isArray(_data["avito_ids"])) {
+                this.avito_ids = [] as any;
+                for (let item of _data["avito_ids"])
+                    this.avito_ids!.push(Avito_ids.fromJS(item));
             }
             if (Array.isArray(_data["parks"])) {
                 this.parks = [] as any;
@@ -11557,6 +11563,11 @@ export class Anonymous88 implements IAnonymous88 {
             for (let item of this.brands)
                 data["brands"].push(item.toJSON());
         }
+        if (Array.isArray(this.avito_ids)) {
+            data["avito_ids"] = [];
+            for (let item of this.avito_ids)
+                data["avito_ids"].push(item.toJSON());
+        }
         if (Array.isArray(this.parks)) {
             data["parks"] = [];
             for (let item of this.parks)
@@ -11568,6 +11579,7 @@ export class Anonymous88 implements IAnonymous88 {
 
 export interface IAnonymous88 {
     brands?: Brands[];
+    avito_ids?: Avito_ids[];
     parks?: string[];
 
     [key: string]: any;
@@ -18905,6 +18917,58 @@ export interface IBrands {
     [key: string]: any;
 }
 
+export class Avito_ids implements IAvito_ids {
+    park?: string;
+    avito_id?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAvito_ids) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.park = _data["park"];
+            this.avito_id = _data["avito_id"];
+        }
+    }
+
+    static fromJS(data: any): Avito_ids {
+        data = typeof data === 'object' ? data : {};
+        let result = new Avito_ids();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["park"] = this.park;
+        data["avito_id"] = this.avito_id;
+        return data;
+    }
+}
+
+export interface IAvito_ids {
+    park?: string;
+    avito_id?: string;
+
+    [key: string]: any;
+}
+
 export class Park2 implements IPark2 {
     /** Endpoint парка для ответа */
     url?: string;
@@ -18918,6 +18982,8 @@ export class Park2 implements IPark2 {
     park_name?: string;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Дата создания парка */
     created_at?: string;
     /** Последнее обновление инфо парка */
@@ -18955,6 +19021,7 @@ export class Park2 implements IPark2 {
             this.booking_window = _data["booking_window"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
+            this.avito_id = _data["avito_id"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
             this.self_employed_discount = _data["self_employed_discount"];
@@ -19000,6 +19067,7 @@ export class Park2 implements IPark2 {
         data["booking_window"] = this.booking_window;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
+        data["avito_id"] = this.avito_id;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
         data["self_employed_discount"] = this.self_employed_discount;
@@ -19040,6 +19108,8 @@ export interface IPark2 {
     park_name?: string;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Дата создания парка */
     created_at?: string;
     /** Последнее обновление инфо парка */

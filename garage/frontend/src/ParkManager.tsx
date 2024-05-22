@@ -14,8 +14,6 @@ import { StatusesManager } from "./StatusesManager";
 import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import Echo from "laravel-echo";
-import Pusher from "pusher-js";
 import { BookingKanban } from "./BookingKanban";
 
 type MainMenuItem = {

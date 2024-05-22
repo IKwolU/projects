@@ -57,6 +57,7 @@ class ManagerController extends Controller
      *                     @OA\Property(property="booking_window", type="integer", description="Время брони парка"),
      *                     @OA\Property(property="park_name", type="string", description="Название парка"),
      *                     @OA\Property(property="about", type="string", description="Описание парка"),
+     *                     @OA\Property(property="avito_id", type="string", description="id avito"),
      *                     @OA\Property(property="created_at", type="string", description="Дата создания парка"),
      *                     @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо парка"),
      *                     @OA\Property(property="self_employed_discount", type="number", description="Скидка парка для самозанятых"),

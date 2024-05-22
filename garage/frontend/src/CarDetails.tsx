@@ -74,6 +74,9 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   // временно удаляем проверку на верификацию!!!
   const book = async (variant_id: number | null = null) => {
     if (!user) {
+      sessionStorage.setItem("car_brand", car.brand!);
+      sessionStorage.setItem("car_model", car.model!);
+      sessionStorage.setItem("car_park", car.park_name!);
       return navigate("login/driver", {
         state: {
           bookingAttempt: true,

@@ -1,18 +1,15 @@
 import { Button } from "@/components/ui/button";
 import {
-  Application,
   ApplicationLogType,
   Applications,
   Body42,
-  Body44,
   Body45,
   Body47,
   Logs,
-  Manager,
 } from "./api-client";
 import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
-import { format, parseJSON } from "date-fns";
+import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import {
   getApplicationFieldDisplayName,
@@ -56,7 +53,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   const updateIntervalInSeconds = 60;
 
   const createNotification = async () => {
-    const data = await client.createNotificationManager(
+    await client.createNotificationManager(
       new Body47({
         date: newNotification.date,
         message: newNotification.message,
@@ -89,7 +86,11 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
     ]);
   };
 
-  const changeApplicationData = async (id: number, item, itemData) => {
+  const changeApplicationData = async (
+    id: number,
+    item: any,
+    itemData: any
+  ) => {
     setApplications([
       ...applications.filter((x) => x.id !== id),
       new Applications({

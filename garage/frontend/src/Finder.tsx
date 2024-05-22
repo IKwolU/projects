@@ -6,7 +6,9 @@ import allClasses from "./assets/car_icons/all-cars.png";
 import business from "./assets/car_icons/business.png";
 import { useEffect, useState } from "react";
 import OnMap from "@/components/ui/on-map";
+import { useLocation } from "react-router-dom";
 import {
+  Avito_ids,
   Body15,
   Brands,
   CarClass,
@@ -116,9 +118,53 @@ export const Finder = () => {
     null
   );
 
+  const location = useLocation();
+  const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
+
   const city = useRecoilValue(cityAtom);
 
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
+
+  useEffect(() => {
+    const getFinderFilterData = async () => {
+      const data = await client.getFinderFilterData();
+      setBrands(data.brands!);
+      setParksName(data.parks!);
+      setAvitoIds(data.avito_ids!);
+    };
+
+    getFinderFilterData();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const parkName = params.get("park_name");
+
+    if (parkName !== null) {
+      const avitoIdParkName = avitoIds?.find(
+        (x) => x.avito_id === String(parkName)
+      )?.park;
+
+      if (avitoIdParkName) {
+        setFilters({
+          ...filters,
+          parksName: [avitoIdParkName],
+        });
+      }
+    }
+
+    const brand = sessionStorage.getItem("car_brand");
+    const model = sessionStorage.getItem("car_model");
+    const carPark = sessionStorage.getItem("car_park");
+    if (brand && model && carPark) {
+      setFilters({
+        ...filters,
+        brands: [brand],
+        models: [model],
+        parksName: [carPark],
+      });
+    }
+  }, [avitoIds]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -131,16 +177,6 @@ export const Finder = () => {
   const handleResize = () => {
     setIsLargeScreen(window.innerWidth > 1024);
   };
-
-  useEffect(() => {
-    const getFinderFilterData = async () => {
-      const data = await client.getFinderFilterData();
-      setBrands(data.brands!);
-      setParksName(data.parks!);
-    };
-
-    getFinderFilterData();
-  }, []);
 
   useEffect(() => {
     const getCars = async () => {
@@ -161,11 +197,14 @@ export const Finder = () => {
           self_employed: filters.selfEmployed,
           is_buyout_possible: filters.buyoutPossible,
           schemas: filters.schema || undefined,
-          carVin: filters.carVin || undefined,
+          car_vin: filters.carVin || undefined,
         })
       );
 
       setCars(data.cars!);
+      if (data.cars!.length > 0) {
+        sessionStorage.clear();
+      }
     };
 
     getCars();

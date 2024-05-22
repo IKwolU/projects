@@ -40,6 +40,10 @@
                                         "description": "Описание парка",
                                         "type": "string"
                                     },
+                                    "avito_id": {
+                                        "description": "id avito",
+                                        "type": "string"
+                                    },
                                     "self_employed_discount": {
                                         "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
                                         "type": "integer"
@@ -4346,6 +4350,10 @@
                                     },
                                     "about": {
                                         "description": "Описание парка",
+                                        "type": "string"
+                                    },
+                                    "avito_id": {
+                                        "description": "id avito",
                                         "type": "string"
                                     },
                                     "self_employed_discount": {

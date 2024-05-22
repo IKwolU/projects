@@ -3800,6 +3800,8 @@ export class Body implements IBody {
     booking_window?: number;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -3825,6 +3827,7 @@ export class Body implements IBody {
             this.park_name = _data["park_name"];
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
+            this.avito_id = _data["avito_id"];
             this.self_employed_discount = _data["self_employed_discount"];
         }
     }
@@ -3847,6 +3850,7 @@ export class Body implements IBody {
         data["park_name"] = this.park_name;
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
+        data["avito_id"] = this.avito_id;
         data["self_employed_discount"] = this.self_employed_discount;
         return data;
     }
@@ -3863,6 +3867,8 @@ export interface IBody {
     booking_window?: number;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -5488,6 +5494,8 @@ export class Body23 implements IBody23 {
     booking_window?: number;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -5513,6 +5521,7 @@ export class Body23 implements IBody23 {
             this.park_name = _data["park_name"];
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
+            this.avito_id = _data["avito_id"];
             this.self_employed_discount = _data["self_employed_discount"];
         }
     }
@@ -5535,6 +5544,7 @@ export class Body23 implements IBody23 {
         data["park_name"] = this.park_name;
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
+        data["avito_id"] = this.avito_id;
         data["self_employed_discount"] = this.self_employed_discount;
         return data;
     }
@@ -5551,6 +5561,8 @@ export interface IBody23 {
     booking_window?: number;
     /** Описание парка */
     about?: string;
+    /** id avito */
+    avito_id?: string;
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 

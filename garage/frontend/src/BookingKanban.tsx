@@ -446,7 +446,7 @@ export const BookingKanban = () => {
             <Droppable droppableId={column} key={column}>
               {(provided) => (
                 <div
-                  className="w-full h-full space-y-1"
+                  className="w-full h-full space-y-1 min-h-96"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >

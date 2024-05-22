@@ -299,6 +299,7 @@ class ManagerController extends Controller
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
      *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
+     *             @OA\Property(property="avito_id", type="string", description="id avito"),
      *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(

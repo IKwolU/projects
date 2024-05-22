@@ -65,6 +65,7 @@ class APIController extends Controller
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
      *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
+     *             @OA\Property(property="avito_id", type="string", description="id avito"),
      *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(
@@ -111,6 +112,7 @@ class APIController extends Controller
             'commission' => 'numeric',
             'park_name' => 'string',
             'about' => 'string',
+            'avito_id' => 'string',
             'self_employed_discount' => 'integer',
             'booking_window' => 'integer',
         ]);
@@ -128,6 +130,9 @@ class APIController extends Controller
         }
         if ($request->park_name) {
             $park->park_name = $request->park_name;
+        }
+        if ($request->avito_id) {
+            $park->avito_id = $request->avito_id;
         }
         if ($request->about) {
             $park->about = $request->about;

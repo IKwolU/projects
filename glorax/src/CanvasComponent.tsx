@@ -36,7 +36,7 @@ function CanvasComponent() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
-  const aboutRef = useRef<THREE.Mesh>(null);
+  // const aboutRef = useRef<THREE.Mesh>(null);
   // const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const handleClick = (position: number[], index: number) => {
   //   setContentId(index);
@@ -392,16 +392,16 @@ function CanvasComponent() {
         {currentTime > content[0].start_time &&
           currentTime < content[0].end_time && (
             <>
-              {/* <OBJModel
-              file="/models/navigation.gltf"
-              texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-              position={[0, -8.3, 0]}
-              scale={[1, 1, 1]}
-              opacity={0.8}
-              rotate={[0, 0, 0]}
-              isOpacity={true}
-            /> */}
-              {content[0].navigation.map((item, i) => (
+              <OBJModel
+                file="/models/navi-bashkirova.gltf"
+                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                position={[0, -4.0, 0]}
+                scale={[1, 1, 1]}
+                opacity={0.8}
+                rotate={[0, 0, 0]}
+                isOpacity={true}
+              />
+              {/* {content[0].navigation.map((item, i) => (
                 <React.Fragment key={i}>
                   {currentTime > item.time_start &&
                     currentTime < item.time_end && (
@@ -416,7 +416,7 @@ function CanvasComponent() {
                       />
                     )}
                 </React.Fragment>
-              ))}
+              ))} */}
             </>
           )}
         <meshStandardMaterial map={glassTexture} />
@@ -465,10 +465,10 @@ function CanvasComponent() {
           <OBJModel
             file="/models/x logo.gltf"
             texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-            position={[0, 0, 8.8]}
-            scale={[20, 20, 20]}
+            position={[-2.2, -4, 1.9]}
+            scale={[10, 10, 10]}
             opacity={0.93}
-            rotate={[90, 0, 120]}
+            rotate={[0, -20, 0]}
             isOpacity={false}
           />
         </mesh>

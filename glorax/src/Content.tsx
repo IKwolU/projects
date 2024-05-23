@@ -61,20 +61,20 @@ function Content() {
     <>
       {isHelpShowed && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full">
-          <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto text-black flex flex-col">
+          <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col">
             <div className="mx-auto w-fit">
               <p>Ваша прогулка займет:</p>
               <p>Время: 7мин</p>
               <p>Протяженность: 1,7км</p>
             </div>
-            <div className="h-[2px] w-[80%] bg-gray-500 rounded mx-auto"></div>
+            <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
             <img
-              src="./img/helpmage.png"
+              src="./img/helpimage.png"
               alt=""
               className="object-contain w-full h-40"
             />
             <button
-              className="px-4 py-1 mx-auto text-white rounded bg-blue "
+              className="px-4 py-1 mx-auto text-white rounded-full bg-blue "
               onClick={() => setIsHelpShowed(false)}
             >
               Продолжить
@@ -94,12 +94,12 @@ function Content() {
       </div>
       {menuOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl"
+          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl "
           onClick={(e) =>
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
         >
-          <div className="p-4 pb-2 bg-white border border-t-2 border-b-0 rounded shadow border-gray-500/10">
+          <div className="p-4 pb-2 rounded bg-brown ">
             {[
               "История дома Башкирова",
               "История дома Бугрова",
@@ -112,13 +112,15 @@ function Content() {
             ].map((x) => (
               <div key={x}>
                 <div
-                  className="mb-2 pb-2 p-0.5 px-2 text-gray-800 hover:bg-brown  border-none rounded hover:text-white cursor-pointer transition-colors "
+                  className="mb-2  p-0.5 px-2  hover:bg-lightbrown hover:text-brown hover:opacity-70  border-none rounded  cursor-pointer transition-colors "
                   onClick={() => x === "Вопрос | Ответ" && handleQuestionOpen()}
                 >
                   {x}
                 </div>
                 <div
-                  className={`${x !== "Вопрос | Ответ" && "h-px bg-gray-200"}`}
+                  className={`${
+                    x !== "Вопрос | Ответ" && "h-px bg-gray-200 my-2"
+                  }`}
                 ></div>
               </div>
             ))}
@@ -135,12 +137,12 @@ function Content() {
           <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2 cursor-pointer">
             <FontAwesomeIcon
               icon={faXmark}
-              className="text-zinc-800"
+              className=""
               onClick={() => handleQuestionOpen()}
             />
           </div>
-          <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-white rounded-t-3xl"></div>
-          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-white max-h-[70%] w-[280px] sm:w-[350px] rounded-2xl opacity-95 text-zinc-700 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
+          <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-brown rounded-t-3xl"></div>
+          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-brown max-h-[70%] w-[280px] sm:w-[350px] rounded opacity-95 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
             {[
               {
                 question: "С чего начать (путешествие/приключение/изучение)?",
@@ -189,15 +191,16 @@ function Content() {
               <div className="">
                 <p
                   onClick={() => setQuestionId(i)}
-                  className="p-1 transition-colors rounded cursor-pointer hover:bg-brown hover:text-white"
+                  className="p-1 transition-colors rounded cursor-pointer hover:bg-lightbrown hover:text-brown"
                 >
                   {question}
                 </p>
                 {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
+                <div className={`${i !== 9 && "h-px bg-gray-200 my-2"}`}></div>
               </div>
             ))}
           </div>
-          <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-white bg-gradient-to-t to-transparent rounded-b-2xl"></div>
+          <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-brown bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">

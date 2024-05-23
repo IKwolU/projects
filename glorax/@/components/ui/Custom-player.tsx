@@ -1,14 +1,10 @@
 import React, { useRef, useState, useEffect, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRotateBack,
   faArrowRotateForward,
   faArrowRotateLeft,
   faCirclePause,
   faCirclePlay,
-  faForward,
-  faPlay,
-  faStop,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { currentTimeAtom } from "../../../src/atoms";

@@ -57,7 +57,7 @@ export const BookingKanban = () => {
   const [newApplication, setNewApplication] = useState<Body43>(
     new Body43({
       advertising_source: "Без рекламы",
-      division_id: undefined,
+      division_id: park.divisions?.[0].id,
       planned_arrival: undefined,
     })
   );
@@ -72,8 +72,7 @@ export const BookingKanban = () => {
     setNewApplication(
       new Body43({
         ...newApplication,
-        division_id: data.applications?.filter((x) => x.division_id)[0]
-          .division_id,
+        division_id: park.divisions?.[0].id,
       })
     );
   };
@@ -316,187 +315,193 @@ export const BookingKanban = () => {
           </div>
         </div>
       )}
-      <DragDropContext onDragEnd={onDragEnd}>
-        {showDetails.isShowed && (
-          <BookingKanbanItem
-            applicationDetails={showDetails.applicationDetails!}
-            close={() =>
-              setShowDetails({ isShowed: false, applicationDetails: null })
-            }
-          />
-        )}
-        {showModal && (
-          <div
-            className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
-            onClick={(e) => e.target === e.currentTarget && setShowModal(false)}
-          >
-            <div className="flex flex-col items-center p-4 space-y-2 bg-white w-80 rounded-xl">
-              <div className="">
-                <div className="text-center">Источник рекламы</div>
-                <select
-                  className="p-1 m-1 border-2 border-grey rounded-xl"
-                  name=""
-                  id=""
-                  onChange={(e) =>
-                    setNewApplication(
-                      new Body43({
-                        ...newApplication,
-                        advertising_source: e.target.value,
-                      })
-                    )
-                  }
-                >
-                  {["Без рекламы", "BeeBeep", "Avito"].map((y) => (
-                    <option key={y} value={y}>
-                      {y}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Separator />
-              <div className="">
-                <div className="text-center">Подразделение</div>
-                <select
-                  className="p-1 m-1 border-2 border-grey rounded-xl"
-                  name=""
-                  id=""
-                  onChange={(e) =>
-                    setNewApplication(
-                      new Body43({
-                        ...newApplication,
-                        division_id: Number(e.target.value),
-                      })
-                    )
-                  }
-                >
-                  {uniqueDivisions.map((y) => (
-                    <option key={y.id} value={y.id}>
-                      {y.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Separator />
-              <div className="">
-                <div className="text-center">Телефон водителя</div>
-                <PhoneInput
-                  onChange={(e) => setNewApplicationPhone(e.target.value)}
-                />
-              </div>
-              <Separator />
-              <div className="">
-                <div className="text-center">Планирует прийти</div>
-                <Input
-                  type="datetime-local"
-                  onChange={(e) =>
-                    setNewApplication(
-                      new Body43({
-                        ...newApplication,
-                        planned_arrival: new Date(e.target.value),
-                      })
-                    )
-                  }
-                />
-              </div>
-              <div className="flex justify-between space-x-2">
-                <Button
-                  variant={"reject"}
-                  className="text-black"
-                  onClick={() => setShowModal(false)}
-                >
-                  Назад
-                </Button>
-                {newApplicationPhone && (
-                  <Confirmation
-                    accept={() => {
-                      createNewApplication();
-                      setShowModal(false);
-                    }}
-                    cancel={() => {}}
-                    title="Создать заявку?"
-                    trigger={<Button>Создать</Button>}
-                    type="green"
-                  />
-                )}
-                {!newApplicationPhone && <Button disabled>Создать</Button>}
-              </div>
-            </div>
-          </div>
-        )}
-        {Object.keys(ApplicationStage).map((column: any) => (
-          <div
-            key={column}
-            className="min-h-full p-1 bg-white border-2 min-w-48 border-pale rounded-xl "
-          >
-            <div className="h-16 mb-4 text-center border-b-2 border-pale">
-              {getApplicationStageDisplayName(column)}
-              {column === ApplicationStage.New && (
-                <Button onClick={() => setShowModal(true)} className="h-8">
-                  Создать
-                </Button>
-              )}
-            </div>
-            <Droppable droppableId={column} key={column}>
-              {(provided) => (
-                <div
-                  className="w-full h-full space-y-1 min-h-96"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {sortedApplications
-                    .filter((x) => x.current_stage === column)
-                    .map((task, index) => (
-                      <Draggable
-                        key={task.id}
-                        draggableId={String(task.id)}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            onClick={() =>
-                              setShowDetails({
-                                isShowed: true,
-                                applicationDetails: task,
-                              })
-                            }
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="relative w-full p-1 text-sm border-2 bg-lightgrey border-pale rounded-xl"
-                          >
-                            <div className="absolute text-sm font-semibold top-1 right-1">
-                              №{task.id!}
-                            </div>
-                            {task.user && (
-                              <div className="">{task.user.phone}</div>
-                            )}
-                            {!task.user && <div className="">Нет номера</div>}
-                            <Separator />
-                            <div className="">
-                              Последнее изменение:{" "}
-                              {format(task.updated_at!, "dd.MM.yyyy HH:mm")}
-                            </div>
-                            <Separator />
-                            {task.division && (
-                              <div className="">{task.division.name}</div>
-                            )}
-                            {task.division && (
-                              <div className="">{task.division.city?.name}</div>
-                            )}
-                            {!task.division && (
-                              <div className="">Нет подразделения</div>
-                            )}
-                          </div>
-                        )}
-                      </Draggable>
+      <div className="fixed left-0 flex w-full p-4 space-x-1 overflow-x-auto">
+        <DragDropContext onDragEnd={onDragEnd}>
+          {showDetails.isShowed && (
+            <BookingKanbanItem
+              applicationDetails={showDetails.applicationDetails!}
+              close={() =>
+                setShowDetails({ isShowed: false, applicationDetails: null })
+              }
+            />
+          )}
+          {showModal && (
+            <div
+              className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+              onClick={(e) =>
+                e.target === e.currentTarget && setShowModal(false)
+              }
+            >
+              <div className="flex flex-col items-center p-4 space-y-2 bg-white w-80 rounded-xl">
+                <div className="">
+                  <div className="text-center">Источник рекламы</div>
+                  <select
+                    className="p-1 m-1 border-2 border-grey rounded-xl"
+                    name=""
+                    id=""
+                    onChange={(e) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          advertising_source: e.target.value,
+                        })
+                      )
+                    }
+                  >
+                    {["Без рекламы", "BeeBeep", "Avito"].map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
                     ))}
-                  {provided.placeholder}
+                  </select>
                 </div>
-              )}
-            </Droppable>
-          </div>
-        ))}
-      </DragDropContext>
+                <Separator />
+                <div className="">
+                  <div className="text-center">Подразделение</div>
+                  <select
+                    className="p-1 m-1 border-2 border-grey rounded-xl"
+                    name=""
+                    id=""
+                    onChange={(e) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          division_id: Number(e.target.value),
+                        })
+                      )
+                    }
+                  >
+                    {uniqueDivisions.map((y) => (
+                      <option key={y.id} value={y.id}>
+                        {y.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <Separator />
+                <div className="">
+                  <div className="text-center">Телефон водителя</div>
+                  <PhoneInput
+                    onChange={(e) => setNewApplicationPhone(e.target.value)}
+                  />
+                </div>
+                <Separator />
+                <div className="">
+                  <div className="text-center">Планирует прийти</div>
+                  <Input
+                    type="datetime-local"
+                    onChange={(e) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          planned_arrival: new Date(e.target.value),
+                        })
+                      )
+                    }
+                  />
+                </div>
+                <div className="flex justify-between space-x-2">
+                  <Button
+                    variant={"reject"}
+                    className="text-black"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Назад
+                  </Button>
+                  {newApplicationPhone && (
+                    <Confirmation
+                      accept={() => {
+                        createNewApplication();
+                        setShowModal(false);
+                      }}
+                      cancel={() => {}}
+                      title="Создать заявку?"
+                      trigger={<Button>Создать</Button>}
+                      type="green"
+                    />
+                  )}
+                  {!newApplicationPhone && <Button disabled>Создать</Button>}
+                </div>
+              </div>
+            </div>
+          )}
+          {Object.keys(ApplicationStage).map((column: any) => (
+            <div
+              key={column}
+              className="min-h-full p-1 bg-white border-2 min-w-48 border-pale rounded-xl "
+            >
+              <div className="h-16 mb-4 text-center border-b-2 border-pale">
+                {getApplicationStageDisplayName(column)}
+                {column === ApplicationStage.New && (
+                  <Button onClick={() => setShowModal(true)} className="h-8">
+                    Создать
+                  </Button>
+                )}
+              </div>
+              <Droppable droppableId={column} key={column}>
+                {(provided) => (
+                  <div
+                    className="w-full h-full pt-20 -mt-20 space-y-1 min-h-96"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {sortedApplications
+                      .filter((x) => x.current_stage === column)
+                      .map((task, index) => (
+                        <Draggable
+                          key={task.id}
+                          draggableId={String(task.id)}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              onClick={() =>
+                                setShowDetails({
+                                  isShowed: true,
+                                  applicationDetails: task,
+                                })
+                              }
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="relative w-full p-1 text-sm border-2 bg-lightgrey border-pale rounded-xl"
+                            >
+                              <div className="absolute text-sm font-semibold top-1 right-1">
+                                №{task.id!}
+                              </div>
+                              {task.user && (
+                                <div className="">{task.user.phone}</div>
+                              )}
+                              {!task.user && <div className="">Нет номера</div>}
+                              <Separator />
+                              <div className="">
+                                Последнее изменение:{" "}
+                                {format(task.updated_at!, "dd.MM.yyyy HH:mm")}
+                              </div>
+                              <Separator />
+                              {task.division && (
+                                <div className="">{task.division.name}</div>
+                              )}
+                              {task.division && (
+                                <div className="">
+                                  {task.division.city?.name}
+                                </div>
+                              )}
+                              {!task.division && (
+                                <div className="">Нет подразделения</div>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          ))}
+        </DragDropContext>
+      </div>
     </div>
   );
 };

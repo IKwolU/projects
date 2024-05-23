@@ -202,7 +202,7 @@ export const Finder = () => {
       );
 
       setCars(data.cars!);
-      if (data.cars!.length > 0) {
+      if (filters.brands.length > 0) {
         sessionStorage.clear();
       }
     };

@@ -88,7 +88,7 @@ export const ParkManager = () => {
               { name: "Автомобили", path: "/cars" },
               { name: "Статусы", path: "/statuses" },
               { name: "Бронь", path: "/bookings" },
-              // { name: "Заявки", path: "/kanban" },
+              { name: "Заявки", path: "/kanban" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="flex ">
                 <Link

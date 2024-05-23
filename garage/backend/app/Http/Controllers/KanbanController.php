@@ -35,6 +35,8 @@ class KanbanController extends Controller
         }
         if (!$request->manager_id) {
             $application->current_stage=ApplicationStage::New->value;
+            $application->advertising_source='BeeBeep';
+
         }
         $application->save();
         return $application->id;

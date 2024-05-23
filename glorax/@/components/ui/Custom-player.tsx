@@ -177,15 +177,15 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
             {isPlaying ? (
               <FontAwesomeIcon
                 icon={faCirclePause}
-                className="h-8 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
               />
             ) : (
               <FontAwesomeIcon
                 icon={faCirclePlay}
-                className="h-8 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
               />
             )}
-            <span className="absolute w-4 h-4 bg-white rounded-full top-2 left-2 -z-10"></span>
+            <span className="absolute w-6 h-6 bg-white rounded-full top-2 left-2 -z-10"></span>
           </button>
           <div className="relative">
             <button

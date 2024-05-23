@@ -60,7 +60,7 @@ function Content() {
   return (
     <>
       {isHelpShowed && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full">
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-white">
           <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col">
             <div className="mx-auto w-fit">
               <p>Ваша прогулка займет:</p>
@@ -94,7 +94,7 @@ function Content() {
       </div>
       {menuOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl "
+          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl text-white"
           onClick={(e) =>
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
@@ -132,7 +132,7 @@ function Content() {
           onClick={(e) =>
             e.target === e.currentTarget ? handleQuestionOpen() : null
           }
-          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center"
+          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center text-white"
         >
           <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2 cursor-pointer">
             <FontAwesomeIcon
@@ -226,7 +226,7 @@ function Content() {
           isOpen={contentId === i ? true : false}
           content={
             <div
-              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-brown  ${
+              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-brown text-white ${
                 contentId === i
                   ? `${
                       isContentShow

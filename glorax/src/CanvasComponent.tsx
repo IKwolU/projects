@@ -392,7 +392,7 @@ function CanvasComponent() {
           currentTime < content[0].end_time && (
             <>
               <OBJModel
-                file="/models/navilocation3.gltf"
+                file="/models/navilocoNEWyellow.gltf"
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                 position={[0, -4.0, 0]}
                 scale={[1, 1, 1]}
@@ -433,15 +433,17 @@ function CanvasComponent() {
                 setContentId(i)
               }
             >
-              <OBJModel
-                file="/models/sharik yellow glorax.gltf"
-                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                position={[0, 0, 0]}
-                scale={[20, 20, 20]}
-                opacity={0.93}
-                rotate={[0, 0, 0]}
-                isOpacity={false}
-              />
+              {currentTime < content[0].arrow_time[0].time && (
+                <OBJModel
+                  file="/models/sharik yellow glorax.gltf"
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={[0, 0, 0]}
+                  scale={[35, 35, 35]}
+                  opacity={0.93}
+                  rotate={[90, 0, 0]}
+                  isOpacity={false}
+                />
+              )}
               <meshStandardMaterial
                 color={"#FFC226"}
                 roughnessMap={glassTexture}
@@ -456,7 +458,7 @@ function CanvasComponent() {
                 <OBJModel
                   file="/models/arrow glorax.gltf"
                   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                  position={[-2.0, 0 + y.positionY, 0.5]}
+                  position={[-1.0, 0 + y.positionY, 1]}
                   scale={[20, 20, 20]}
                   opacity={0.93}
                   rotate={[90, 0, -60]}

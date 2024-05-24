@@ -15,17 +15,16 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Sphere",
-			"rotation":[
-				-0.021030688658356667,
-				-0.08984313905239105,
-				-0.02311888337135315,
-				0.9954654574394226
-			],
+			"name":"Curve",
 			"scale":[
-				0.02343837544322014,
-				0.023438377305865288,
-				0.02343837544322014
+				0.1097327247262001,
+				0.1097327247262001,
+				0.1097327247262001
+			],
+			"translation":[
+				-0.0013401731848716736,
+				0.002389647765085101,
+				0.0004591643810272217
 			]
 		}
 	],
@@ -47,7 +46,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Sphere",
+			"name":"Curve",
 			"primitives":[
 				{
 					"attributes":{
@@ -65,67 +64,67 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":559,
+			"count":192,
 			"max":[
-				0.9999997019767761,
-				1,
-				0.9999993443489075
+				0.11289119720458984,
+				0,
+				0.11286735534667969
 			],
 			"min":[
-				-0.9999990463256836,
-				-1,
-				-1
+				-0.11289119720458984,
+				-0.03999999910593033,
+				-0.11286735534667969
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":559,
+			"count":192,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":559,
+			"count":192,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":2880,
+			"count":564,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":6708,
+			"byteLength":2304,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6708,
-			"byteOffset":6708,
+			"byteLength":2304,
+			"byteOffset":2304,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4472,
-			"byteOffset":13416,
+			"byteLength":1536,
+			"byteOffset":4608,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5760,
-			"byteOffset":17888,
+			"byteLength":1128,
+			"byteOffset":6144,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":23648,
+			"byteLength":7272,
 			"uri":"sharik%20yellow%20glorax.bin"
 		}
 	]

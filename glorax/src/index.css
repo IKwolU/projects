@@ -123,6 +123,10 @@ input[type="range"]::-webkit-slider-thumb {
   display: block;
 }
 
+/* .slick-dots {
+  top: 410px
+} */
+
 .slick-dots li button:before {
   color: white !important;
 }

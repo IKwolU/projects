@@ -377,7 +377,7 @@ function Content() {
                   /> */}
                   <div className="absolute left-0 w-full h-8 -mb-4 bottom-5 from-transparent bg-gradient-to-b to-brown "></div>
                 </div>
-                <div className="flex flex-col w-full h-auto p-4 mt-6 space-y-1 rounded bg-brown">
+                <div className="relative flex flex-col w-full h-auto p-4 mt-6 space-y-1 rounded bg-brown">
                   <div className="flex flex-col items-center gap-2 mx-auto w-fit">
                     <p>Продолжительность маршрута:</p>
                     <div className="flex justify-between mb-2 space-x-6">

@@ -113,19 +113,20 @@ class CheckClientStatuses extends Command
 
     private function getCarsFromParkClient($parkId)
     {
-        $url = Park::where('id', $parkId)->select('url')->first()->url;
+        $park = Park::where('id', $parkId)->select('url','login_1c','password_1c')->first();
+        $url=$park->url;
         $url .= '/hs/Car/v1/Get';
         $manager = Manager::where('park_id', $parkId)->first();
 
         if ($manager) {
-            $user = User::where('id', $manager->user_id)->first();
-            $username = $user->name ?? ' ';
-            $password = $user->password ?? ' ';
+            $username = $park->login_1c;
+            $password = $park->password_1c;
             $response = Http::withoutVerifying()->withBasicAuth($username, $password)->get($url);
 
             if ($response->successful()) {
                 return $response;
             } else {
+                Log::info($response);
                 return [];
             }
         }

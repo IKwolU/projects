@@ -31,6 +31,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class ManagerController extends Controller
 {
@@ -1253,7 +1254,6 @@ class ManagerController extends Controller
         $cars = [];
         $licenses = [];
         $licenseDates = [];
-
         foreach (json_decode($clientCars) as $car) {
             if ($car->Activity) {
                 $formattedCar = [
@@ -2787,28 +2787,19 @@ public function updateNotificationManager(Request $request) {
     }
 
      private function getCarsFromParkClient($parkId) {
-        $park = Park::where('id', $parkId)->select('url')->first();
+        $park = Park::where('id', $parkId)->select('url','login_1c','password_1c')->first();
         $url=$park->url;
         $url .= '/hs/Car/v1/Get';
-
-
-        $user = Auth::guard('sanctum')->user();
         $username = $park->login_1c;
         $password = $park->password_1c;
-        $auth = base64_encode($username . ':' . $password);
+        $response = Http::withoutVerifying()->withBasicAuth($username, $password)->get($url);
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Basic ' . $auth
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            return 'Curl error: ' . curl_error($ch);
-        }
-        curl_close($ch);
+            if ($response->successful()) {
+                return $response;
+            } else {
+                Log::info($response);
+                return [];
+            }
         return $response;
      }
 

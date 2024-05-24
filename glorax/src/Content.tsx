@@ -3,7 +3,12 @@ import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
 import content from "./assets/content.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAnglesRight,
+  faClock,
+  faPersonWalking,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../public/img/logoGlorax.png";
 import choice1 from "../public/img//choice-img-1.png";
 import choice2 from "../public/img//choice-img-2.png";
@@ -23,6 +28,7 @@ function Content() {
   const [timeToChoose] = useState(false);
   const [menuOpen, menuOpenSet] = useState(false);
   const [isHelpShowed, setIsHelpShowed] = useState(false);
+  const [isMapClicked, setIsMapClicked] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
 
   const handleAudioTimeUpdate = () => {
@@ -62,12 +68,25 @@ function Content() {
       {isHelpShowed && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-white">
           <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col">
-            <div className="mx-auto w-fit">
-              <p>Ваша прогулка займет:</p>
-              <p>Время: 7мин</p>
-              <p>Протяженность: 1,7км</p>
+            <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
+              <p>Давайте начнем двигаться:</p>
+              <div className="flex items-center space-x-4">
+                <FontAwesomeIcon
+                  icon={faClock}
+                  className={`h-4 transition-transform  `}
+                />{" "}
+                <p> 7мин</p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <FontAwesomeIcon
+                  icon={faPersonWalking}
+                  className={`h-4 transition-transform  `}
+                />{" "}
+                <p> 636м</p>
+              </div>
             </div>
             <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
+            <div className="py-2"></div>
             <img
               src="./img/helpimage.png"
               alt=""
@@ -84,17 +103,17 @@ function Content() {
       )}
       <div
         onClick={() => menuOpenSet(!menuOpen)}
-        className="fixed top-2 left-0 z-[50] flex w-24 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
+        className="fixed top-2 left-0 z-[50] flex w-16 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
         <img
           src="./img/menu.png"
           alt=""
-          className="object-contain w-24 cursor-pointer "
+          className="object-contain w-20 cursor-pointer "
         />
       </div>
       {menuOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-xl text-white"
+          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-12 ml-2 text-sm text-white"
           onClick={(e) =>
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
@@ -106,7 +125,7 @@ function Content() {
               "История дома Дягтерёва",
               "История дома Балакирева",
               "История дома Килевейна",
-              "История Благовещенских башень",
+              "История Благовещенских башен",
               "Иммерсивный маршрут",
               "Вопрос | Ответ",
             ].map((x) => (
@@ -132,7 +151,7 @@ function Content() {
           onClick={(e) =>
             e.target === e.currentTarget ? handleQuestionOpen() : null
           }
-          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center text-white"
+          className="fixed z-[53] flex w-full flex-col h-full left-0 px-1 sm:px-2 bottom-0 bg-black bg-opacity-40 justify-center items-center text-white text-sm"
         >
           <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2 cursor-pointer">
             <FontAwesomeIcon
@@ -304,7 +323,7 @@ function Content() {
                   <Slider {...settings}>
                     {x.facts.map((fact) => (
                       <div
-                        className="flex flex-col items-center justify-center w-full  pt-6 space-y-2 h-[420px]"
+                        className="flex flex-col items-center justify-center w-full  pt-6 space-y-2 h-[510px] scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide overflow-y-auto"
                         key={`choice_${i}`}
                       >
                         {fact.image && (
@@ -316,7 +335,7 @@ function Content() {
                         )}
                         <div className="px-4">
                           {fact.type === "text" && (
-                            <h4 className="h-4 px-0 pb-3 text-sm font-semibold sm:px-4">
+                            <h4 className="h-4 px-0 pb-3 mb-4 text-sm font-semibold sm:px-4">
                               {fact.title}
                             </h4>
                           )}
@@ -324,7 +343,7 @@ function Content() {
                             <p
                               className={`${
                                 fact.image ? "h-24" : "h-[356px]"
-                              } px-0 pb-3 overflow-y-auto text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
+                              } px-0 pb-3  text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
                             >
                               {fact.text}
                             </p>
@@ -343,6 +362,33 @@ function Content() {
                     ))}
                   </Slider>
                 </div>
+                <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col mt-3">
+                  <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
+                    <p>Ваш маршрут займет:</p>
+                    <div className="flex items-center space-x-4">
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        className={`h-4 transition-transform  `}
+                      />{" "}
+                      <p> 7мин</p>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <FontAwesomeIcon
+                        icon={faPersonWalking}
+                        className={`h-4 transition-transform  `}
+                      />{" "}
+                      <p> 1,7км</p>
+                    </div>
+                  </div>
+                  <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
+                  <div className="py-2"></div>
+                  <img
+                    onClick={() => setIsMapClicked(!isMapClicked)}
+                    src="./img/helpimage.png"
+                    alt=""
+                    className="object-contain w-full h-40"
+                  />
+                </div>
               </div>
               <div
                 onClick={() => setIsContentShow(!isContentShow)}
@@ -359,6 +405,21 @@ function Content() {
           }
         />
       ))}
+      {isMapClicked && (
+        <div
+          className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+          onClick={() => setIsMapClicked(!isMapClicked)}
+        >
+          <img
+            src="./img/helpimage.png"
+            alt=""
+            className="object-contain w-full h-auto"
+          />
+          <div className="z-20 top-0 relative flex justify-end w-[280px] h-[210px] sm:w-[350px]  pr-2 -mb-6 right-2 cursor-pointer">
+            <FontAwesomeIcon icon={faXmark} className="absolute text-brown" />
+          </div>
+        </div>
+      )}
     </>
   );
 }

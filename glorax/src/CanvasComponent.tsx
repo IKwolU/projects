@@ -34,6 +34,7 @@ function CanvasComponent() {
   const glassTexture = useLoader(TextureLoader, "/models/blueglass2.png");
   const controlsRef = useRef<any>();
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+  // const aboutRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
   // const aboutRef = useRef<THREE.Mesh>(null);
@@ -229,12 +230,10 @@ function CanvasComponent() {
         sphereRef.current.rotation.z = rotation.z;
       }
       // if (aboutRef.current) {
-      // Получаем позицию и поворот камеры
-      // const { rotation } = camera;
-      // Обновляем поворот объекта в соответствии с поворотом камеры
-      // aboutRef.current.rotation.x = rotation.x;
-      // aboutRef.current.rotation.y = rotation.y;
-      // aboutRef.current.rotation.z = rotation.z;
+      //   const { rotation } = camera;
+      //   aboutRef.current.rotation.x = rotation.x;
+      //   aboutRef.current.rotation.y = rotation.y;
+      //   aboutRef.current.rotation.z = rotation.z;
       // }
     });
     if (!isTextureLoaded) {
@@ -393,7 +392,7 @@ function CanvasComponent() {
           currentTime < content[0].end_time && (
             <>
               <OBJModel
-                file="/models/navi-bashkirova.gltf"
+                file="/models/navilocation3.gltf"
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                 position={[0, -4.0, 0]}
                 scale={[1, 1, 1]}
@@ -435,12 +434,12 @@ function CanvasComponent() {
               }
             >
               <OBJModel
-                file="/models/arrow glorax.gltf"
+                file="/models/sharik yellow glorax.gltf"
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                 position={[0, 0, 0]}
                 scale={[20, 20, 20]}
                 opacity={0.93}
-                rotate={[90, 0, 0]}
+                rotate={[0, 0, 0]}
                 isOpacity={false}
               />
               <meshStandardMaterial
@@ -448,6 +447,23 @@ function CanvasComponent() {
                 roughnessMap={glassTexture}
               />
             </mesh>
+          </React.Fragment>
+        ))}
+        {content[0].arrow_time.map((y, i) => (
+          <React.Fragment key={i}>
+            {currentTime > y.time && currentTime < y.time + 1 && (
+              <mesh>
+                <OBJModel
+                  file="/models/arrow glorax.gltf"
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={[-2.0, 0 + y.positionY, 0.5]}
+                  scale={[20, 20, 20]}
+                  opacity={0.93}
+                  rotate={[90, 0, -60]}
+                  isOpacity={false}
+                />
+              </mesh>
+            )}
           </React.Fragment>
         ))}
         {/* <mesh>
@@ -461,17 +477,28 @@ function CanvasComponent() {
             isOpacity={false}
           />
         </mesh> */}
-        <mesh>
+        {/* <mesh>
           <OBJModel
-            file="/models/x logo.gltf"
+            file="/models/location-point.gltf"
             texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-            position={[-2.2, -4, 1.9]}
-            scale={[10, 10, 10]}
+            position={[-6.25, -4.3, 4.1]}
+            scale={[15, 15, 15]}
+            opacity={0.93}
+            rotate={[0, -110, 0]}
+            isOpacity={false}
+          />
+        </mesh> */}
+        {/* <mesh>
+          <OBJModel
+            file="/models/location-point.gltf"
+            texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+            position={[-3.1, -4.2, -5.1]}
+            scale={[15, 15, 15]}
             opacity={0.93}
             rotate={[0, -20, 0]}
             isOpacity={false}
           />
-        </mesh>
+        </mesh> */}
         <OrbitControls
           maxPolarAngle={Math.PI / 2.0}
           minDistance={15}

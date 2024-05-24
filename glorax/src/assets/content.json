@@ -1,17 +1,31 @@
 [
   {
-    "position": [0, -5, -0.3],
+    "position": [0, -5, 0],
     "rotate": 0,
     "source": "/audio/123.mp3",
     "title": "дом Башкирова",
     "description_title": "Драма на Оке",
     "description": "Дом Башкирова —  историческая мельница, обрастающая рассказами о драматических событиях. В прошлом, когда здесь еще был рабочий городок, одна из работниц развлекала себя и своих коллег рассказами о дочери купца Башкирова, погрязшей в тайной романтике, трагически завершившейся... в реке. Но какова же правда в этой истории?",
     "background_image": "/card-bg-1.png",
-    "start_time": 5,
+    "start_time": 43,
     "end_time": 300,
     "choice__time": 100,
-    "help_time": 3,
-    "close_time": 3,
+    "help_time": 43,
+    "close_time": 43,
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": -0.5 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": -0.5 },
+      { "time": 16, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
     "choice": [
       {
         "image": "/choice-img-1.png",

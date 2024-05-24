@@ -92,11 +92,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .slick-next {
-  right: 90px;
+  right: 35px;
   top: 20%;
 }
 .slick-prev {
-  left: 10px;
+  left: 5px;
   top: 20%;
   z-index: 50;
 }
@@ -106,8 +106,8 @@ input[type="range"]::-webkit-slider-thumb {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
   display: block;
 }
 
@@ -118,8 +118,8 @@ input[type="range"]::-webkit-slider-thumb {
   background-size: contain;
   background-repeat: no-repeat;
   transform: rotate(180deg);
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
   display: block;
 }
 

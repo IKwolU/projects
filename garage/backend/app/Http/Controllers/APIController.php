@@ -981,7 +981,9 @@ class APIController extends Controller
             $car->transmission_type = $carData['transmission_type'] ?? null;
             $car->brand = $carData['brand'] ?? null;
             $car->model = $carData['model'] ?? null;
-
+if (isset($carData['division_name_info'])) {
+    $car->division_name_info=$carData['division_name_info'];
+}
             if ( isset($carData['class']) && $division) {
                 $car->tariff_id = $this->GetTariffId($park->id, $division->city_id, $carData['class']);
             }

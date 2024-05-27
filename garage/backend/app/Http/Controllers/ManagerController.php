@@ -71,6 +71,7 @@ class ManagerController extends Controller
      *                                     @OA\Property(property="id", type="integer", description="id автомобиля"),
      *                                     @OA\Property(property="tariff_id", type="integer", description="id тарифа"),
      *                                     @OA\Property(property="division_id", type="integer", description="id Подразделения"),
+     *                                     @OA\Property(property="division_name_info", type="string", description="найменование Подразделения"),
      *                                     @OA\Property(property="mileage", type="number", description="Пробег автомобиля"),
      *                                     @OA\Property(property="license_plate", type="string", description="Государственный номер автомобиля"),
      *                                     @OA\Property(property="rent_term_id", type="integer", description="id условия аренды"),
@@ -1264,6 +1265,7 @@ class ManagerController extends Controller
                     'transmission_type' => $this->getTransmissionTypeByName($car->KPPType),
                     'id' => $car->VIN,
                     'date_sts' => $car->STSIssueDate,
+                    'division_name_info' => $car->Department,
                 ];
 
                 foreach ($cars as $index => $existingCar) {

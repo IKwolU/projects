@@ -42,7 +42,7 @@ export const RentTermManager = () => {
           rent_term_id: undefined,
           deposit_amount_daily: newRentTerm.deposit_amount_daily,
           deposit_amount_total: newRentTerm.deposit_amount_total,
-          is_buyout_possible: newRentTerm.is_buyout_possible,
+          is_buyout_possible: !!newRentTerm.is_buyout_possible,
           name: newRentTerm.name,
           minimum_period_days: newRentTerm.minimum_period_days,
           schemas: newRentTerm.schemas,

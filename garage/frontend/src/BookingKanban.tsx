@@ -44,6 +44,7 @@ export const BookingKanban = () => {
   const [park] = useRecoilState(parkAtom);
   const [idOpenAndCreateNotification, setIdOpenAndCreateNotification] =
     useState<number | null>(null);
+
   const [newNotification, setNewNotification] = useState({
     date: undefined as string | undefined,
     message: undefined as string | undefined,
@@ -209,7 +210,7 @@ export const BookingKanban = () => {
   }));
 
   return (
-    <div className="flex justify-between w-full max-w-full mt-4 space-x-1 overflow-x-auto sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">
+    <div className="flex justify-between w-full mt-4 space-x-1 sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">
       {!!notifications!.length && (
         <div className="fixed z-[60]  bottom-2 right-2">
           <div className="space-y-1">
@@ -315,7 +316,7 @@ export const BookingKanban = () => {
           </div>
         </div>
       )}
-      <div className="fixed left-0 flex w-full p-4 space-x-1 overflow-x-auto">
+      <div className="flex w-full p-4 space-x-1 min-w-screen">
         <DragDropContext onDragEnd={onDragEnd}>
           {showDetails.isShowed && (
             <BookingKanbanItem

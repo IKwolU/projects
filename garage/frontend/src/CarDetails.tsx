@@ -271,10 +271,10 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
             </div>
             <div
               className={` ${
-                car.images!.length > 1 ? "lg:space-y-32" : "lg:space-y-2"
+                car.images!.length > 1 ? "lg:space-y-32 pb-20" : "lg:space-y-2"
               } lg:w-2/3 `}
             >
-              <div className="absolute top-0 w-full shadow-xl -z-10 lg:relative h-92">
+              <div className="absolute top-0 z-10 w-full shadow-xl lg:relative h-92">
                 <SliderImages
                   type="click"
                   openIsAffordable={true}

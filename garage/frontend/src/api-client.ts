@@ -20670,6 +20670,8 @@ export class Cars4 implements ICars4 {
     tariff_id?: number;
     /** id Подразделения */
     division_id?: number;
+    /** найменование Подразделения */
+    division_name_info?: string;
     /** Пробег автомобиля */
     mileage?: number;
     /** Государственный номер автомобиля */
@@ -20718,6 +20720,7 @@ export class Cars4 implements ICars4 {
             this.id = _data["id"];
             this.tariff_id = _data["tariff_id"];
             this.division_id = _data["division_id"];
+            this.division_name_info = _data["division_name_info"];
             this.mileage = _data["mileage"];
             this.license_plate = _data["license_plate"];
             this.rent_term_id = _data["rent_term_id"];
@@ -20760,6 +20763,7 @@ export class Cars4 implements ICars4 {
         data["id"] = this.id;
         data["tariff_id"] = this.tariff_id;
         data["division_id"] = this.division_id;
+        data["division_name_info"] = this.division_name_info;
         data["mileage"] = this.mileage;
         data["license_plate"] = this.license_plate;
         data["rent_term_id"] = this.rent_term_id;
@@ -20794,6 +20798,8 @@ export interface ICars4 {
     tariff_id?: number;
     /** id Подразделения */
     division_id?: number;
+    /** найменование Подразделения */
+    division_name_info?: string;
     /** Пробег автомобиля */
     mileage?: number;
     /** Государственный номер автомобиля */

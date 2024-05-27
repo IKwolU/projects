@@ -38,6 +38,9 @@ export const CarsManager = () => {
   const [searchTransmission, setSearchTransmission] = useState<string | null>(
     null
   );
+  const [searchDivisionNameCar, setSearchDivisionNameCar] = useState<
+    string | null
+  >(null);
   const [searchFuel, setSearchFuel] = useState<string | null>(null);
   const [searchDivision, setSearchDivision] = useState<number | null>(null);
   const [searchYear, setSearchYear] = useState(0);
@@ -114,6 +117,12 @@ export const CarsManager = () => {
           .some((key) => car[key] === null);
   };
 
+  const filterByFullDivNameFromCar = (car: Cars4) => {
+    return searchDivisionNameCar
+      ? car.division_name_info === searchDivisionNameCar
+      : true;
+  };
+
   const SearchedSortedCars = sortedCars.filter((car: Cars4) => {
     return (
       filterBySearchTerm(car) &&
@@ -121,7 +130,8 @@ export const CarsManager = () => {
       filterByFuel(car) &&
       filterByTransmission(car) &&
       filterByYear(car) &&
-      filterByFullInfo(car, excludedFields)
+      filterByFullInfo(car, excludedFields) &&
+      filterByFullDivNameFromCar(car)
     );
   });
 
@@ -454,7 +464,7 @@ export const CarsManager = () => {
 
       <div className="flex space-x-1">
         <div className="w-1/2 p-2 my-8 space-y-4 bg-white rounded-xl">
-          <div className="flex flex-col items-center justify-between gap-1">
+          <div className="flex flex-col items-center justify-between gap-1 text-sm">
             <div className="flex flex-wrap gap-1">
               <Button
                 variant={"manager"}
@@ -535,23 +545,49 @@ export const CarsManager = () => {
                   </option>
                 ))}
               </select>
-              <select
-                onChange={(e) => setSearchDivision(Number(e.target.value))}
-                name=""
-                id=""
-                className="p-2 border-2 border-grey rounded-xl"
-              >
-                {" "}
-                <option value="">Все подразделения</option>
-                <option value="-1">Без подразделения</option>
-                {park.divisions?.map((division: Divisions) => {
-                  return (
-                    <option key={"division" + division.id} value={division.id}>
-                      {division.name}
-                    </option>
-                  );
-                })}
-              </select>
+              <div className="space-y-1">
+                <select
+                  onChange={(e) => setSearchDivision(Number(e.target.value))}
+                  name=""
+                  id=""
+                  className="w-full p-2 border-2 border-grey rounded-xl"
+                >
+                  {" "}
+                  <option value="">Все подразделения</option>
+                  {park.divisions?.map((division: Divisions) => {
+                    return (
+                      <option
+                        key={"division" + division.id}
+                        value={division.id}
+                      >
+                        {division.name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <select
+                  onChange={(e) => setSearchDivisionNameCar(e.target.value)}
+                  name=""
+                  id=""
+                  className="w-full p-2 border-2 border-grey rounded-xl"
+                >
+                  <option value="">Наименования подразделений</option>
+                  <option value="-1">Без подразделения</option>
+                  {park.cars?.map(
+                    (car: Cars4, index: number, self: Cars4[]) =>
+                      self.findIndex(
+                        (c) => c.division_name_info === car.division_name_info
+                      ) === index && (
+                        <option
+                          key={"car" + car.id}
+                          value={car.division_name_info}
+                        >
+                          {car.division_name_info}
+                        </option>
+                      )
+                  )}
+                </select>
+              </div>
             </div>
             {SearchedSortedCars!.map((car) => {
               const infoIsNotFull = Object.keys(car)
@@ -617,6 +653,10 @@ export const CarsManager = () => {
             <p>Марка: {selected.brand}</p>
             <p>Модель: {selected.model}</p>
             <p>Год производства: {selected.year_produced || "еще нет"}</p>
+            <p>
+              Наименование подразделения в 1С:{" "}
+              {selected.division_name_info || "еще нет"}
+            </p>
             <p>
               Подразделение:{" "}
               {park.divisions!.find((x) => x.id === selected.division_id!)

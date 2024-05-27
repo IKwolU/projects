@@ -89,7 +89,7 @@ const SliderImages = ({
         <FullScreenImages
           trigger={
             openIsAffordable ? (
-              <div className="bg-grey ">
+              <div className="bg-inherit ">
                 {imagesSlised.length > 1 && (
                   <Slider ref={sliderRef} {...settings}>
                     {imagesSlised.map((image, index) => (

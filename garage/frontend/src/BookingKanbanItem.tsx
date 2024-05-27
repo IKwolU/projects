@@ -559,9 +559,16 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
               }
               placeholder="Коментарий"
             />
-            <Button onClick={createNotification} variant={"manager"}>
-              Создать
-            </Button>
+            {newNotification.date && newNotification.message && (
+              <Button onClick={createNotification} variant={"manager"}>
+                Создать
+              </Button>
+            )}
+            {(!newNotification.date || !newNotification.message) && (
+              <Button disabled variant={"manager"}>
+                Создать
+              </Button>
+            )}
           </div>
         </div>
         <Button

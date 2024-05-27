@@ -3919,6 +3919,10 @@
                                                                     "description": "id Подразделения",
                                                                     "type": "integer"
                                                                 },
+                                                                "division_name_info": {
+                                                                    "description": "найменование Подразделения",
+                                                                    "type": "string"
+                                                                },
                                                                 "mileage": {
                                                                     "description": "Пробег автомобиля",
                                                                     "type": "number"

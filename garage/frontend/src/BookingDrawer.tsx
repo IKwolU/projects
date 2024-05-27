@@ -585,9 +585,11 @@ export const BookingDrawer = () => {
                   },
                   {
                     text: "Сумма бронирования",
-                    content: formatRoubles(
-                      booking.rent_term!.schemas![0]!.daily_amount!
-                    ),
+                    content: booking.rent_term!.schemas?.[0]
+                      ? formatRoubles(
+                          booking.rent_term!.schemas![0]!.daily_amount!
+                        )
+                      : null,
                     type: "price",
                   },
                   {

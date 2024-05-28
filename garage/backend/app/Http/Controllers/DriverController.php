@@ -540,7 +540,8 @@ $divisionId=$car->division->id;
             'column'=>'current_stage',
             'old_content'=>$application->current_stage,
             'new_content'=>ApplicationStage::ReservationCanceled->value,
-            'id'=>$application->id
+            'id'=>$application->id,
+            'advertising_source'=>"BeeBeep"
         ]);
         $application->current_stage =ApplicationStage::ReservationCanceled->value;
         $application->save();

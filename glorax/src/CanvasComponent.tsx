@@ -367,7 +367,7 @@ function CanvasComponent() {
 
         <OBJModel
           scale={[1, 1, 1]}
-          file="/models/pre-finale.gltf"
+          file="/models/finale-new.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[0, -4, 0]}
           opacity={0.93}
@@ -435,7 +435,7 @@ function CanvasComponent() {
             >
               {currentTime < content[0].arrow_time[0].time && (
                 <OBJModel
-                  file="/models/sharik yellow glorax.gltf"
+                  file="/models/sharik blue glorax.gltf"
                   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                   position={[0, 0, 0]}
                   scale={[35, 35, 35]}

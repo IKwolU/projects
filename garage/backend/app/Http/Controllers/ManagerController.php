@@ -9,6 +9,7 @@ use App\Enums\CancellationSources;
 use App\Enums\CarClass;
 use App\Enums\CarStatus;
 use App\Enums\FuelType;
+use App\Enums\ParkInventoryTypes;
 use App\Enums\TransmissionType;
 use App\Enums\UserType;
 use App\Models\Application;
@@ -19,6 +20,7 @@ use App\Models\Car;
 use App\Models\Division;
 use App\Models\Manager;
 use App\Models\Park;
+use App\Models\ParkInventory;
 use App\Models\RentTerm;
 use App\Models\Request as ModelsRequest;
 use App\Models\Schema;
@@ -2781,6 +2783,50 @@ public function updateNotificationManager(Request $request) {
 
     return $kanban->updateApplicationsLogItem($request);
 }
+
+public function getParkInventoryListsManager(Request $request)  {
+    $lists = ParkInventory::where('park_id',$request->park_id)->orWhere('default', true)->get();
+    return response()->json(['lists' => $lists], 200);
+}
+
+public function changeParkInventoryListItemManager(Request $request)  {
+    $listItem = ParkInventory::where('park_id',$request->park_id)->where('id', $request->id)->get();
+if ($request->content) {
+    $listItem->content = $request->content;
+}
+$listItem->save();
+    return response()->json(['success' => true], 200);
+}
+
+public function createParkInventoryListItemManager(Request $request)
+{
+    $listItem = new ParkInventory();
+    $listItem->park_id = $request->park_id;
+    $listItem->content = $request->content;
+    $listItem->type = ParkInventoryTypes::{$request->type}->value;
+    $listItem->default = false;
+
+    $listItem->save();
+
+    return response()->json(['success' => true], 200);
+}
+
+public function deleteParkInventoryListItemManager(Request $request)
+{
+    $listItem = ParkInventory::where('id', $request->id)
+                             ->where('park_id', $request->park_id)
+                             ->whete('default', false)
+                             ->first();
+
+    if ($listItem) {
+        $listItem->delete();
+        return response()->json(['success' => true, 'message' => 'Item deleted successfully'], 200);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Item not found'], 404);
+    }
+}
+
+
 
     static function checkCarDataIsFilled($car) {
         $requiredFields = ['division_id', 'park_id', 'tariff_id', 'license_plate', 'mileage', 'rent_term_id', 'fuel_type', 'transmission_type', 'brand', 'model', 'year_produced', 'car_id', 'images'];

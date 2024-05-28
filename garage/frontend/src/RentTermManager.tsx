@@ -192,7 +192,9 @@ export const RentTermManager = () => {
     });
   };
 
-  const rentTerms = park!.rent_terms;
+  const rentTerms = park!.rent_terms
+    ?.slice()
+    .sort((a, b) => a.name!.localeCompare(b.name!));
 
   const selected = rentTerms!.find(
     (rentTerm) => rentTerm.id === selectedId

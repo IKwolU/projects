@@ -30,8 +30,9 @@ function Content() {
   const [menuOpen, menuOpenSet] = useState(false);
   const [isHelpShowed, setIsHelpShowed] = useState(false);
   const [isMapClicked, setIsMapClicked] = useState(false);
-  const [bigTextOpened] = useState(false);
+  const [bigTextOpened, setBigTextOpened] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const handleAudioTimeUpdate = () => {
     setAudioTime(currentTime);
@@ -50,6 +51,11 @@ function Content() {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
+    beforeChange: (current: number, next: number) => {
+      setBigTextOpened(false);
+      setActiveSlide(next);
+      current && null;
+    },
   };
 
   useEffect(() => {
@@ -326,11 +332,10 @@ function Content() {
                 </div>
                 <div className="relative">
                   <Slider {...settings}>
-                    {x.facts.map((fact) => (
+                    {x.facts.map((fact, n) => (
                       <div
-                        className={`flex relative flex-col  pb-3 items-center justify-center w-full ${
-                          !bigTextOpened ? "max-h-[510px]" : "h-full"
-                        } pt-6 space-y-2 overflow-y-auto  scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide `}
+                        className={`flex relative flex-col pb-2 items-center justify-center w-full 
+                        } pt-6 space-y-2 overflow-y-hidden  scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide `}
                         key={`choice_${i}`}
                       >
                         {fact.image && (
@@ -340,7 +345,13 @@ function Content() {
                             alt=""
                           />
                         )}
-                        <div className="px-4">
+                        <div
+                          className={`px-4 ${
+                            bigTextOpened && activeSlide === n
+                              ? "h-full"
+                              : "max-h-[60px]"
+                          }`}
+                        >
                           {fact.type === "text" && (
                             <h4 className="h-4 px-0 pb-3 mt-8 mb-4 text-sm font-semibold sm:px-4">
                               {fact.title}
@@ -350,7 +361,7 @@ function Content() {
                             <p
                               className={`${
                                 fact.image ? "" : ""
-                              } px-0 pb-3  text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
+                              } px-0 pb-0  text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
                             >
                               {fact.text}
                             </p>
@@ -368,49 +379,50 @@ function Content() {
                       </div>
                     ))}
                   </Slider>
-                  {/* <FontAwesomeIcon
-                    onClick={() => setBigTextOpened(!bigTextOpened)}
-                    icon={faAnglesRight}
-                    className={`h-7 transition-transform text-white absolute bottom-[295px] py-2 left-[46%] ${
-                      bigTextOpened ? "-rotate-90" : "rotate-90"
-                    }`}
-                  /> */}
-                  <div className="absolute left-0 w-full h-8 -mb-4 bottom-5 from-transparent bg-gradient-to-b to-brown "></div>
-                </div>
-                <div className="relative flex flex-col w-full h-auto p-4 mt-6 space-y-1 rounded bg-brown">
-                  <div className="flex flex-col items-center gap-2 mx-auto w-fit">
-                    <p>Продолжительность маршрута:</p>
-                    <div className="flex justify-between mb-2 space-x-6">
-                      <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon
-                          icon={faClock}
-                          className={`h-4 transition-transform  `}
-                        />{" "}
-                        <p> 7мин</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FontAwesomeIcon
-                          icon={faPersonWalking}
-                          className={`h-4 transition-transform  `}
-                        />{" "}
-                        <p> 650м</p>
+
+                  <div className="relative flex flex-col w-full h-auto p-4 mt-6 space-y-1 rounded bg-brown">
+                    <div className="flex flex-col items-center gap-2 mx-auto w-fit">
+                      <p>Продолжительность маршрута:</p>
+                      <div className="flex justify-between mb-2 space-x-6">
+                        <div className="flex items-center space-x-2">
+                          <FontAwesomeIcon
+                            icon={faClock}
+                            className={`h-4 transition-transform  `}
+                          />{" "}
+                          <p> 7мин</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <FontAwesomeIcon
+                            icon={faPersonWalking}
+                            className={`h-4 transition-transform  `}
+                          />{" "}
+                          <p> 650м</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
-                  <div className="py-2"></div>
-                  <img
-                    onClick={() => setIsMapClicked(!isMapClicked)}
-                    src="./img/helpimage.png"
-                    alt=""
-                    className="object-contain w-full h-40"
-                  />
-                  <div className="absolute right-5 bottom-[140px] sm:bottom-[145px]">
-                    <FontAwesomeIcon
-                      icon={faMagnifyingGlassPlus}
-                      className="z-10 h-5 text-brown"
+                    <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
+                    <div className="py-2"></div>
+                    <img
+                      onClick={() => setIsMapClicked(!isMapClicked)}
+                      src="./img/helpimage.png"
+                      alt=""
+                      className="object-contain w-full h-40"
                     />
+                    <div className="absolute right-5 bottom-[140px] sm:bottom-[145px]">
+                      <FontAwesomeIcon
+                        icon={faMagnifyingGlassPlus}
+                        className="z-10 h-5 text-brown"
+                      />
+                    </div>
                   </div>
+                  {/* <div className="absolute left-0 w-full h-8 -mb-4 bottom-5 from-transparent bg-gradient-to-b to-brown "></div> */}
+                  <FontAwesomeIcon
+                    onClick={() => setBigTextOpened(!bigTextOpened)}
+                    icon={faAnglesRight}
+                    className={`h-7 transition-transform text-white absolute bottom-[265px] py-2 left-[46%] ${
+                      bigTextOpened ? "-rotate-90" : "rotate-90"
+                    }`}
+                  />
                 </div>
               </div>
               <div

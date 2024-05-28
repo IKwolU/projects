@@ -29,6 +29,18 @@ class KanbanController extends Controller
         if ($request->booking_id) {
             $application->booking_id=$request->booking_id;
         }
+        if ($request->license_issuing_country) {
+            $application->license_issuing_country=$request->license_issuing_country;
+        }
+        if ($request->driver_license) {
+            $application->driver_license=$request->driver_license;
+        }
+        if ($request->chosen_model) {
+            $application->chosen_model=$request->chosen_model;
+        }
+        if ($request->chosen_brand) {
+            $application->chosen_brand=$request->chosen_brand;
+        }
         if ($request->manager_id) {
             $application->manager_id=$request->manager_id;
             $application->current_stage=ApplicationStage::InProgress->value;
@@ -68,6 +80,9 @@ class KanbanController extends Controller
                 ];
         }
         if ($request->type === ApplicationLogType::Notification->value) {
+            if (!$request->date) {
+                return response()->json(['error' => 'Не указана дата']);
+            }
             $logItem->content = json_encode([
                 "message" => $request->message,
                 "date" => $request->date,

@@ -2149,6 +2149,10 @@ foreach ($bookings as $booking) {
  *                 @OA\Property(property="advertising_source", type="string"),
  *                 @OA\Property(property="booking_id", type="integer", nullable=true),
  *                 @OA\Property(property="planned_arrival", type="string"),
+ *                 @OA\Property(property="driver_license", type="string"),
+ *                 @OA\Property(property="license_issuing_country", type="string"),
+ *                 @OA\Property(property="chosen_model", type="string"),
+ *                 @OA\Property(property="chosen_brand", type="string"),
  *                 @OA\Property(property="reason_for_rejection", type="string", nullable=true),
  *                 @OA\Property(property="current_stage", type="string", ref="#/components/schemas/ApplicationStage"),
  *                 @OA\Property(property="user_id", type="integer", nullable=true),
@@ -2297,6 +2301,22 @@ public function getParkApplicationsManager(Request $request) {
  *             ),@OA\Property(
  *                 property="advertising_source",
  *                 description="источник рекламы",
+ *                 type="sting",nullable=true
+ *             ),@OA\Property(
+ *                 property="chosen_model",
+ *                 description="модель авто",
+ *                 type="sting",nullable=true,
+ *              ),@OA\Property(
+ *                 property="chosen_brand",
+ *                 description="Марка авто",
+ *                 type="sting",nullable=true
+ *             ),@OA\Property(
+ *                 property="license_issuing_country",
+ *                 description="страна выдачи прав",
+ *                 type="sting",nullable=true
+ *             ),@OA\Property(
+ *                 property="driver_license",
+ *                 description="номер удостоверения",
  *                 type="sting",nullable=true
  *             ),@OA\Property(
  *                 property="planned_arrival",
@@ -2474,6 +2494,22 @@ public function updateApplicationManager(Request $request) {
         if ($request->reason_for_rejection) {
             $this->updateFieldAndCreateLog($request, $application->reason_for_rejection, $request->reason_for_rejection, 'reason_for_rejection', $kanban);
             $application->reason_for_rejection=$request->reason_for_rejection;
+        }
+        if ($request->license_issuing_country) {
+            $this->updateFieldAndCreateLog($request, $application->license_issuing_country, $request->license_issuing_country, 'license_issuing_country', $kanban);
+            $application->license_issuing_country=$request->license_issuing_country;
+        }
+        if ($request->driver_license) {
+            $this->updateFieldAndCreateLog($request, $application->driver_license, $request->driver_license, 'driver_license', $kanban);
+            $application->driver_license=$request->driver_license;
+        }
+        if ($request->chosen_model) {
+            $this->updateFieldAndCreateLog($request, $application->chosen_model, $request->chosen_model, 'chosen_model', $kanban);
+            $application->chosen_model=$request->chosen_model;
+        }
+        if ($request->chosen_brand) {
+            $this->updateFieldAndCreateLog($request, $application->chosen_brand, $request->chosen_brand, 'chosen_brand', $kanban);
+            $application->chosen_brand=$request->chosen_brand;
         }
         if ($request->current_stage) {
             $old = $application->current_stage;

@@ -7316,6 +7316,18 @@
                                                     "planned_arrival": {
                                                         "type": "string"
                                                     },
+                                                    "driver_license": {
+                                                        "type": "string"
+                                                    },
+                                                    "license_issuing_country": {
+                                                        "type": "string"
+                                                    },
+                                                    "chosen_model": {
+                                                        "type": "string"
+                                                    },
+                                                    "chosen_brand": {
+                                                        "type": "string"
+                                                    },
                                                     "reason_for_rejection": {
                                                         "type": "string",
                                                         "nullable": true
@@ -7655,6 +7667,26 @@
                                     },
                                     "advertising_source": {
                                         "description": "источник рекламы",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "chosen_model": {
+                                        "description": "модель авто",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "chosen_brand": {
+                                        "description": "Марка авто",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "license_issuing_country": {
+                                        "description": "страна выдачи прав",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
+                                    "driver_license": {
+                                        "description": "номер удостоверения",
                                         "type": "sting",
                                         "nullable": true
                                     },

@@ -6992,6 +6992,14 @@ export class Body44 implements IBody44 {
     division_id?: number | undefined;
     /** источник рекламы */
     advertising_source?: any | undefined;
+    /** модель авто */
+    chosen_model?: any | undefined;
+    /** Марка авто */
+    chosen_brand?: any | undefined;
+    /** страна выдачи прав */
+    license_issuing_country?: any | undefined;
+    /** номер удостоверения */
+    driver_license?: any | undefined;
     /** дата и время когда планирует прийти */
     planned_arrival?: Date | undefined;
 
@@ -7015,6 +7023,10 @@ export class Body44 implements IBody44 {
             this.phone = _data["phone"];
             this.division_id = _data["division_id"];
             this.advertising_source = _data["advertising_source"];
+            this.chosen_model = _data["chosen_model"];
+            this.chosen_brand = _data["chosen_brand"];
+            this.license_issuing_country = _data["license_issuing_country"];
+            this.driver_license = _data["driver_license"];
             this.planned_arrival = _data["planned_arrival"] ? new Date(_data["planned_arrival"].toString()) : <any>undefined;
         }
     }
@@ -7035,6 +7047,10 @@ export class Body44 implements IBody44 {
         data["phone"] = this.phone;
         data["division_id"] = this.division_id;
         data["advertising_source"] = this.advertising_source;
+        data["chosen_model"] = this.chosen_model;
+        data["chosen_brand"] = this.chosen_brand;
+        data["license_issuing_country"] = this.license_issuing_country;
+        data["driver_license"] = this.driver_license;
         data["planned_arrival"] = this.planned_arrival ? this.planned_arrival.toISOString() : <any>undefined;
         return data;
     }
@@ -7047,6 +7063,14 @@ export interface IBody44 {
     division_id?: number | undefined;
     /** источник рекламы */
     advertising_source?: any | undefined;
+    /** модель авто */
+    chosen_model?: any | undefined;
+    /** Марка авто */
+    chosen_brand?: any | undefined;
+    /** страна выдачи прав */
+    license_issuing_country?: any | undefined;
+    /** номер удостоверения */
+    driver_license?: any | undefined;
     /** дата и время когда планирует прийти */
     planned_arrival?: Date | undefined;
 
@@ -19294,6 +19318,10 @@ export class Applications implements IApplications {
     advertising_source?: string;
     booking_id?: number | undefined;
     planned_arrival?: string;
+    driver_license?: string;
+    license_issuing_country?: string;
+    chosen_model?: string;
+    chosen_brand?: string;
     reason_for_rejection?: string | undefined;
     current_stage?: ApplicationStage;
     user_id?: number | undefined;
@@ -19326,6 +19354,10 @@ export class Applications implements IApplications {
             this.advertising_source = _data["advertising_source"];
             this.booking_id = _data["booking_id"];
             this.planned_arrival = _data["planned_arrival"];
+            this.driver_license = _data["driver_license"];
+            this.license_issuing_country = _data["license_issuing_country"];
+            this.chosen_model = _data["chosen_model"];
+            this.chosen_brand = _data["chosen_brand"];
             this.reason_for_rejection = _data["reason_for_rejection"];
             this.current_stage = _data["current_stage"];
             this.user_id = _data["user_id"];
@@ -19356,6 +19388,10 @@ export class Applications implements IApplications {
         data["advertising_source"] = this.advertising_source;
         data["booking_id"] = this.booking_id;
         data["planned_arrival"] = this.planned_arrival;
+        data["driver_license"] = this.driver_license;
+        data["license_issuing_country"] = this.license_issuing_country;
+        data["chosen_model"] = this.chosen_model;
+        data["chosen_brand"] = this.chosen_brand;
         data["reason_for_rejection"] = this.reason_for_rejection;
         data["current_stage"] = this.current_stage;
         data["user_id"] = this.user_id;
@@ -19375,6 +19411,10 @@ export interface IApplications {
     advertising_source?: string;
     booking_id?: number | undefined;
     planned_arrival?: string;
+    driver_license?: string;
+    license_issuing_country?: string;
+    chosen_model?: string;
+    chosen_brand?: string;
     reason_for_rejection?: string | undefined;
     current_stage?: ApplicationStage;
     user_id?: number | undefined;

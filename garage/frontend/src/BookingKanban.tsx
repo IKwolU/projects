@@ -22,6 +22,7 @@ import { useRecoilState } from "recoil";
 import { applicationsAtom, parkAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { BookingKanbanCreatingTask } from "./BookingKanbanCreatingTask";
 
 interface Division {
   id: number;
@@ -104,17 +105,29 @@ export const BookingKanban = () => {
   }, [updatedCount]);
 
   const createNotification = async (id: number) => {
-    await client.createNotificationManager(
-      new Body47({
-        date: newNotification.date,
-        message: newNotification.message,
-        result: null,
-        id: id,
-      })
-    );
-    setNewNotification({ date: undefined, message: undefined });
-    setIdOpenAndCreateNotification(null);
-    getNotification();
+    try {
+      await client.createNotificationManager(
+        new Body47({
+          date: newNotification.date,
+          message: newNotification.message,
+          result: null,
+          id: id,
+        })
+      );
+      setNewNotification({ date: undefined, message: undefined });
+      setIdOpenAndCreateNotification(null);
+      getNotification();
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const checkApplications = async () => {
@@ -327,104 +340,13 @@ export const BookingKanban = () => {
             />
           )}
           {showModal && (
-            <div
-              className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
-              onClick={(e) =>
-                e.target === e.currentTarget && setShowModal(false)
-              }
-            >
-              <div className="flex flex-col items-center p-4 space-y-2 bg-white w-80 rounded-xl">
-                <div className="">
-                  <div className="text-center">Источник рекламы</div>
-                  <select
-                    className="p-1 m-1 border-2 border-grey rounded-xl"
-                    name=""
-                    id=""
-                    onChange={(e) =>
-                      setNewApplication(
-                        new Body43({
-                          ...newApplication,
-                          advertising_source: e.target.value,
-                        })
-                      )
-                    }
-                  >
-                    {["Без рекламы", "BeeBeep", "Avito"].map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <Separator />
-                <div className="">
-                  <div className="text-center">Подразделение</div>
-                  <select
-                    className="p-1 m-1 border-2 border-grey rounded-xl"
-                    name=""
-                    id=""
-                    onChange={(e) =>
-                      setNewApplication(
-                        new Body43({
-                          ...newApplication,
-                          division_id: Number(e.target.value),
-                        })
-                      )
-                    }
-                  >
-                    {uniqueDivisions.map((y) => (
-                      <option key={y.id} value={y.id}>
-                        {y.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <Separator />
-                <div className="">
-                  <div className="text-center">Телефон водителя</div>
-                  <PhoneInput
-                    onChange={(e) => setNewApplicationPhone(e.target.value)}
-                  />
-                </div>
-                <Separator />
-                <div className="">
-                  <div className="text-center">Планирует прийти</div>
-                  <Input
-                    type="datetime-local"
-                    onChange={(e) =>
-                      setNewApplication(
-                        new Body43({
-                          ...newApplication,
-                          planned_arrival: new Date(e.target.value),
-                        })
-                      )
-                    }
-                  />
-                </div>
-                <div className="flex justify-between space-x-2">
-                  <Button
-                    variant={"reject"}
-                    className="text-black"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Назад
-                  </Button>
-                  {newApplicationPhone && (
-                    <Confirmation
-                      accept={() => {
-                        createNewApplication();
-                        setShowModal(false);
-                      }}
-                      cancel={() => {}}
-                      title="Создать заявку?"
-                      trigger={<Button>Создать</Button>}
-                      type="green"
-                    />
-                  )}
-                  {!newApplicationPhone && <Button disabled>Создать</Button>}
-                </div>
-              </div>
-            </div>
+            <BookingKanbanCreatingTask
+              accept={() => {
+                setShowModal(false);
+                getApplications();
+              }}
+              close={() => setShowModal(false)}
+            />
           )}
           {Object.keys(ApplicationStage).map((column: any) => (
             <div
@@ -480,16 +402,13 @@ export const BookingKanban = () => {
                                 {format(task.updated_at!, "dd.MM.yyyy HH:mm")}
                               </div>
                               <Separator />
-                              {task.division && (
-                                <div className="">{task.division.name}</div>
-                              )}
-                              {task.division && (
+                              {task.manager_id && (
                                 <div className="">
-                                  {task.division.city?.name}
+                                  Отиветственный: {task.manager.user.name}
                                 </div>
                               )}
-                              {!task.division && (
-                                <div className="">Нет подразделения</div>
+                              {!task.manager_id && (
+                                <div className="">Нет ответственного</div>
                               )}
                             </div>
                           )}

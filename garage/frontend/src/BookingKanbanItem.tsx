@@ -21,6 +21,7 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState } from "recoil";
 import { applicationsAtom } from "./atoms";
 import Confirmation from "@/components/ui/confirmation";
+import carsList from "../../backend/public/assets/json/carsValid.json";
 import {
   faCircleCheck,
   faTriangleExclamation,
@@ -43,6 +44,18 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   const [reasonForRejection, setReasonForRejection] = useState(
     applicationDetails!.reason_for_rejection
   );
+  const [driverLicense, setDiverLicense] = useState(
+    applicationDetails!.driver_license
+  );
+  const [licenseIssuingCountry, setLicenseIssuingCountry] = useState(
+    applicationDetails!.license_issuing_country
+  );
+  const [chosenModel, setChosenModel] = useState(
+    applicationDetails!.chosen_model
+  );
+  const [chosenBrand, setChosenBrand] = useState(
+    applicationDetails!.chosen_brand
+  );
   const [userName, setUserName] = useState(applicationDetails!.user?.name);
   const [newNotification, setNewNotification] = useState({
     date: undefined as string | undefined,
@@ -53,16 +66,28 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   const updateIntervalInSeconds = 60;
 
   const createNotification = async () => {
-    await client.createNotificationManager(
-      new Body47({
-        date: newNotification.date,
-        message: newNotification.message,
-        result: null,
-        id: applicationDetails.id,
-      })
-    );
-    setNewNotification({ date: undefined, message: undefined });
-    getApplicationLogs();
+    try {
+      await client.createNotificationManager(
+        new Body47({
+          date: newNotification.date,
+          message: newNotification.message,
+          result: null,
+          id: applicationDetails.id,
+        })
+      );
+      setNewNotification({ date: undefined, message: undefined });
+      getApplicationLogs();
+    } catch (error: any) {
+      if (error.errors) {
+        const errorMessages = Object.values(error.errors).flatMap(
+          (errorArray) => errorArray
+        );
+        const errorMessage = errorMessages.join("\n");
+        alert("An error occurred:\n" + errorMessage);
+      } else {
+        alert("An error occurred: " + error.message);
+      }
+    }
   };
 
   const updateNotification = async (id: number) => {
@@ -167,7 +192,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-[51] w-full h-full bg-lightgrey mt-8">
+      <div className="fixed -top-20 left-0 z-[51] pt-20 w-full h-full bg-lightgrey mt-8">
         <div className="flex gap-2 p-2 max-w-[1208px] m-auto">
           <div className="w-1/2 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[800px] bg-white">
             <div className="flex justify-between mb-2">
@@ -356,42 +381,122 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       <Separator className="my-1" />
                     </div>
                   ))}
-                <div className="">
-                  <div className="flex items-center justify-between">
-                    <div className="">Причина отказа от авто</div>
-                    <div className="relative flex items-center gap-1">
-                      <Input
-                        className="m-0 w-72 "
-                        type="text"
-                        onChange={(e) => setReasonForRejection(e.target.value)}
-                        placeholder={applicationDetails!.reason_for_rejection}
-                      />
-                      <FontAwesomeIcon
-                        onClick={() =>
-                          changeApplicationData(
-                            applicationDetails!.id!,
-                            "reason_for_rejection",
-                            reasonForRejection
-                          )
-                        }
-                        icon={faPenToSquare}
-                        className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
-                      />
-                      <div
-                        className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
-                          applicationDetails!.reason_for_rejection ===
-                          reasonForRejection
-                            ? "opacity-0"
-                            : "opacity-100"
-                        }`}
-                      >
-                        !
+                <div className="flex items-center justify-between">
+                  <div className="">Марка/модель</div>
+                  <div className="flex items-center space-x-1">
+                    <select
+                      className="h-10 p-1 m-0 border-2 w-44 border-grey rounded-xl"
+                      name=""
+                      id=""
+                      onChange={(e) => setChosenBrand(e.target.value)}
+                    >
+                      <option value={""}>Марка</option>
+                      {carsList.map((y) => (
+                        <option
+                          key={y.name}
+                          value={y.name}
+                          selected={y.name === chosenBrand}
+                        >
+                          {y.name}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className="h-10 p-1 m-0 border-2 w-44 border-grey rounded-xl"
+                      name=""
+                      id=""
+                      onChange={(e) => setChosenModel(e.target.value)}
+                    >
+                      <option value={""}>Модель</option>
+                      {chosenBrand &&
+                        chosenBrand !== "Модель" &&
+                        carsList!
+                          .find(({ name }) => name === chosenBrand!)
+                          ?.models.map((y: string) => (
+                            <option
+                              selected={y === chosenModel}
+                              key={y}
+                              value={y}
+                            >
+                              {y}
+                            </option>
+                          ))}
+                    </select>
+                    <FontAwesomeIcon
+                      onClick={() => {
+                        changeApplicationData(
+                          applicationDetails!.id!,
+                          "chosen_brand",
+                          chosenBrand
+                        );
+                        changeApplicationData(
+                          applicationDetails!.id!,
+                          "chosen_model",
+                          chosenModel
+                        );
+                      }}
+                      icon={faPenToSquare}
+                      className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                    />
+                  </div>
+                </div>
+                <Separator className="my-1" />
+                {[
+                  {
+                    text: "Номер водительского удостоверения",
+                    onChange: (value: string) => setDiverLicense(value),
+                    name: "driver_license",
+                    state: driverLicense,
+                  },
+                  {
+                    text: "Страна выдачи прав",
+                    onChange: (value: string) =>
+                      setLicenseIssuingCountry(value),
+                    name: "license_issuing_country",
+                    state: licenseIssuingCountry,
+                  },
+                  {
+                    text: "Причина отказа от авто",
+                    onChange: (value: string) => setReasonForRejection(value),
+                    name: "reason_for_rejection",
+                    state: reasonForRejection,
+                  },
+                ].map(({ text, onChange, name, state }) => (
+                  <div className="">
+                    <div className="flex items-center justify-between">
+                      <div className="">{text}</div>
+                      <div className="relative flex items-center gap-1">
+                        <Input
+                          className="m-0 w-72 "
+                          type="text"
+                          onChange={(e) => onChange(e.target.value)}
+                          placeholder={applicationDetails![name]}
+                        />
+                        <FontAwesomeIcon
+                          onClick={() =>
+                            changeApplicationData(
+                              applicationDetails!.id!,
+                              name,
+                              state
+                            )
+                          }
+                          icon={faPenToSquare}
+                          className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                        />
+                        <div
+                          className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
+                            applicationDetails![name] === state
+                              ? "opacity-0"
+                              : "opacity-100"
+                          }`}
+                        >
+                          !
+                        </div>
                       </div>
                     </div>
+                    <Separator className="my-1" />
                   </div>
-
-                  <Separator className="my-1" />
-                </div>
+                ))}{" "}
               </div>
             </div>
           </div>

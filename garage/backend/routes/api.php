@@ -9,6 +9,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ManagerController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Broadcast::routes();
 });
+
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
 Route::post('cars/app-data', [DriverController::class, 'getFinderFilterData']);
 Route::get('car', [CarsController::class, 'GetCar']);

@@ -25,6 +25,7 @@ use GuzzleHttp\Client;
 use App\Http\Controllers\Enums;
 use Carbon\Carbon;
 use App\Http\Controllers\ParserController;
+use App\Mail\NotificationEmail;
 use App\Models\Referral;
 use App\Models\Schema;
 use App\Models\Status;
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 /**
@@ -1844,10 +1846,22 @@ if (isset($carData['division_name_info'])) {
             {
                 $message .="\n" . 'Причина: '. $reason;
             }
+
             if($fromDriver!==null)
             {
                 $submessege = $fromDriver ? 'Отменена водителем' : 'Отменена менеджером';
                 $message .= "\n" . $submessege;
+            }
+
+            if ($park->email) {
+                try {
+                    Mail::to($park->email)->queue(new NotificationEmail($message));
+                    // Email успешно отправлен
+                    Log::info('Email успешно отправлен на адрес: ' . $park->email);
+                } catch (\Exception $e) {
+                    // Обработка ошибки при отправке email
+                    Log::error('Произошла ошибка при отправке email: ' . $e->getMessage());
+                }
             }
 
             $url = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status';

@@ -380,7 +380,7 @@ function Content() {
                     ))}
                   </Slider>
 
-                  <div className="relative flex flex-col w-full h-auto p-4 mt-6 space-y-1 rounded bg-brown">
+                  <div className="relative flex flex-col w-full h-auto p-4 mt-10 space-y-1 rounded bg-brown">
                     <div className="flex flex-col items-center gap-2 mx-auto w-fit">
                       <p>Продолжительность маршрута:</p>
                       <div className="flex justify-between mb-2 space-x-6">
@@ -419,7 +419,7 @@ function Content() {
                   <FontAwesomeIcon
                     onClick={() => setBigTextOpened(!bigTextOpened)}
                     icon={faAnglesRight}
-                    className={`h-7 transition-transform text-white absolute bottom-[265px] py-2 left-[46%] ${
+                    className={`h-7 transition-transform text-white absolute bottom-[275px] py-2 left-[46%] ${
                       bigTextOpened ? "-rotate-90" : "rotate-90"
                     }`}
                   />

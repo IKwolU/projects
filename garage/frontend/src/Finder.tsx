@@ -189,7 +189,7 @@ export const Finder = () => {
           fuel_type: filters.fuelType || undefined,
           transmission_type: filters.transmissionType || undefined,
           car_class: filters.carClass,
-          limit: 500,
+          limit: 1000,
           offset: 0,
           sorting: filters.sorting,
           commission:

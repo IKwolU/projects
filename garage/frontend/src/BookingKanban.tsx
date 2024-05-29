@@ -13,9 +13,6 @@ import { getApplicationStageDisplayName } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import PhoneInput from "@/components/ui/phone-input";
-
-import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
@@ -24,10 +21,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { BookingKanbanCreatingTask } from "./BookingKanbanCreatingTask";
 
-interface Division {
-  id: number;
-  name: string;
-}
 interface Details {
   isShowed: boolean;
   applicationDetails: Applications | null;
@@ -35,8 +28,6 @@ interface Details {
 
 export const BookingKanban = () => {
   const [applications, setApplications] = useRecoilState(applicationsAtom);
-
-  const [newApplicationPhone, setNewApplicationPhone] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [updatedCount, setUpdatedCount] = useState(0);
   const [notifications, setNotifications] = useState<Notifications[]>([]);
@@ -149,17 +140,6 @@ export const BookingKanban = () => {
     }
   };
 
-  const createNewApplication = async () => {
-    await client.createApplicationManager(
-      new Body43({
-        ...newApplication,
-        phone: newApplicationPhone,
-      })
-    );
-
-    getApplications();
-  };
-
   const changeApplicationData = async (
     id: number,
     item: any,
@@ -216,11 +196,6 @@ export const BookingKanban = () => {
     const right = new Date(a.updated_at) as any;
     return left - right;
   });
-
-  const uniqueDivisions: Division[] = park.divisions!.map((division: any) => ({
-    id: division.id,
-    name: division.name,
-  }));
 
   return (
     <div className="flex justify-between w-full mt-4 space-x-1 sm:mx-0 sm:w-full sm:space-x-1 sm:justify-between">

@@ -317,7 +317,7 @@ class CarsController extends Controller
                 ->whereColumn('cars.division_id', 'divisions.id')
                 ->where('city_id', 1);
         })
-        ->groupBy('year_produced', 'model', 'brand', 'transmission_type', 'fuel_type', 'rent_term_id', 'tariff_id', 'park_id')
+        ->groupBy('year_produced', 'model', 'brand', 'transmission_type', 'fuel_type', 'rent_term_id', 'tariff_id', 'park_id','division_id')
         ->orderByRaw('(select MIN(schemas.daily_amount) from `schemas` where `schemas`.`rent_term_id` = `cars`.`rent_term_id` order by `schemas`.`daily_amount` asc limit 1) asc');
 
         $carsQuery->offset($offset)->limit($limit);

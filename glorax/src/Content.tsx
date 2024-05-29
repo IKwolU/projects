@@ -419,7 +419,7 @@ function Content() {
                   <FontAwesomeIcon
                     onClick={() => setBigTextOpened(!bigTextOpened)}
                     icon={faAnglesRight}
-                    className={`h-7 transition-transform text-white absolute bottom-[275px] py-2 left-[46%] ${
+                    className={`h-7 transition-transform text-white absolute sm:bottom-[275px] bottom-[295px] py-2 left-[46%] ${
                       bigTextOpened ? "-rotate-90" : "rotate-90"
                     }`}
                   />

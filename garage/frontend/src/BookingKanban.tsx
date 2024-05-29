@@ -379,7 +379,7 @@ export const BookingKanban = () => {
                               <Separator />
                               {task.manager_id && (
                                 <div className="">
-                                  Отиветственный: {task.manager.user.name}
+                                  Ответственный: {task.manager.user.name}
                                 </div>
                               )}
                               {!task.manager_id && (

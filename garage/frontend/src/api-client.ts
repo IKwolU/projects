@@ -3678,6 +3678,180 @@ export class Client {
         }
         return Promise.resolve<Anonymous207>(null as any);
     }
+
+    /**
+     * Получение списков инвентаря парка
+     * @return Успешно
+     */
+    getParkInventoryListsManager(): Promise<Anonymous210> {
+        let url_ = this.baseUrl + "/manager/park/inventory-lists";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetParkInventoryListsManager(_response);
+        });
+    }
+
+    protected processGetParkInventoryListsManager(response: Response): Promise<Anonymous210> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous210.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous210>(null as any);
+    }
+
+    /**
+     * Изменение элемента списка инвентаря парка
+     * @param body (optional) 
+     * @return Успешно
+     */
+    changeParkInventoryListItemManager(body: Body48 | undefined): Promise<Anonymous211> {
+        let url_ = this.baseUrl + "/manager/park/inventory-list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processChangeParkInventoryListItemManager(_response);
+        });
+    }
+
+    protected processChangeParkInventoryListItemManager(response: Response): Promise<Anonymous211> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous211.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous211>(null as any);
+    }
+
+    /**
+     * Создание элемента списка инвентаря парка
+     * @param body (optional) 
+     * @return Успешно
+     */
+    createParkInventoryListItemManager(body: Body49 | undefined): Promise<Anonymous212> {
+        let url_ = this.baseUrl + "/manager/park/inventory-list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCreateParkInventoryListItemManager(_response);
+        });
+    }
+
+    protected processCreateParkInventoryListItemManager(response: Response): Promise<Anonymous212> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous212.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous212>(null as any);
+    }
+
+    /**
+     * Удаление элемента списка инвентаря парка
+     * @param body (optional) 
+     * @return Успешно
+     */
+    deleteParkInventoryListItemManager(body: Body50 | undefined): Promise<Anonymous213> {
+        let url_ = this.baseUrl + "/manager/park/inventory-list";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processDeleteParkInventoryListItemManager(_response);
+        });
+    }
+
+    protected processDeleteParkInventoryListItemManager(response: Response): Promise<Anonymous213> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous213.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = Anonymous214.fromJS(resultData404);
+            return throwException("\u042d\u043b\u0435\u043c\u0435\u043d\u0442 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous213>(null as any);
+    }
 }
 
 /** The unique identifier of a product in our catalog */
@@ -3760,6 +3934,13 @@ export enum FuelType {
     Methane = "Methane",
     Propane = "Propane",
     Electric = "Electric",
+}
+
+/** The unique identifier of a product in our catalog */
+export enum ParkInventoryTypes {
+    AdSource = "AdSource",
+    BookingRejectionReason = "BookingRejectionReason",
+    CarRejectionReason = "CarRejectionReason",
 }
 
 /** The unique identifier of a product in our catalog */
@@ -7240,6 +7421,158 @@ export interface IBody47 {
     message?: any;
     date?: any;
     result?: any;
+    id?: number;
+
+    [key: string]: any;
+}
+
+export class Body48 implements IBody48 {
+    id?: number;
+    content?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IBody48) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.content = _data["content"];
+        }
+    }
+
+    static fromJS(data: any): Body48 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body48();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["content"] = this.content;
+        return data;
+    }
+}
+
+export interface IBody48 {
+    id?: number;
+    content?: string;
+
+    [key: string]: any;
+}
+
+export class Body49 implements IBody49 {
+    content?: string;
+    type?: ParkInventoryTypes;
+
+    [key: string]: any;
+
+    constructor(data?: IBody49) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.content = _data["content"];
+            this.type = _data["type"];
+        }
+    }
+
+    static fromJS(data: any): Body49 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body49();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["content"] = this.content;
+        data["type"] = this.type;
+        return data;
+    }
+}
+
+export interface IBody49 {
+    content?: string;
+    type?: ParkInventoryTypes;
+
+    [key: string]: any;
+}
+
+export class Body50 implements IBody50 {
+    id?: number;
+
+    [key: string]: any;
+
+    constructor(data?: IBody50) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): Body50 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Body50();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBody50 {
     id?: number;
 
     [key: string]: any;
@@ -17509,6 +17842,262 @@ export interface IAnonymous209 {
     [key: string]: any;
 }
 
+export class Anonymous210 implements IAnonymous210 {
+    lists?: Lists[];
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous210) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            if (Array.isArray(_data["lists"])) {
+                this.lists = [] as any;
+                for (let item of _data["lists"])
+                    this.lists!.push(Lists.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Anonymous210 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous210();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        if (Array.isArray(this.lists)) {
+            data["lists"] = [];
+            for (let item of this.lists)
+                data["lists"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IAnonymous210 {
+    lists?: Lists[];
+
+    [key: string]: any;
+}
+
+export class Anonymous211 implements IAnonymous211 {
+    success?: boolean;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous211) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous211 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous211();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        return data;
+    }
+}
+
+export interface IAnonymous211 {
+    success?: boolean;
+
+    [key: string]: any;
+}
+
+export class Anonymous212 implements IAnonymous212 {
+    success?: boolean;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous212) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous212 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous212();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        return data;
+    }
+}
+
+export interface IAnonymous212 {
+    success?: boolean;
+
+    [key: string]: any;
+}
+
+export class Anonymous213 implements IAnonymous213 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous213) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous213 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous213();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous213 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous214 implements IAnonymous214 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous214) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous214 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous214();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous214 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
 export class Working_hours implements IWorking_hours {
     day?: DayOfWeek;
     /** Время начала работы */
@@ -19563,6 +20152,78 @@ export interface INotifications {
     application_id?: number;
     content?: string;
     created_at?: string;
+
+    [key: string]: any;
+}
+
+export class Lists implements ILists {
+    id?: number;
+    type?: ParkInventoryTypes;
+    park_id?: number;
+    content?: string;
+    created_at?: string;
+    updated_at?: string;
+    defaultValue?: number;
+
+    [key: string]: any;
+
+    constructor(data?: ILists) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.type = _data["type"];
+            this.park_id = _data["park_id"];
+            this.content = _data["content"];
+            this.created_at = _data["created_at"];
+            this.updated_at = _data["updated_at"];
+            this.defaultValue = _data["defaultValue"];
+        }
+    }
+
+    static fromJS(data: any): Lists {
+        data = typeof data === 'object' ? data : {};
+        let result = new Lists();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["type"] = this.type;
+        data["park_id"] = this.park_id;
+        data["content"] = this.content;
+        data["created_at"] = this.created_at;
+        data["updated_at"] = this.updated_at;
+        data["defaultValue"] = this.defaultValue;
+        return data;
+    }
+}
+
+export interface ILists {
+    id?: number;
+    type?: ParkInventoryTypes;
+    park_id?: number;
+    content?: string;
+    created_at?: string;
+    updated_at?: string;
+    defaultValue?: number;
 
     [key: string]: any;
 }

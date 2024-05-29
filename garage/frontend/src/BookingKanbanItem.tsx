@@ -5,7 +5,9 @@ import {
   Body42,
   Body45,
   Body47,
+  Body49,
   Logs,
+  ParkInventoryTypes,
 } from "./api-client";
 import { useEffect, useRef, useState } from "react";
 import { client } from "./backend";
@@ -19,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useRecoilState } from "recoil";
-import { applicationsAtom } from "./atoms";
+import { applicationsAtom, parkListsAtom } from "./atoms";
 import Confirmation from "@/components/ui/confirmation";
 import carsList from "../../backend/public/assets/json/carsValid.json";
 import {
@@ -28,16 +30,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 interface Details {
-  applicationDetails: Applications;
+  id: number;
   close: () => void;
 }
 
-export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
+export const BookingKanbanItem = ({ id, close }: Details) => {
   const [applicationLogs, setApplicationsLogs] = useState<Logs[]>();
   const [applications, setApplications] = useRecoilState(applicationsAtom);
+  const [parkLists, setParkLists] = useRecoilState(parkListsAtom);
   const [updatedCount, setUpdatedCount] = useState(0);
   const lastElement = useRef<HTMLDivElement>(null);
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
+
+  const applicationDetails = applications.find((x) => x.id === id)!;
+
   const [plannedArrival, setPlannedArrival] = useState(
     applicationDetails!.planned_arrival
   );
@@ -63,7 +69,17 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
   });
   const [notificationResult, setNotificationResult] = useState("");
 
+  const [newListItem, setNewListItem] = useState<{
+    type: ParkInventoryTypes | undefined;
+    content: string | undefined;
+  }>({ type: undefined, content: undefined });
+
   const updateIntervalInSeconds = 60;
+
+  const getParkLists = async () => {
+    const data = await client.getParkInventoryListsManager();
+    setParkLists(data.lists!);
+  };
 
   const createNotification = async () => {
     try {
@@ -88,6 +104,13 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
         alert("An error occurred: " + error.message);
       }
     }
+  };
+
+  const createParkListItem = async () => {
+    await client.createParkInventoryListItemManager(
+      new Body49({ content: newListItem.content, type: newListItem.type })
+    );
+    getParkLists();
   };
 
   const updateNotification = async (id: number) => {
@@ -142,15 +165,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
 
   useEffect(() => {
     getApplicationLogs();
-  }, []);
 
-  useEffect(() => {
-    if (lastElement.current) {
-      lastElement.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [applicationLogs]);
-
-  useEffect(() => {
     const intervalId = setInterval(() => {
       setUpdatedCount((prevCount) => prevCount + 1);
     }, updateIntervalInSeconds * 1000);
@@ -159,6 +174,12 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
       clearInterval(intervalId);
     };
   }, []);
+
+  useEffect(() => {
+    if (lastElement.current) {
+      lastElement.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [applicationLogs]);
 
   useEffect(() => {
     checkApplicationLogs();
@@ -184,6 +205,10 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
       );
       setLastUpdateTime(lastUpdateTime);
     }
+  };
+
+  const handleAddReasonForRejection = () => {
+    console.log(1);
   };
 
   if (!applicationLogs) {
@@ -241,7 +266,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                   </div>
                 ))}
                 <div className="">
-                  <div className="relative flex items-center justify-between ">
+                  <div className="flex items-center justify-between ">
                     <div className="">ФИО</div>
                     <div className="flex items-center gap-1">
                       <Input
@@ -253,6 +278,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       <div className="">
                         <Confirmation
                           accept={() =>
+                            applicationDetails.user?.name !== userName &&
                             changeApplicationData(
                               applicationDetails!.id!,
                               "user_name",
@@ -264,21 +290,15 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                           trigger={
                             <FontAwesomeIcon
                               icon={faPenToSquare}
-                              className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                              className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
+                                applicationDetails.user?.name === userName
+                                  ? "text-grey"
+                                  : "text-black"
+                              }`}
                             />
                           }
                           type="green"
                         />
-                      </div>
-
-                      <div
-                        className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
-                          applicationDetails.user?.name === userName
-                            ? "opacity-0"
-                            : "opacity-100"
-                        }`}
-                      >
-                        !
                       </div>
                     </div>
                   </div>
@@ -321,6 +341,8 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       />
                       <FontAwesomeIcon
                         onClick={() =>
+                          applicationDetails!.planned_arrival !==
+                            plannedArrival &&
                           changeApplicationData(
                             applicationDetails!.id!,
                             "planned_arrival",
@@ -328,17 +350,12 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                           )
                         }
                         icon={faPenToSquare}
-                        className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
-                      />
-                      <div
-                        className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
+                        className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
                           applicationDetails!.planned_arrival === plannedArrival
-                            ? "opacity-0"
-                            : "opacity-100"
+                            ? "text-grey"
+                            : "text-black"
                         }`}
-                      >
-                        !
-                      </div>
+                      />
                     </div>
                   </div>
                   <Separator className="my-1" />
@@ -383,20 +400,17 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                   ))}
                 <div className="flex items-center justify-between">
                   <div className="">Марка/модель</div>
-                  <div className="flex items-center space-x-1">
+                  <div className="relative flex items-center space-x-1">
                     <select
                       className="h-10 p-1 m-0 border-2 w-44 border-grey rounded-xl"
                       name=""
                       id=""
+                      defaultValue={chosenBrand}
                       onChange={(e) => setChosenBrand(e.target.value)}
                     >
                       <option value={""}>Марка</option>
                       {carsList.map((y) => (
-                        <option
-                          key={y.name}
-                          value={y.name}
-                          selected={y.name === chosenBrand}
-                        >
+                        <option key={y.name} value={y.name}>
                           {y.name}
                         </option>
                       ))}
@@ -406,6 +420,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                       name=""
                       id=""
                       onChange={(e) => setChosenModel(e.target.value)}
+                      defaultValue={chosenModel}
                     >
                       <option value={""}>Модель</option>
                       {chosenBrand &&
@@ -413,30 +428,33 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                         carsList!
                           .find(({ name }) => name === chosenBrand!)
                           ?.models.map((y: string) => (
-                            <option
-                              selected={y === chosenModel}
-                              key={y}
-                              value={y}
-                            >
+                            <option key={y} value={y}>
                               {y}
                             </option>
                           ))}
                     </select>
                     <FontAwesomeIcon
                       onClick={() => {
-                        changeApplicationData(
-                          applicationDetails!.id!,
-                          "chosen_brand",
-                          chosenBrand
-                        );
-                        changeApplicationData(
-                          applicationDetails!.id!,
-                          "chosen_model",
-                          chosenModel
-                        );
+                        applicationDetails!.chosen_brand !== chosenBrand &&
+                          changeApplicationData(
+                            applicationDetails!.id!,
+                            "chosen_brand",
+                            chosenBrand
+                          );
+                        applicationDetails!.chosen_model !== chosenModel &&
+                          changeApplicationData(
+                            applicationDetails!.id!,
+                            "chosen_model",
+                            chosenModel
+                          );
                       }}
                       icon={faPenToSquare}
-                      className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
+                      className={`h-6 transition-colors cursor-pointer  active:text-yellow ${
+                        applicationDetails!.chosen_brand === chosenBrand &&
+                        applicationDetails!.chosen_model === chosenModel
+                          ? "text-grey"
+                          : "text-black"
+                      }`}
                     />
                   </div>
                 </div>
@@ -455,14 +473,8 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                     name: "license_issuing_country",
                     state: licenseIssuingCountry,
                   },
-                  {
-                    text: "Причина отказа от авто",
-                    onChange: (value: string) => setReasonForRejection(value),
-                    name: "reason_for_rejection",
-                    state: reasonForRejection,
-                  },
                 ].map(({ text, onChange, name, state }) => (
-                  <div className="">
+                  <div className="" key={name}>
                     <div className="flex items-center justify-between">
                       <div className="">{text}</div>
                       <div className="relative flex items-center gap-1">
@@ -474,6 +486,7 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                         />
                         <FontAwesomeIcon
                           onClick={() =>
+                            applicationDetails![name] !== state &&
                             changeApplicationData(
                               applicationDetails!.id!,
                               name,
@@ -481,22 +494,89 @@ export const BookingKanbanItem = ({ applicationDetails, close }: Details) => {
                             )
                           }
                           icon={faPenToSquare}
-                          className="h-6 transition-colors cursor-pointer text-pale hover:text-black active:text-yellow"
-                        />
-                        <div
-                          className={`absolute text-3xl -right-4 -top-1 w-4 h-4 text-yellow transition-opacity ${
+                          className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
                             applicationDetails![name] === state
-                              ? "opacity-0"
-                              : "opacity-100"
+                              ? "text-grey"
+                              : "text-black"
                           }`}
-                        >
-                          !
-                        </div>
+                        />
                       </div>
                     </div>
                     <Separator className="my-1" />
                   </div>
-                ))}{" "}
+                ))}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="">Причина отказа от авто</div>
+                <div className="relative flex items-center space-x-1 group">
+                  <div className="absolute right-0 flex items-center p-2 m-0 space-x-2 transition-opacity opacity-0 bg-lightgrey rounded-xl -bottom-14 -z-10 group-hover:opacity-100 group-hover:z-0">
+                    <Input
+                      className="m-0 w-96"
+                      placeholder="Новый элемент списка"
+                      onChange={(e) =>
+                        setNewListItem({
+                          content: e.target.value,
+                          type: ParkInventoryTypes.CarRejectionReason,
+                        })
+                      }
+                    />
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        newListItem.type ===
+                          ParkInventoryTypes.CarRejectionReason &&
+                        newListItem.content &&
+                        createParkListItem()
+                      }
+                      icon={faPenToSquare}
+                      className={`h-6 transition-colors cursor-pointer active:text-yellow ${
+                        newListItem.type ===
+                          ParkInventoryTypes.CarRejectionReason &&
+                        newListItem.content
+                          ? "text-black"
+                          : "text-grey"
+                      }`}
+                    />
+                  </div>
+
+                  <select
+                    className="w-full h-10 p-1 m-0 border-2 border-grey rounded-xl "
+                    name=""
+                    id=""
+                    defaultValue={reasonForRejection}
+                    onChange={(e) => setReasonForRejection(e.target.value)}
+                  >
+                    <option value={""}>Не указано</option>
+                    {parkLists
+                      .filter(
+                        (list) =>
+                          list.type === ParkInventoryTypes.CarRejectionReason
+                      )
+                      .map((y) => (
+                        <option key={y.id} value={y.content}>
+                          {y.content}
+                        </option>
+                      ))}
+                  </select>
+
+                  <FontAwesomeIcon
+                    onClick={() => {
+                      applicationDetails!.reason_for_rejection !==
+                        reasonForRejection &&
+                        changeApplicationData(
+                          applicationDetails!.id!,
+                          "reason_for_rejection",
+                          reasonForRejection
+                        );
+                    }}
+                    icon={faPenToSquare}
+                    className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
+                      applicationDetails!.reason_for_rejection ===
+                      reasonForRejection
+                        ? "text-grey"
+                        : "text-black"
+                    }`}
+                  />
+                </div>
               </div>
             </div>
           </div>

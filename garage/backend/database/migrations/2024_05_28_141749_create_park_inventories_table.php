@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('park_id');
             $table->foreign('park_id')->references('id')->on('parks');
             $table->string('content');
-            $table->boolean('default');
+            $table->boolean('defaultValue');
             $table->timestamps();
         });
     }

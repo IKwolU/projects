@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
-import { applicationsAtom, parkAtom } from "./atoms";
+import { applicationsAtom, parkAtom, parkListsAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { BookingKanbanCreatingTask } from "./BookingKanbanCreatingTask";
@@ -28,6 +28,7 @@ interface Details {
 
 export const BookingKanban = () => {
   const [applications, setApplications] = useRecoilState(applicationsAtom);
+  const [parkLists, setParkLists] = useRecoilState(parkListsAtom);
   const [showModal, setShowModal] = useState(false);
   const [updatedCount, setUpdatedCount] = useState(0);
   const [notifications, setNotifications] = useState<Notifications[]>([]);
@@ -57,6 +58,11 @@ export const BookingKanban = () => {
 
   const updateIntervalInSeconds = 60;
 
+  const getParkLists = async () => {
+    const data = await client.getParkInventoryListsManager();
+    setParkLists(data.lists!);
+  };
+
   const getApplications = async () => {
     const data = await client.getParkApplicationsManager(
       new Body42({ last_update_time: undefined })
@@ -78,6 +84,7 @@ export const BookingKanban = () => {
   useEffect(() => {
     getApplications();
     getNotification();
+    getParkLists();
   }, []);
 
   useEffect(() => {
@@ -208,7 +215,10 @@ export const BookingKanban = () => {
                 (a) => a.id === x.application_id
               );
               return (
-                <div className=" p-2 border-2 translate-x-[85%] bg-lightgrey rounded-xl animate-pulse hover:animate-none transition-transform hover:translate-x-0 border-red">
+                <div
+                  key={x.id}
+                  className=" p-2 border-2 translate-x-[85%] bg-lightgrey rounded-xl animate-pulse hover:animate-none transition-transform hover:translate-x-0 border-red"
+                >
                   <div className="flex items-center justify-between space-x-2">
                     <div className="">{format(content.date, "HH:mm")}</div>
                     <div className="">{application!.manager!.user?.phone}</div>
@@ -308,7 +318,7 @@ export const BookingKanban = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           {showDetails.isShowed && (
             <BookingKanbanItem
-              applicationDetails={showDetails.applicationDetails!}
+              id={showDetails.applicationDetails!.id!}
               close={() =>
                 setShowDetails({ isShowed: false, applicationDetails: null })
               }

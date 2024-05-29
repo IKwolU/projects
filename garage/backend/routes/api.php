@@ -74,12 +74,6 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::get('manager/bookings', [ManagerController::class, 'getParkBookingsManager']);
     Route::delete('manager/schema', [ManagerController::class, 'deleteSchemaManager']);
     Route::post('manager/test', [ManagerController::class, 'test']);
-
-    //получение списка заявок
-    //создание заявки
-    //изменение заявки
-    //создание уведомления
-    //изменение уведомления
     Route::post('manager/applications', [ManagerController::class, 'getParkApplicationsManager']);
     Route::post('manager/notification', [ManagerController::class, 'createNotificationManager']);
     Route::get('manager/notifications', [ManagerController::class, 'getNotificationsManager']);
@@ -87,4 +81,8 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::post('manager/application', [ManagerController::class, 'createApplicationManager']);
     Route::put('manager/application', [ManagerController::class, 'updateApplicationManager']);
     Route::post('manager/application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
+    Route::get('/manager/park/inventory-lists', [ManagerController::class, 'getParkInventoryListsManager']);
+    Route::put('/manager/park/inventory-list', [ManagerController::class, 'changeParkInventoryListItemManager']);
+    Route::post('/manager/park/inventory-list', [ManagerController::class, 'createParkInventoryListItemManager']);
+    Route::delete('/manager/park/inventory-list', [ManagerController::class, 'deleteParkInventoryListItemManager']);
 });

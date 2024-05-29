@@ -2784,11 +2784,74 @@ public function updateNotificationManager(Request $request) {
     return $kanban->updateApplicationsLogItem($request);
 }
 
+
+/**
+ * Получение списков инвентаря парка
+ *
+ * Метод для получения списков инвентаря парка
+ *
+ * @OA\Get(
+ *     path="/manager/park/inventory-lists",
+ *     operationId="getParkInventoryListsManager",
+ *     summary="Получение списков инвентаря парка",
+ *     tags={"Manager"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="lists", type="array", @OA\Items(type="object",
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="type", type="string", ref="#/components/schemas/ParkInventoryTypes"),
+ *                 @OA\Property(property="park_id", type="integer"),
+ *                 @OA\Property(property="content", type="string"),
+ *                 @OA\Property(property="created_at", type="string"),
+ *                 @OA\Property(property="updated_at", type="string"),
+ *                 @OA\Property(property="defaultValue", type="integer")
+ *             ))
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с ID парка
+ * @return \Illuminate\Http\JsonResponse JSON-ответ со списками инвентаря
+ */
 public function getParkInventoryListsManager(Request $request)  {
-    $lists = ParkInventory::where('park_id',$request->park_id)->orWhere('default', true)->get();
+    $lists = ParkInventory::where('park_id',$request->park_id)->orWhere('defaultValue', true)->get();
+    foreach ($lists as $listItem) {
+        $listItem->type = ParkInventoryTypes::from($listItem->type)->name;
+    }
     return response()->json(['lists' => $lists], 200);
 }
 
+
+/**
+ * Изменение элемента списка инвентаря парка
+ *
+ * Метод для изменения элемента списка инвентаря парка
+ *
+ * @OA\Put(
+ *     path="/manager/park/inventory-list",
+ *     operationId="changeParkInventoryListItemManager",
+ *     summary="Изменение элемента списка инвентаря парка",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(property="id", type="integer"),
+ *             @OA\Property(property="content", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для изменения элемента списка инвентаря
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
 public function changeParkInventoryListItemManager(Request $request)  {
     $listItem = ParkInventory::where('park_id',$request->park_id)->where('id', $request->id)->get();
 if ($request->content) {
@@ -2798,19 +2861,85 @@ $listItem->save();
     return response()->json(['success' => true], 200);
 }
 
+
+/**
+ * Создание элемента списка инвентаря парка
+ *
+ * Метод для создания элемента списка инвентаря парка
+ *
+ * @OA\Post(
+ *     path="/manager/park/inventory-list",
+ *     operationId="createParkInventoryListItemManager",
+ *     summary="Создание элемента списка инвентаря парка",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(property="content", type="string"),
+ *             @OA\Property(property="type", type="integer", ref="#/components/schemas/ParkInventoryTypes")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для создания элемента списка инвентаря
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
 public function createParkInventoryListItemManager(Request $request)
 {
     $listItem = new ParkInventory();
     $listItem->park_id = $request->park_id;
     $listItem->content = $request->content;
     $listItem->type = ParkInventoryTypes::{$request->type}->value;
-    $listItem->default = false;
+    $listItem->defaultValue = false;
 
     $listItem->save();
 
     return response()->json(['success' => true], 200);
 }
 
+
+/**
+ * Удаление элемента списка инвентаря парка
+ *
+ * Метод для удаления элемента списка инвентаря парка
+ *
+ * @OA\Delete(
+ *     path="/manager/park/inventory-list",
+ *     operationId="deleteParkInventoryListItemManager",
+ *     summary="Удаление элемента списка инвентаря парка",
+ *     tags={"Manager"},
+ *     @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(property="id", type="integer")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean"),
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Элемент не найден",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean"),
+ *             @OA\Property(property="message", type="string")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для удаления элемента списка инвентаря
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
 public function deleteParkInventoryListItemManager(Request $request)
 {
     $listItem = ParkInventory::where('id', $request->id)

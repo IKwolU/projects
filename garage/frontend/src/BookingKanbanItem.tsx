@@ -509,8 +509,8 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
               <div className="flex items-center justify-between">
                 <div className="">Причина отказа от авто</div>
                 <div className="relative flex items-center space-x-1 group">
-                  <div className="absolute right-0 flex items-center p-2 m-0 space-x-2 transition-opacity opacity-0 bg-lightgrey rounded-xl -bottom-14 -z-10 group-hover:opacity-100 group-hover:z-0">
-                    <Input
+                  {/* <div className="absolute right-0 flex items-center p-2 m-0 space-x-2 transition-opacity opacity-0 bg-lightgrey rounded-xl -bottom-14 -z-10 group-hover:opacity-100 group-hover:z-0">
+                     <Input
                       className="m-0 w-96"
                       placeholder="Новый элемент списка"
                       onChange={(e) =>
@@ -519,7 +519,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                           type: ParkInventoryTypes.CarRejectionReason,
                         })
                       }
-                    />
+                    /> 
                     <FontAwesomeIcon
                       onClick={() =>
                         newListItem.type ===
@@ -536,7 +536,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                           : "text-grey"
                       }`}
                     />
-                  </div>
+                  </div> */}
 
                   <select
                     className="w-full h-10 p-1 m-0 border-2 border-grey rounded-xl "

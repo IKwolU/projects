@@ -207,7 +207,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   </div>
                 ))}
               </div>
-              <div className="bottom-0 left-0 hidden w-full px-2 bg-white shadow-xl lg:py-4 lg:block lg:rounded-xl lg:relative">
+              <div className="fixed bottom-0 left-0 w-full px-2 z-[53] bg-white shadow-xl lg:py-4 lg:rounded-xl lg:relative">
                 <h3 className="hidden lg:block">
                   Выберите стоимость и схему дней
                 </h3>
@@ -275,80 +275,13 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
               } lg:w-2/3 `}
             >
               <div className="absolute top-0 z-10 w-full shadow-xl lg:relative h-92">
-                <div className="fixed bottom-0 left-0 z-[53] w-full px-2 bg-white shadow-xl lg:hidden">
-                  <h3 className="hidden lg:block">
-                    Выберите стоимость и схему дней
-                  </h3>
-                  <div className="">
-                    <div className="flex flex-wrap gap-1 lg:pb-1">
-                      <div className="inset-x-0 flex justify-center w-full px-0 py-2 mx-auto space-x-2 bg-white lg:space-y-2 lg:flex-col lg:space-x-0">
-                        <Select
-                          onValueChange={(value) => handleTariffChange(value)}
-                          defaultValue={`${schemas![0].id}`}
-                        >
-                          <SelectTrigger className="w-1/2 h-auto pt-0 pb-1 text-xl text-left border-none lg:w-full lg:pt-1 lg:pl-3 bg-grey rounded-xl">
-                            <SelectValue placeholder="Схема аренды" />
-                          </SelectTrigger>
-                          <SelectContent className="w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
-                            {schemas!.map(
-                              (currentSchema: Schema, i: number) => (
-                                <SelectItem
-                                  className="mb-1 border rounded-xl border-zinc-300 "
-                                  key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                                  value={`${currentSchema.id}`}
-                                >
-                                  {`${formatRoubles(
-                                    currentSchema.daily_amount!
-                                  )}`}
-                                  <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                                </SelectItem>
-                              )
-                            )}
-                          </SelectContent>
-                        </Select>
-
-                        {!activeBooking && (
-                          <div className="relative w-1/2 lg:w-full">
-                            <Confirmation
-                              title={`Забронировать ${car.brand} ${car.model}?`}
-                              type="green"
-                              accept={book}
-                              cancel={() => {}}
-                              trigger={
-                                <Button className="">Забронировать</Button>
-                              }
-                            />
-                          </div>
-                        )}
-                        {!!activeBooking && (
-                          <div className="relative w-1/2 lg:w-full">
-                            <Confirmation
-                              title={`У вас есть активная бронь:
-                        ${activeBooking.car?.brand}
-                        ${activeBooking.car?.model}`}
-                              text={`Отменить и забронировать ${car.brand} ${car.model}`}
-                              type="green"
-                              accept={book}
-                              cancel={() => {}}
-                              trigger={
-                                <Button className="">Забронировать</Button>
-                              }
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="z-10">
-                  <SliderImages
-                    type="click"
-                    openIsAffordable={true}
-                    images={car.images!}
-                    classImages="h-92"
-                    classPaginationImages=""
-                  />
-                </div>
+                <SliderImages
+                  type="click"
+                  openIsAffordable={true}
+                  images={car.images!}
+                  classImages="h-92"
+                  classPaginationImages=""
+                />
               </div>
               <div className="px-2 py-4 bg-white shadow-xl rounded-xl">
                 <div className="flex flex-col">

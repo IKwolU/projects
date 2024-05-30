@@ -170,8 +170,8 @@ export const BookingKanban = () => {
 
   const changeApplicationData = async (
     id: number,
-    item: any,
-    itemData: any
+    item: string,
+    itemData: string | number | undefined
   ) => {
     setApplications([
       ...applications.filter((x) => x.id !== id),

@@ -3,9 +3,11 @@ import {
   ApplicationLogType,
   ApplicationStage,
   Applications,
+  Body34,
   Body42,
   Body45,
   Body47,
+  BookingStatus,
   Logs,
   ParkInventoryTypes,
 } from "./api-client";
@@ -31,7 +33,6 @@ import {
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import ListSelect from "./ListSelect";
-import CarModelSelect from "./ArrayStringSelect";
 import ArrayStringSelect from "./ArrayStringSelect";
 
 interface Details {
@@ -63,7 +64,6 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
   const [citizenship, setCitizenship] = useState(
     applicationDetails!.citizenship
   );
-  const [stage, setStage] = useState(applicationDetails!.current_stage);
   const [chosenModel, setChosenModel] = useState(
     applicationDetails!.chosen_model
   );
@@ -76,6 +76,12 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     message: undefined as string | undefined,
   });
   const [notificationResult, setNotificationResult] = useState("");
+  const [idOpenAndCreateNotification, setIdOpenAndCreateNotification] =
+    useState<number | null>(null);
+  const [idOpenCancel, setIdOpenCancel] = useState<number | null>(null);
+  const [idOpenConfirmed, setIdOpenConfirmed] = useState<number | null>(null);
+  const [unbookReason, setUnbookReason] = useState("");
+  const [commentReason, setCommentReason] = useState("");
 
   const updateIntervalInSeconds = 60;
 
@@ -91,6 +97,9 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
       );
       setNewNotification({ date: undefined, message: undefined });
       getApplicationLogs();
+      setIdOpenAndCreateNotification(null);
+      setIdOpenCancel(null);
+      setIdOpenConfirmed(null);
     } catch (error: any) {
       if (error.errors) {
         const errorMessages = Object.values(error.errors).flatMap(
@@ -125,10 +134,23 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     ]);
   };
 
+  const cancelBooking = async (vin: string) => {
+    const reasonForUnbook =
+      unbookReason + (commentReason ? "\nКомментарий: " + commentReason : "");
+
+    await client.updateCarBookingStatusManager(
+      new Body34({
+        status: BookingStatus.UnBooked,
+        vin,
+        reason: reasonForUnbook,
+      })
+    );
+  };
+
   const changeApplicationData = async (
     id: number,
-    item: any,
-    itemData: any
+    item: string,
+    itemData: string | number | undefined
   ) => {
     setApplications([
       ...applications.filter((x) => x.id !== id),
@@ -201,8 +223,44 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     const susValue = Object.keys(ApplicationStage).find(
       (x: any) => getApplicationStageDisplayName(x) === value
     );
-    setStage(susValue);
+    const destinationColumn = susValue;
+    const id = applicationDetails!.id;
+
     changeApplicationData(applicationDetails!.id!, "current_stage", susValue);
+
+    if (
+      destinationColumn === ApplicationStage.Thinking ||
+      destinationColumn === ApplicationStage.NoAnswer
+    ) {
+      setIdOpenAndCreateNotification(id!);
+    }
+    if (
+      destinationColumn === ApplicationStage.ReservationCanceled ||
+      destinationColumn === ApplicationStage.NotRealized ||
+      destinationColumn === ApplicationStage.ArrivedAtOfficeNoCar
+    ) {
+      setIdOpenCancel(Number(id));
+    }
+    if (destinationColumn === ApplicationStage.ReservationConfirmed) {
+      setIdOpenConfirmed(Number(id));
+      setNewNotification({
+        ...newNotification,
+        message: "Водитель прийдет в парк",
+      });
+    }
+  };
+
+  const handleCancelApplication = (id: number) => {
+    const application = applications.find((x) => x.id === id);
+    setIdOpenCancel(null);
+    if (application) {
+      if (application.booking_id) {
+        cancelBooking(application.booking.car.car_id);
+      }
+      if (!application.booking_id) {
+        changeApplicationData(id, "reason_for_rejection", unbookReason);
+      }
+    }
   };
 
   if (!applicationLogs) {
@@ -212,6 +270,144 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
   return (
     <>
       <div className="fixed -top-20 left-0 z-[51] pt-20 w-full h-full bg-lightgrey mt-8">
+        {(idOpenAndCreateNotification || idOpenConfirmed) && (
+          <div
+            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 "
+            onClick={(e) =>
+              idOpenAndCreateNotification &&
+              e.target === e.currentTarget &&
+              setIdOpenAndCreateNotification(null)
+            }
+          >
+            <div className="p-2 space-y-2 bg-white rounded-xl">
+              {`${
+                idOpenConfirmed
+                  ? "Водитель прийдет в парк по заявке №" + idOpenConfirmed
+                  : "Создание напоминание для заявки  №" +
+                    idOpenAndCreateNotification
+              }`}
+              <div className="flex my-2 space-x-2">
+                <Input
+                  className={`m-0  ${
+                    idOpenAndCreateNotification ? "w-44" : "w-full"
+                  }`}
+                  type="datetime-local"
+                  value={
+                    newNotification.date
+                      ? newNotification.date
+                      : String(new Date())
+                  }
+                  onChange={(e) =>
+                    setNewNotification({
+                      ...newNotification,
+                      date: e.target.value,
+                    })
+                  }
+                  placeholder={
+                    newNotification.date &&
+                    format(newNotification.date, "dd.MM.yyyy HH:mm")
+                  }
+                />
+                {idOpenAndCreateNotification && (
+                  <Input
+                    className="m-0 w-96"
+                    type="text"
+                    value={
+                      newNotification.message ? newNotification.message : ""
+                    }
+                    onChange={(e) =>
+                      setNewNotification({
+                        ...newNotification,
+                        message: e.target.value,
+                      })
+                    }
+                    placeholder="Коментарий"
+                  />
+                )}
+              </div>
+              <div className="flex space-x-2">
+                {idOpenAndCreateNotification && (
+                  <Button
+                    variant={"reject"}
+                    className="text-black"
+                    onClick={() => setIdOpenAndCreateNotification(null)}
+                  >
+                    Назад
+                  </Button>
+                )}
+                {newNotification.message && newNotification.date && (
+                  <Button
+                    variant={"default"}
+                    className="mx-auto text-black w-44"
+                    onClick={() => createNotification()}
+                  >
+                    Создать
+                  </Button>
+                )}
+                {!(newNotification.message && newNotification.date) && (
+                  <Button
+                    variant={"default"}
+                    className="mx-auto text-black w-44"
+                    disabled
+                  >
+                    Создать
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+        {idOpenCancel && (
+          <div className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
+            <div className="p-2 space-y-2 bg-white rounded-xl">
+              {applications.find((x) => x.id === idOpenCancel)!.booking_id && (
+                <>
+                  Причина отмены бронирования №{idOpenCancel}
+                  <div className="flex flex-col space-y-2">
+                    <ListSelect
+                      onChange={(value) => setUnbookReason(value)}
+                      resultValue={unbookReason}
+                      type={ParkInventoryTypes.BookingRejectionReason}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Коментарий"
+                      onChange={(e) => setCommentReason(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
+              {!applications.find((x) => x.id === idOpenCancel)?.booking_id && (
+                <>
+                  Причина отмены заявки №{idOpenCancel}
+                  <div className="flex space-x-2">
+                    <ListSelect
+                      onChange={(value) => setUnbookReason(value)}
+                      resultValue={unbookReason}
+                      type={ParkInventoryTypes.CarRejectionReason}
+                    />
+                  </div>
+                </>
+              )}
+              <div className="flex mx-auto space-x-2 w-44">
+                {unbookReason && (
+                  <Button
+                    variant={"default"}
+                    className="text-black"
+                    onClick={() => handleCancelApplication(idOpenCancel)}
+                  >
+                    Сохранить
+                  </Button>
+                )}
+                {!unbookReason && (
+                  <Button variant={"default"} className="text-black" disabled>
+                    Сохранить
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="flex gap-2 p-2 max-w-[1208px] m-auto">
           <div className="w-1/2 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[800px] bg-white">
             <div className="flex justify-between mb-2">
@@ -561,78 +757,6 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                   />
                 </div>
               </div>
-              {/* <div className="flex items-center justify-between">
-                <div className="">Причина отказа от авто</div>
-                <div className="relative flex items-center space-x-1 group">
-                  {/* <div className="absolute right-0 flex items-center p-2 m-0 space-x-2 transition-opacity opacity-0 bg-lightgrey rounded-xl -bottom-14 -z-10 group-hover:opacity-100 group-hover:z-0">
-                     <Input
-                      className="m-0 w-96"
-                      placeholder="Новый элемент списка"
-                      onChange={(e) =>
-                        setNewListItem({
-                          content: e.target.value,
-                          type: ParkInventoryTypes.CarRejectionReason,
-                        })
-                      }
-                    /> 
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        newListItem.type ===
-                          ParkInventoryTypes.CarRejectionReason &&
-                        newListItem.content &&
-                        createParkListItem()
-                      }
-                      icon={faPenToSquare}
-                      className={`h-6 transition-colors cursor-pointer active:text-yellow ${
-                        newListItem.type ===
-                          ParkInventoryTypes.CarRejectionReason &&
-                        newListItem.content
-                          ? "text-black"
-                          : "text-grey"
-                      }`}
-                    />
-                  </div> 
-
-                  <select
-                    className="w-full h-10 p-1 m-0 border-2 border-grey rounded-xl "
-                    name=""
-                    id=""
-                    defaultValue={reasonForRejection}
-                    onChange={(e) => setReasonForRejection(e.target.value)}
-                  >
-                    <option value={""}>Не указано</option>
-                    {parkLists
-                      .filter(
-                        (list) =>
-                          list.type === ParkInventoryTypes.CarRejectionReason
-                      )
-                      .map((y) => (
-                        <option key={y.id} value={y.content}>
-                          {y.content}
-                        </option>
-                      ))}
-                  </select>
-
-                  <FontAwesomeIcon
-                    onClick={() => {
-                      applicationDetails!.reason_for_rejection !==
-                        reasonForRejection &&
-                        changeApplicationData(
-                          applicationDetails!.id!,
-                          "reason_for_rejection",
-                          reasonForRejection
-                        );
-                    }}
-                    icon={faPenToSquare}
-                    className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
-                      applicationDetails!.reason_for_rejection ===
-                      reasonForRejection
-                        ? "text-grey"
-                        : "text-black"
-                    }`}
-                  />
-                </div>
-              </div> */}
             </div>
           </div>
           <div className="flex flex-col justify-between w-1/2 pt-2 bg-white border-2 border-pale rounded-xl">

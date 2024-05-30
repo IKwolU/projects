@@ -35,6 +35,9 @@ class KanbanController extends Controller
         if ($request->driver_license) {
             $application->driver_license=$request->driver_license;
         }
+        if ($request->citizenship) {
+            $application->citizenship=$request->citizenship;
+        }
         if ($request->chosen_model) {
             $application->chosen_model=$request->chosen_model;
         }

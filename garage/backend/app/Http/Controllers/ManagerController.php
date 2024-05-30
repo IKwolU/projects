@@ -2308,7 +2308,14 @@ public function getParkApplicationsManager(Request $request) {
  *                 property="chosen_model",
  *                 description="модель авто",
  *                 type="sting",nullable=true,
- *              ),@OA\Property(
+ *              ),
+ *
+ * @OA\Property(
+ *                 property="citizenship",
+ *                 description="гражданство",
+ *                 type="sting",nullable=true
+ *             ),
+ * @OA\Property(
  *                 property="chosen_brand",
  *                 description="Марка авто",
  *                 type="sting",nullable=true
@@ -2421,6 +2428,11 @@ public function createApplicationManager(Request $request) {
  *                 type="sting",nullable=true, ref="#/components/schemas/ApplicationStage")
  *             ),
  * @OA\Property(
+ *                 property="citizenship",
+ *                 description="гражданство",
+ *                 type="sting",nullable=true
+ *             ),
+ * @OA\Property(
  *                 property="planned_arrival",
  *                 description="дата и время когда планирует прийти",
  *                 type="datetime",nullable=true
@@ -2504,6 +2516,10 @@ public function updateApplicationManager(Request $request) {
         if ($request->driver_license) {
             $this->updateFieldAndCreateLog($request, $application->driver_license, $request->driver_license, 'driver_license', $kanban);
             $application->driver_license=$request->driver_license;
+        }
+        if ($request->citizenship) {
+            $this->updateFieldAndCreateLog($request, $application->citizenship, $request->citizenship, 'citizenship', $kanban);
+            $application->citizenship=$request->citizenship;
         }
         if ($request->chosen_model) {
             $this->updateFieldAndCreateLog($request, $application->chosen_model, $request->chosen_model, 'chosen_model', $kanban);

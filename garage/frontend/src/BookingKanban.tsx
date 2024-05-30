@@ -28,7 +28,7 @@ interface Details {
 
 export const BookingKanban = () => {
   const [applications, setApplications] = useRecoilState(applicationsAtom);
-  const [parkLists, setParkLists] = useRecoilState(parkListsAtom);
+  const [, setParkLists] = useRecoilState(parkListsAtom);
   const [showModal, setShowModal] = useState(false);
   const [updatedCount, setUpdatedCount] = useState(0);
   const [notifications, setNotifications] = useState<Notifications[]>([]);

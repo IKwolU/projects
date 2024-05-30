@@ -7175,6 +7175,8 @@ export class Body44 implements IBody44 {
     advertising_source?: any | undefined;
     /** модель авто */
     chosen_model?: any | undefined;
+    /** гражданство */
+    citizenship?: any | undefined;
     /** Марка авто */
     chosen_brand?: any | undefined;
     /** страна выдачи прав */
@@ -7205,6 +7207,7 @@ export class Body44 implements IBody44 {
             this.division_id = _data["division_id"];
             this.advertising_source = _data["advertising_source"];
             this.chosen_model = _data["chosen_model"];
+            this.citizenship = _data["citizenship"];
             this.chosen_brand = _data["chosen_brand"];
             this.license_issuing_country = _data["license_issuing_country"];
             this.driver_license = _data["driver_license"];
@@ -7229,6 +7232,7 @@ export class Body44 implements IBody44 {
         data["division_id"] = this.division_id;
         data["advertising_source"] = this.advertising_source;
         data["chosen_model"] = this.chosen_model;
+        data["citizenship"] = this.citizenship;
         data["chosen_brand"] = this.chosen_brand;
         data["license_issuing_country"] = this.license_issuing_country;
         data["driver_license"] = this.driver_license;
@@ -7246,6 +7250,8 @@ export interface IBody44 {
     advertising_source?: any | undefined;
     /** модель авто */
     chosen_model?: any | undefined;
+    /** гражданство */
+    citizenship?: any | undefined;
     /** Марка авто */
     chosen_brand?: any | undefined;
     /** страна выдачи прав */

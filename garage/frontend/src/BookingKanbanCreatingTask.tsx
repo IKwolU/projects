@@ -5,10 +5,12 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import PhoneInput from "@/components/ui/phone-input";
 import carsList from "../../backend/public/assets/json/carsValid.json";
+import countryList from "../../backend/public/assets/json/countries.json";
 import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { useRecoilState } from "recoil";
 import { parkAtom } from "./atoms";
+import ArrayStringSelect from "./ArrayStringSelect";
 
 interface Division {
   id: number;
@@ -32,6 +34,7 @@ export const BookingKanbanCreatingTask = ({
       planned_arrival: undefined,
       driver_license: undefined,
       license_issuing_country: undefined,
+      citizenship: undefined,
     })
   );
   const [newApplicationModel, setNewApplicationModel] = useState<{
@@ -157,63 +160,69 @@ export const BookingKanbanCreatingTask = ({
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-2">
                 <div className="text-center ">Марка\модель авто</div>
-                <select
-                  className="h-10 p-1 m-0 border-2 w-44 border-grey rounded-xl"
-                  name=""
-                  id=""
-                  onChange={(e) =>
-                    setNewApplicationModel({
-                      ...newApplicationModel,
-                      brand: e.target.value,
-                    })
-                  }
-                >
-                  <option value={""}>Марка</option>
-                  {carsList.map((y) => (
-                    <option key={y.name} value={y.name}>
-                      {y.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="h-10 p-1 m-0 border-2 w-44 border-grey rounded-xl"
-                  name=""
-                  id=""
-                  onChange={(e) =>
-                    setNewApplicationModel({
-                      ...newApplicationModel,
-                      model: e.target.value,
-                    })
-                  }
-                >
-                  <option value={""}>Модель</option>
-                  {newApplicationModel.brand &&
-                    newApplicationModel.brand !== "Модель" &&
-                    carsList!
-                      .find(({ name }) => name === newApplicationModel.brand!)
-                      ?.models.map((y: string) => (
-                        <option key={y} value={y}>
-                          {y}
-                        </option>
-                      ))}
-                </select>
+                <div className="w-44">
+                  <ArrayStringSelect
+                    resultValue={newApplicationModel.brand || ""}
+                    list={carsList.map((x) => x.name)}
+                    onChange={(value) =>
+                      setNewApplicationModel({
+                        ...newApplicationModel,
+                        brand: value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="w-44">
+                  <ArrayStringSelect
+                    list={
+                      carsList.find((x) => x.name === newApplicationModel.brand)
+                        ?.models || [""]
+                    }
+                    onChange={(value) =>
+                      setNewApplicationModel({
+                        ...newApplicationModel,
+                        model: value,
+                      })
+                    }
+                    resultValue={newApplicationModel.model || ""}
+                  />
+                </div>
               </div>
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-4">
                 <div className="text-center ">Страна выдачи прав</div>
-                <Input
-                  onChange={(e) =>
-                    setNewApplication(
-                      new Body43({
-                        ...newApplication,
-                        license_issuing_country: e.target.value,
-                      })
-                    )
-                  }
-                  type="text"
-                  className="m-0 w-44"
-                  placeholder="Значение"
-                />
+                <div className="w-80">
+                  <ArrayStringSelect
+                    list={countryList}
+                    onChange={(value) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          license_issuing_country: value,
+                        })
+                      )
+                    }
+                    resultValue={newApplication.license_issuing_country}
+                  />
+                </div>
+              </div>
+              <Separator className="my-4" />
+              <div className="flex items-center justify-between space-x-4">
+                <div className="text-center ">Гражданство</div>
+                <div className="w-80">
+                  <ArrayStringSelect
+                    list={countryList}
+                    onChange={(value) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          citizenship: value,
+                        })
+                      )
+                    }
+                    resultValue={newApplication.citizenship}
+                  />
+                </div>
               </div>
               <Separator className="my-4" />
             </div>

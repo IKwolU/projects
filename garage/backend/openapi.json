@@ -7675,6 +7675,11 @@
                                         "type": "sting",
                                         "nullable": true
                                     },
+                                    "citizenship": {
+                                        "description": "гражданство",
+                                        "type": "sting",
+                                        "nullable": true
+                                    },
                                     "chosen_brand": {
                                         "description": "Марка авто",
                                         "type": "sting",

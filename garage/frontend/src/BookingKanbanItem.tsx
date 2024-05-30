@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   ApplicationLogType,
+  ApplicationStage,
   Applications,
   Body42,
   Body45,
@@ -61,6 +62,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
   const [citizenship, setCitizenship] = useState(
     applicationDetails!.citizenship
   );
+  const [stage, setStage] = useState(applicationDetails!.current_stage);
   const [chosenModel, setChosenModel] = useState(
     applicationDetails!.chosen_model
   );
@@ -194,6 +196,14 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     }
   };
 
+  const handleStageChange = (value: string) => {
+    const susValue = Object.keys(ApplicationStage).find(
+      (x: any) => getApplicationStageDisplayName(x) === value
+    );
+    setStage(susValue);
+    changeApplicationData(applicationDetails!.id!, "current_stage", susValue);
+  };
+
   if (!applicationLogs) {
     return <></>;
   }
@@ -209,11 +219,15 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
               </div>
               <div className="">
                 Статус:{" "}
-                <span className="font-semibold">
-                  {getApplicationStageDisplayName(
+                <ArrayStringSelect
+                  list={Object.keys(ApplicationStage).map((x: any) =>
+                    getApplicationStageDisplayName(x)
+                  )}
+                  onChange={(value) => handleStageChange(value)}
+                  resultValue={getApplicationStageDisplayName(
                     applicationDetails!.current_stage!
                   )}
-                </span>
+                />
               </div>
             </div>
             <div className="">
@@ -399,7 +413,61 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                   </div>
                   <Separator className="my-1" />
                 </div>
-              </div>
+              </div>{" "}
+              {!applicationDetails!.booking && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <div className="">Марка/модель</div>
+
+                    <div className="relative flex items-center space-x-1">
+                      <div className="w-44">
+                        <ArrayStringSelect
+                          list={carsList.map((x) => x.name)}
+                          onChange={(value) => {
+                            setChosenBrand(value);
+                            setChosenModel(undefined);
+                          }}
+                          resultValue={chosenBrand}
+                        />
+                      </div>
+                      <div className="w-44">
+                        <ArrayStringSelect
+                          list={
+                            carsList.find((x) => x.name === chosenBrand)
+                              ?.models || [""]
+                          }
+                          onChange={(value) => setChosenModel(value)}
+                          resultValue={chosenModel}
+                        />
+                      </div>
+                      <FontAwesomeIcon
+                        onClick={() => {
+                          applicationDetails!.chosen_brand !== chosenBrand &&
+                            changeApplicationData(
+                              applicationDetails!.id!,
+                              "chosen_brand",
+                              chosenBrand
+                            );
+                          applicationDetails!.chosen_model !== chosenModel &&
+                            changeApplicationData(
+                              applicationDetails!.id!,
+                              "chosen_model",
+                              chosenModel
+                            );
+                        }}
+                        icon={faPenToSquare}
+                        className={`h-6 transition-colors cursor-pointer  active:text-yellow ${
+                          applicationDetails!.chosen_brand === chosenBrand &&
+                          applicationDetails!.chosen_model === chosenModel
+                            ? "text-grey"
+                            : "text-black"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                  <Separator className="my-1" />
+                </>
+              )}
               <div className="flex items-center justify-between">
                 <div className="">Страна выдачи прав</div>
                 <div className="flex items-center space-x-1">
@@ -454,53 +522,6 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                     className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
                       applicationDetails!.citizenship === citizenship
                         ? "text-pale"
-                        : "text-black"
-                    }`}
-                  />
-                </div>
-              </div>
-              <Separator className="my-1" />
-              <div className="flex items-center justify-between">
-                <div className="">Марка/модель</div>
-
-                <div className="relative flex items-center space-x-1">
-                  <div className="w-44">
-                    <ArrayStringSelect
-                      list={carsList.map((x) => x.name)}
-                      onChange={(value) => setChosenBrand(value)}
-                      resultValue={chosenBrand}
-                    />
-                  </div>
-                  <div className="w-44">
-                    <ArrayStringSelect
-                      list={
-                        carsList.find((x) => x.name === chosenBrand)
-                          ?.models || [""]
-                      }
-                      onChange={(value) => setChosenModel(value)}
-                      resultValue={chosenModel}
-                    />
-                  </div>
-                  <FontAwesomeIcon
-                    onClick={() => {
-                      applicationDetails!.chosen_brand !== chosenBrand &&
-                        changeApplicationData(
-                          applicationDetails!.id!,
-                          "chosen_brand",
-                          chosenBrand
-                        );
-                      applicationDetails!.chosen_model !== chosenModel &&
-                        changeApplicationData(
-                          applicationDetails!.id!,
-                          "chosen_model",
-                          chosenModel
-                        );
-                    }}
-                    icon={faPenToSquare}
-                    className={`h-6 transition-colors cursor-pointer  active:text-yellow ${
-                      applicationDetails!.chosen_brand === chosenBrand &&
-                      applicationDetails!.chosen_model === chosenModel
-                        ? "text-grey"
                         : "text-black"
                     }`}
                   />

@@ -52,6 +52,7 @@ const ListSelect = ({
   const handleOptionClick = (value: string) => {
     onChange(value);
     setIsOpen(!isOpen);
+    setSearch("");
   };
 
   return (
@@ -81,6 +82,7 @@ const ListSelect = ({
               <div className="absolute z-10 left-0 w-full h-[200px] bg-white border-2 top-8 border-pale rounded-b-xl ">
                 <Input
                   className="h-8 m-0 rounded-none "
+                  value={search}
                   placeholder="Поиск"
                   onChange={(e) => setSearch(e.target.value)}
                 />

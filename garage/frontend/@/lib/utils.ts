@@ -137,6 +137,7 @@ export const getApplicationStageDisplayName = (stage: ApplicationStage) => {
   };
   return stages[stage];
 };
+
 export const getApplicationFieldDisplayName = (field: string) => {
   switch (field) {
     case "planned_arrival":

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { client } from "./backend";
-import { Body43 } from "./api-client";
+import { Body43, ParkInventoryTypes } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import PhoneInput from "@/components/ui/phone-input";
@@ -9,8 +9,9 @@ import countryList from "../../backend/public/assets/json/countries.json";
 import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { useRecoilState } from "recoil";
-import { parkAtom } from "./atoms";
+import { applicationsAtom, parkAtom, parkListsAtom } from "./atoms";
 import ArrayStringSelect from "./ArrayStringSelect";
+import ListSelect from "./ListSelect";
 
 interface Division {
   id: number;
@@ -70,25 +71,20 @@ export const BookingKanbanCreatingTask = ({
             <div className="w-1/2 px-4">
               <div className="flex items-center justify-between space-x-4">
                 <div className="text-center">Источник рекламы</div>
-                <select
-                  className="h-10 p-1 m-0 border-2 border-grey rounded-xl"
-                  name=""
-                  id=""
-                  onChange={(e) =>
-                    setNewApplication(
-                      new Body43({
-                        ...newApplication,
-                        advertising_source: e.target.value,
-                      })
-                    )
-                  }
-                >
-                  {["Без рекламы", "BeeBeep", "Avito"].map((y) => (
-                    <option key={y} value={y}>
-                      {y}
-                    </option>
-                  ))}
-                </select>
+                <div className="mb-1 w-44">
+                  <ListSelect
+                    onChange={(value) =>
+                      setNewApplication(
+                        new Body43({
+                          ...newApplication,
+                          advertising_source: value,
+                        })
+                      )
+                    }
+                    resultValue={newApplication.advertising_source}
+                    type={ParkInventoryTypes.AdSource}
+                  />
+                </div>
               </div>
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-4">
@@ -137,6 +133,7 @@ export const BookingKanbanCreatingTask = ({
                   }
                 />
               </div>
+              <Separator className="my-4" />
             </div>
             <div className="w-1/2 px-4">
               <div className="flex items-center justify-between space-x-4">
@@ -160,13 +157,13 @@ export const BookingKanbanCreatingTask = ({
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-2">
                 <div className="text-center ">Марка\модель авто</div>
-                <div className="w-44">
+                <div className="mb-1 w-44">
                   <ArrayStringSelect
                     resultValue={newApplicationModel.brand || ""}
                     list={carsList.map((x) => x.name)}
                     onChange={(value) =>
                       setNewApplicationModel({
-                        ...newApplicationModel,
+                        model: undefined,
                         brand: value,
                       })
                     }
@@ -191,7 +188,7 @@ export const BookingKanbanCreatingTask = ({
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-4">
                 <div className="text-center ">Страна выдачи прав</div>
-                <div className="w-80">
+                <div className="mb-1 w-80">
                   <ArrayStringSelect
                     list={countryList}
                     onChange={(value) =>
@@ -209,7 +206,7 @@ export const BookingKanbanCreatingTask = ({
               <Separator className="my-4" />
               <div className="flex items-center justify-between space-x-4">
                 <div className="text-center ">Гражданство</div>
-                <div className="w-80">
+                <div className="mb-1 w-80">
                   <ArrayStringSelect
                     list={countryList}
                     onChange={(value) =>
@@ -227,7 +224,7 @@ export const BookingKanbanCreatingTask = ({
               <Separator className="my-4" />
             </div>
             <div className="flex justify-end w-full space-x-2 ">
-              <div className="w-44">
+              <div className="w-44 ">
                 {newApplicationPhone && (
                   <Confirmation
                     accept={() => {

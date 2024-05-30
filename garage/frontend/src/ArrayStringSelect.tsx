@@ -23,6 +23,7 @@ const ArrayStringSelect = ({
   const handleOptionClick = (value: string) => {
     onChange(value);
     setIsOpen(!isOpen);
+    setSearch("");
   };
 
   return (
@@ -51,6 +52,7 @@ const ArrayStringSelect = ({
             {isOpen && (
               <div className="absolute z-10 left-0 w-full h-[200px] bg-white border-2 top-8 border-pale rounded-b-xl ">
                 <Input
+                  value={search}
                   className="h-8 m-0 rounded-none "
                   placeholder="Поиск"
                   onChange={(e) => setSearch(e.target.value)}

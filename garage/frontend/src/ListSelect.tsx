@@ -108,9 +108,8 @@ const ListSelect = ({
                   <Separator />
 
                   {searchedSelectedList.map((x) => (
-                    <div className="">
+                    <div className="" key={x.id}>
                       <div
-                        key={x.id}
                         className="p-1 text-sm transition-colors hover:bg-lightgrey"
                         onClick={() => handleOptionClick(x.content!)}
                       >

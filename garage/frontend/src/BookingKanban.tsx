@@ -4,10 +4,13 @@ import { client } from "./backend";
 import {
   ApplicationStage,
   Applications,
+  Body34,
   Body42,
   Body43,
   Body47,
+  BookingStatus,
   Notifications,
+  ParkInventoryTypes,
 } from "./api-client";
 import { getApplicationStageDisplayName } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -20,6 +23,7 @@ import { applicationsAtom, parkAtom, parkListsAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { BookingKanbanCreatingTask } from "./BookingKanbanCreatingTask";
+import ListSelect from "./ListSelect";
 
 interface Details {
   isShowed: boolean;
@@ -34,10 +38,13 @@ export const BookingKanban = () => {
   const [notifications, setNotifications] = useState<Notifications[]>([]);
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [notificationResult, setNotificationResult] = useState("");
+  const [unbookReason, setUnbookReason] = useState("");
+  const [commentReason, setCommentReason] = useState("");
   const [park] = useRecoilState(parkAtom);
   const [idOpenAndCreateNotification, setIdOpenAndCreateNotification] =
     useState<number | null>(null);
-
+  const [idOpenCancel, setIdOpenCancel] = useState<number | null>(null);
+  const [idOpenConfirmed, setIdOpenConfirmed] = useState<number | null>(null);
   const [newNotification, setNewNotification] = useState({
     date: undefined as string | undefined,
     message: undefined as string | undefined,
@@ -72,6 +79,19 @@ export const BookingKanban = () => {
       new Body43({
         ...newApplication,
         division_id: park.divisions?.[0].id,
+      })
+    );
+  };
+
+  const cancelBooking = async (vin: string) => {
+    const reasonForUnbook =
+      unbookReason + (commentReason ? "\nКомментарий: " + commentReason : "");
+
+    await client.updateCarBookingStatusManager(
+      new Body34({
+        status: BookingStatus.UnBooked,
+        vin,
+        reason: reasonForUnbook,
       })
     );
   };
@@ -114,6 +134,7 @@ export const BookingKanban = () => {
       );
       setNewNotification({ date: undefined, message: undefined });
       setIdOpenAndCreateNotification(null);
+      setIdOpenConfirmed(null);
       getNotification();
     } catch (error: any) {
       if (error.errors) {
@@ -167,7 +188,7 @@ export const BookingKanban = () => {
 
   const updateNotification = async (id: number) => {
     client.updateNotificationManager(
-      new Body47({ result: notificationResult, id: id })
+      new Body47({ result: notificationResult, id })
     );
     getNotification();
   };
@@ -191,6 +212,33 @@ export const BookingKanban = () => {
       destinationColumn === ApplicationStage.NoAnswer
     ) {
       setIdOpenAndCreateNotification(draggableId);
+    }
+    if (
+      destinationColumn === ApplicationStage.ReservationCanceled ||
+      destinationColumn === ApplicationStage.NotRealized ||
+      destinationColumn === ApplicationStage.ArrivedAtOfficeNoCar
+    ) {
+      setIdOpenCancel(Number(draggableId));
+    }
+    if (destinationColumn === ApplicationStage.ReservationConfirmed) {
+      setIdOpenConfirmed(Number(draggableId));
+      setNewNotification({
+        ...newNotification,
+        message: "Водитель прийдет в парк",
+      });
+    }
+  };
+
+  const handleCancelApplication = (id: number) => {
+    const application = applications.find((x) => x.id === id);
+    setIdOpenCancel(null);
+    if (application) {
+      if (application.booking_id) {
+        cancelBooking(application.booking.car.car_id);
+      }
+      if (!application.booking_id) {
+        changeApplicationData(id, "reason_for_rejection", unbookReason);
+      }
     }
   };
 
@@ -244,70 +292,143 @@ export const BookingKanban = () => {
           </div>
         </div>
       )}
-      {idOpenAndCreateNotification && (
-        <div
-          className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 "
-          onClick={(e) =>
-            e.target === e.currentTarget && setIdOpenAndCreateNotification(null)
-          }
-        >
-          <div className="p-2 space-y-2 bg-white rounded-xl">
-            Создание напоминание для заявки №{idOpenAndCreateNotification}
-            <div className="flex space-x-2">
-              <Input
-                className="m-0 w-44"
-                type="datetime-local"
-                value={
-                  newNotification.date
-                    ? newNotification.date
-                    : String(new Date())
-                }
-                onChange={(e) =>
-                  setNewNotification({
-                    ...newNotification,
-                    date: e.target.value,
-                  })
-                }
-                placeholder={
-                  newNotification.date &&
-                  format(newNotification.date, "dd.MM.yyyy HH:mm")
-                }
-              />
-              <Input
-                className="m-0 w-96"
-                type="text"
-                value={newNotification.message ? newNotification.message : ""}
-                onChange={(e) =>
-                  setNewNotification({
-                    ...newNotification,
-                    message: e.target.value,
-                  })
-                }
-                placeholder="Коментарий"
-              />
+      {idOpenAndCreateNotification ||
+        (idOpenConfirmed && (
+          <div
+            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 "
+            onClick={(e) =>
+              idOpenAndCreateNotification &&
+              e.target === e.currentTarget &&
+              setIdOpenAndCreateNotification(null)
+            }
+          >
+            <div className="p-2 space-y-2 bg-white rounded-xl">
+              {`${
+                idOpenConfirmed
+                  ? "Водитель прийдет в парк по заявке №" + idOpenConfirmed
+                  : "Создание напоминание для заявки  №" +
+                    idOpenAndCreateNotification
+              }`}
+              <div className="flex my-2 space-x-2">
+                <Input
+                  className={`m-0  ${
+                    idOpenAndCreateNotification ? "w-44" : "w-full"
+                  }`}
+                  type="datetime-local"
+                  value={
+                    newNotification.date
+                      ? newNotification.date
+                      : String(new Date())
+                  }
+                  onChange={(e) =>
+                    setNewNotification({
+                      ...newNotification,
+                      date: e.target.value,
+                    })
+                  }
+                  placeholder={
+                    newNotification.date &&
+                    format(newNotification.date, "dd.MM.yyyy HH:mm")
+                  }
+                />
+                {idOpenAndCreateNotification && (
+                  <Input
+                    className="m-0 w-96"
+                    type="text"
+                    value={
+                      newNotification.message ? newNotification.message : ""
+                    }
+                    onChange={(e) =>
+                      setNewNotification({
+                        ...newNotification,
+                        message: e.target.value,
+                      })
+                    }
+                    placeholder="Коментарий"
+                  />
+                )}
+              </div>
+              <div className="flex space-x-2">
+                {idOpenAndCreateNotification && (
+                  <Button
+                    variant={"reject"}
+                    className="text-black"
+                    onClick={() => setIdOpenAndCreateNotification(null)}
+                  >
+                    Назад
+                  </Button>
+                )}
+                {newNotification.message && newNotification.date && (
+                  <Button
+                    variant={"default"}
+                    className="mx-auto text-black w-44"
+                    onClick={() =>
+                      createNotification(
+                        idOpenAndCreateNotification || idOpenConfirmed
+                      )
+                    }
+                  >
+                    Создать
+                  </Button>
+                )}
+                {!(newNotification.message && newNotification.date) && (
+                  <Button
+                    variant={"default"}
+                    className="mx-auto text-black w-44"
+                    disabled
+                  >
+                    Создать
+                  </Button>
+                )}
+              </div>
             </div>
-            <div className="flex space-x-2">
-              <Button
-                variant={"reject"}
-                className="text-black"
-                onClick={() => setIdOpenAndCreateNotification(null)}
-              >
-                Назад
-              </Button>
-              {newNotification.message && newNotification.date && (
+          </div>
+        ))}
+      {idOpenCancel && (
+        <div className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
+          <div className="p-2 space-y-2 bg-white rounded-xl">
+            {applications.find((x) => x.id === idOpenCancel)!.booking_id && (
+              <>
+                Причина отмены бронирования №{idOpenCancel}
+                <div className="flex flex-col space-y-2">
+                  <ListSelect
+                    onChange={(value) => setUnbookReason(value)}
+                    resultValue={unbookReason}
+                    type={ParkInventoryTypes.BookingRejectionReason}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Коментарий"
+                    onChange={(e) => setCommentReason(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+            {!applications.find((x) => x.id === idOpenCancel)?.booking_id && (
+              <>
+                Причина отмены заявки №{idOpenCancel}
+                <div className="flex space-x-2">
+                  <ListSelect
+                    onChange={(value) => setUnbookReason(value)}
+                    resultValue={unbookReason}
+                    type={ParkInventoryTypes.CarRejectionReason}
+                  />
+                </div>
+              </>
+            )}
+            <div className="flex mx-auto space-x-2 w-44">
+              {unbookReason && (
                 <Button
                   variant={"default"}
                   className="text-black"
-                  onClick={() =>
-                    createNotification(idOpenAndCreateNotification)
-                  }
+                  onClick={() => handleCancelApplication(idOpenCancel)}
                 >
-                  Создать
+                  Сохранить
                 </Button>
               )}
-              {!(newNotification.message && newNotification.date) && (
+              {!unbookReason && (
                 <Button variant={"default"} className="text-black" disabled>
-                  Создать
+                  Сохранить
                 </Button>
               )}
             </div>

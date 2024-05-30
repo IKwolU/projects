@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   getApplicationFieldDisplayName,
   getApplicationStageDisplayName,
+  getCancelationSourceDisplayName,
 } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -366,7 +367,9 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                     },
                     {
                       title: "Кто отменил бронь",
-                      content: applicationDetails!.booking.cancellation_source,
+                      content: getCancelationSourceDisplayName(
+                        applicationDetails!.booking.cancellation_source
+                      ),
                     },
                     {
                       title: "Причина отмены брони",

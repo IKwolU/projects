@@ -2276,6 +2276,9 @@ public function getParkApplicationsManager(Request $request) {
 
     foreach ($applications as $application) {
         $application->current_stage = ApplicationStage::from($application->current_stage)->name;
+        if ($application->booking && $application->booking->cancellation_source) {
+            $application->booking->cancellation_source=CancellationSources::from($application->booking->cancellation_source)->name;
+        }
     }
 
     return response()->json(['applications' => $applications], 200);

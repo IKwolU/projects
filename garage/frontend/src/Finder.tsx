@@ -589,6 +589,7 @@ export const Finder = () => {
               )}
             </div>
           ))}
+
           {/* <Dialog>
             <DialogTrigger asChild>
               <div className="bg-grey text-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center relative">
@@ -874,6 +875,23 @@ export const Finder = () => {
           />
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
+        <div
+          className="h-full mb-4"
+          onClick={() => {
+            setFilters({
+              ...filters,
+              onMap: true,
+            });
+          }}
+        >
+          {
+            <OnMap
+              cars={cars}
+              isLargeScreen={isLargeScreen}
+              isFullScreen={!!filters.onMap}
+            />
+          }
+        </div>
         {!filters.onMap && (
           <div
             className={`grid content-center grid-cols-1 ${
@@ -891,9 +909,6 @@ export const Finder = () => {
             ))}
           </div>
         )}
-        <div className={filters.onMap ? "block" : "hidden"}>
-          {<OnMap cars={cars} isLargeScreen={isLargeScreen} />}
-        </div>
       </div>
     </>
   );

@@ -85,4 +85,6 @@ Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
     Route::put('/manager/park/inventory-list', [ManagerController::class, 'changeParkInventoryListItemManager']);
     Route::post('/manager/park/inventory-list', [ManagerController::class, 'createParkInventoryListItemManager']);
     Route::delete('/manager/park/inventory-list', [ManagerController::class, 'deleteParkInventoryListItemManager']);
+    Route::get('/manager/parks/data', [ManagerController::class, 'getParksInitDataSuperManager']);
+    Route::post('/manager/park/select', [ManagerController::class, 'selectParkForSuperManager']);
 });

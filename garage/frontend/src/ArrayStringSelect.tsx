@@ -60,7 +60,7 @@ const ArrayStringSelect = ({
 
                 <div className="overflow-y-auto h-[160px] scrollbar-hide">
                   {searchedList.map((x) => (
-                    <div className="">
+                    <div className="" key={x}>
                       <div
                         key={x}
                         className="p-1 text-sm transition-colors hover:bg-lightgrey"

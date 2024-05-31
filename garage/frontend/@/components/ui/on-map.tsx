@@ -19,6 +19,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 interface OnMapProps {
   cars: Cars3[];
   isLargeScreen: boolean;
+  isFullScreen: boolean;
 }
 interface CityCoords {
   city_ru: string;
@@ -31,7 +32,7 @@ interface CityCoords {
   city_en: string;
 }
 
-const OnMap = ({ cars, isLargeScreen }: OnMapProps) => {
+const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
   const city = useRecoilValue(cityAtom);
   const [isClicked, setIsClicked] = useState(false);
   const [clickedCars, setClickedCars] = useState<Cars3[]>([]);
@@ -96,7 +97,11 @@ const OnMap = ({ cars, isLargeScreen }: OnMapProps) => {
           suggest_apikey: "77383c0f-1a86-4e22-8cb6-821d0b5c3e7e",
         }}
       >
-        <Map state={mapState} width={"100%"} height={"75vh"}>
+        <Map
+          state={mapState}
+          width={"100%"}
+          height={isFullScreen ? "75vh" : "20vh"}
+        >
           <Clusterer
             options={{
               preset: "islands#ClusterIcons",

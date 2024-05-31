@@ -2498,6 +2498,9 @@
                                                     "description": "Тип пользователя",
                                                     "type": "string"
                                                 },
+                                                "user_role": {
+                                                    "$ref": "#/components/schemas/UserRole"
+                                                },
                                                 "city_name": {
                                                     "description": "Название города",
                                                     "type": "string"
@@ -8330,6 +8333,124 @@
                     }
                 }
             }
+        },
+        "/manager/park/select": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Изменение парка для этого менеджера",
+                "description": "Выбор парка\nИзменение парка для этого менеджера",
+                "operationId": "selectParkForSuperManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Элемент не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/parks/data": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение данных парков",
+                "description": "Данные парков\nПолучение данных парков",
+                "operationId": "getParksInitDataSuperManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "parks": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "park_name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Элемент не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -8458,6 +8579,15 @@
                 "enum": [
                     "Mechanics",
                     "Automatic"
+                ]
+            },
+            "UserRole": {
+                "description": "The unique identifier of a product in our catalog",
+                "type": "string",
+                "enum": [
+                    "Admin",
+                    "Driver",
+                    "Manager"
                 ]
             },
             "UserStatus": {

@@ -25,6 +25,7 @@ use App\Enums\CarClass;
 use App\Enums\TransmissionType;
 use App\Enums\ReferralStatus;
 use App\Enums\FuelType;
+use App\Enums\UserRole;
 use App\Http\Controllers\CarsController;
 use App\Models\Referral;
 use App\Models\Manager;
@@ -60,6 +61,7 @@ class AuthController extends Controller
      *             @OA\Property(property="name", type="string", nullable=true, description="Имя пользователя"),
      *             @OA\Property(property="email", type="string", nullable=true, description="Email пользователя"),
      *             @OA\Property(property="user_type", type="string", description="Тип пользователя"),
+     *             @OA\Property(property="user_role", type="string", description="Роль",ref="#/components/schemas/UserRole"),
      *             @OA\Property(property="city_name", type="string", description="Название города"),
      *             @OA\Property(
      *                 property="referral_info",
@@ -188,6 +190,9 @@ class AuthController extends Controller
         if ($user->user_type !== UserType::Driver->value) {
             $user->user_type = UserType::from($user->user_type)->name;
             $user->user_status = UserStatus::from($user->user_status)->name;
+            $user->user_role = UserRole::from($user->role_id)->name;
+            unset($user["code"], $user->avatar, $user->email_verified_at, $user->email, $user->settings, $user->created_at, $user->updated_at);
+
             return response()->json(['user' => $user]);
         }
         $user->user_type = UserType::from($user->user_type)->name;
@@ -267,7 +272,7 @@ class AuthController extends Controller
         $user->referral_info = $referral;
         $user->docs = $docs;
         $user->bookings = $bookings ? $bookings : null;
-        unset($user->code, $user->role_id, $user->avatar, $user->email_verified_at, $user->settings, $user->created_at, $user->updated_at);
+        unset($user["code"], $user->avatar, $user->email_verified_at, $user->email, $user->settings, $user->created_at, $user->updated_at);
 
         return response()->json(['user' => $user]);
     }

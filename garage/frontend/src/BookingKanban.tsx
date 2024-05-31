@@ -58,7 +58,7 @@ export const BookingKanban = () => {
   const [newApplication, setNewApplication] = useState<Body43>(
     new Body43({
       advertising_source: "Без рекламы",
-      division_id: park.divisions?.[0].id,
+      division_id: park.divisions?.[0]?.id,
       planned_arrival: undefined,
     })
   );
@@ -78,7 +78,7 @@ export const BookingKanban = () => {
     setNewApplication(
       new Body43({
         ...newApplication,
-        division_id: park.divisions?.[0].id,
+        division_id: park.divisions?.[0]?.id,
       })
     );
   };

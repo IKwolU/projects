@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2 } from "./api-client";
+import { UserType, IPark2, Parks3, UserRole, Body51 } from "./api-client";
 import { parkAtom, userAtom } from "./atoms";
 import { client } from "./backend";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
@@ -15,6 +15,7 @@ import Confirmation from "@/components/ui/confirmation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { BookingKanban } from "./BookingKanban";
+import ArrayStringSelect from "./ArrayStringSelect";
 
 type MainMenuItem = {
   name: string;
@@ -24,6 +25,7 @@ type MainMenuItem = {
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useRecoilState(parkAtom);
+  const [parksInitData, setParksInitData] = useState<Parks3[] | undefined>();
 
   const LogoutHandler = () => {
     client.logout();
@@ -31,39 +33,34 @@ export const ParkManager = () => {
     window.location.href = "/";
   };
 
+  const getPark = async () => {
+    const parkData: IPark2 = await client.getParkManager();
+    setPark(parkData.park);
+
+    if (user.user_role === UserRole.Admin) {
+      const getParksInitData = async () => {
+        const data = await client.getParksInitDataSuperManager();
+        setParksInitData(data.parks);
+      };
+      getParksInitData();
+    }
+  };
+
   useEffect(() => {
     if (user.user_type === UserType.Manager && !park) {
-      const getPark = async () => {
-        const parkData: IPark2 = await client.getParkManager();
-        setPark(parkData.park);
-        // const pusher = Pusher.getInstance();
-
-        // await pusher.init({
-        //   apiKey: "8cbf3c5a14c45c1cb9b2",
-        //   cluster: "eu",
-        // });
-
-        // await pusher.connect();
-        // await pusher.subscribe({
-        //   channelName: `ParkKanban.${parkData.id}`,
-        //   onEvent: (event: PusherEvent) => {
-        //     console.log(`KanbanUpdated: ${event}`);
-        //   },
-        // });
-
-        // const pusher = new Pusher("8cbf3c5a14c45c1cb9b2", {
-        //   cluster: "eu",
-        // });
-
-        // const channel = pusher.subscribe(`ParkKanban.${parkData.id}`);
-        // channel.bind(`KanbanUpdated`, function (data) {
-        //   console.log("Event received:", data);
-        // });
-      };
-
       getPark();
     }
   }, []);
+
+  const selectPark = async (value: string) => {
+    await client.selectParkForSuperManager(
+      new Body51({
+        id: parksInitData?.find((x) => x.park_name === value)!.id,
+      })
+    );
+    getPark();
+    window.location.href = "/";
+  };
 
   if (user.user_type !== UserType.Manager) {
     return <></>;
@@ -75,10 +72,24 @@ export const ParkManager = () => {
   return (
     <>
       <div className="flex justify-end h-full mt-4">
-        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
-          <div className="flex items-center text-sm font-black tracking-widest sm:text-xl max-w-10">
-            BeeBeep {park.park_name}
+        {parksInitData && (
+          <div className="fixed top-2 right-2">
+            <div className="w-44">
+              <ArrayStringSelect
+                list={parksInitData.map((x) => x.park_name!)}
+                onChange={(value) => selectPark(value)}
+                resultValue={park.park_name!}
+              />
+            </div>{" "}
           </div>
+        )}
+
+        <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
+          <div className="flex flex-col items-center text-sm font-black tracking-widest sm:text-xl max-w-10">
+            BeeBeep
+            <div className="">{park.park_name}</div>
+          </div>
+
           <div className="flex justify-end m-0 space-x-6">
             {[
               { name: "Инфо", path: "/info" },

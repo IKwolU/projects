@@ -367,7 +367,7 @@ function CanvasComponent() {
 
         <OBJModel
           scale={[1, 1, 1]}
-          file="/models/pre-finale-new.gltf"
+          file="/models/test14.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[0, -4, 0]}
           opacity={0.93}
@@ -392,7 +392,7 @@ function CanvasComponent() {
           currentTime < content[0].end_time && (
             <>
               <OBJModel
-                file="/models/navilocoNEWyellow.gltf"
+                file="/models/test14-newnavi.gltf"
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                 position={[0, -4.0, 0]}
                 scale={[1, 1, 1]}
@@ -400,6 +400,29 @@ function CanvasComponent() {
                 rotate={[0, 0, 0]}
                 isOpacity={true}
               />
+
+              {(currentTime < content[0].start_time + 10
+                ? Math.floor(currentTime) % 2 === 0
+                : currentTime > content[0].start_time + 10) && (
+                // <OBJModel
+                //   file="/models/circle-point--1.gltf"
+                //   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                //   position={[-5.1, -4.3, 4.45]}
+                //   scale={[3, 3, 3]}
+                //   opacity={0.8}
+                //   rotate={[0, 0, 0]}
+                //   isOpacity={true}
+                // />
+                <OBJModel
+                  file="/models/arrow glorax.gltf"
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={[-4.9, -4.3, 4]}
+                  scale={[10, 10, 10]}
+                  opacity={0.8}
+                  rotate={[0, 155, 0]}
+                  isOpacity={true}
+                />
+              )}
               {/* {content[0].navigation.map((item, i) => (
                 <React.Fragment key={i}>
                   {currentTime > item.time_start &&

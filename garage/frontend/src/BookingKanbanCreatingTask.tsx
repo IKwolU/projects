@@ -9,7 +9,7 @@ import countryList from "../../backend/public/assets/json/countries.json";
 import Confirmation from "@/components/ui/confirmation";
 import { Input } from "@/components/ui/input";
 import { useRecoilState } from "recoil";
-import { applicationsAtom, parkAtom, parkListsAtom } from "./atoms";
+import { parkAtom } from "./atoms";
 import ArrayStringSelect from "./ArrayStringSelect";
 import ListSelect from "./ListSelect";
 

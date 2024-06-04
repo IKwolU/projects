@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('user', [AuthController::class, 'DeleteUser']);
     Route::get('user', [AuthController::class, 'GetUser']);
     Route::post('driver/upload-file', [DriverController::class, 'uploadDocs']);
+
     Route::get('admin/parks', [AdminController::class, 'getParks']);
     Route::get('admin/users', [AdminController::class, 'getUsers']);
     Route::get('admin/park', [AdminController::class, 'getParkWithDetails']);
@@ -39,6 +40,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Broadcast::routes();
 });
+
+// создание заявки без авторизации!
+Route::post('driver/application', [DriverController::class, 'createApplicationDriver']);
 
 Route::post('cars/search', [CarsController::class, 'SearchCars']);
 Route::post('cars/app-data', [DriverController::class, 'getFinderFilterData']);

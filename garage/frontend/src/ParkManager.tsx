@@ -73,7 +73,7 @@ export const ParkManager = () => {
     <>
       <div className="flex justify-end h-full mt-4">
         {parksInitData && (
-          <div className="fixed top-2 right-2">
+          <div className="absolute z-10 top-2 right-2">
             <div className="w-44">
               <ArrayStringSelect
                 list={parksInitData.map((x) => x.park_name!)}

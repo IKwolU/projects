@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { CarClass, Tariffs, IPark2, Body33 } from "./api-client";
+import { CarClass, Tariffs, IPark2, Body34 } from "./api-client";
 import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -41,7 +41,7 @@ export const TariffManager = () => {
         : [];
     try {
       await client.createTariffManager(
-        new Body33({
+        new Body34({
           ...newTariff!,
           criminal_ids: criminal_ids as any,
         })

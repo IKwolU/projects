@@ -108,14 +108,14 @@ const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
               groupByCoordinates: false,
             }}
             instanceRef={clustererRef}
-            onClick={handleClusterClick}
+            onClick={(e: any) => isFullScreen && handleClusterClick(e)}
           >
             {cars.map((car) => {
               return (
                 <Placemark
                   key={`${car.id}-${city}`}
                   geometry={car.division!.coords?.split(",")}
-                  onClick={handleClusterClick}
+                  onClick={(e: any) => isFullScreen && handleClusterClick(e)}
                 />
               );
             })}
@@ -125,7 +125,7 @@ const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
         </Map>
       </YMaps>
       {isClicked && (
-        <div className="fixed top-0 left-0 flex justify-center w-full h-full bg-black lg:top-20 lg:bg-inherit bg-opacity-95">
+        <div className="fixed top-0 left-0 z-[50] flex justify-center w-full h-full bg-black lg:top-20 lg:bg-inherit bg-opacity-95">
           <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey lg:max-w-[1212px] max-w-[858px] scrollbar-hide lg:px-1 p-4 lg:pt-10 px-auto overflow-y-auto pb-16 lg:pb-0">
             {isLargeScreen && (
               <div className="fixed left-0 w-full top-20 z-[53] pt-3 pb-1 bg-lightgrey ">

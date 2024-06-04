@@ -22,6 +22,7 @@ use App\Models\Park;
 use App\Models\RentTerm;
 use App\Models\Schema;
 use App\Models\Status;
+use App\Models\User;
 use App\Services\FileService;
 use Carbon\Carbon;
 
@@ -667,4 +668,69 @@ $divisionId=$car->division->id;
         }
         return response()->json(['result' => true], 200);
     }
+
+
+        /**
+     * Создать заявку в канбан
+     *
+     * @OA\Post(
+     *     path="/driver/application",
+     *     operationId="createApplicationDriver",
+     *     summary="Создать заявку в канбан",
+     *     tags={"Driver"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="car_id", type="integer", description="id машины"),
+     *             @OA\Property(property="phone", type="string", description="Модель авто")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Успешный ответ",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="успешно")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Ошибка сервера",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", description="Внутренняя ошибка сервера")
+     *         )
+     *     )
+     * )
+     *
+     * @param \Illuminate\Http\Request $request Объект запроса, содержащий идентификатор брони для проверки
+     * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом проверки активной брони (true/false)
+     */
+
+
+
+     public function createApplicationDriver(Request $request)
+     {
+        $driver_user= User::where('phone',$request->phone)->firstOrCreate();
+        if (!$driver_user->phone) {
+            $driver_user->phone=$request->phone;
+            $driver_user->save();
+        }
+        $driver_user_id=$driver_user->id;
+ $car = Car::where('id', $request->car_id)->with('division')->first();
+        $request->merge([
+            'driver_user_id'=> $driver_user_id,
+            'division_id'=>$car->division->id,
+            'chosen_brand'=>$car->brand,
+            'chosen_model'=>$car->model
+        ]);
+        $kanban = new KanbanController;
+        $applicationId = $kanban->createApplication($request);
+        $request->merge([
+            'type'=>ApplicationLogType::Create->value,
+            'creator'=>'Водитель',
+            'creator_id'=>$driver_user_id,
+            'id'=>$applicationId
+        ]);
+        $kanban->createApplicationsLogItem($request);
+        return response()->json(['id' => $applicationId]);
+     }
 }

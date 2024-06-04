@@ -883,6 +883,12 @@ export const Finder = () => {
               onMap: true,
             });
           }}
+          onTouchStart={() => {
+            setFilters({
+              ...filters,
+              onMap: true,
+            });
+          }}
         >
           {
             <OnMap

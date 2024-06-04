@@ -109,6 +109,7 @@ const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
             }}
             instanceRef={clustererRef}
             onClick={(e: any) => isFullScreen && handleClusterClick(e)}
+            onTouchStart={(e: any) => isFullScreen && handleClusterClick(e)}
           >
             {cars.map((car) => {
               return (
@@ -116,6 +117,9 @@ const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
                   key={`${car.id}-${city}`}
                   geometry={car.division!.coords?.split(",")}
                   onClick={(e: any) => isFullScreen && handleClusterClick(e)}
+                  onTouchStart={(e: any) =>
+                    isFullScreen && handleClusterClick(e)
+                  }
                 />
               );
             })}

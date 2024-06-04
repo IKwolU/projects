@@ -1,24 +1,24 @@
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import { Button } from "@/components/ui/button";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  Body16,
-  Body17,
-  BookingStatus,
-  User,
-  Schema,
+  // Body16,
+  // Body17,
+  // BookingStatus,
+  // User,
+  // Schema,
   Cars3,
-  Bookings2,
+  // Bookings2,
   DayOfWeek,
 } from "./api-client";
 import { Separator } from "@/components/ui/separator";
@@ -29,38 +29,38 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
-import { userAtom } from "./atoms";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { client } from "./backend";
-import Confirmation from "@/components/ui/confirmation";
+// import { userAtom } from "./atoms";
+// import { useNavigate } from "react-router-dom";
+// import { useRecoilState } from "recoil";
+// import { client } from "./backend";
+// import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
 import { useEffect, useState } from "react";
-import BookingAlert from "./booking-alert";
+// import BookingAlert from "./booking-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import ym from "react-yandex-metrika";
+// import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
-// import { CarCreateApplication } from "./CarCreateApplication";
+import { CarCreateApplication } from "./CarCreateApplication";
 // import { CarBooking } from "./CarCreateApplication";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
-  const [user, setUser] = useRecoilState(userAtom);
-  const [isBooked, setIsBooked] = useState(false);
+  // const [user, setUser] = useRecoilState(userAtom);
+  // const [isBooked, setIsBooked] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({
     latitude: null,
     longitude: null,
   });
 
-  const [selectedSchema, setSelectedSchema] = useState(
-    car.rent_term!.schemas![0]!.id
-  );
-  const navigate = useNavigate();
+  // const [selectedSchema, setSelectedSchema] = useState(
+  //   car.rent_term!.schemas![0]!.id
+  // );
+  // const navigate = useNavigate();
 
-  const activeBooking = user?.bookings?.find(
-    (x) => x.status === BookingStatus.Booked
-  );
+  // const activeBooking = user?.bookings?.find(
+  //   (x) => x.status === BookingStatus.Booked
+  // );
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -74,60 +74,60 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   }, []);
 
   // временно удаляем проверку на верификацию!!!
-  const book = async (variant_id: number | null = null) => {
-    if (!user) {
-      sessionStorage.setItem("car_brand", car.brand!);
-      sessionStorage.setItem("car_model", car.model!);
-      sessionStorage.setItem("car_park", car.park_name!);
-      return navigate("login/driver", {
-        state: {
-          bookingAttempt: true,
-        },
-      });
-    }
+  // const book = async (variant_id: number | null = null) => {
+  //   if (!user) {
+  //     sessionStorage.setItem("car_brand", car.brand!);
+  //     sessionStorage.setItem("car_model", car.model!);
+  //     sessionStorage.setItem("car_park", car.park_name!);
+  //     return navigate("login/driver", {
+  //       state: {
+  //         bookingAttempt: true,
+  //       },
+  //     });
+  //   }
 
-    if (activeBooking) {
-      await client.cancelBooking(
-        new Body17({
-          id: activeBooking!.id,
-        })
-      );
-    }
-    // if (user.user_status === UserStatus.Verified) {
-    const bookingData = await client.book(
-      new Body16({
-        id: variant_id ? variant_id : car.id,
-        schema_id: selectedSchema,
-      })
-    );
+  //   if (activeBooking) {
+  //     await client.cancelBooking(
+  //       new Body17({
+  //         id: activeBooking!.id,
+  //       })
+  //     );
+  //   }
+  //   // if (user.user_status === UserStatus.Verified) {
+  //   // const bookingData = await client.book(
+  //   //   new Body16({
+  //   //     id: variant_id ? variant_id : car.id,
+  //   //     schema_id: selectedSchema,
+  //   //   })
+  //   // );
 
-    const potentialExistingBooking = activeBooking
-      ? [
-          new Bookings2({
-            ...activeBooking,
-            status: BookingStatus.UnBooked,
-            end_date: new Date().toISOString(),
-          }),
-        ]
-      : [];
+  //   const potentialExistingBooking = activeBooking
+  //     ? [
+  //         new Bookings2({
+  //           ...activeBooking,
+  //           status: BookingStatus.UnBooked,
+  //           end_date: new Date().toISOString(),
+  //         }),
+  //       ]
+  //     : [];
 
-    setUser(
-      new User({
-        ...user,
-        bookings: [
-          ...user.bookings!.filter((x) => x !== activeBooking),
-          ...potentialExistingBooking,
-          new Bookings2(bookingData.booking),
-        ],
-      })
-    );
-    ym("reachGoal", "tobook_tc", 96683881);
-    setIsBooked(true);
-    // } else {
-    //   navigate("account");
-    // }
-  };
-  const { schemas } = car.rent_term!;
+  //   setUser(
+  //     new User({
+  //       ...user,
+  //       bookings: [
+  //         ...user.bookings!.filter((x) => x !== activeBooking),
+  //         ...potentialExistingBooking,
+  //         new Bookings2(bookingData.booking),
+  //       ],
+  //     })
+  //   );
+  //   ym("reachGoal", "tobook_tc", 96683881);
+  //   setIsBooked(true);
+  //   // } else {
+  //   //   navigate("account");
+  //   // }
+  // };
+  // const { schemas } = car.rent_term!;
 
   const navigationLink = (address: string) => {
     const link =
@@ -137,16 +137,16 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
     return link;
   };
 
-  const handleTariffChange = (value: string) => {
-    setSelectedSchema(Number(value));
-    ym("reachGoal", "select_tarif", 96683881);
-  };
+  // const handleTariffChange = (value: string) => {
+  //   setSelectedSchema(Number(value));
+  //   ym("reachGoal", "select_tarif", 96683881);
+  // };
 
   const nonWorkingDays: string[] = [];
 
   return (
     <>
-      {isBooked && <BookingAlert />}
+      {/* {isBooked && <BookingAlert />} */}
       <div className="py-6 ">
         <div className="mb-10">
           <div className="justify-between  flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
@@ -210,7 +210,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 ))}
               </div>
               <div className="fixed bottom-0 left-0 w-full px-2 z-[53] bg-white shadow-xl lg:py-4 lg:rounded-xl lg:relative border-t border-grey">
-                <h3 className="hidden lg:block">
+                {/* <h3 className="hidden lg:block">
                   Выберите стоимость и схему дней
                 </h3>
                 <div className="">
@@ -268,12 +268,12 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       )}
                     </div>
                   </div>
-                </div>
-                {/* <CarCreateApplication
+                </div> */}
+                <CarCreateApplication
                   car={car}
                   close={() => {}}
                   isModal={false}
-                /> */}
+                />
               </div>
             </div>
             <div

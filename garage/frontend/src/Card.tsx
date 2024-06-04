@@ -16,8 +16,8 @@ import SliderImages from "@/components/ui/slider-images";
 // import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
-import { CarCreateApplication } from "./CarCreateApplication";
+// import { useState } from "react";
+// import { CarCreateApplication } from "./CarCreateApplication";
 
 export const Card = ({
   car,
@@ -31,11 +31,11 @@ export const Card = ({
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
-  const [isBookOpen, setIsBookOpen] = useState(false);
+  // const [isBookOpen, setIsBookOpen] = useState(false);
 
   return (
     <>
-      {isBookOpen && (
+      {/* {isBookOpen && (
         <div
           className="fixed left-0 top-0 w-full h-full z-[55] flex items-center justify-center bg-black bg-opacity-50"
           onClick={(e) => e.target === e.currentTarget && setIsBookOpen(false)}
@@ -47,7 +47,7 @@ export const Card = ({
             />
           </div>
         </div>
-      )}
+      )} */}
       <Dialog modal={!isLargeScreen} onOpenChange={open}>
         <DialogTrigger
           asChild
@@ -188,10 +188,10 @@ export const Card = ({
                   Подробнее
                 </Button>
                 <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsBookOpen(true);
-                  }}
+                  // onClick={(e) => {
+                  //   e.stopPropagation();
+                  //   setIsBookOpen(true);
+                  // }}
                   variant={"cardDefault"}
                   className="w-full sm:max-w-[376px]"
                 >

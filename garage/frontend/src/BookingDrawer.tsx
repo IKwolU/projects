@@ -23,11 +23,7 @@ import { client } from "./backend";
 import { Button } from "@/components/ui/button";
 import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
-import { Input } from "@/components/ui/input";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { BookingCanceling } from "./BookingCanceling";
 
 export const BookingDrawer = () => {
   const [user, setUser] = useRecoilState(userAtom);
@@ -41,8 +37,6 @@ export const BookingDrawer = () => {
     useState(false);
   const [isOpenedCancelBookings, setIsCancelBookings] = useState(false);
   const [startCancelBooking, setStartCancelBooking] = useState(false);
-  const [reason, setReason] = useState<string | null>(null);
-  const [subReason, setSubReason] = useState<string | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -74,11 +68,11 @@ export const BookingDrawer = () => {
 
   const divisionPhone = activeBooking?.car?.division!.phone;
 
-  const cancelBooking = async () => {
+  const cancelBooking = async (reason: string) => {
     await client.cancelBooking(
       new Body21({
         id: activeBooking!.id,
-        reason: reason + (subReason ? ": " + subReason : ""),
+        reason,
       })
     );
     setUser(
@@ -135,34 +129,11 @@ export const BookingDrawer = () => {
 
   const handleCancelBooking = () => {
     setStartCancelBooking(true);
-    setReason(null);
-    setSubReason(null);
   };
 
   const handleChangeReason = (value: string) => {
-    setReason(value);
-    setSubReason(null);
-  };
-
-  const reasonList = [
-    "Изменились планы",
-    "Не понравилась модель машины",
-    "Не устроили условия аренды",
-    "Со мной не связались",
-    "Другое",
-  ];
-
-  const checkEnable = () => {
-    if (!reason) {
-      return true;
-    }
-    if (reason !== "Другое") {
-      return false;
-    }
-    if (!subReason) {
-      return true;
-    }
-    return false;
+    setStartCancelBooking(false);
+    cancelBooking(value);
   };
 
   return (
@@ -170,6 +141,13 @@ export const BookingDrawer = () => {
       {sortedActiveBookings.map((booking) => (
         <div key={booking.id}>
           {startCancelBooking && (
+            <BookingCanceling
+              booking={booking}
+              close={() => setStartCancelBooking(false)}
+              success={(value) => handleChangeReason(value)}
+            />
+          )}
+          {/* {startCancelBooking && (
             <div
               className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
               onClick={(e) => {
@@ -248,7 +226,7 @@ export const BookingDrawer = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
           <div
             className="overflow-y-auto h-[%] bg-white py-2 px-2 my-2 rounded-xl lg:hidden"
             key={`booking${booking.id}`}

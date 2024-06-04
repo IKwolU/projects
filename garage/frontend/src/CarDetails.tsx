@@ -29,9 +29,9 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
-// import { userAtom } from "./atoms";
+import { userAtom } from "./atoms";
 // import { useNavigate } from "react-router-dom";
-// import { useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 // import { client } from "./backend";
 // import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
@@ -43,15 +43,18 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 // import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
 import { CarCreateApplication } from "./CarCreateApplication";
+import { LoginAndBook } from "./LoginAndBook";
+import { Button } from "@/components/ui/button";
 // import { CarBooking } from "./CarCreateApplication";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
-  // const [user, setUser] = useRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   // const [isBooked, setIsBooked] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({
     latitude: null,
     longitude: null,
   });
+  const [isBookOpen, setIsBookOpen] = useState(false);
 
   // const [selectedSchema, setSelectedSchema] = useState(
   //   car.rent_term!.schemas![0]!.id
@@ -141,12 +144,25 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   //   setSelectedSchema(Number(value));
   //   ym("reachGoal", "select_tarif", 96683881);
   // };
-
+  const isMobile = window.innerWidth < 450;
   const nonWorkingDays: string[] = [];
 
   return (
     <>
-      {/* {isBooked && <BookingAlert />} */}
+      {isBookOpen && (
+        <div
+          className="fixed left-0 top-0 w-screen h-screen z-[55] flex items-center justify-center bg-black bg-opacity-50"
+          onClick={(e) => e.target === e.currentTarget && setIsBookOpen(false)}
+        >
+          <div className="max-w-[300px]">
+            <LoginAndBook
+              car={car}
+              close={() => setIsBookOpen(false)}
+              isModal={true}
+            />
+          </div>
+        </div>
+      )}
       <div className="py-6 ">
         <div className="mb-10">
           <div className="justify-between  flex max-w-[1208px] inset-0 mx-auto 2xl:pl-0  xl lg:space-x-8 flex-col lg:flex-row relative space-y-4 lg:space-y-0">
@@ -269,17 +285,34 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                     </div>
                   </div>
                 </div> */}
-                <CarCreateApplication
+                {/* <CarCreateApplication
                   car={car}
                   close={() => {}}
                   isModal={false}
-                />
+                /> */}
+
+                <div className={`py-2`}>
+                  {isMobile && (
+                    <Button
+                      onClick={() => {
+                        setIsBookOpen(true);
+                      }}
+                      variant={"cardDefault"}
+                      className="w-full sm:max-w-[376px]"
+                    >
+                      Забронировать
+                    </Button>
+                  )}
+                  {!isMobile && (
+                    <LoginAndBook car={car} close={() => {}} isModal={false} />
+                  )}
+                </div>
               </div>
             </div>
             <div
               className={` ${
                 car.images!.length > 1
-                  ? "lg:space-y-32 sm:pb-20 pb-40"
+                  ? "lg:space-y-32 sm:pb-20 pb-0"
                   : "lg:space-y-2"
               } lg:w-2/3 `}
             >

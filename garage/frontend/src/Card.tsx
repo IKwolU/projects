@@ -18,6 +18,9 @@ import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { CarCreateApplication } from "./CarCreateApplication";
+import { LoginAndBook } from "./LoginAndBook";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Card = ({
   car,
@@ -37,13 +40,14 @@ export const Card = ({
     <>
       {isBookOpen && (
         <div
-          className="fixed left-0 top-0 w-full h-full z-[55] flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed left-0 top-0 w-screen h-screen z-[55] flex items-center justify-center bg-black bg-opacity-50"
           onClick={(e) => e.target === e.currentTarget && setIsBookOpen(false)}
         >
           <div className="max-w-[300px]">
-            <CarCreateApplication
+            <LoginAndBook
               car={car}
               close={() => setIsBookOpen(false)}
+              isModal={true}
             />
           </div>
         </div>

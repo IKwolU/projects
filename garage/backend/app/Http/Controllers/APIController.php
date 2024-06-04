@@ -1820,7 +1820,9 @@ if (isset($carData['division_name_info'])) {
 
     public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null, $fromDriver=null, $reason=null)
     {
-        $repeat = false;
+if (env('APP_ENV') === 'production') {
+
+ $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
             ->find($booking_id);
 
@@ -1833,6 +1835,15 @@ if (isset($carData['division_name_info'])) {
             $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
             $customStatusName = $CarStatus->custom_status_name;
             $token = $park->status_api_tocken;
+
+        if($is_booked){Http::get('https://sms.ru/sms/send', [
+            'api_id' => 'AFA267B8-9272-4CEB-CE8B-7EE807275EA9',
+            'to' => $user->phone,
+            'msg' => 'Спасибо! Вы забронировали: '. $car->brand.' '. $car->model. '. Ваша ссылка на бронирование: '.
+            'https://beebeep.ru/bookings',
+            'json' => 1
+        ]);}
+
 
             $message = $is_booked ?
                 'Новое бронирование №: ' . $booking->id  . "\n":
@@ -1892,6 +1903,7 @@ if (isset($carData['division_name_info'])) {
             if ($repeat) {
             $this->notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema,$fromDriver,$reason);
             }
+        }
         }
     }
 }

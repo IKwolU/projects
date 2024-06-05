@@ -51,6 +51,7 @@ class CarsController extends Controller
      *             @OA\Property(property="park_name", type="array", description="Парк автомобиля", @OA\Items()),
      *             @OA\Property(property="search", type="array", description="Марка или модель автомобиля",@OA\Items()),
      *             @OA\Property(property="sorting", type="string", description="сортировка, asc или desc"),
+     *             @OA\Property(property="doNotStackList", type="array", description="поля по которым не группировать",@OA\Items()),
      *             @OA\Property(property="car_vin", type="string", description="VIN авто"),
      *             @OA\Property(property="schemas", type="object", description="Данные о сроке аренды",
      *                 @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),

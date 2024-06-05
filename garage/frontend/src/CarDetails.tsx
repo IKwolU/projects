@@ -45,6 +45,7 @@ import { toLower } from "ramda";
 import { CarCreateApplication } from "./CarCreateApplication";
 import { LoginAndBook } from "./LoginAndBook";
 import { Button } from "@/components/ui/button";
+import MetroComponent from "./MetroComponent";
 // import { CarBooking } from "./CarCreateApplication";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
@@ -351,6 +352,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                         {car.division!.address!}
                       </a>
                     </div>
+                    {/* <MetroComponent address={car.division!.address!} /> */}
                     {/* <Separator className="mt-4 mb-2" /> */}
                     <div className="mb-2 text-base">
                       <div className="mb-2 text-base font-semibold">

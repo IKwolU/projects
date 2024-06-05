@@ -144,7 +144,6 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
   //   setSelectedSchema(Number(value));
   //   ym("reachGoal", "select_tarif", 96683881);
   // };
-  const isMobile = window.innerWidth < 450;
   const nonWorkingDays: string[] = [];
 
   return (
@@ -292,20 +291,15 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                 /> */}
 
                 <div className={`py-2`}>
-                  {isMobile && (
-                    <Button
-                      onClick={() => {
-                        setIsBookOpen(true);
-                      }}
-                      variant={"cardDefault"}
-                      className="w-full sm:max-w-[376px]"
-                    >
-                      Забронировать
-                    </Button>
-                  )}
-                  {!isMobile && (
-                    <LoginAndBook car={car} close={() => {}} isModal={false} />
-                  )}
+                  <Button
+                    onClick={() => {
+                      setIsBookOpen(true);
+                    }}
+                    variant={"cardDefault"}
+                    className="w-full sm:max-w-[376px]"
+                  >
+                    Забронировать
+                  </Button>
                 </div>
               </div>
             </div>

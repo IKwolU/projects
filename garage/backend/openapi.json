@@ -3032,6 +3032,11 @@
                                         "description": "сортировка, asc или desc",
                                         "type": "string"
                                     },
+                                    "not_stack_list": {
+                                        "description": "поля по которым не группировать",
+                                        "type": "array",
+                                        "items": {}
+                                    },
                                     "car_vin": {
                                         "description": "VIN авто",
                                         "type": "string"
@@ -3198,6 +3203,23 @@
                                                             }
                                                         },
                                                         "type": "object"
+                                                    },
+                                                    "variants": {
+                                                        "description": "Данные о подразделениях",
+                                                        "type": "arrey",
+                                                        "items": {
+                                                            "properties": {
+                                                                "address": {
+                                                                    "description": "Адрес",
+                                                                    "type": "string"
+                                                                },
+                                                                "metro": {
+                                                                    "description": "Координаты подразделения",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
                                                     },
                                                     "rent_term": {
                                                         "description": "Данные о сроке аренды",

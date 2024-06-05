@@ -5502,6 +5502,8 @@ export class Body19 implements IBody19 {
     search?: any[];
     /** сортировка, asc или desc */
     sorting?: string;
+    /** поля по которым не группировать */
+    not_stack_list?: any[];
     /** VIN авто */
     car_vin?: string;
     /** Данные о сроке аренды */
@@ -5552,6 +5554,11 @@ export class Body19 implements IBody19 {
                     this.search!.push(item);
             }
             this.sorting = _data["sorting"];
+            if (Array.isArray(_data["not_stack_list"])) {
+                this.not_stack_list = [] as any;
+                for (let item of _data["not_stack_list"])
+                    this.not_stack_list!.push(item);
+            }
             this.car_vin = _data["car_vin"];
             this.schemas = _data["schemas"] ? Schemas2.fromJS(_data["schemas"]) : <any>undefined;
             this.is_buyout_possible = _data["is_buyout_possible"];
@@ -5603,6 +5610,11 @@ export class Body19 implements IBody19 {
                 data["search"].push(item);
         }
         data["sorting"] = this.sorting;
+        if (Array.isArray(this.not_stack_list)) {
+            data["not_stack_list"] = [];
+            for (let item of this.not_stack_list)
+                data["not_stack_list"].push(item);
+        }
         data["car_vin"] = this.car_vin;
         data["schemas"] = this.schemas ? this.schemas.toJSON() : <any>undefined;
         data["is_buyout_possible"] = this.is_buyout_possible;
@@ -5639,6 +5651,8 @@ export interface IBody19 {
     search?: any[];
     /** сортировка, asc или desc */
     sorting?: string;
+    /** поля по которым не группировать */
+    not_stack_list?: any[];
     /** VIN авто */
     car_vin?: string;
     /** Данные о сроке аренды */

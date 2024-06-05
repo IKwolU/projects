@@ -7,7 +7,14 @@ import {
   ZoomControl,
   Clusterer,
 } from "@pbe/react-yandex-maps";
-import { Cars3 } from "src/api-client";
+import {
+  Body15,
+  CarClass,
+  Cars3,
+  FuelType,
+  Schemas2,
+  TransmissionType,
+} from "../../../src/api-client";
 import { useRecoilValue } from "recoil";
 import { cityAtom } from "../../../src/atoms";
 import citiesCoords from "../../../../backend/public/cities_coords.json";
@@ -15,9 +22,27 @@ import { Card } from "../../../src/Card";
 import { Button } from "./button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { client } from "../../../src/backend";
+
+type CarFilter = {
+  brands: string[];
+  models: string[];
+  parksName: string[];
+  carClass: CarClass[];
+  commission: number | null;
+  fuelType: FuelType | null;
+  transmissionType: TransmissionType | null;
+  selfEmployed: boolean;
+  buyoutPossible: boolean | undefined;
+  schema: Schemas2 | null;
+  sorting: "asc" | "desc";
+  carVin: string | null;
+  onMap: boolean;
+  notStackList: string[] | undefined;
+};
 
 interface OnMapProps {
-  cars: Cars3[];
+  filters: CarFilter;
   isLargeScreen: boolean;
   isFullScreen: boolean;
 }
@@ -32,12 +57,45 @@ interface CityCoords {
   city_en: string;
 }
 
-const OnMap = ({ cars, isLargeScreen, isFullScreen }: OnMapProps) => {
+const OnMap = ({ filters, isLargeScreen, isFullScreen }: OnMapProps) => {
+  const [cars, setCars] = useState<Cars3[]>([]);
   const city = useRecoilValue(cityAtom);
   const [isClicked, setIsClicked] = useState(false);
   const [clickedCars, setClickedCars] = useState<Cars3[]>([]);
   const [coordinates, setCoordinates] = useState([55.76, 37.64]);
   const clustererRef = useRef(null);
+
+  useEffect(() => {
+    const getCars = async () => {
+      const data = await client.searchCars(
+        new Body15({
+          brand: filters.brands,
+          model: filters.models,
+          park_name: filters.parksName,
+          city,
+          fuel_type: filters.fuelType || undefined,
+          transmission_type: filters.transmissionType || undefined,
+          car_class: filters.carClass,
+          limit: 1000,
+          offset: 0,
+          sorting: filters.sorting,
+          commission:
+            filters.commission !== null ? filters.commission : undefined,
+          self_employed: filters.selfEmployed,
+          is_buyout_possible: filters.buyoutPossible,
+          schemas: filters.schema || undefined,
+          car_vin: filters.carVin || undefined,
+        })
+      );
+
+      setCars(data.cars!);
+      if (filters.brands.length > 0) {
+        sessionStorage.clear();
+      }
+    };
+
+    getCars();
+  }, [filters, city]);
 
   useEffect(() => {
     if (city) {

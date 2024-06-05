@@ -51,7 +51,7 @@ class CarsController extends Controller
      *             @OA\Property(property="park_name", type="array", description="Парк автомобиля", @OA\Items()),
      *             @OA\Property(property="search", type="array", description="Марка или модель автомобиля",@OA\Items()),
      *             @OA\Property(property="sorting", type="string", description="сортировка, asc или desc"),
-     *             @OA\Property(property="doNotStackList", type="array", description="поля по которым не группировать",@OA\Items()),
+     *             @OA\Property(property="not_stack_list", type="array", description="поля по которым не группировать",@OA\Items()),
      *             @OA\Property(property="car_vin", type="string", description="VIN авто"),
      *             @OA\Property(property="schemas", type="object", description="Данные о сроке аренды",
      *                 @OA\Property(property="non_working_days", type="integer", description="Количество нерабочих дней"),
@@ -110,6 +110,12 @@ class CarsController extends Controller
      *                     @OA\Property(property="coords", type="string", description="Координаты подразделения"),
      *                     @OA\Property(property="phone", type="string"),
      *                 ),
+     *                 @OA\Property(property="variants", type="arrey", description="Данные о подразделениях",@OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="address", type="string", description="Адрес"),
+     *                     @OA\Property(property="metro", type="string", description="Координаты подразделения")
+     *                 )
+     *                 ),
      *                 @OA\Property(property="rent_term", type="object", description="Данные о сроке аренды",
      *                     @OA\Property(property="deposit_amount_daily", type="number", description="Сумма депозита за день"),
      *                     @OA\Property(property="deposit_amount_total", type="number", description="Общая сумма депозита"),
@@ -151,6 +157,7 @@ class CarsController extends Controller
         $search = $request->search;
         $carVin = $request->car_vin;
         $cityId = $city->id;
+        $notStackList=$request->not_stack_list;
         $rentTerm = $request->schemas;
         if (!$city) {
             return response()->json(['error' => 'Город не найден'], 404);
@@ -309,7 +316,18 @@ class CarsController extends Controller
                 ->limit(1);
         }, $sorting);
 
-        $carsQuery->selectRaw('id, division_id, park_id, tariff_id, rent_term_id, fuel_type, transmission_type, brand, model, year_produced, COUNT(*) as cars_count')
+        $stackList = ['year_produced', 'model', 'brand', 'transmission_type', 'fuel_type', 'rent_term_id', 'tariff_id', 'park_id','division_id'];
+        if($notStackList)
+        {
+            foreach ($stackList as $key => $item) {
+                if (in_array($item, $notStackList)) {
+                    unset($stackList[$key]);
+                }
+            }
+        }
+
+        $selectColumns = implode(', ', $stackList);
+        $carsQuery->selectRaw("{$selectColumns}, COUNT(*) as cars_count")
         ->where('rent_term_id', '!=', null)
         ->where('status', 1)
         ->whereExists(function ($query) {
@@ -318,55 +336,58 @@ class CarsController extends Controller
                 ->whereColumn('cars.division_id', 'divisions.id')
                 ->where('city_id', 1);
         })
-        ->groupBy('year_produced', 'model', 'brand', 'transmission_type', 'fuel_type', 'rent_term_id', 'tariff_id', 'park_id','division_id')
+        ->groupBy($stackList)
         ->orderByRaw('(select MIN(schemas.daily_amount) from `schemas` where `schemas`.`rent_term_id` = `cars`.`rent_term_id` order by `schemas`.`daily_amount` asc limit 1) asc');
 
         $carsQuery->offset($offset)->limit($limit);
 
         $cars = $carsQuery->get();
 
-        // $uniqueCars = $cars->unique(function ($item) {
-        //     return $item->division_id . $item->park_id . $item->tariff_id . $item->rent_term_id .
-        //         $item->fuel_type . $item->transmission_type . $item->brand . $item->model . $item->year_produced;
-        // });
+        $uniqueCars = $cars->unique(function ($item) {
+            return $item->division_id . $item->park_id . $item->tariff_id . $item->rent_term_id .
+                $item->fuel_type . $item->transmission_type . $item->brand . $item->model . $item->year_produced;
+        });
 
-        // $similarCars = Car::where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
-        // ->where(function ($query) use ($uniqueCars) {
-        //     foreach ($uniqueCars as $uniqueCar) {
-        //         $query->orWhere(function ($subQuery) use ($uniqueCar) {
-        //             $subQuery->where('division_id', $uniqueCar->division_id)
-        //                 ->where('park_id', $uniqueCar->park_id)
-        //                 ->where('tariff_id', $uniqueCar->tariff_id)
-        //                 ->where('rent_term_id', $uniqueCar->rent_term_id)
-        //                 ->where('fuel_type', $uniqueCar->fuel_type)
-        //                 ->where('transmission_type', $uniqueCar->transmission_type)
-        //                 ->where('brand', $uniqueCar->brand)
-        //                 ->where('model', $uniqueCar->model)
-        //                 ->where('year_produced', $uniqueCar->year_produced);
-        //         });
-        //     }
-        // })->get();
+        $similarCars = Car::where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
+        ->where(function ($query) use ($uniqueCars) {
+            foreach ($uniqueCars as $uniqueCar) {
+                $query->orWhere(function ($subQuery) use ($uniqueCar) {
+                    $subQuery
+                        ->where('park_id', $uniqueCar->park_id)
+                        ->where('tariff_id', $uniqueCar->tariff_id)
+                        ->where('rent_term_id', $uniqueCar->rent_term_id)
+                        ->where('fuel_type', $uniqueCar->fuel_type)
+                        ->where('transmission_type', $uniqueCar->transmission_type)
+                        ->where('brand', $uniqueCar->brand)
+                        ->where('model', $uniqueCar->model)
+                        ->where('year_produced', $uniqueCar->year_produced);
+                });
+            }
+        })->with('division')->get();
 
-        // foreach ($uniqueCars as $car) {
-        //     $car['variants'] = $similarCars->filter(function ($similarCar) use ($car) {
-        //         return $similarCar->division_id == $car->division_id &&
-        //             $similarCar->park_id == $car->park_id &&
-        //             $similarCar->tariff_id == $car->tariff_id &&
-        //             $similarCar->rent_term_id == $car->rent_term_id &&
-        //             $similarCar->fuel_type == $car->fuel_type &&
-        //             $similarCar->transmission_type == $car->transmission_type &&
-        //             $similarCar->brand == $car->brand &&
-        //             $similarCar->model == $car->model &&
-        //             $similarCar->year_produced == $car->year_produced;
-        //     })->map(function ($similarCar) {
-        //         return [
-        //             'id' => $similarCar->id,
-        //             'images' => json_decode($similarCar->images),
-        //             'vin'=>$similarCar->car_id,
-        //             'mileage'=>$similarCar->mileage
-        //         ];
-        //     })->values()->all();
-        // }
+        foreach ($uniqueCars as $car) {
+            $car['variants'] = $similarCars
+                ->filter(function ($similarCar) use ($car) {
+                    return
+                        $similarCar->park_id == $car->park_id &&
+                        $similarCar->tariff_id == $car->tariff_id &&
+                        $similarCar->rent_term_id == $car->rent_term_id &&
+                        $similarCar->fuel_type == $car->fuel_type &&
+                        $similarCar->transmission_type == $car->transmission_type &&
+                        $similarCar->brand == $car->brand &&
+                        $similarCar->model == $car->model &&
+                        $similarCar->year_produced == $car->year_produced;
+                })
+                ->unique('division_id') // Ensure uniqueness based on division_id
+                ->map(function ($similarCar) {
+                    return [
+                        'address' => $similarCar->division->address,
+                        'metro' => $similarCar->division->metro,
+                    ];
+                })
+                ->values()
+                ->all();
+        }
 
             $formattedCars = [];
             foreach ($cars as $car) {

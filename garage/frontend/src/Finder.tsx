@@ -74,6 +74,7 @@ type CarFilter = {
   sorting: "asc" | "desc";
   carVin: string | null;
   onMap: boolean;
+  notStackList: string[] | undefined;
 };
 
 enum ActiveFilter {
@@ -105,6 +106,7 @@ export const Finder = () => {
     schema: null,
     carVin: null,
     onMap: false,
+    notStackList: undefined,
   });
 
   const [cars, setCars] = useState<Cars3[]>([]);
@@ -198,6 +200,7 @@ export const Finder = () => {
           is_buyout_possible: filters.buyoutPossible,
           schemas: filters.schema || undefined,
           car_vin: filters.carVin || undefined,
+          not_stack_list: ["division_id"],
         })
       );
 
@@ -229,6 +232,7 @@ export const Finder = () => {
       schema: null,
       carVin: null,
       onMap: false,
+      notStackList: undefined,
     });
   };
 
@@ -892,7 +896,7 @@ export const Finder = () => {
         >
           {
             <OnMap
-              cars={cars}
+              filters={filters}
               isLargeScreen={isLargeScreen}
               isFullScreen={!!filters.onMap}
             />

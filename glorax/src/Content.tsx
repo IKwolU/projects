@@ -72,11 +72,42 @@ function Content() {
     setQuestionsClicked(!questionsClicked);
   };
 
+  const helpers = content[0].helpers;
+
+  const handleClosedHalper = (i: number) => {
+    helpers[i].closed = true;
+  };
+
+  const currentNavigationData = content[0].nav_variants.find(
+    (x) => x.id === currentNav
+  );
+
   return (
     <>
+      {helpers.map((x, i) => (
+        <>
+          {x.time < currentTime && !x.closed && (
+            <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-black">
+              <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto flex flex-col shadow-sm">
+                <div className="flex flex-col items-center py-2 mx-auto space-y-2 w-fit">
+                  <h3 className="text-lg font-bold">{x.title}</h3>
+                  <p className="py-2 text-lg text-center">{x.text}</p>
+
+                  <button
+                    className="w-full px-4 py-2 mx-auto text-white rounded-full bg-blue "
+                    onClick={() => handleClosedHalper(i)}
+                  >
+                    Далее
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      ))}
       {isHelpShowed && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-white">
-          <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col">
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-black">
+          <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto flex flex-col shadow-sm">
             {/* <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
               <p>Давайте начнем двигаться:</p>
               <div className="flex items-center space-x-4">
@@ -101,7 +132,7 @@ function Content() {
               alt=""
               className="object-contain w-full h-40"
             />*/}
-            <div className="text-center">Выберите вариант:</div>
+            <div className="text-center">Ваш вариант истории:</div>
             <div className="flex items-center justify-center py-4 my-4 space-x-9">
               {content[0].nav_variants
                 .filter((y) => y.selection_icon)
@@ -116,13 +147,22 @@ function Content() {
                   </div>
                 ))}
             </div>
-            <button
-              className="px-4 py-1 mx-auto text-white rounded-full bg-blue "
-              onClick={() => setIsHelpShowed(false)}
-            >
-              {" "}
-              Продолжить
-            </button>
+            {!currentNavigationData!.selection_icon && (
+              <button
+                className="px-4 py-1 mx-auto text-white rounded-full bg-blue bg-opacity-70 "
+                disabled
+              >
+                Продолжить
+              </button>
+            )}
+            {currentNavigationData!.selection_icon && (
+              <button
+                className="px-4 py-1 mx-auto text-white rounded-full bg-blue "
+                onClick={() => setIsHelpShowed(false)}
+              >
+                Продолжить
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -436,7 +476,7 @@ function Content() {
                   <FontAwesomeIcon
                     onClick={() => setBigTextOpened(!bigTextOpened)}
                     icon={faAnglesRight}
-                    className={`h-7 transition-transform text-white absolute sm:bottom-[275px] bottom-[295px] py-2 left-[46%] ${
+                    className={`h-7 transition-transform text-white absolute sm:bottom-[275px] bottom-[275px] py-2 left-[46%] ${
                       bigTextOpened ? "-rotate-90" : "rotate-90"
                     }`}
                   />

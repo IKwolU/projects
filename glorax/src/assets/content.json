@@ -12,6 +12,26 @@
     "choice__time": 100,
     "help_time": 40,
     "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Отлично! Нажимайте 'Далее', и мы отправляемся дальше! ",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Позади половина пути! Герои ждут вас, не теряйте ни минуты!",
+        "closed": false
+      },
+      {
+        "time": 354,
+        "title": "Уже на месте?",
+        "text": "Итак, заключительная часть истории! Готовы двигаться дальше? ",
+        "closed": false
+      }
+    ],
     "nav_variants": [
       {
         "id": 1,
@@ -26,7 +46,7 @@
         "id": 2,
         "file": "/models/LefttNavi.gltf",
         "selection_time": 40,
-        "selection_icon": "/img/selection_1_2.png",
+        "selection_icon": "/img/heart.svg",
         "nav_position": [0, -4.0, 0],
         "point_position": [1.0, -4.0, -1.6],
         "point_rotate": [0, 160, 0]
@@ -35,7 +55,7 @@
         "id": 3,
         "file": "/models/RightNavi.gltf",
         "selection_time": 40,
-        "selection_icon": "/img/selection_1_1.png",
+        "selection_icon": "/img/coins.svg",
         "nav_position": [0, -4.0, 0],
         "point_position": [-4.0, -4.0, 11.5],
         "point_rotate": [0, 155, 0]

@@ -39,7 +39,8 @@ export interface ButtonProps
   onAsyncClick?: () => Promise<void | (() => void)>;
   full?: boolean;
 }
-
+// Дим, мы не юзаем onAsyncClick - у меня сейчас были повторные реквесты при букинге, 
+// я не видела что происходит и тыркала кнопку раза три
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {

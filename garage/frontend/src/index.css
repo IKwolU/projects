@@ -43,11 +43,15 @@
   }
 
   h2 {
-    @apply mb-3 text-base font-semibold text-gray;
+    @apply mb-3 text-sm font-medium text-gray;
   }
 
   h3 {
     @apply mb-1 text-lg font-semibold;
+  }
+
+  h4 {
+    @apply text-base text-sm font-semibold text-black;
   }
 
   p {

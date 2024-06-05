@@ -58,6 +58,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-regular-svg-icons";
 import { Separator } from "@/components/ui/separator";
+import { CardV2 } from "./CardV2";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
 
 type CarFilter = {
@@ -910,7 +911,7 @@ export const Finder = () => {
           >
             {cars.map((car) => (
               <div className="" id={String(car.id)} key={car.id}>
-                <Card
+                <CardV2
                   car={car}
                   isLargeScreen={isLargeScreen}
                   open={() => handleOpenModal(String(car.id))}

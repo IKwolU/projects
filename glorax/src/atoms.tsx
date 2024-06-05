@@ -8,4 +8,8 @@ const currentTimeAtom = atom<number>({
   key: "currentTimeAtom",
   default: -1,
 });
-export { contentIdAtom, currentTimeAtom };
+const navigationTimeAtom = atom<number>({
+  key: "navigationTimeAtom",
+  default: 1,
+});
+export { contentIdAtom, currentTimeAtom, navigationTimeAtom };

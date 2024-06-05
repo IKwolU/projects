@@ -17,13 +17,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
-import { contentIdAtom, currentTimeAtom } from "./atoms";
+import { contentIdAtom, currentTimeAtom, navigationTimeAtom } from "./atoms";
 
 function Content() {
   const [contentId] = useRecoilState(contentIdAtom);
   const [isContentShow, setIsContentShow] = useState(true);
   const [, setAudioTime] = useState(0);
   const [currentTime] = useRecoilState(currentTimeAtom);
+  const [currentNav, setCurrentNav] = useRecoilState(navigationTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
@@ -76,7 +77,7 @@ function Content() {
       {isHelpShowed && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-white">
           <div className="p-4 space-y-1 bg-brown rounded w-[300px] h-auto flex flex-col">
-            <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
+            {/* <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
               <p>Давайте начнем двигаться:</p>
               <div className="flex items-center space-x-4">
                 <FontAwesomeIcon
@@ -99,11 +100,27 @@ function Content() {
               src="./img/helpimage.png"
               alt=""
               className="object-contain w-full h-40"
-            />
+            />*/}
+            <div className="text-center">Выберите вариант:</div>
+            <div className="flex items-center justify-center py-4 my-4 space-x-9">
+              {content[0].nav_variants
+                .filter((y) => y.selection_icon)
+                .map((y) => (
+                  <div className="" key={y.id}>
+                    <img
+                      src={y.selection_icon!}
+                      alt=""
+                      className="w-20 h-auto transition-transform cursor-pointer hover:scale-110"
+                      onClick={() => setCurrentNav(y.id)}
+                    />
+                  </div>
+                ))}
+            </div>
             <button
               className="px-4 py-1 mx-auto text-white rounded-full bg-blue "
               onClick={() => setIsHelpShowed(false)}
             >
+              {" "}
               Продолжить
             </button>
           </div>

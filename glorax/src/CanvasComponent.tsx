@@ -15,7 +15,7 @@ import * as THREE from "three";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
-import { contentIdAtom, currentTimeAtom } from "./atoms";
+import { contentIdAtom, currentTimeAtom, navigationTimeAtom } from "./atoms";
 // import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 interface OBJModelProps {
@@ -36,6 +36,7 @@ function CanvasComponent() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   // const aboutRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
+  const [currentNav, setCurrentNav] = useRecoilState(navigationTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
   // const aboutRef = useRef<THREE.Mesh>(null);
   // const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -266,6 +267,10 @@ function CanvasComponent() {
     return texture;
   }
 
+  const currentNavigationData = content[0].nav_variants.find(
+    (x) => x.id === currentNav
+  );
+
   return (
     <>
       {loadedTextures.length < 1 && (
@@ -391,19 +396,21 @@ function CanvasComponent() {
         {currentTime > content[0].start_time &&
           currentTime < content[0].end_time && (
             <>
-              <OBJModel
-                file="/models/test14-newnavi.gltf"
-                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                position={[0, -4.0, 0]}
-                scale={[1, 1, 1]}
-                opacity={0.8}
-                rotate={[0, 0, 0]}
-                isOpacity={true}
-              />
+              {
+                <OBJModel
+                  file={currentNavigationData!.file}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={currentNavigationData!.nav_position}
+                  scale={[1, 1, 1]}
+                  opacity={0.8}
+                  rotate={[0, 0, 0]}
+                  isOpacity={true}
+                />
+              }
 
-              {(currentTime < content[0].start_time + 10
+              {(currentTime < currentNavigationData!.selection_time + 10
                 ? Math.floor(currentTime) % 2 === 0
-                : currentTime > content[0].start_time + 10) && (
+                : currentTime > currentNavigationData!.selection_time + 10) && (
                 // <OBJModel
                 //   file="/models/circle-point--1.gltf"
                 //   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
@@ -416,10 +423,10 @@ function CanvasComponent() {
                 <OBJModel
                   file="/models/arrow glorax.gltf"
                   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                  position={[-4.9, -4.3, 4]}
+                  position={currentNavigationData!.point_position}
                   scale={[10, 10, 10]}
                   opacity={0.8}
-                  rotate={[0, 155, 0]}
+                  rotate={currentNavigationData!.point_rotate}
                   isOpacity={true}
                 />
               )}

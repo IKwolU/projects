@@ -7,11 +7,40 @@
     "description_title": "Драма на Оке",
     "description": "Дом Башкирова —  историческая мельница, обрастающая рассказами о драматических событиях. В прошлом, когда здесь еще был рабочий городок, одна из работниц развлекала себя и своих коллег рассказами о дочери купца Башкирова, погрязшей в тайной романтике, трагически завершившейся... в реке. Но какова же правда в этой истории?",
     "background_image": "/card-bg-1.png",
-    "start_time": 43,
+    "start_time": 23,
     "end_time": 300,
     "choice__time": 100,
-    "help_time": 43,
+    "help_time": 40,
     "close_time": 43,
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.9, -4.3, 4],
+        "point_rotate": [0, 155, 0]
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/selection_1_2.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0]
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/selection_1_1.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0]
+      }
+    ],
     "arrow_time": [
       { "time": 12, "positionY": 0 },
       { "time": 13, "positionY": -0.5 },

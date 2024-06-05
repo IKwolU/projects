@@ -36,7 +36,7 @@ function CanvasComponent() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   // const aboutRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
-  const [currentNav, setCurrentNav] = useRecoilState(navigationTimeAtom);
+  const [currentNav] = useRecoilState(navigationTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
   // const aboutRef = useRef<THREE.Mesh>(null);
   // const [currentImageIndex, setCurrentImageIndex] = useState(0);

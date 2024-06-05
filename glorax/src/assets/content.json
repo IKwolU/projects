@@ -46,7 +46,7 @@
         "id": 2,
         "file": "/models/LefttNavi.gltf",
         "selection_time": 40,
-        "selection_icon": "/img/heart.svg",
+        "selection_icon": "/img/heart.png",
         "nav_position": [0, -4.0, 0],
         "point_position": [1.0, -4.0, -1.6],
         "point_rotate": [0, 160, 0]
@@ -55,7 +55,7 @@
         "id": 3,
         "file": "/models/RightNavi.gltf",
         "selection_time": 40,
-        "selection_icon": "/img/coins.svg",
+        "selection_icon": "/img/coins.png",
         "nav_position": [0, -4.0, 0],
         "point_position": [-4.0, -4.0, 11.5],
         "point_rotate": [0, 155, 0]

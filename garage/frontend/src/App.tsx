@@ -95,7 +95,7 @@ function App() {
         </div>
       )}
       {(!user || user.user_type === UserType.Driver) && (
-        <div className="max-w-sm p-4 md:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
+        <div className="max-w-sm p-4 sm:px-2 xl:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
           <div className="flex items-end justify-end mb-2">
             <FontAwesomeIcon
               icon={faLocationDot}
@@ -139,7 +139,7 @@ const LogoutHandler = () => {
 };
 
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex items-start justify-between w-full space-x-4 sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between  lg:max-w-[1208px]">
+  <div className="flex items-start justify-between w-full space-x-4 sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px]  sm:justify-between  lg:max-w-[1208px]">
     <Link to="/" className="">
       <div className="flex flex-col md:flex-row md:items-end">
         <div className="mr-6 text-2xl font-bold sm:text-3xl"> BeeBeep </div>{" "}

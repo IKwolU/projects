@@ -24,15 +24,7 @@ import {
   CollapsibleContent,
 } from "@radix-ui/react-collapsible";
 
-export const CardV2 = ({
-  car,
-  isLargeScreen,
-  open,
-}: {
-  car: Cars3;
-  isLargeScreen: boolean;
-  open: () => void;
-}) => {
+export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
   // const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
   //   (a: any, b: any) => a.daily_amount! - b.daily_amount!
   // );
@@ -54,7 +46,7 @@ export const CardV2 = ({
           </div>
         </div>
       )}
-      <Dialog modal={!isLargeScreen} onOpenChange={open}>
+      <Dialog onOpenChange={open}>
         <DialogTrigger
           asChild
           onClick={() => ym("reachGoal", "click_card", 96683881)}
@@ -150,12 +142,15 @@ export const CardV2 = ({
           </div>
         </DialogTrigger>
         <DialogContent
+          isModalOnLg={false}
           goBackContent={
-            isLargeScreen ? (
-              <h1 className="my-0 font-normal text-center">Назад</h1>
-            ) : (
-              <h1 className="my-0 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
-            )
+            <>
+              <h1 className="hidden my-0 font-normal text-center lg:block">
+                Назад
+              </h1>
+
+              <h1 className="my-0 text-center lg:hidden">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+            </>
           }
           className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
         >

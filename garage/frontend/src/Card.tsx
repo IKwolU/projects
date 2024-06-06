@@ -19,15 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { LoginAndBook } from "./LoginAndBook";
 
-export const Card = ({
-  car,
-  isLargeScreen,
-  open,
-}: {
-  car: Cars3;
-  isLargeScreen: boolean;
-  open: () => void;
-}) => {
+export const Card = ({ car, open }: { car: Cars3; open: () => void }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
@@ -49,7 +41,8 @@ export const Card = ({
           </div>
         </div>
       )}
-      <Dialog modal={!isLargeScreen} onOpenChange={open}>
+
+      <Dialog onOpenChange={open} modal={false}>
         <DialogTrigger
           asChild
           onClick={() => ym("reachGoal", "click_card", 96683881)}
@@ -203,16 +196,23 @@ export const Card = ({
           </div>
         </DialogTrigger>
         <DialogContent
+          isModalOnLg={false}
           goBackContent={
-            isLargeScreen ? (
-              <h1 className="my-0 font-normal text-center">Назад</h1>
-            ) : (
-              <h1 className="my-0 text-center">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
-            )
+            <>
+              <h1 className="hidden my-1 font-normal text-center lg:block">
+                Назад
+              </h1>
+              <h1 className="my-1 text-center lg:hidden">{`${car.brand} ${car.model} ${car.year_produced}`}</h1>
+            </>
           }
-          className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
+          className="sm:max-w-[1206px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
         >
-          <CarDetails car={car} />
+          <div className="fixed top-0 left-0 flex flex-col items-center justify-center w-full h-full bg-lightgrey -z-10 lg:top-[110px]"></div>
+
+          <div className="px-2">
+            <CarDetails car={car} />
+          </div>
+
           <DialogClose asChild className=""></DialogClose>
         </DialogContent>
       </Dialog>

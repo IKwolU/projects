@@ -50,7 +50,7 @@ const FullScreenImages = ({
   return (
     <>
       {isOpen && openIsAffordable && (
-        <div className="fixed top-0 left-0 z-[53] w-full h-full bg-black bg-opacity-95">
+        <div className="fixed top-0 left-0 z-[60] w-full h-full bg-black bg-opacity-95">
           <div className="relative flex flex-col justify-center h-full m-auto">
             {images.length > 1 && (
               <Slider ref={sliderRef} {...settings}>
@@ -99,7 +99,6 @@ const FullScreenImages = ({
               </div>
             )}
             <div className="fixed bottom-0 flex w-full p-2">
-              {" "}
               <Button
                 className="mx-auto sm:max-w-[250px]"
                 onClick={() => setIsOpen(false)}

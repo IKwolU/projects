@@ -128,8 +128,6 @@ export const Finder = () => {
 
   const city = useRecoilValue(cityAtom);
 
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
-
   useEffect(() => {
     const getFinderFilterData = async () => {
       const data = await client.getFinderFilterData();
@@ -170,18 +168,6 @@ export const Finder = () => {
       });
     }
   }, [avitoIds]);
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const handleResize = () => {
-    setIsLargeScreen(window.innerWidth > 1024);
-  };
 
   useEffect(() => {
     const getCars = async () => {
@@ -885,25 +871,29 @@ export const Finder = () => {
         <div
           className="h-full mb-4"
           onClick={() => {
-            setFilters({
-              ...filters,
-              onMap: true,
-            });
+            !filters.onMap &&
+              setFilters({
+                ...filters,
+                onMap: true,
+              });
           }}
           onTouchStart={() => {
-            setFilters({
-              ...filters,
-              onMap: true,
-            });
+            !filters.onMap &&
+              setFilters({
+                ...filters,
+                onMap: true,
+              });
           }}
         >
-          {
-            <OnMap
-              filters={filters}
-              isLargeScreen={isLargeScreen}
-              isFullScreen={!!filters.onMap}
-            />
-          }
+          <OnMap
+            filters={filters}
+            close={() =>
+              setFilters({
+                ...filters,
+                onMap: false,
+              })
+            }
+          />
         </div>
         {!filters.onMap && (
           <div
@@ -917,7 +907,6 @@ export const Finder = () => {
                   <div className="sm:hidden">
                     <CardV2
                       car={car}
-                      isLargeScreen={isLargeScreen}
                       open={() => handleOpenModal(String(car.id))}
                     />
                   </div>
@@ -926,7 +915,6 @@ export const Finder = () => {
                 <div className={`${!randomTest.current && "sm:block hidden"}`}>
                   <Card
                     open={() => handleOpenModal(String(car.id))}
-                    isLargeScreen={isLargeScreen}
                     car={car}
                   />
                 </div>

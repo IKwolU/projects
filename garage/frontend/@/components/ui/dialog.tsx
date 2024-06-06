@@ -16,12 +16,16 @@ const DialogClose = DialogPrimitive.Close;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & {
+    isModalOnLg?: boolean;
+  }
+>(({ className, isModalOnLg = true, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      `fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in 
+      `${
+        isModalOnLg ? "fixed" : ""
+      }  inset-0 z-50 bg-black/80  data-[state=open]:animate-in 
       data-[state=closed]:animate-out data-[state=closed]:fade-out-0 
       data-[state=open]:fade-in-0  `,
       className
@@ -35,44 +39,54 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     goBackContent?: React.JSX.Element;
+    isModalOnLg?: boolean;
   }
->(({ goBackContent, className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        `fixed top-0 z-50 overflow-y-auto w-full max-w-lg mx-auto inset-x-0
+>(
+  (
+    { goBackContent, className, isModalOnLg = true, children, ...props },
+    ref
+  ) => (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          `${
+            isModalOnLg
+              ? "max-w-lg top-0 fixed overflow-y-auto "
+              : "max-w-full top-0 absolute overflow-visible"
+          }   z-50 w-full  mx-auto inset-x-0
         gap-4 bg-white pt-12 px-4 md:px-12 shadow-lg duration-200 data-[state=open]:animate-in 
         data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 
         data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 
         data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] 
         sm:rounded-lg dark:border-slate-800 dark:bg-slate-950 h-screen sm:max-w-[800px]`,
-        className,
-        goBackContent ? "lg:top-28 top-0 lg:px-0 lg:pt-7" : "top-0"
-      )}
-      {...props}
-    >
-      {children}
-      {goBackContent && (
-        <DialogPrimitive.Close className="absolute top-0 lg:top-2 lg:w-full lg:mx-auto left-4 lg:left-0">
-          <div className="flex items-center h-12 lg:mx-auto max-w-[1208px]">
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              className="h-5 mr-2 lg:text-zinc-600"
-            />
-            {goBackContent}
-          </div>
-        </DialogPrimitive.Close>
-      )}
-      {!goBackContent && (
-        <DialogPrimitive.Close className="absolute right-4 top-2 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
-          <X className="w-6 h-6" />
-        </DialogPrimitive.Close>
-      )}
-    </DialogPrimitive.Content>
-  </DialogPortal>
-));
+          className,
+          goBackContent ? "lg:top-28 top-0 lg:px-0 lg:pt-7" : "top-0"
+        )}
+        {...props}
+      >
+        {children}
+        {goBackContent && (
+          <DialogPrimitive.Close className="absolute top-0 lg:top-2 lg:w-full lg:mx-auto left-4 lg:left-0">
+            <div className="flex items-center h-12 lg:mx-auto max-w-[1208px] px-2">
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                className="h-5 mr-2 lg:text-zinc-600"
+              />
+              {goBackContent}
+            </div>
+          </DialogPrimitive.Close>
+        )}
+        {!goBackContent && (
+          <DialogPrimitive.Close className="absolute right-4 top-2 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
+            <X className="w-6 h-6" />
+          </DialogPrimitive.Close>
+        )}
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  )
+);
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({

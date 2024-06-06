@@ -10,6 +10,7 @@ import {
   Start2,
   Body30,
 } from "./api-client";
+import metro from "../../backend/public/assets/json/metro.json";
 import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,11 @@ import PhoneInput from "@/components/ui/phone-input";
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
 import { getDayOfWeekDisplayName } from "@/lib/utils";
+import ArrayStringSelect from "./ArrayStringSelect";
+
+interface MetroData {
+  [key: string]: string[];
+}
 
 export const DivisionManager = () => {
   const [city] = useRecoilState(cityAtom);
@@ -137,9 +143,28 @@ export const DivisionManager = () => {
     });
   };
 
+  const handleSelected = (id: number) => {
+    setSelectedId(id);
+    setNewDivision({
+      city: newDivision.city,
+      address: newDivision.address,
+      coords: newDivision.coords,
+      metro: newDivision.metro,
+      name: newDivision.name,
+      phone: newDivisionPhone,
+      timezone_difference: newDivision.timezone_difference,
+      working_hours: workingHours.filter(
+        (item) => !nonWorkingDay.includes(item!.day!)
+      ),
+    });
+  };
+
   const selected = divisions.find(
     (division) => division.id === selectedId
   ) as Divisions2;
+
+  const metroData = metro as MetroData;
+  const metroInCity = metroData[city];
 
   return (
     <>
@@ -155,14 +180,14 @@ export const DivisionManager = () => {
             )}
             {divisions.map((x, i) => (
               <div className="" key={`division_${i}`}>
-                <div className="" onClick={() => setSelectedId(x!.id!)}>
+                <div className="" onClick={() => handleSelected(x!.id!)}>
                   {x.name}
                 </div>
                 <Separator />
               </div>
             ))}
           </div>
-          <Button className="w-64 text-lg" onClick={() => setSelectedId(0)}>
+          <Button className="w-64 text-lg" onClick={() => handleSelected(0)}>
             Создать
           </Button>
         </div>
@@ -196,13 +221,6 @@ export const DivisionManager = () => {
               param: "address",
               value: selected?.address || "",
             },
-            // {
-            //   title: "Ближайшее метро, если есть",
-            //   type: "text",
-            //   placeholder: "Введите значение",
-            //   param: "metro",
-            //   value: newDivision.metro || "",
-            // },
             {
               title: `Название подразделения ${selected?.name || ""}`,
               type: "text",
@@ -229,6 +247,21 @@ export const DivisionManager = () => {
               ></Input>
             </div>
           ))}
+          {metroInCity && (
+            <div className="">
+              <h4>Ближайшее метро: {selected?.metro}</h4>
+
+              <ArrayStringSelect
+                list={metroInCity}
+                onChange={(value) =>
+                  handleInputNewDivisionChange(value, "metro")
+                }
+                resultValue={
+                  newDivision.metro || selected?.metro || "Не выбрано"
+                }
+              />
+            </div>
+          )}
           <div className="">
             <h4>Телефон подразделения : {selected?.phone || ""}</h4>
             <PhoneInput onChange={(e) => setNewDivisionPhone(e.target.value)} />

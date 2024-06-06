@@ -45,7 +45,7 @@ const ArrayStringSelect = ({
               className="flex items-center justify-between text-normal"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {resultValue || "Не указано"}{" "}
+              {resultValue || "Не указано"}
               <FontAwesomeIcon icon={faChevronDown} />
             </div>
 

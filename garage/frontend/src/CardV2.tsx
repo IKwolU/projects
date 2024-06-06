@@ -109,13 +109,13 @@ export const CardV2 = ({
                       </CollapsibleTrigger>
                       <CollapsibleContent className="text-sm ">
                         {car.variants!.map((variant, i) => (
-                          <>
+                          <div key={i}>
                             {!!i && (
                               <div className="" key={variant.address}>
                                 {variant.address}
                               </div>
                             )}
-                          </>
+                          </div>
                         ))}
                       </CollapsibleContent>
                     </Collapsible>

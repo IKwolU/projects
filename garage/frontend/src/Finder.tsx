@@ -123,12 +123,12 @@ export const Finder = () => {
 
   const location = useLocation();
   const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
-  const randomTest = useRef(Math.floor(Math.random() * 2));
+  const randomTest = useRef(1);
+  // const randomTest = useRef(Math.floor(Math.random() * 2));
 
   const city = useRecoilValue(cityAtom);
 
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
-  const [isMobileScreen, setIsMobileScreen] = useState(window.innerWidth < 450);
 
   useEffect(() => {
     const getFinderFilterData = async () => {
@@ -181,7 +181,6 @@ export const Finder = () => {
 
   const handleResize = () => {
     setIsLargeScreen(window.innerWidth > 1024);
-    setIsMobileScreen(window.innerWidth < 450);
   };
 
   useEffect(() => {
@@ -914,21 +913,23 @@ export const Finder = () => {
           >
             {cars.map((car) => (
               <div className="" id={String(car.id)} key={car.id}>
-                {!!randomTest.current && isMobileScreen && (
-                  <CardV2
-                    car={car}
-                    isLargeScreen={isLargeScreen}
-                    open={() => handleOpenModal(String(car.id))}
-                  />
+                {!randomTest.current && (
+                  <div className="sm:hidden">
+                    <CardV2
+                      car={car}
+                      isLargeScreen={isLargeScreen}
+                      open={() => handleOpenModal(String(car.id))}
+                    />
+                  </div>
                 )}
-                {((randomTest.current && !isMobileScreen) ||
-                  !randomTest.current) && (
+
+                <div className={`${!randomTest.current && "sm:block hidden"}`}>
                   <Card
                     open={() => handleOpenModal(String(car.id))}
                     isLargeScreen={isLargeScreen}
                     car={car}
                   />
-                )}
+                </div>
               </div>
             ))}
           </div>

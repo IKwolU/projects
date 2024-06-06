@@ -3206,7 +3206,7 @@
                                                     },
                                                     "variants": {
                                                         "description": "Данные о подразделениях",
-                                                        "type": "arrey",
+                                                        "type": "array",
                                                         "items": {
                                                             "properties": {
                                                                 "address": {

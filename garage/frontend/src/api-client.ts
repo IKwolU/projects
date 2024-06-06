@@ -19864,6 +19864,8 @@ export class Cars3 implements ICars3 {
     city?: string;
     /** Данные о подразделении */
     division?: Division;
+    /** Данные о подразделениях */
+    variants?: Variants[];
     /** Данные о сроке аренды */
     rent_term?: Rent_term;
 
@@ -19909,6 +19911,11 @@ export class Cars3 implements ICars3 {
             this.about = _data["about"];
             this.city = _data["city"];
             this.division = _data["division"] ? Division.fromJS(_data["division"]) : <any>undefined;
+            if (Array.isArray(_data["variants"])) {
+                this.variants = [] as any;
+                for (let item of _data["variants"])
+                    this.variants!.push(Variants.fromJS(item));
+            }
             this.rent_term = _data["rent_term"] ? Rent_term.fromJS(_data["rent_term"]) : <any>undefined;
         }
     }
@@ -19951,6 +19958,11 @@ export class Cars3 implements ICars3 {
         data["about"] = this.about;
         data["city"] = this.city;
         data["division"] = this.division ? this.division.toJSON() : <any>undefined;
+        if (Array.isArray(this.variants)) {
+            data["variants"] = [];
+            for (let item of this.variants)
+                data["variants"].push(item.toJSON());
+        }
         data["rent_term"] = this.rent_term ? this.rent_term.toJSON() : <any>undefined;
         return data;
     }
@@ -19987,6 +19999,8 @@ export interface ICars3 {
     city?: string;
     /** Данные о подразделении */
     division?: Division;
+    /** Данные о подразделениях */
+    variants?: Variants[];
     /** Данные о сроке аренды */
     rent_term?: Rent_term;
 
@@ -21761,6 +21775,62 @@ export interface IDivision {
     /** Координаты подразделения */
     coords?: string;
     phone?: string;
+
+    [key: string]: any;
+}
+
+export class Variants implements IVariants {
+    /** Адрес */
+    address?: string;
+    /** Координаты подразделения */
+    metro?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IVariants) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.address = _data["address"];
+            this.metro = _data["metro"];
+        }
+    }
+
+    static fromJS(data: any): Variants {
+        data = typeof data === 'object' ? data : {};
+        let result = new Variants();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["address"] = this.address;
+        data["metro"] = this.metro;
+        return data;
+    }
+}
+
+export interface IVariants {
+    /** Адрес */
+    address?: string;
+    /** Координаты подразделения */
+    metro?: string;
 
     [key: string]: any;
 }

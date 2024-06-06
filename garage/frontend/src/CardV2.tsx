@@ -65,11 +65,17 @@ export const CardV2 = ({
           <div>
             <div className="flex">
               <div className="flex">
-                <img src={car!.images![0]} className={`w-1/3 rounded-2xl`} />
+                <img
+                  src={car!.images![0]}
+                  className={`w-1/3 rounded-2xl max-h-20 object-cover`}
+                  alt=""
+                />
                 <div className="flex flex-col w-2/3 px-2">
                   <div className="flex justify-between">
                     <h4>Парк {car.park_name}</h4>
-                    {car.cars_count! > 1 && <h2>{car.cars_count} авто</h2>}
+                    {car.cars_count! > 1 && (
+                      <h2 className="mb-0">{car.cars_count} авто</h2>
+                    )}
                   </div>
 
                   <div className="mb-1 text-lg md:text-xl">
@@ -88,6 +94,31 @@ export const CardV2 = ({
                         {getFuelTypeDisplayName(car.fuel_type)}
                       </div>
                     </div>
+                    <Collapsible
+                      className="p-0 m-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <CollapsibleTrigger className="relative p-0 mb-0 text-sm text-left">
+                        {car.variants![0].address}
+                        {car.variants!.length > 0 && (
+                          <FontAwesomeIcon
+                            icon={faChevronDown}
+                            className="absolute top-0 -right-5"
+                          />
+                        )}
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="text-sm ">
+                        {car.variants!.map((variant, i) => (
+                          <>
+                            {!!i && (
+                              <div className="" key={variant.address}>
+                                {variant.address}
+                              </div>
+                            )}
+                          </>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
                   </div>
                 </div>
               </div>

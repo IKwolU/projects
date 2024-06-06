@@ -110,7 +110,7 @@ class CarsController extends Controller
      *                     @OA\Property(property="coords", type="string", description="Координаты подразделения"),
      *                     @OA\Property(property="phone", type="string"),
      *                 ),
-     *                 @OA\Property(property="variants", type="arrey", description="Данные о подразделениях",@OA\Items(
+     *                 @OA\Property(property="variants", type="array", description="Данные о подразделениях",@OA\Items(
      *                     type="object",
      *                     @OA\Property(property="address", type="string", description="Адрес"),
      *                     @OA\Property(property="metro", type="string", description="Координаты подразделения")

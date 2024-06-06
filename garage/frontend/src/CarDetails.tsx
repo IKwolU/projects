@@ -1,26 +1,9 @@
-// import { Button } from "@/components/ui/button";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  // Body16,
-  // Body17,
-  // BookingStatus,
-  // User,
-  // Schema,
-  Cars3,
-  // Bookings2,
-  DayOfWeek,
-} from "./api-client";
+import { Cars3, DayOfWeek } from "./api-client";
 import { Separator } from "@/components/ui/separator";
 import {
   formatRoubles,
@@ -29,27 +12,17 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
-import { userAtom } from "./atoms";
-// import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-// import { client } from "./backend";
-// import Confirmation from "@/components/ui/confirmation";
 import SliderImages from "@/components/ui/slider-images";
 import { useEffect, useState } from "react";
-// import BookingAlert from "./booking-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCompass } from "@fortawesome/free-regular-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-// import ym from "react-yandex-metrika";
 import { toLower } from "ramda";
-import { CarCreateApplication } from "./CarCreateApplication";
 import { LoginAndBook } from "./LoginAndBook";
 import { Button } from "@/components/ui/button";
-import MetroComponent from "./MetroComponent";
-// import { CarBooking } from "./CarCreateApplication";
 
 export const CarDetails = ({ car }: { car: Cars3 }) => {
-  const [user, setUser] = useRecoilState(userAtom);
+  // const [user, setUser] = useRecoilState(userAtom);
   // const [isBooked, setIsBooked] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({
     latitude: null,

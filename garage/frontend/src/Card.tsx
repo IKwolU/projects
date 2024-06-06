@@ -17,10 +17,7 @@ import SliderImages from "@/components/ui/slider-images";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import { CarCreateApplication } from "./CarCreateApplication";
 import { LoginAndBook } from "./LoginAndBook";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Card = ({
   car,

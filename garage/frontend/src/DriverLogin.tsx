@@ -7,7 +7,7 @@ export const DriverLogin = () => {
         <h2 className="my-10 text-xl text-center">
           Зарегистрируйтесь или войдите в личный кабинет
         </h2>
-        <Login success={() => (window.location.href = "/")} />
+        <Login cancel={() => {}} success={() => (window.location.href = "/")} />
       </div>
     </>
   );

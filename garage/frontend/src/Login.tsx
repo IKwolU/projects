@@ -26,7 +26,7 @@ export const Login = ({
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const referralCode = searchParams.get("code");
-  const [user, setUser] = useRecoilState(userAtom);
+  const [, setUser] = useRecoilState(userAtom);
 
   const CODE_LENGTH = 4;
 
@@ -54,21 +54,25 @@ export const Login = ({
   };
 
   const login = async () => {
-    const loginData = await client.loginOrRegister(
-      new Body8({ phone, code, referral_code: referralCode })
-    );
+    try {
+      const loginData = await client.loginOrRegister(
+        new Body8({ phone, code, referral_code: referralCode })
+      );
 
-    localStorage.setItem("token", loginData.token!);
+      localStorage.setItem("token", loginData.token!);
 
-    if (loginData.register) {
-      ym("reachGoal", "registr_completed", 96683881);
+      if (loginData.register) {
+        ym("reachGoal", "registr_completed", 96683881);
+      }
+      if (!loginData.register) {
+        ym("reachGoal", "avtorization", 96683881);
+      }
+      const userData = await client.getUser();
+      setUser(userData.user!);
+      success(userData.user!);
+    } catch (error: any) {
+      setCodeHasError(error);
     }
-    if (!loginData.register) {
-      ym("reachGoal", "avtorization", 96683881);
-    }
-    const userData = await client.getUser();
-    setUser(userData.user!);
-    success(userData.user!);
   };
 
   const { minutes, seconds, restart } = useTimer({

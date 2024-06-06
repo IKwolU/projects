@@ -146,16 +146,14 @@ export const DivisionManager = () => {
   const handleSelected = (id: number) => {
     setSelectedId(id);
     setNewDivision({
-      city: newDivision.city,
-      address: newDivision.address,
-      coords: newDivision.coords,
-      metro: newDivision.metro,
-      name: newDivision.name,
-      phone: newDivisionPhone,
-      timezone_difference: newDivision.timezone_difference,
-      working_hours: workingHours.filter(
-        (item) => !nonWorkingDay.includes(item!.day!)
-      ),
+      city: city,
+      coords: "",
+      address: "",
+      metro: undefined,
+      name: "",
+      phone: "",
+      timezone_difference: undefined,
+      working_hours: workingHours,
     });
   };
 

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Cars3, Schemas3 } from "./api-client";
+import { Cars3 } from "./api-client";
 import {
-  formatRoubles,
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
@@ -13,13 +12,11 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
-// import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import { CarCreateApplication } from "./CarCreateApplication";
 import { LoginAndBook } from "./LoginAndBook";
-import { faChevronDown, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Collapsible,
@@ -36,9 +33,9 @@ export const CardV2 = ({
   isLargeScreen: boolean;
   open: () => void;
 }) => {
-  const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
-    (a: any, b: any) => a.daily_amount! - b.daily_amount!
-  );
+  // const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
+  //   (a: any, b: any) => a.daily_amount! - b.daily_amount!
+  // );
   const [isBookOpen, setIsBookOpen] = useState(false);
 
   return (

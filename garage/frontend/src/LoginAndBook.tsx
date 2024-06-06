@@ -74,8 +74,6 @@ export const LoginAndBook = ({
 
   //  временно удаляем проверку на верификацию!!!
   const book = async (user: User, variant_id: number | null = null) => {
-    console.log(user);
-
     // if (user.user_status === UserStatus.Verified) {
     const bookingData = await client.book(
       new Body16({

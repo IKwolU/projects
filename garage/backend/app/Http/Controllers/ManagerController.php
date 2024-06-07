@@ -58,6 +58,18 @@ class ManagerController extends Controller
      *                     @OA\Property(property="url", type="string", description="Endpoint парка для ответа"),
      *                     @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *                     @OA\Property(property="api_key", type="string", description="ключ"),
+       * @OA\Property(
+ *     property="metro_lines",
+ *     type="object",
+ *     @OA\Property(
+ *         property="city",
+ *         type="string"),
+ *     @OA\Property(
+ *         property="stations",
+ *         type="array",
+ *         @OA\Items(
+ *             type="string"))
+ * ),
      *                     @OA\Property(property="booking_window", type="integer", description="Время брони парка"),
      *                     @OA\Property(property="park_name", type="string", description="Название парка"),
      *                     @OA\Property(property="about", type="string", description="Описание парка"),
@@ -141,13 +153,13 @@ class ManagerController extends Controller
      *                                 ),
      *                                 description="Рабочие часы отделения"
      *                             ),
+
      *                             @OA\Property(property="timezone_difference", type="integer", description="Разница во времени"),
      *                             @OA\Property(property="created_at", type="string", description="Дата создания отделения"),
      *                             @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо отделения"),
      *                             @OA\Property(property="name", type="string", description="Название отделения"),
      *                             @OA\Property(property="phone", type="string", description="Телефон отделения"),
-     *                             @OA\Property(property="city", type="string", description="Город, в котором находится отделение"),
-     *                         description="Список подразделений в парке"
+     *                             @OA\Property(property="city", type="string", description="Город, в котором находится отделение")
      *                     )
      *                 ),
      *                      @OA\Property(
@@ -220,13 +232,42 @@ class ManagerController extends Controller
         $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'cars', 'divisions.cars.booking')->first();
 
         unset($park->API_key,$park->password_1c,$park->login_1c,$park->status_api_tocken);
+
+        $park->metro_lines = [];
+        $divisionsByCity = [];
         foreach ($park->divisions as $division) {
             $division->working_hours = json_decode($division->working_hours);
             $city = $division->city->name;
-            unset($division->city, $division->park_id, $division->city_id);
+            $division->metro_lines = json_decode($division->city->metro);
 
+            if (!isset($divisionsByCity[$city])) {
+                $divisionsByCity[$city] = [];
+            }
+
+            $divisionsByCity[$city][] = $division;
             $division->city = $city;
+            unset($division->city, $division->park_id, $division->city_id);
         }
+
+        foreach ($divisionsByCity as $city => $divisions) {
+            $cityMetroLines = [];
+            foreach ($divisions as $division) {
+                $uniqueStations = [];
+                if ($division->metro_lines) {
+                    foreach ($division->metro_lines->lines as $line) {
+                    $uniqueStations = array_merge($uniqueStations, $line->stations);
+                }
+                }
+
+                $uniqueStations = array_unique($uniqueStations);
+                $cityMetroLines[$city] = ['city' => $city, 'stations' => array_values($uniqueStations)];
+                unset($division->metro_lines);
+            }
+            $park->metro_lines = array_merge($park->metro_lines, $cityMetroLines);
+        }
+
+        $park->metro_lines = array_values($park->metro_lines);
+
         foreach ($park->cars as $car) {
             $car->images = json_decode($car->images);
             $car->fuel_type = FuelType::from($car->fuel_type)->name;

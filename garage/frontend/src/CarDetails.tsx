@@ -270,7 +270,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                       setIsBookOpen(true);
                     }}
                     variant={"cardDefault"}
-                    className="w-full sm:max-w-[376px]"
+                    className="w-full sm:max-w-[376px] "
                   >
                     Забронировать
                   </Button>

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Cars3 } from "./api-client";
+import { Cars3, Schemas3 } from "./api-client";
+import MoscMetro from "./assets/Moscow_Metro.svg";
 import {
+  formatRoubles,
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
@@ -25,9 +27,9 @@ import {
 } from "@radix-ui/react-collapsible";
 
 export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
-  // const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
-  //   (a: any, b: any) => a.daily_amount! - b.daily_amount!
-  // );
+  const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
+    (a: any, b: any) => a.daily_amount! - b.daily_amount!
+  );
   const [isBookOpen, setIsBookOpen] = useState(false);
 
   return (
@@ -46,24 +48,26 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
           </div>
         </div>
       )}
-      <Dialog onOpenChange={open}>
+      <Dialog onOpenChange={open} modal={false}>
         <DialogTrigger
           asChild
           onClick={() => ym("reachGoal", "click_card", 96683881)}
         >
           <div>
             <div className="flex">
-              <div className="flex">
+              <div className="flex w-full">
                 <img
                   src={car!.images![0]}
                   className={`w-1/3 rounded-2xl max-h-20 object-cover`}
                   alt=""
                 />
-                <div className="flex flex-col w-2/3 px-2">
+                <div className="relative flex flex-col w-2/3 px-2">
                   <div className="flex justify-between">
                     <h4>Парк {car.park_name}</h4>
                     {car.cars_count! > 1 && (
-                      <h2 className="mb-0">{car.cars_count} авто</h2>
+                      <h2 className="absolute right-0 px-3 py-[2px] mb-0 font-medium text-center rounded-full shadow -top-2 bg-grey bg-opacity-80">
+                        {car.cars_count} авто
+                      </h2>
                     )}
                   </div>
 
@@ -83,31 +87,55 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                         {getFuelTypeDisplayName(car.fuel_type)}
                       </div>
                     </div>
-                    <Collapsible
-                      className="p-0 m-0"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <CollapsibleTrigger className="relative p-0 mb-0 text-sm text-left">
-                        {car.variants![0].address}
-                        {car.variants!.length > 0 && (
-                          <FontAwesomeIcon
-                            icon={faChevronDown}
-                            className="absolute top-0 -right-5"
-                          />
-                        )}
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="text-sm ">
-                        {car.variants!.map((variant, i) => (
-                          <div key={i}>
-                            {!!i && (
-                              <div className="" key={variant.address}>
-                                {variant.address}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </CollapsibleContent>
-                    </Collapsible>
+                    {car.variants![0].metro && (
+                      <Collapsible
+                        className="p-0 m-0"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <CollapsibleTrigger className="relative flex items-center gap-1 p-0 mb-0 text-sm text-left">
+                          <img src={MoscMetro} alt="" className="w-3 h-auto" />
+                          <span
+                            style={{ color: `${car.variants![0].color_metro}` }}
+                            // className={`text-[${car.variants![0].color_metro?.toLowerCase()}]`}
+                          >
+                            {car.variants![0].metro}
+                          </span>
+                          {car.variants!.length > 1 && (
+                            <FontAwesomeIcon
+                              icon={faChevronDown}
+                              className="absolute top-0 -right-5"
+                            />
+                          )}
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="text-sm ">
+                          {car.variants!.map((variant, i) => (
+                            <div key={i}>
+                              {!!i && variant.metro && (
+                                <div
+                                  className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
+                                  key={variant.metro}
+                                >
+                                  <img
+                                    src={MoscMetro}
+                                    alt=""
+                                    className="w-3 h-auto"
+                                  />
+                                  <span
+                                    style={{
+                                      color: `${variant!.color_metro}`,
+                                    }}
+
+                                    // className={`text-[${variant.color_metro}]`}
+                                  >
+                                    {variant.metro}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )}
                   </div>
                 </div>
               </div>
@@ -119,6 +147,19 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                   classPaginationImages=" sm:justify-between sm:w-full"
                   images={car.images!}
                 />
+              </div>
+            </div>
+            <div className="inset-x-0 flex justify-start w-full mx-auto mt-1 space-x-2">
+              <div className="flex flex-wrap gap-4">
+                {currentSchemas?.map((currentSchema, i) => (
+                  <div
+                    key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                    className=""
+                  >
+                    {`${formatRoubles(currentSchema.daily_amount!)}`}
+                    <div className="text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                  </div>
+                ))}
               </div>
             </div>
             <div className="flex flex-col justify-between flex-grow mt-2">
@@ -154,7 +195,10 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
           }
           className="sm:max-w-[800px] h-full bg-lightgrey p-2 pt-12 lg:max-w-full"
         >
-          <CarDetails car={car} />
+          <div className="fixed top-0 left-0 flex flex-col items-center justify-center w-full h-full bg-lightgrey -z-10 lg:top-[110px]"></div>
+          <div className="px-2">
+            <CarDetails car={car} />
+          </div>
           <DialogClose asChild className=""></DialogClose>
         </DialogContent>
       </Dialog>

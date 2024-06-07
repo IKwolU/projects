@@ -7,7 +7,7 @@ import {
   Schema,
   User,
 } from "./api-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { client } from "./backend";
 import { useRecoilState } from "recoil";
@@ -27,6 +27,7 @@ import BookingAlert from "./booking-alert";
 import { BookingCanceling } from "./BookingCanceling";
 
 export const LoginAndBook = ({
+  schemaId = undefined,
   car,
   close,
   isModal = true,
@@ -34,6 +35,7 @@ export const LoginAndBook = ({
   car: Cars3 | undefined;
   close: () => void;
   isModal?: boolean;
+  schemaId?: number | undefined;
 }) => {
   const [user, setUser] = useRecoilState(userAtom);
   const [isBooked, setIsBooked] = useState(false);
@@ -78,7 +80,7 @@ export const LoginAndBook = ({
     const bookingData = await client.book(
       new Body16({
         id: variant_id ? variant_id : car!.id,
-        schema_id: selectedSchema,
+        schema_id: schemaId || selectedSchema,
       })
     );
 
@@ -111,6 +113,12 @@ export const LoginAndBook = ({
   };
   const { schemas } = car!.rent_term!;
 
+  useEffect(() => {
+    if (user && schemaId) {
+      book(user);
+    }
+  }, []);
+
   const handleTariffChange = (value: string) => {
     setSelectedSchema(Number(value));
     ym("reachGoal", "select_tarif", 96683881);
@@ -140,39 +148,40 @@ export const LoginAndBook = ({
       )}
       {isBooked && <BookingAlert />}
       {!isBooked && (
-        <div className="p-4 bg-white rounded-xl ">
-          <p className="">Выберите стоимость и схему дней</p>
+        <div className="p-4 bg-white rounded-xl min-w-80">
+          {!schemaId && <p className="">Выберите стоимость и схему дней</p>}
           <div className="">
-            <div className="flex flex-wrap gap-1 lg:pb-1">
-              <div className="inset-x-0 flex justify-center w-full px-0 py-2 mx-auto space-x-2 bg-white ">
-                <Select
-                  onValueChange={(value) => handleTariffChange(value)}
-                  defaultValue={`${schemas![0].id}`}
-                >
-                  <SelectTrigger
-                    className={`w-full
-                    } h-auto pt-0 pb-1 text-xl text-left border-none bg-grey rounded-xl`}
+            <div className="flex flex-wrap w-full gap-1 lg:pb-1">
+              {!schemaId && (
+                <div className="inset-x-0 flex justify-center w-full max-w-full px-0 py-2 mx-auto space-x-2 bg-white">
+                  <Select
+                    onValueChange={(value) => handleTariffChange(value)}
+                    defaultValue={`${schemas![0].id}`}
                   >
-                    <SelectValue placeholder="Схема аренды" />
-                  </SelectTrigger>
-                  <SelectContent className="z-[56] w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
-                    {schemas!.map((currentSchema: Schema, i: number) => (
-                      <SelectItem
-                        className="mb-1 border rounded-xl border-zinc-300 "
-                        key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
-                        value={`${currentSchema.id}`}
-                      >
-                        {`${formatRoubles(currentSchema.daily_amount!)}`}
-                        <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                    <SelectTrigger
+                      className={`w-full h-auto pt-0 pb-1 text-xl text-left border-none bg-grey rounded-xl max-w-full`}
+                    >
+                      <SelectValue placeholder="Схема аренды" />
+                    </SelectTrigger>
+                    <SelectContent className="z-[56] w-full h-auto p-1 pb-0 text-left border-none bg-grey rounded-xl">
+                      {schemas!.map((currentSchema: Schema, i: number) => (
+                        <SelectItem
+                          className="mb-1 border rounded-xl border-zinc-300 "
+                          key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
+                          value={`${currentSchema.id}`}
+                        >
+                          {`${formatRoubles(currentSchema.daily_amount!)}`}
+                          <div className="text-xs font-medium text-black ">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               {!user && (
                 <p className="">
-                  И оставьте свой номер телефона. Менеджер свяжется с вами в
-                  ближайшее время!
+                  {!schemaId && "И "} оставьте свой номер телефона. Менеджер
+                  свяжется с вами в ближайшее время!
                 </p>
               )}
               {user && (

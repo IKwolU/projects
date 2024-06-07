@@ -9,8 +9,8 @@ import {
   End2,
   Start2,
   Body30,
+  Metro_lines,
 } from "./api-client";
-import metro from "../../backend/public/assets/json/metro.json";
 import { cityAtom, parkAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,6 @@ import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
 import { getDayOfWeekDisplayName } from "@/lib/utils";
 import ArrayStringSelect from "./ArrayStringSelect";
-
-interface MetroData {
-  [key: string]: string[];
-}
 
 export const DivisionManager = () => {
   const [city] = useRecoilState(cityAtom);
@@ -161,8 +157,9 @@ export const DivisionManager = () => {
     (division) => division.id === selectedId
   ) as Divisions2;
 
-  const metroData = metro as MetroData;
-  const metroInCity = metroData[city];
+  const metro = park.metro_lines?.find(
+    (x: Metro_lines) => x.city == city
+  ).stations;
 
   return (
     <>
@@ -245,12 +242,12 @@ export const DivisionManager = () => {
               ></Input>
             </div>
           ))}
-          {metroInCity && (
+          {!!metro.length && (
             <div className="">
               <h4>Ближайшее метро: {selected?.metro}</h4>
 
               <ArrayStringSelect
-                list={metroInCity}
+                list={metro}
                 onChange={(value) =>
                   handleInputNewDivisionChange(value, "metro")
                 }

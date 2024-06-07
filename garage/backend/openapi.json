@@ -3213,6 +3213,9 @@
                                                                     "description": "Адрес",
                                                                     "type": "string"
                                                                 },
+                                                                "color_metro": {
+                                                                    "type": "string"
+                                                                },
                                                                 "metro": {
                                                                     "description": "Координаты подразделения",
                                                                     "type": "string"
@@ -3963,6 +3966,20 @@
                                                         "description": "ключ",
                                                         "type": "string"
                                                     },
+                                                    "metro_lines": {
+                                                        "properties": {
+                                                            "city": {
+                                                                "type": "string"
+                                                            },
+                                                            "stations": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
                                                     "booking_window": {
                                                         "description": "Время брони парка",
                                                         "type": "integer"
@@ -4128,7 +4145,6 @@
                                                     "divisions": {
                                                         "type": "array",
                                                         "items": {
-                                                            "description": "Список подразделений в парке",
                                                             "properties": {
                                                                 "id": {
                                                                     "description": "id отделения",

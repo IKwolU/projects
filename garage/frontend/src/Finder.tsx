@@ -123,8 +123,7 @@ export const Finder = () => {
 
   const location = useLocation();
   const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
-  const randomTest = useRef(1);
-  // const randomTest = useRef(Math.floor(Math.random() * 2));
+  const randomTest = useRef(Math.floor(Math.random() * 2));
 
   const city = useRecoilValue(cityAtom);
 

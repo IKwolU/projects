@@ -113,6 +113,7 @@ class CarsController extends Controller
      *                 @OA\Property(property="variants", type="array", description="Данные о подразделениях",@OA\Items(
      *                     type="object",
      *                     @OA\Property(property="address", type="string", description="Адрес"),
+     *                     @OA\Property(property="color_metro", type="string"),
      *                     @OA\Property(property="metro", type="string", description="Координаты подразделения")
      *                 )
      *                 ),
@@ -363,9 +364,10 @@ class CarsController extends Controller
                         ->where('year_produced', $uniqueCar->year_produced);
                 });
             }
-        })->with('division')->get();
+        })->with('division','division.city')->get();
 
         foreach ($uniqueCars as $car) {
+
             $car['variants'] = $similarCars
                 ->filter(function ($similarCar) use ($car) {
                     return
@@ -380,9 +382,25 @@ class CarsController extends Controller
                 })
                 ->unique('division_id') // Ensure uniqueness based on division_id
                 ->map(function ($similarCar) {
+
+                    $metro = json_decode($similarCar->division->city->metro);
+                    $metroColor = null;
+
+                    if ($metro) {
+                        foreach ($metro->lines as $value) {
+                            foreach ($value->stations as $item) {
+                                if ($item === $similarCar->division->metro) {
+                                    $metroColor = $value->color;
+                                    break 2;
+                                }
+                            }
+                        }
+                    }
+
                     return [
                         'address' => $similarCar->division->address,
                         'metro' => $similarCar->division->metro,
+                        'color_metro'=>$metroColor
                     ];
                 })
                 ->values()

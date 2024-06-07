@@ -20194,6 +20194,7 @@ export class Park2 implements IPark2 {
     commission?: number;
     /** ключ */
     api_key?: string;
+    metro_lines?: Metro_lines;
     /** Время брони парка */
     booking_window?: number;
     /** Название парка */
@@ -20236,6 +20237,7 @@ export class Park2 implements IPark2 {
             this.url = _data["url"];
             this.commission = _data["commission"];
             this.api_key = _data["api_key"];
+            this.metro_lines = _data["metro_lines"] ? Metro_lines.fromJS(_data["metro_lines"]) : <any>undefined;
             this.booking_window = _data["booking_window"];
             this.park_name = _data["park_name"];
             this.about = _data["about"];
@@ -20282,6 +20284,7 @@ export class Park2 implements IPark2 {
         data["url"] = this.url;
         data["commission"] = this.commission;
         data["api_key"] = this.api_key;
+        data["metro_lines"] = this.metro_lines ? this.metro_lines.toJSON() : <any>undefined;
         data["booking_window"] = this.booking_window;
         data["park_name"] = this.park_name;
         data["about"] = this.about;
@@ -20320,6 +20323,7 @@ export interface IPark2 {
     commission?: number;
     /** ключ */
     api_key?: string;
+    metro_lines?: Metro_lines;
     /** Время брони парка */
     booking_window?: number;
     /** Название парка */
@@ -21782,6 +21786,7 @@ export interface IDivision {
 export class Variants implements IVariants {
     /** Адрес */
     address?: string;
+    color_metro?: string;
     /** Координаты подразделения */
     metro?: string;
 
@@ -21803,6 +21808,7 @@ export class Variants implements IVariants {
                     this[property] = _data[property];
             }
             this.address = _data["address"];
+            this.color_metro = _data["color_metro"];
             this.metro = _data["metro"];
         }
     }
@@ -21821,6 +21827,7 @@ export class Variants implements IVariants {
                 data[property] = this[property];
         }
         data["address"] = this.address;
+        data["color_metro"] = this.color_metro;
         data["metro"] = this.metro;
         return data;
     }
@@ -21829,6 +21836,7 @@ export class Variants implements IVariants {
 export interface IVariants {
     /** Адрес */
     address?: string;
+    color_metro?: string;
     /** Координаты подразделения */
     metro?: string;
 
@@ -22077,6 +22085,66 @@ export interface IRent_term2 {
     [key: string]: any;
 }
 
+export class Metro_lines implements IMetro_lines {
+    city?: string;
+    stations?: string[];
+
+    [key: string]: any;
+
+    constructor(data?: IMetro_lines) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.city = _data["city"];
+            if (Array.isArray(_data["stations"])) {
+                this.stations = [] as any;
+                for (let item of _data["stations"])
+                    this.stations!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Metro_lines {
+        data = typeof data === 'object' ? data : {};
+        let result = new Metro_lines();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["city"] = this.city;
+        if (Array.isArray(this.stations)) {
+            data["stations"] = [];
+            for (let item of this.stations)
+                data["stations"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IMetro_lines {
+    city?: string;
+    stations?: string[];
+
+    [key: string]: any;
+}
+
 export class Cars4 implements ICars4 {
     /** id автомобиля */
     id?: number;
@@ -22245,7 +22313,6 @@ export interface ICars4 {
     [key: string]: any;
 }
 
-/** Список подразделений в парке */
 export class Divisions2 implements IDivisions2 {
     /** id отделения */
     id?: number;
@@ -22337,7 +22404,6 @@ export class Divisions2 implements IDivisions2 {
     }
 }
 
-/** Список подразделений в парке */
 export interface IDivisions2 {
     /** id отделения */
     id?: number;

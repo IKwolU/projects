@@ -190,11 +190,7 @@ const OnMap = ({ filters, close }: OnMapProps) => {
       </YMaps>
       {isFullScreen && (
         <div className="fixed left-0 flex w-full h-0 mx-auto top-64">
-          <Button
-            onClick={() => close()}
-            onTouchStart={() => close()}
-            className="mx-auto w-44"
-          >
+          <Button onClick={() => close()} className="mx-auto w-44">
             Назад
           </Button>
         </div>

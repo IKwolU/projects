@@ -372,13 +372,22 @@ function CanvasComponent() {
 
         <OBJModel
           scale={[1, 1, 1]}
-          file="/models/newmap.gltf"
+          file="/models/06.07map.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[0, -4, 0]}
           opacity={0.93}
           rotate={[0, 0, 0]}
           isOpacity={false}
         />
+        {/* <OBJModel
+          scale={[0.2, 0.2, 0.2]}
+          file="/models/flag1.gltf"
+          texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+          position={[-2.4, -4.4, 1.65]}
+          opacity={0.93}
+          rotate={[0, 60, 0]}
+          isOpacity={false}
+        /> */}
         {/* <OBJModel
         scale={[1, 1, 1]}
         file="/models/planelast3.gltf"
@@ -408,9 +417,10 @@ function CanvasComponent() {
                 />
               }
 
-              {(currentTime < currentNavigationData!.selection_time + 10
+              {/* {(currentTime < currentNavigationData!.selection_time + 10
                 ? Math.floor(currentTime) % 2 === 0
-                : currentTime > currentNavigationData!.selection_time + 10) && (
+                : currentTime > currentNavigationData!.selection_time + 10) && ( */}
+              {currentTime > currentNavigationData!.selection_time && (
                 // <OBJModel
                 //   file="/models/circle-point--1.gltf"
                 //   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
@@ -421,14 +431,23 @@ function CanvasComponent() {
                 //   isOpacity={true}
                 // />
                 <OBJModel
-                  file="/models/arrow glorax.gltf"
+                  file="/models/number.gltf"
                   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                   position={currentNavigationData!.point_position}
-                  scale={[10, 10, 10]}
+                  scale={[5, 5, 5]}
                   opacity={0.8}
                   rotate={currentNavigationData!.point_rotate}
                   isOpacity={true}
                 />
+                // <OBJModel
+                //   file="/models/arrow glorax.gltf"
+                //   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                //   position={currentNavigationData!.point_position}
+                //   scale={[10, 10, 10]}
+                //   opacity={0.8}
+                //   rotate={currentNavigationData!.point_rotate}
+                //   isOpacity={true}
+                // />
               )}
               {/* {content[0].navigation.map((item, i) => (
                 <React.Fragment key={i}>

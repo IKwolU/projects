@@ -181,12 +181,12 @@ function Content() {
       </div>
       {menuOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-10 ml-2 text-sm text-white"
+          className="fixed top-0 bottom-0 left-0 flex items-start justify-start w-full mt-10 ml-2 text-sm text-brown"
           onClick={(e) =>
             e.target === e.currentTarget && menuOpenSet(!menuOpen)
           }
         >
-          <div className="p-4 pb-2 rounded bg-brown ">
+          <div className="p-4 pb-2 rounded-[5px] bg-lightpink uppercase">
             {[
               "История дома Башкирова",
               "История дома Бугрова",
@@ -199,14 +199,14 @@ function Content() {
             ].map((x) => (
               <div key={x}>
                 <div
-                  className="mb-2  p-0.5 px-2  hover:bg-lightbrown hover:text-brown hover:opacity-70  border-none rounded  cursor-pointer transition-colors "
+                  className="mb-2  p-0.5 px-2  hover:bg-pink hover:text-brown hover:opacity-70  border-none rounded-[5px]  cursor-pointer transition-colors "
                   onClick={() => x === "Вопрос | Ответ" && handleQuestionOpen()}
                 >
                   {x}
                 </div>
                 <div
                   className={`${
-                    x !== "Вопрос | Ответ" && "h-px bg-gray-200 my-2"
+                    x !== "Вопрос | Ответ" && "h-px bg-brown my-2"
                   }`}
                 ></div>
               </div>
@@ -224,12 +224,12 @@ function Content() {
           <div className="z-20 flex justify-end w-[280px] sm:w-[350px] h-4 pr-2 -mb-6 right-2 cursor-pointer">
             <FontAwesomeIcon
               icon={faXmark}
-              className=""
+              className="text-brown"
               onClick={() => handleQuestionOpen()}
             />
           </div>
-          <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-brown rounded-t-3xl"></div>
-          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-brown max-h-[70%] w-[280px] sm:w-[350px] rounded opacity-95 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
+          <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-lightpink rounded-t-3xl"></div>
+          <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-lightpink max-h-[70%] w-[280px] sm:w-[350px] rounded-[5px] opacity-95 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
             {[
               {
                 question: "С чего начать (путешествие/приключение/изучение)?",
@@ -278,16 +278,18 @@ function Content() {
               <div className="">
                 <p
                   onClick={() => setQuestionId(i)}
-                  className="p-1 transition-colors rounded cursor-pointer hover:bg-lightbrown hover:text-brown"
+                  className="p-1 uppercase transition-colors rounded cursor-pointer hover:bg-pink text-brown hover:text-brown"
                 >
                   {question}
                 </p>
-                {questionId === i && <p className="pl-2 text-sm">{answer}</p>}
-                <div className={`${i !== 9 && "h-px bg-gray-200 my-2"}`}></div>
+                {questionId === i && (
+                  <p className="pl-2 text-sm text-brown">{answer}</p>
+                )}
+                <div className={`${i !== 9 && "h-px bg-brown my-2"}`}></div>
               </div>
             ))}
           </div>
-          <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-brown bg-gradient-to-t to-transparent rounded-b-2xl"></div>
+          <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-lightpink bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
@@ -313,7 +315,7 @@ function Content() {
           isOpen={contentId === i ? true : false}
           content={
             <div
-              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-brown text-white ${
+              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-pink text-UBlack ${
                 contentId === i
                   ? `${
                       isContentShow
@@ -325,14 +327,16 @@ function Content() {
             >
               <div className="overflow-y-auto">
                 <div className="flex items-center justify-between h-12 mt-2 ml-4">
-                  <p className="m-0 -mt-2 font-semibold ">{x.title}</p>
+                  <p className="m-0 -mt-2 font-semibold text-brown">
+                    {x.title}
+                  </p>
                   <img
                     src={logo}
                     alt=""
                     className="object-contain h-10 pl-4 "
                   />
                 </div>
-                <div className="px-4 mb-4 text-base font-semibold whitespace-pre-line">
+                <div className="px-4 mb-4 text-base font-semibold whitespace-pre-line text-brown">
                   {x.description_title}
                 </div>
                 <div className="px-4 mb-4 text-base whitespace-pre-line">
@@ -410,7 +414,7 @@ function Content() {
                           }`}
                         >
                           {fact.type === "text" && (
-                            <h4 className="h-4 px-0 pb-3 mt-8 mb-4 text-sm font-semibold sm:px-4">
+                            <h4 className="h-4 px-0 pb-3 mt-8 mb-4 text-sm font-semibold sm:px-4 text-brown">
                               {fact.title}
                             </h4>
                           )}
@@ -437,7 +441,7 @@ function Content() {
                     ))}
                   </Slider>
 
-                  <div className="relative flex flex-col w-full h-auto p-4 mt-10 space-y-1 rounded bg-brown">
+                  <div className="relative flex flex-col w-full h-auto p-4 mt-10 space-y-1 rounded bg-pink">
                     <div className="flex flex-col items-center gap-2 mx-auto w-fit">
                       <p>Продолжительность маршрута:</p>
                       <div className="flex justify-between mb-2 space-x-6">

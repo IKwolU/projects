@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRotateForward,
   faArrowRotateLeft,
-  faCirclePause,
-  faCirclePlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
 import { currentTimeAtom } from "../../../src/atoms";
@@ -131,7 +129,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
             onMouseUp={handleSeekEnd}
             onTouchEnd={handleSeekEnd}
             onChange={handleSeek}
-            className=" h-[2px] rounded appearance-none bg-white w-[90%] mx-auto mb-2"
+            className=" h-[2px] rounded appearance-none bg-brown w-[90%] mx-auto mb-2"
           />
         </div>
         <div className="flex items-center justify-between w-full text-[10px]">
@@ -159,11 +157,11 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
           <div className="relative ">
             <button
               onClick={handleBackClick}
-              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+              className="h-4 m-0 border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
             >
               <FontAwesomeIcon
                 icon={faArrowRotateLeft}
-                className="h-5 text-white rotate-180 border-none scale-[-1,1] focus:outline-none hover:border-none hover:outline-none focus:border-none "
+                className="h-5 text-brown rotate-180 border-none scale-[-1,1] focus:outline-none hover:border-none hover:outline-none focus:border-none "
               />
             </button>
             {backClicked && (
@@ -172,29 +170,39 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
           </div>
           <button
             onClick={handlePlayPause}
-            className="relative border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+            className="relative m-0 border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
           >
             {isPlaying ? (
-              <FontAwesomeIcon
-                icon={faCirclePause}
-                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              // <FontAwesomeIcon
+              //   icon={faCirclePause}
+              //   className="h-10 border-none text-brown focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              // />
+              <img
+                src="/img/pause.png"
+                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none"
+                alt=""
               />
             ) : (
-              <FontAwesomeIcon
-                icon={faCirclePlay}
-                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              <img
+                src="/img/State=Hover, Size=Desktop.png"
+                className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none"
+                alt=""
               />
+              // <FontAwesomeIcon
+              //   icon={faCirclePlay}
+              //   className="h-10 border-none text-blue focus:outline-none hover:border-none hover:outline-none focus:border-none "
+              // />
             )}
-            <span className="absolute w-6 h-6 bg-white rounded-full top-2 left-2 -z-10"></span>
+            <span className="absolute w-6 h-6 rounded-full bg-pink top-2 left-2 -z-10"></span>
           </button>
           <div className="relative">
             <button
               onClick={handleNextClick}
-              className="border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+              className="h-4 m-0 border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
             >
               <FontAwesomeIcon
                 icon={faArrowRotateForward}
-                className="h-5 text-white border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
+                className="h-5 border-none text-brown focus:outline-none hover:border-none hover:outline-none focus:border-none"
               />
             </button>
             {nextClicked && (

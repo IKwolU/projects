@@ -86,7 +86,7 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 12px;
   height: 12px;
-  background: #fff;
+  background: #8e6d4f;
   border-radius: 50%;
   cursor: pointer;
 }

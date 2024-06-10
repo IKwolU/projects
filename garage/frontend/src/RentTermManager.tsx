@@ -136,18 +136,7 @@ export const RentTermManager = () => {
 
   const deleteSchema = async (id: number) => {
     await client.deleteSchemaManager(new Body41({ id: id }));
-    setPark({
-      ...park,
-      rent_terms: [
-        ...rentTerms!.filter(
-          (rentTerm) => rentTerm.id !== selected.rent_term_id
-        ),
-        new Rent_terms({
-          ...selected,
-          schemas: [...selected.schemas!.filter((x) => x.id !== id)],
-        }),
-      ],
-    });
+    getPark();
   };
 
   const handleInputNewRentTermSchemaChange = (
@@ -155,8 +144,6 @@ export const RentTermManager = () => {
     param: keyof Schemas,
     id: number
   ) => {
-    console.log(id);
-
     setNewRentTerm({
       ...newRentTerm,
       schemas: [
@@ -249,6 +236,16 @@ export const RentTermManager = () => {
       setNewRentTerm({
         ...newRentTerm,
         schemas: [...newRentTerm.schemas.filter((schema) => schema.id !== id)],
+      });
+      setPark({
+        ...park,
+        rent_terms: [
+          ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
+          new Rent_terms({
+            ...selected,
+            schemas: [...selected.schemas, new Schemas(newSchema)],
+          }),
+        ],
       });
     }
   };

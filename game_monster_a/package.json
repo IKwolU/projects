@@ -1,0 +1,53 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.1",
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.1.2",
+    "laravel-vite-plugin": "^0.8.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "tailwindcss-textshadow": "^2.1.3",
+    "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-adapter-ckfinder": "^40.0.0",
+    "@ckeditor/ckeditor5-alignment": "^40.0.0",
+    "@ckeditor/ckeditor5-autoformat": "^40.0.0",
+    "@ckeditor/ckeditor5-basic-styles": "^40.0.0",
+    "@ckeditor/ckeditor5-block-quote": "^40.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^40.0.0",
+    "@ckeditor/ckeditor5-ckfinder": "^40.0.0",
+    "@ckeditor/ckeditor5-cloud-services": "^40.0.0",
+    "@ckeditor/ckeditor5-code-block": "^40.0.0",
+    "@ckeditor/ckeditor5-editor-classic": "^40.0.0",
+    "@ckeditor/ckeditor5-essentials": "^40.0.0",
+    "@ckeditor/ckeditor5-font": "^40.0.0",
+    "@ckeditor/ckeditor5-image": "^40.0.0",
+    "@ckeditor/ckeditor5-link": "^40.0.0",
+    "@ckeditor/ckeditor5-paragraph": "^40.0.0",
+    "@ckeditor/ckeditor5-theme-lark": "^40.0.0",
+    "@ckeditor/ckeditor5-upload": "^40.0.0",
+    "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@ckeditor/vite-plugin-ckeditor5": "^0.1.3",
+    "@inertiajs/progress": "github:inertiajs/progress",
+    "@inertiajs/vue3": "^1.0.12",
+    "@jridgewell/sourcemap-codec": "^1.4.15",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "flowbite": "^2.0.0",
+    "laravel-echo": "^1.16.0",
+    "socket.io-client": "^4.7.5",
+    "swiper": "^11.0.7",
+    "v-mask": "^2.3.0",
+    "vue": "^3.2.36",
+    "vue-imask": "^7.1.3",
+    "vue-loader": "^17.3.0",
+    "vue-the-mask": "^0.11.1",
+    "vuedraggable": "^4.1.0"
+  }
+}

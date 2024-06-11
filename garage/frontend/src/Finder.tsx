@@ -281,9 +281,15 @@ export const Finder = () => {
 
   return (
     <>
-      {isFiltersOpened && <MobileFilters />}
+      {isFiltersOpened && (
+        <MobileFilters
+          filters={filters}
+          clean={() => filtersClean()}
+          result={(result) => setFilters(result)}
+        />
+      )}
       {!filters.onMap && (
-        <div className="fixed w-full h-0 z-10 max-w-[352px] mx-auto bottom-14 flex justify-start sm:hidden">
+        <div className="fixed w-full h-0 z-[51] max-w-[352px] mx-auto bottom-14 flex justify-start sm:hidden">
           <Button
             onClick={() => {
               setFilters({

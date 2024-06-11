@@ -55,7 +55,7 @@ const DialogContent = React.forwardRef<
             isModalOnLg
               ? "max-w-lg top-0 fixed overflow-y-auto "
               : "max-w-full top-0 absolute overflow-visible"
-          }   z-50 w-full  mx-auto inset-x-0
+          }   z-[52] w-full  mx-auto inset-x-0
         gap-4 bg-white pt-12 px-4 md:px-12 shadow-lg duration-200 data-[state=open]:animate-in 
         data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 
         data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 

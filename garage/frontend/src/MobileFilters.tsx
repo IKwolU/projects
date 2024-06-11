@@ -29,6 +29,7 @@ import {
   faArrowRightArrowLeft,
   faCheck,
   faChevronDown,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faMap,
@@ -69,49 +70,21 @@ const staticSchemas = [
   new Schemas({ working_days: 14, non_working_days: 1 }),
 ];
 
-export const MobileFilters = () => {
-  const [filters, setFilters] = useState<CarFilter>({
-    carClass: [],
-    commission: DEFAULT_COMMISSION_PERCENTAGE,
-    fuelType: null,
-    brands: [],
-    models: [],
-    parksName: [],
-    transmissionType: null,
-    selfEmployed: false,
-    buyoutPossible: undefined,
-    sorting: "asc",
-    schema: null,
-    carVin: null,
-    onMap: false,
-    notStackList: undefined,
-  });
-
+export const MobileFilters = ({
+  filters,
+  clean,
+  result,
+}: {
+  filters: CarFilter;
+  clean: () => void;
+  result: (filters: CarFilter) => void;
+}) => {
   const [activeFilter, setActiveFilter] = useState<ActiveFilter | null>(null);
   const [brands, setBrands] = useState<IBrands>({ name: "", models: [] });
   const [parksName, setParksName] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchParkTerm, setSearchParkTerm] = useState("");
   const [overflow, setOverflow] = useState(false);
-
-  const filtersClean = () => {
-    setFilters({
-      carClass: [],
-      commission: DEFAULT_COMMISSION_PERCENTAGE,
-      fuelType: null,
-      brands: [],
-      models: [],
-      parksName: [],
-      transmissionType: null,
-      selfEmployed: false,
-      buyoutPossible: undefined,
-      sorting: "asc",
-      schema: null,
-      carVin: null,
-      onMap: false,
-      notStackList: undefined,
-    });
-  };
 
   const brandsArray = Object.values(brands);
 
@@ -125,545 +98,134 @@ export const MobileFilters = () => {
       name && name.toLowerCase().includes(searchParkTerm.toLowerCase())
   );
 
-  useEffect(
-    () =>
-      setFilters({
-        ...filters,
-        carVin: searchParkTerm,
-      }),
-    [searchParkTerm]
-  );
-
-  useEffect(() => {
-    if (filters.carClass.length === Object.keys(CarClass).length) {
-      setFilters({
-        ...filters,
-        carClass: [],
-      });
-    }
-  }, [filters]);
-
   return (
     <>
       <div className={`${overflow && "pt-10"}`}>
         <div className="my-2 space-x-1 overflow-scroll overflow-x-auto sm:flex scrollbar-hide">
-          <div className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
-            <span
-              className=""
+          <h3>Тип аренды</h3>
+          {[false, true, undefined].map((buyoutPossible, i) => (
+            <Badge
+              key={`Buyout${i}`}
+              className={`${
+                filters.buyoutPossible === buyoutPossible ? "bg-white" : ""
+              } cursor-pointer`}
               onClick={() => {
-                setFilters({
+                result({
                   ...filters,
-                  onMap: !filters.onMap,
+                  buyoutPossible:
+                    filters.buyoutPossible === buyoutPossible
+                      ? undefined
+                      : buyoutPossible,
                 });
               }}
             >
-              {!filters.onMap && (
-                <>
-                  <FontAwesomeIcon icon={faMap} className="mr-2" />
-                  <span>На карте</span>
-                </>
-              )}
-              {filters.onMap && (
-                <>
-                  <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
-                  <span>Списком</span>
-                </>
-              )}
-            </span>
-          </div>
-          {[
-            {
-              title: (
-                <FontAwesomeIcon
-                  icon={faArrowRightArrowLeft}
-                  className="px-1 rotate-90 cursor-pointer"
-                />
-              ),
-              filter: ActiveFilter.Sorting,
-              isEngaged: filters.sorting === "desc",
-            },
-            {
-              title:
-                filters.buyoutPossible !== undefined
-                  ? filters.buyoutPossible
-                    ? "Выкуп"
-                    : "Аренда"
-                  : "Тип аренды",
-              filter: ActiveFilter.Buyout,
-              isEngaged: filters.buyoutPossible !== undefined,
-            },
-            {
-              title: filters.schema
-                ? `${filters.schema?.working_days}/${filters.schema?.non_working_days}`
-                : "График аренды",
-              filter: ActiveFilter.RentTerm,
-              isEngaged: filters.schema !== null,
-            },
-            { isEngaged: !!filters.brands!.length },
-
-            {
-              title: getTransmissionDisplayName(filters.transmissionType),
-              filter: ActiveFilter.TransmissionType,
-              isEngaged: filters.transmissionType !== null,
-            },
-            {
-              title: getFuelTypeDisplayName(filters.fuelType),
-              filter: ActiveFilter.FuelType,
-              isEngaged: filters.fuelType !== null,
-            },
-          ].map(({ filter, title, isEngaged }, i) => (
-            <div className="relative" key={`filters ${i}`}>
-              {isEngaged && (
-                <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
-              )}
-              {!!filter && (
-                <div className="cursor-pointer ">
-                  <Badge
-                    className={`${
-                      activeFilter === filter ? "bg-white" : ""
-                    } md:px-2`}
-                    onClick={() =>
-                      setActiveFilter(activeFilter === filter ? null : filter)
-                    }
-                  >
-                    {title}{" "}
-                    {filter !== ActiveFilter.Sorting && (
-                      <FontAwesomeIcon
-                        icon={faChevronDown}
-                        className={`ml-2 transition-transform ${
-                          activeFilter === filter && "rotate-180"
-                        }`}
-                      />
-                    )}
-                  </Badge>
-                </div>
-              )}
-
-              {!filter && (
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <span className="bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
-                      {filters.brands.length > 1 && (
-                        <>
-                          {filters.brands.slice(0, 1).join(", ")} и еще{" "}
-                          {filters.brands.length - 1}
-                          <FontAwesomeIcon
-                            icon={faChevronDown}
-                            className="ml-2"
-                          />
-                        </>
-                      )}
-                      {!!filters.brands.length &&
-                        filters.brands.length === 1 && (
-                          <>
-                            {filters.brands.join(", ")}
-                            <FontAwesomeIcon
-                              icon={faChevronDown}
-                              className="ml-2"
-                            />
-                          </>
-                        )}
-                      {!filters.brands.length && (
-                        <>
-                          Модели{" "}
-                          <FontAwesomeIcon
-                            icon={faChevronDown}
-                            className="ml-2"
-                          />
-                        </>
-                      )}
-                    </span>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[1208px]">
-                    <div className="">
-                      <input
-                        className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
-                        type="text"
-                        placeholder="Поиск модели"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                      />
-                    </div>
-                    <div className="grid items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto grid-ciols-1 sm:grid-cols-3 ">
-                      <div
-                        className="w-full p-1 text-xl font-semibold text-black cursor-pointer "
-                        onClick={() => {
-                          setFilters({
-                            ...filters,
-                            brands: [],
-                            models: [],
-                          });
-                          setSearchTerm("");
-                        }}
-                      >
-                        Все модели
-                      </div>
-                      {filteredBrands.map((x: IBrands) => {
-                        const title = x.name!;
-                        const isActive = filters.brands.some(
-                          (b) => b === title
-                        );
-                        return (
-                          <span
-                            className={`cursor-pointer text-xl font-semibold text-black md:pr-12 ${
-                              isActive ? "" : ""
-                            }`}
-                            key={title}
-                          >
-                            <span
-                              onClick={() =>
-                                setFilters({
-                                  ...filters,
-                                  brands: isActive
-                                    ? filters.brands.filter((b) => b !== title)
-                                    : [...filters.brands, title],
-                                })
-                              }
-                              className={`p-1 font-semibold justify-between flex ${
-                                isActive ? "" : ""
-                              }`}
-                            >
-                              {title}
-                              {/* {isActive && (
-                                <FontAwesomeIcon
-                                  icon={faCheck}
-                                  className="cursor-pointer"
-                                />
-                              )} */}
-                            </span>{" "}
-                            {x.models!.map((model) => {
-                              const isActiveModel = filters.models.some(
-                                (b) => b === model
-                              );
-                              return (
-                                <span
-                                  className={`cursor-pointer text-xl py-1 text-black  ${
-                                    isActiveModel ? "" : ""
-                                  }`}
-                                  key={model}
-                                  onClick={() =>
-                                    setFilters({
-                                      ...filters,
-                                      models: isActiveModel
-                                        ? filters.models.filter(
-                                            (b) => b != model
-                                          )
-                                        : [...filters.models, model],
-                                    })
-                                  }
-                                >
-                                  <span
-                                    className={`w-full font-normal text-base p-1 flex gap-x-40 justify-between items-center ${
-                                      isActiveModel ? "bg-pale" : ""
-                                    }`}
-                                  >
-                                    {model}
-                                    {isActiveModel && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className="cursor-pointer"
-                                      />
-                                    )}
-                                  </span>
-                                </span>
-                              );
-                            })}
-                          </span>
-                        );
-                      })}
-                    </div>
-
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                          <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                            <div className="sm:max-w-[250px] w-full">
-                              <Button>Выбрать</Button>
-                            </div>
-                          </div>
-                        </div>
-                      </DialogClose>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              )}
-            </div>
+              {buyoutPossible && "Выкуп"}
+              {buyoutPossible === false && "Аренда"}
+              {buyoutPossible === undefined && "Любой тип аренды"}
+            </Badge>
           ))}
+          <h3>Цена</h3>
+          {["asc", "desc"].map((sorting, i) => (
+            <Badge
+              key={`sorting ${i}`}
+              className={` ${
+                filters.sorting === sorting ? "bg-white" : ""
+              } cursor-pointer`}
+              onClick={() =>
+                result({
+                  ...filters,
+                  sorting:
+                    filters.sorting === sorting
+                      ? "asc"
+                      : (sorting as CarFilter["sorting"]),
+                })
+              }
+            >
+              {sorting === "asc" && "Сначала самые дешевые"}
+              {sorting === "desc" && "Сначала самые дорогие"}
+            </Badge>
+          ))}
+          <h3>График аренды</h3>
+          {[null, ...staticSchemas].map((schema, i) => (
+            <Badge
+              key={`schema ${i}`}
+              className={`${
+                filters.schema === schema ? "bg-white" : ""
+              } cursor-pointer`}
+              onClick={() => {
+                return result({
+                  ...filters,
+                  schema: filters.schema === schema ? null : schema,
+                });
+              }}
+            >
+              {schema
+                ? `${schema?.working_days}/${schema?.non_working_days}`
+                : "Любой график аренды"}
+            </Badge>
+          ))}
+          <h3>Модели</h3>
 
-          {/* <Dialog>
-            <DialogTrigger asChild>
-              <div className="bg-grey text-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center relative">
-                {(filters.buyoutPossible ||
-                  !!filters.commission ||
-                  filters.selfEmployed) && (
-                  <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
-                )}
-                Еще
-              </div>
-            </DialogTrigger>
-            <DialogContent>
-              <Checkbox
-                title="Для самозанятых"
-                isChecked={filters.selfEmployed}
-                onCheckedChange={(e: boolean) =>
-                  setFilters({ ...filters, selfEmployed: e })
-                }
-              />
-              <Separator className="mb-4" />
-              <Checkbox
-                isChecked={filters.buyoutPossible}
-                onCheckedChange={(e: boolean) =>
-                  setFilters({ ...filters, buyoutPossible: e })
-                }
-                title="Выкуп автомобиля"
-              />
-              <Separator className="mb-4" />
-              <p className="mb-4 text-xl font-semibold">Комиссия</p>
-              {[null, 1, 2, 3, 4, 5, 10].map((x, i) => (
-                <Checkbox
-                  key={`comission${i}`}
-                  regular
-                  isChecked={filters.commission === x}
-                  onCheckedChange={() =>
-                    setFilters({ ...filters, commission: x })
-                  }
-                  title={x ? `${x}%` : "Нет"}
-                />
-              ))}
-              <DialogFooter>
-                <DialogClose asChild>
-                  <div className="fixed bottom-0 left-0 flex justify-center w-full px-4 py-4 space-x-2 bg-white border-t border-pale">
-                    <Button>Выбрать</Button>
-                  </div>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog> */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <span className="relative bg-grey cursor-pointer text-nowrap whitespace-nowrap rounded-xl px-2.5 py-0.5 h-10 flex items-center md:px-2">
-                {filters.parksName.length > 1 && (
-                  <>
-                    {filters.parksName.slice(0, 1).join(", ")} и еще{" "}
-                    {filters.parksName.length - 1}
-                    <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
-                  </>
-                )}
+          <h3>Расположение</h3>
 
-                {!!filters.parksName.length && (
-                  <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full  bg-red"></div>
-                )}
-                {!!filters.parksName.length &&
-                  filters.parksName.length === 1 && (
-                    <>
-                      {filters.parksName.join(", ")}
-                      <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
-                    </>
-                  )}
-                {!filters.parksName.length && (
-                  <>
-                    Автопарк
-                    <FontAwesomeIcon icon={faChevronDown} className="ml-2" />
-                  </>
-                )}
-              </span>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[800px]">
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-              </DialogHeader>
-              <div className="">
-                <input
-                  className="w-full px-2 py-2 border-2 border-yellow rounded-xl focus-visible:outline-none"
-                  type="text"
-                  placeholder="Поиск автопарка"
-                  value={searchParkTerm}
-                  onChange={(e) => setSearchParkTerm(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-wrap items-start content-start justify-start h-full py-4 pb-16 overflow-y-auto">
-                <div
-                  className="w-full p-1 text-xl text-black cursor-pointer"
-                  onClick={() => {
-                    setFilters({
-                      ...filters,
-                      parksName: [],
-                    });
-                    setSearchParkTerm("");
-                  }}
-                >
-                  Все автопарки
-                </div>
-                <Separator className="mt-1" />
-                {filteredParks
-                  .filter((x) => x)
-                  .map((x) => {
-                    const title = x!;
-                    const isActive = filters.parksName.some((b) => b === title);
-                    return (
-                      <span
-                        className={`cursor-pointer text-xl w-full py-1 text-black `}
-                        key={title}
-                        onClick={() =>
-                          setFilters({
-                            ...filters,
-                            parksName: isActive
-                              ? filters.parksName.filter((b) => b != title)
-                              : [...filters.parksName, title],
-                          })
-                        }
-                      >
-                        <span
-                          className={`w-full p-1 rounded-xl flex justify-start ${
-                            isActive ? "" : "ml-[49.5px]"
-                          }`}
-                        >
-                          {" "}
-                          {isActive && (
-                            <FontAwesomeIcon
-                              icon={faCheck}
-                              className="px-1 mr-6 cursor-pointer"
-                            />
-                          )}
-                          {title}
-                        </span>{" "}
-                        <Separator className="mt-1" />
-                      </span>
-                    );
-                  })}
-              </div>
+          <h3>Автопарк</h3>
 
-              <DialogFooter>
-                <DialogClose asChild>
-                  <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                    <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                      <div className="sm:max-w-[250px] w-full">
-                        <Button>Выбрать</Button>
-                      </div>
-                    </div>
-                  </div>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-          <div className="cursor-pointer inline-flex font-normal items-center h-10 text-nowrap md:px-2 y whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular  transition-colors focus:outline-none bg-grey active:bg-white">
+          <h3>Тип топлива</h3>
+          {[TransmissionType.Automatic, TransmissionType.Mechanics, null].map(
+            (transmissionType, i) => (
+              <Badge
+                key={`transmissionType ${i}`}
+                className={`${
+                  filters.transmissionType === transmissionType
+                    ? "bg-white"
+                    : ""
+                } cursor-pointer`}
+                onClick={() => {
+                  return result({
+                    ...filters,
+                    transmissionType:
+                      filters.transmissionType === transmissionType
+                        ? null
+                        : transmissionType,
+                  });
+                }}
+              >
+                {getTransmissionDisplayName(transmissionType)}
+              </Badge>
+            )
+          )}
+          <h3>Трансмиссия</h3>
+          {[
+            FuelType.Gasoline,
+            FuelType.Electric,
+            FuelType.Methane,
+            FuelType.Propane,
+            null,
+          ].map((fuelType, i) => (
+            <Badge
+              key={`fuelType ${i}`}
+              className={`${
+                filters.fuelType === fuelType ? "bg-white" : ""
+              } cursor-pointer`}
+              onClick={() => {
+                return result({
+                  ...filters,
+                  fuelType: filters.fuelType === fuelType ? null : fuelType,
+                });
+              }}
+            >
+              {getFuelTypeDisplayName(fuelType)}
+            </Badge>
+          ))}
+          <div className=" w-full max-w-[352px] mx-auto justify-between  fixed top-0 right-0 inline-flex font-normal items-center h-10 text-nowrap md:px-2 y whitespace-nowrap rounded-xl px-2.5 py-0.5 text-base font-regular  transition-colors focus:outline-none ">
             <FontAwesomeIcon
-              onClick={filtersClean}
-              icon={faTrashCan}
-              className="px-1"
+              className="ml-1 text-gray"
+              icon={faXmark}
+              onClick={(e) => {}}
             />
+            <div className="">Фильтры</div>
+            <div className="text-gray">Сбросить</div>
           </div>
-        </div>
-        <div className="flex my-2 mb-4 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
-          {activeFilter === ActiveFilter.Sorting &&
-            ["asc", "desc"].map((sorting, i) => (
-              <Badge
-                key={`sorting ${i}`}
-                className={` ${
-                  filters.sorting === sorting ? "bg-white" : ""
-                } cursor-pointer`}
-                onClick={() =>
-                  setFilters({
-                    ...filters,
-                    sorting:
-                      filters.sorting === sorting
-                        ? "asc"
-                        : (sorting as CarFilter["sorting"]),
-                  })
-                }
-              >
-                {sorting === "asc" && "Сначала самые дешевые"}
-                {sorting === "desc" && "Сначала самые дорогие"}
-              </Badge>
-            ))}
-          {activeFilter === ActiveFilter.RentTerm &&
-            [null, ...staticSchemas].map((schema, i) => (
-              <Badge
-                key={`schema ${i}`}
-                className={`${
-                  filters.schema === schema ? "bg-white" : ""
-                } cursor-pointer`}
-                onClick={() => {
-                  return setFilters({
-                    ...filters,
-                    schema: filters.schema === schema ? null : schema,
-                  });
-                }}
-              >
-                {schema
-                  ? `${schema?.working_days}/${schema?.non_working_days}`
-                  : "Любой график аренды"}
-              </Badge>
-            ))}
-          {activeFilter === ActiveFilter.TransmissionType &&
-            [TransmissionType.Automatic, TransmissionType.Mechanics, null].map(
-              (transmissionType, i) => (
-                <Badge
-                  key={`transmissionType ${i}`}
-                  className={`${
-                    filters.transmissionType === transmissionType
-                      ? "bg-white"
-                      : ""
-                  } cursor-pointer`}
-                  onClick={() => {
-                    return setFilters({
-                      ...filters,
-                      transmissionType:
-                        filters.transmissionType === transmissionType
-                          ? null
-                          : transmissionType,
-                    });
-                  }}
-                >
-                  {getTransmissionDisplayName(transmissionType)}
-                </Badge>
-              )
-            )}
-          {activeFilter === ActiveFilter.Buyout &&
-            [false, true, undefined].map((buyoutPossible, i) => (
-              <Badge
-                key={`Buyout${i}`}
-                className={`${
-                  filters.buyoutPossible === buyoutPossible ? "bg-white" : ""
-                } cursor-pointer`}
-                onClick={() => {
-                  setFilters({
-                    ...filters,
-                    buyoutPossible:
-                      filters.buyoutPossible === buyoutPossible
-                        ? undefined
-                        : buyoutPossible,
-                  });
-                }}
-              >
-                {buyoutPossible && "Выкуп"}
-                {buyoutPossible === false && "Аренда"}
-                {buyoutPossible === undefined && "Любой тип аренды"}
-              </Badge>
-            ))}
-          {activeFilter === ActiveFilter.FuelType &&
-            [
-              FuelType.Gasoline,
-              FuelType.Electric,
-              FuelType.Methane,
-              FuelType.Propane,
-              null,
-            ].map((fuelType, i) => (
-              <Badge
-                key={`fuelType ${i}`}
-                className={`${
-                  filters.fuelType === fuelType ? "bg-white" : ""
-                } cursor-pointer`}
-                onClick={() => {
-                  return setFilters({
-                    ...filters,
-                    fuelType: filters.fuelType === fuelType ? null : fuelType,
-                  });
-                }}
-              >
-                {getFuelTypeDisplayName(fuelType)}
-              </Badge>
-            ))}
         </div>
       </div>
     </>

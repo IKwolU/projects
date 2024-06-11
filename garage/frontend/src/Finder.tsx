@@ -121,7 +121,6 @@ export const Finder = () => {
   const [brands, setBrands] = useState<IBrands>({ name: "", models: [] });
   const [parksName, setParksName] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchTermStart, setSearchTermStart] = useState("");
   const [searchParkTerm, setSearchParkTerm] = useState("");
   const [overflow, setOverflow] = useState(false);
   const [isFiltersOpened, setIsFiltersOpened] = useState(false);
@@ -239,10 +238,6 @@ export const Finder = () => {
       brand.name && brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSearch = () => {
-    setSearchTerm(searchTermStart);
-  };
-
   const filteredParks = parksName.filter(
     (name: string) =>
       name && name.toLowerCase().includes(searchParkTerm.toLowerCase())
@@ -283,6 +278,9 @@ export const Finder = () => {
     <>
       {isFiltersOpened && (
         <MobileFilters
+          brands={brands}
+          close={() => setIsFiltersOpened(false)}
+          count={cars.length}
           filters={filters}
           clean={() => filtersClean()}
           result={(result) => setFilters(result)}
@@ -322,10 +320,10 @@ export const Finder = () => {
               />
               <div className="flex w-full space-x-1 overflow-hidden">
                 {!!filters.brands.length &&
-                  filters.brands.map((brand) => (
+                  filters.brands.map((brand, i) => (
                     <div
                       className="flex items-center px-1 space-x-1 text-sm rounded-xl text-nowrap flex-nowrap"
-                      key={brand}
+                      key={brand + i}
                     >
                       {filters.models.map((model) => (
                         <div
@@ -373,13 +371,8 @@ export const Finder = () => {
                 className="w-full px-2 py-2 border border-gray rounded-xl focus-visible:outline-none"
                 type="text"
                 placeholder="Введите модель"
-                value={searchTermStart}
-                onChange={(e) => setSearchTermStart(e.target.value)}
-              />
-              <FontAwesomeIcon
-                onClick={() => handleSearch()}
-                icon={faMagnifyingGlass}
-                className="h-3 p-4 text-gray bg-pale rounded-xl"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <div className="grid items-start content-start justify-start h-full grid-cols-1 py-4 pb-16 pr-1 overflow-y-auto sm:pr-0 sm:grid-cols-3 ">

@@ -113,7 +113,7 @@ class CarsController extends Controller
      *                 @OA\Property(property="variants", type="array", description="Данные о подразделениях",@OA\Items(
      *                     type="object",
      *                     @OA\Property(property="address", type="string", description="Адрес"),
-     *                     @OA\Property(property="color_metro", type="string"),
+     *                     @OA\Property(property="color_metro", type="array",@OA\Items(type="string")),
      *                     @OA\Property(property="metro", type="string", description="Координаты подразделения")
      *                 )
      *                 ),
@@ -384,14 +384,13 @@ class CarsController extends Controller
                 ->map(function ($similarCar) {
 
                     $metro = json_decode($similarCar->division->city->metro);
-                    $metroColor = null;
+                    $metroColor = [];
 
                     if ($metro) {
                         foreach ($metro->lines as $value) {
                             foreach ($value->stations as $item) {
                                 if ($item === $similarCar->division->metro) {
-                                    $metroColor = $value->color;
-                                    break 2;
+                                    $metroColor[] = $value->color;
                                 }
                             }
                         }

@@ -96,7 +96,7 @@ function App() {
       )}
       {(!user || user.user_type === UserType.Driver) && (
         <div className="max-w-sm p-4 sm:px-2 xl:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
-          <div className="flex items-end justify-end mb-2">
+          <div className="flex items-center justify-end h-10 mb-2 sm:items-end sm:h-auto">
             <FontAwesomeIcon
               icon={faLocationDot}
               className="h-4 mr-2 sm:h-5 text-gray mb-0.5"
@@ -139,14 +139,11 @@ const LogoutHandler = () => {
 };
 
 const Menu = ({ user }: { user: User }) => (
-  <div className="flex items-start justify-between w-full space-x-4 sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px]  sm:justify-between  lg:max-w-[1208px]">
+  <div className="flex items-start justify-between w-full  sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px]  sm:justify-between  lg:max-w-[1208px]">
     <Link to="/" className="">
       <div className="flex flex-col md:flex-row md:items-end">
         <div className="mr-6 text-2xl font-bold sm:text-3xl"> BeeBeep </div>{" "}
-        <div className="font-regular sm:text-lg">
-          {" "}
-          cервис аренды автомобилей{" "}
-        </div>
+        <div className="font-regular sm:text-lg">cервис аренды автомобилей</div>
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
     </Link>
@@ -166,31 +163,32 @@ const Menu = ({ user }: { user: User }) => (
       </Link>
     )} */}
     {user && (
-      <Popover>
-        <PopoverTrigger asChild>
-          <FontAwesomeIcon icon={faBars} className="mt-2 cursor-pointer" />
-        </PopoverTrigger>
-        <PopoverContent className="w-64 mx-4 space-y-1 rounded-xl">
-          <Link
-            className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
-            to="bookings"
-          >
-            Моё бронирование
-          </Link>
-          {/* <Separator /> */}
-          <Link
-            className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
-            to="https://forms.yandex.ru/cloud/6617d44102848f0fb4b9bbf5/"
-            target="_blank"
-          >
-            {/* <FontAwesomeIcon
+      <div className="absolute m-0 space-x-0 top-5 sm:relative">
+        <Popover>
+          <PopoverTrigger asChild>
+            <FontAwesomeIcon icon={faBars} className="mt-2 cursor-pointer" />
+          </PopoverTrigger>
+          <PopoverContent className="w-64 mx-4 space-y-1 rounded-xl">
+            <Link
+              className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
+              to="bookings"
+            >
+              Моё бронирование
+            </Link>
+            {/* <Separator /> */}
+            <Link
+              className="flex items-center p-2 text-base hover:bg-grey hover:rounded-md"
+              to="https://forms.yandex.ru/cloud/6617d44102848f0fb4b9bbf5/"
+              target="_blank"
+            >
+              {/* <FontAwesomeIcon
               icon={faPhoneVolume}
               className="h-4 mr-2 sm:h-5 hover:text-yellow"
             /> */}
-            Поддержка
-          </Link>
-          {/* <Separator /> */}
-          {/* <CommandGroup className="w-[200px] p-0 h-96 overflow-y-scroll">
+              Поддержка
+            </Link>
+            {/* <Separator /> */}
+            {/* <CommandGroup className="w-[200px] p-0 h-96 overflow-y-scroll">
           {allCities.map((c: string) => (
             <CommandItem
               key={c}
@@ -211,37 +209,34 @@ const Menu = ({ user }: { user: User }) => (
           ))}
         </CommandGroup> */}
 
-          <div className="flex items-center text-black cursor-pointer">
-            <Confirmation
-              accept={LogoutHandler}
-              cancel={() => {}}
-              title="Выйти из аккаунта?"
-              trigger={
-                <div className="flex items-center p-2 cursor-pointer hover:bg-grey hover:rounded-md">
-                  <FontAwesomeIcon
-                    icon={faArrowRightFromBracket}
-                    className="h-4 mr-2 transition-all duration-300 rounded-md sm:h-5"
-                  />
-                  <span>Выйти</span>
-                </div>
-              }
-              type="red"
-            />
-          </div>
-        </PopoverContent>
-      </Popover>
+            <div className="flex items-center text-black cursor-pointer">
+              <Confirmation
+                accept={LogoutHandler}
+                cancel={() => {}}
+                title="Выйти из аккаунта?"
+                trigger={
+                  <div className="flex items-center p-2 cursor-pointer hover:bg-grey hover:rounded-md">
+                    <FontAwesomeIcon
+                      icon={faArrowRightFromBracket}
+                      className="h-4 mr-2 transition-all duration-300 rounded-md sm:h-5"
+                    />
+                    <span>Выйти</span>
+                  </div>
+                }
+                type="red"
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
     )}
     {!user && (
       <Link
-        className="flex items-center mt-2 hover:text-gray"
+        className="absolute top-0 flex items-center mt-2 sm:relative hover:text-gray"
         to="login/driver"
       >
-        <Button
-          variant="outline"
-          style={{ width: "105px", flexShrink: 0, padding: 0 }}
-        >
-          {" "}
-          <div className="flex items-center justify-center p-0">
+        <Button variant="outline" className="w-[105px] shrink-0">
+          <div className="flex items-center justify-center p-0 ">
             <FontAwesomeIcon
               icon={faArrowRightToBracket}
               className="h-4 mr-2 cursor-pointer sm:h-5"

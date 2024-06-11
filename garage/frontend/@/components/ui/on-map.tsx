@@ -21,7 +21,7 @@ import citiesCoords from "../../../../backend/public/cities_coords.json";
 import { Card } from "../../../src/Card";
 import { Button } from "./button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faListUl } from "@fortawesome/free-solid-svg-icons";
 import { client } from "../../../src/backend";
 
 type CarFilter = {
@@ -160,7 +160,7 @@ const OnMap = ({ filters, close }: OnMapProps) => {
         <Map
           state={mapState}
           width={"100%"}
-          height={isFullScreen ? "75vh" : "20vh"}
+          height={isFullScreen ? "75vh" : "0vh"}
         >
           <Clusterer
             options={{
@@ -189,9 +189,15 @@ const OnMap = ({ filters, close }: OnMapProps) => {
         </Map>
       </YMaps>
       {isFullScreen && (
-        <div className="fixed left-0 flex w-full h-0 mx-auto top-64">
-          <Button onClick={() => close()} className="mx-auto w-44">
-            Назад
+        <div className="fixed flex w-full h-0 mx-auto left-4 bottom-14">
+          <Button
+            onClick={() => close()}
+            className="w-24 h-10 bg-white shadow-md shadow-gray"
+          >
+            <div className="flex items-center mx-auto space-x-2 text-sm font-semibold">
+              <FontAwesomeIcon icon={faListUl} className="w-4 h-4 m-0" />{" "}
+              <span>Список</span>
+            </div>
           </Button>
         </div>
       )}

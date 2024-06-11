@@ -93,10 +93,15 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <CollapsibleTrigger className="relative flex items-center gap-1 p-0 mb-0 text-sm text-left">
-                          <img src={MoscMetro} alt="" className="w-3 h-auto" />
+                          {car.variants![0].color_metro!.map((x) => (
+                            <span
+                              style={{ backgroundColor: x }}
+                              key={x}
+                              className="w-[5px] h-[5px] rounded-full"
+                            ></span>
+                          ))}
                           <span
                             style={{ color: `${car.variants![0].color_metro}` }}
-                            // className={`text-[${car.variants![0].color_metro?.toLowerCase()}]`}
                           >
                             {car.variants![0].metro}
                           </span>
@@ -115,20 +120,14 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                                   className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
                                   key={variant.metro}
                                 >
-                                  <img
-                                    src={MoscMetro}
-                                    alt=""
-                                    className="w-3 h-auto"
-                                  />
-                                  <span
-                                    style={{
-                                      color: `${variant!.color_metro}`,
-                                    }}
-
-                                    // className={`text-[${variant.color_metro}]`}
-                                  >
-                                    {variant.metro}
-                                  </span>
+                                  {car.variants![0].color_metro!.map((x) => (
+                                    <span
+                                      style={{ backgroundColor: x }}
+                                      key={x}
+                                      className="w-[5px] h-[5px] rounded-full"
+                                    ></span>
+                                  ))}
+                                  <span>{variant.metro}</span>
                                 </div>
                               )}
                             </div>

@@ -3214,7 +3214,10 @@
                                                                     "type": "string"
                                                                 },
                                                                 "color_metro": {
-                                                                    "type": "string"
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
                                                                 },
                                                                 "metro": {
                                                                     "description": "Координаты подразделения",

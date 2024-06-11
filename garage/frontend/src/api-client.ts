@@ -21786,7 +21786,7 @@ export interface IDivision {
 export class Variants implements IVariants {
     /** Адрес */
     address?: string;
-    color_metro?: string;
+    color_metro?: string[];
     /** Координаты подразделения */
     metro?: string;
 
@@ -21808,7 +21808,11 @@ export class Variants implements IVariants {
                     this[property] = _data[property];
             }
             this.address = _data["address"];
-            this.color_metro = _data["color_metro"];
+            if (Array.isArray(_data["color_metro"])) {
+                this.color_metro = [] as any;
+                for (let item of _data["color_metro"])
+                    this.color_metro!.push(item);
+            }
             this.metro = _data["metro"];
         }
     }
@@ -21827,7 +21831,11 @@ export class Variants implements IVariants {
                 data[property] = this[property];
         }
         data["address"] = this.address;
-        data["color_metro"] = this.color_metro;
+        if (Array.isArray(this.color_metro)) {
+            data["color_metro"] = [];
+            for (let item of this.color_metro)
+                data["color_metro"].push(item);
+        }
         data["metro"] = this.metro;
         return data;
     }
@@ -21836,7 +21844,7 @@ export class Variants implements IVariants {
 export interface IVariants {
     /** Адрес */
     address?: string;
-    color_metro?: string;
+    color_metro?: string[];
     /** Координаты подразделения */
     metro?: string;
 

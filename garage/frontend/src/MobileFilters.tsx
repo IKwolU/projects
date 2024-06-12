@@ -199,44 +199,47 @@ export const MobileFilters = ({
                 <div className="flex w-full space-x-1 overflow-hidden">
                   {!!filters.brands.length &&
                     filters.brands.map((brand, i) => {
-                      const modelsInBrand = brands.filter(
-                        (x: any) => x.name === brand
-                      ).models;
+                      const isLastModelInBrand =
+                        brands
+                          .find((x: any) => x.name === brand)
+                          ?.models.filter((x) => filters.models.includes(x))
+                          .length < 2;
+
                       return (
                         <div
                           className="flex items-center px-1 space-x-1 text-sm rounded-xl text-nowrap flex-nowrap"
                           key={brand + i}
                         >
-                          {filters.models.map((model) => {
-                            return (
-                              <div
-                                className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
-                                key={model}
-                              >
-                                {brand} {model}
-                                <FontAwesomeIcon
-                                  className="ml-1 text-gray"
-                                  icon={faXmark}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    result({
-                                      ...filters,
-                                      models: [
-                                        ...filters.models.filter(
-                                          (x) => x !== model
-                                        ),
-                                      ],
-                                      brands: [
-                                        ...filters.brands.filter(
-                                          (x) => x !== brand
-                                        ),
-                                      ],
-                                    });
-                                  }}
-                                />
-                              </div>
-                            );
-                          })}
+                          {filters.models.map((model) => (
+                            <div
+                              className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                              key={model}
+                            >
+                              {brand} {model}
+                              <FontAwesomeIcon
+                                className="ml-1 text-gray"
+                                icon={faXmark}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  result({
+                                    ...filters,
+                                    models: [
+                                      ...filters.models.filter(
+                                        (x) => x !== model
+                                      ),
+                                    ],
+                                    brands: isLastModelInBrand
+                                      ? [
+                                          ...filters.brands.filter(
+                                            (x) => x !== brand
+                                          ),
+                                        ]
+                                      : [...filters.brands],
+                                  });
+                                }}
+                              />
+                            </div>
+                          ))}
                         </div>
                       );
                     })}

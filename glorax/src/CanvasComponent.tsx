@@ -372,7 +372,7 @@ function CanvasComponent() {
 
         <OBJModel
           scale={[1, 1, 1]}
-          file="/models/06.07map.gltf"
+          file="/models/1106editmap.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[0, -4, 0]}
           opacity={0.93}
@@ -380,8 +380,8 @@ function CanvasComponent() {
           isOpacity={false}
         />
         {/* <OBJModel
-          scale={[0.2, 0.2, 0.2]}
-          file="/models/flag1.gltf"
+          scale={[10, 10, 10]}
+          file="/models/location-point.gltf"
           texture={ColorToTexture(new THREE.Color(65, 105, 225))}
           position={[-2.4, -4.4, 1.65]}
           opacity={0.93}
@@ -416,7 +416,15 @@ function CanvasComponent() {
                   isOpacity={true}
                 />
               }
-
+              <OBJModel
+                file={`/models/${currentNavigationData!.start_point_file}`}
+                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                position={currentNavigationData!.start_point_position}
+                scale={[5, 5, 5]}
+                opacity={0.8}
+                rotate={currentNavigationData!.point_rotate}
+                isOpacity={true}
+              />
               {/* {(currentTime < currentNavigationData!.selection_time + 10
                 ? Math.floor(currentTime) % 2 === 0
                 : currentTime > currentNavigationData!.selection_time + 10) && ( */}
@@ -431,7 +439,7 @@ function CanvasComponent() {
                 //   isOpacity={true}
                 // />
                 <OBJModel
-                  file="/models/number.gltf"
+                  file="/models/arrowyellowglorax.gltf"
                   texture={ColorToTexture(new THREE.Color(65, 105, 225))}
                   position={currentNavigationData!.point_position}
                   scale={[5, 5, 5]}
@@ -439,6 +447,7 @@ function CanvasComponent() {
                   rotate={currentNavigationData!.point_rotate}
                   isOpacity={true}
                 />
+
                 // <OBJModel
                 //   file="/models/arrow glorax.gltf"
                 //   texture={ColorToTexture(new THREE.Color(65, 105, 225))}

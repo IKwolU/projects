@@ -18,11 +18,6 @@
   outline: none;
 }
 
-*:hover {
-  border: none;
-  outline: none;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -89,6 +84,25 @@ input[type="range"]::-webkit-slider-thumb {
   background: #8e6d4f;
   border-radius: 50%;
   cursor: pointer;
+  border-color: #8e6d4f;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #8e6d4f;
+  border-radius: 50%;
+  cursor: pointer;
+  border-color: #8e6d4f;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 12px;
+  height: 12px;
+  background: #8e6d4f;
+  border-radius: 50%;
+  cursor: pointer;
+  border-color: #8e6d4f;
 }
 
 .slick-next {

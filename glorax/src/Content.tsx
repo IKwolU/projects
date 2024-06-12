@@ -24,7 +24,7 @@ function Content() {
   const [isContentShow, setIsContentShow] = useState(true);
   const [, setAudioTime] = useState(0);
   const [currentTime] = useRecoilState(currentTimeAtom);
-  const [currentNav, setCurrentNav] = useRecoilState(navigationTimeAtom);
+  const [, setCurrentNav] = useRecoilState(navigationTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
@@ -74,31 +74,32 @@ function Content() {
 
   const helpers = content[0].helpers;
 
-  const handleClosedHalper = (i: number) => {
+  const handleClosedHelper = (i: number) => {
     helpers[i].closed = true;
   };
 
-  const currentNavigationData = content[0].nav_variants.find(
-    (x) => x.id === currentNav
-  );
+  // const currentNavigationData = content[0].nav_variants.find(
+  //   (x) => x.id === currentNav
+  // );
 
   return (
     <>
       {helpers.map((x, i) => (
         <>
-          {x.time < currentTime && !x.closed && (
-            <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-black">
-              <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto flex flex-col shadow-sm">
+          {!x.closed && x.time < currentTime && (
+            <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
+              <div className="p-4 pb-2 space-y-1 bg-lightpink rounded w-[300px] h-auto flex flex-col shadow-sm border-brown hover:border-brown border hover:border">
                 <div className="flex flex-col items-center py-2 mx-auto space-y-2 w-fit">
                   <h3 className="text-lg font-bold">{x.title}</h3>
                   <p className="py-2 text-lg text-center">{x.text}</p>
-
-                  <button
-                    className="w-full px-4 py-2 mx-auto text-white rounded-full bg-blue "
-                    onClick={() => handleClosedHalper(i)}
-                  >
-                    Далее
-                  </button>
+                  <div className="flex justify-start w-full">
+                    <img
+                      onClick={() => handleClosedHelper(i)}
+                      src="/img/glorax_halp_arrow.svg"
+                      alt=""
+                      className="cursor-pointer"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -106,8 +107,8 @@ function Content() {
         </>
       ))}
       {isHelpShowed && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-black">
-          <div className="p-4 space-y-1 bg-white rounded w-[300px] h-auto flex flex-col shadow-sm">
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown">
+          <div className="p-4 space-y-1 bg-lightpink rounded-xl w-[300px] h-auto flex flex-col shadow-sm border-brown border">
             {/* <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
               <p>Давайте начнем двигаться:</p>
               <div className="flex items-center space-x-4">
@@ -132,7 +133,7 @@ function Content() {
               alt=""
               className="object-contain w-full h-40"
             />*/}
-            <div className="text-center">Ваш вариант истории:</div>
+            <div className="font-bold text-center">Ваш вариант истории:</div>
             <div className="flex items-center justify-center py-4 my-4 space-x-9">
               {content[0].nav_variants
                 .filter((y) => y.selection_icon)
@@ -147,22 +148,15 @@ function Content() {
                   </div>
                 ))}
             </div>
-            {!currentNavigationData!.selection_icon && (
-              <button
-                className="px-4 py-1 mx-auto text-white rounded-full bg-blue bg-opacity-70 "
-                disabled
-              >
-                Продолжить
-              </button>
-            )}
-            {currentNavigationData!.selection_icon && (
-              <button
-                className="px-4 py-1 mx-auto text-white rounded-full bg-blue "
+
+            <div className="flex justify-start w-full ">
+              <img
+                src="/img/glorax_halp_arrow.svg"
+                alt=""
+                className="cursor-pointer"
                 onClick={() => setIsHelpShowed(false)}
-              >
-                Продолжить
-              </button>
-            )}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -188,26 +182,24 @@ function Content() {
         >
           <div className="p-4 pb-2 rounded-[5px] bg-lightpink uppercase">
             {[
-              "История дома Башкирова",
-              "История дома Бугрова",
-              "История дома Дягтерёва",
-              "История дома Балакирева",
-              "История дома Килевейна",
-              "История Благовещенских башен",
+              "Дом Башкирова",
+              "Дом Бугрова",
+              "Дом Дягтерёва",
+              "Дом Балакирева",
+              "Дом Килевейна",
+              "Благовещенские башни",
               "Иммерсивный маршрут",
-              "Вопрос | Ответ",
+              "Инструкции",
             ].map((x) => (
               <div key={x}>
                 <div
-                  className="mb-2  p-0.5 px-2  hover:bg-pink hover:text-brown hover:opacity-70  border-none rounded-[5px]  cursor-pointer transition-colors "
-                  onClick={() => x === "Вопрос | Ответ" && handleQuestionOpen()}
+                  className="mb-2  p-0.5 px-2  hover:text-blue  hover:opacity-70  border-none rounded-[5px]  cursor-pointer transition-colors "
+                  onClick={() => x === "Инструкции" && handleQuestionOpen()}
                 >
                   {x}
                 </div>
                 <div
-                  className={`${
-                    x !== "Вопрос | Ответ" && "h-px bg-brown my-2"
-                  }`}
+                  className={`${x !== "Инструкции" && "h-px bg-brown my-2"}`}
                 ></div>
               </div>
             ))}
@@ -278,7 +270,7 @@ function Content() {
               <div className="">
                 <p
                   onClick={() => setQuestionId(i)}
-                  className="p-1 uppercase transition-colors rounded cursor-pointer hover:bg-pink text-brown hover:text-brown"
+                  className="p-1 uppercase transition-colors rounded cursor-pointer hover:text-blue text-brown "
                 >
                   {question}
                 </p>
@@ -327,9 +319,7 @@ function Content() {
             >
               <div className="overflow-y-auto">
                 <div className="flex items-center justify-between h-12 mt-2 ml-4">
-                  <p className="m-0 -mt-2 font-semibold text-brown">
-                    {x.title}
-                  </p>
+                  <p className="m-0 -mt-2 uppercase text-brown">{x.title}</p>
                   <img
                     src={logo}
                     alt=""
@@ -448,14 +438,14 @@ function Content() {
                         <div className="flex items-center space-x-2">
                           <FontAwesomeIcon
                             icon={faClock}
-                            className={`h-4 transition-transform  `}
+                            className={`h-4 transition-transform  text-brown`}
                           />{" "}
                           <p> 7мин</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <FontAwesomeIcon
                             icon={faPersonWalking}
-                            className={`h-4 transition-transform  `}
+                            className={`h-4 transition-transform  text-brown`}
                           />{" "}
                           <p> 650м</p>
                         </div>

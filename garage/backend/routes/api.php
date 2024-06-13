@@ -49,46 +49,62 @@ Route::post('cars/app-data', [DriverController::class, 'getFinderFilterData']);
 Route::get('car', [CarsController::class, 'GetCar']);
 Route::post('user/login', [AuthController::class, 'loginOrRegister']);
 Route::post('user/code', [AuthController::class, 'CreateAndSendCode']);
-Route::group(['middleware' => ['auth:sanctum', 'check.manager']], function () {
-    Route::get('manager/park', [ManagerController::class, 'getParkManager']);
-    Route::get('manager/park/key', [ManagerController::class, 'getParkKeyManager']);
-    Route::post('manager/cars', [ManagerController::class, 'pushCarsManager']);
-    Route::put('manager/cars', [ManagerController::class, 'updateCarManager']);
-    Route::put('manager/cars/rent-term', [ManagerController::class, 'updateCarRentTermManager']);
-    Route::put('manager/cars/status', [ManagerController::class, 'updateCarStatusManager']);
-    Route::post('manager/parks/rent-terms', [ManagerController::class, 'createOrUpdateRentTermManager']);
-    Route::put('manager/parks', [ManagerController::class, 'updateParkInfoManager']);
-    Route::post('manager/parks/division', [ManagerController::class, 'createParkDivisionManager']);
-    Route::post('manager/parks/tariff', [ManagerController::class, 'createTariffManager']);
-    Route::put('manager/parks/tariff', [ManagerController::class, 'updateTariffManager']);
-    Route::put('manager/parks/division', [ManagerController::class, 'updateParkDivisionManager']);
-    Route::put('manager/cars/booking', [ManagerController::class, 'updateCarBookingStatusManager']);
-    Route::put('manager/cars/booking/prolongation', [ManagerController::class, 'BookProlongationManager']);
-    Route::put('manager/cars/booking/replace', [ManagerController::class, 'BookReplaceManager']);
-    Route::post('manager/cars/client', [ManagerController::class, 'pushCarsFromParkClientManager']);
-    Route::post('manager/statuses/client', [ManagerController::class, 'pushStatusesFromParkClientManager']);
-    Route::post('manager/cars/photos', [ManagerController::class, 'pushPhotosToCarsManager']);
-    Route::post('manager/cars/division', [ManagerController::class, 'assignCarsToDivisionManager']);
-    Route::post('manager/cars/rent-term', [ManagerController::class, 'assignCarsToRentTermManager']);
-    Route::post('manager/cars/tariff', [ManagerController::class, 'assignCarsToTariffManager']);
-    Route::get('manager/statuses', [ManagerController::class, 'getParkStatusesForCarsManager']);
-    Route::get('manager/cars/statuses/client', [ManagerController::class, 'getCarsCurrentStatusesFromClientManager']);
-    Route::put('manager/status', [ManagerController::class, 'changeParkStatusManager']);
-    Route::put('manager/auth/data', [ManagerController::class, 'pushAuthDataManager']);
-    Route::get('manager/bookings', [ManagerController::class, 'getParkBookingsManager']);
-    Route::delete('manager/schema', [ManagerController::class, 'deleteSchemaManager']);
-    Route::post('manager/test', [ManagerController::class, 'test']);
-    Route::post('manager/applications', [ManagerController::class, 'getParkApplicationsManager']);
-    Route::post('manager/notification', [ManagerController::class, 'createNotificationManager']);
-    Route::get('manager/notifications', [ManagerController::class, 'getNotificationsManager']);
-    Route::put('manager/notification', [ManagerController::class, 'updateNotificationManager']);
-    Route::post('manager/application', [ManagerController::class, 'createApplicationManager']);
-    Route::put('manager/application', [ManagerController::class, 'updateApplicationManager']);
-    Route::post('manager/application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
-    Route::get('/manager/park/inventory-lists', [ManagerController::class, 'getParkInventoryListsManager']);
-    Route::put('/manager/park/inventory-list', [ManagerController::class, 'changeParkInventoryListItemManager']);
-    Route::post('/manager/park/inventory-list', [ManagerController::class, 'createParkInventoryListItemManager']);
-    Route::delete('/manager/park/inventory-list', [ManagerController::class, 'deleteParkInventoryListItemManager']);
-    Route::get('/manager/parks/data', [ManagerController::class, 'getParksInitDataSuperManager']);
-    Route::post('/manager/park/select', [ManagerController::class, 'selectParkForSuperManager']);
+
+
+Route::prefix('manager')->group(function () {
+    Route::middleware(['auth:sanctum', 'check.manager'])->group(function () {
+
+        Route::prefix('cars')->group(function () {
+            Route::post('', [ManagerController::class, 'pushCarsManager']);
+            Route::put('', [ManagerController::class, 'updateCarManager']);
+            Route::put('rent-term', [ManagerController::class, 'updateCarRentTermManager']);
+            Route::put('status', [ManagerController::class, 'updateCarStatusManager']);
+            Route::put('booking', [ManagerController::class, 'updateCarBookingStatusManager']);
+            Route::put('booking/prolongation', [ManagerController::class, 'BookProlongationManager']);
+            Route::put('booking/replace', [ManagerController::class, 'BookReplaceManager']);
+            Route::post('client', [ManagerController::class, 'pushCarsFromParkClientManager']);
+            Route::post('photos', [ManagerController::class, 'pushPhotosToCarsManager']);
+            Route::post('division', [ManagerController::class, 'assignCarsToDivisionManager']);
+            Route::post('rent-term', [ManagerController::class, 'assignCarsToRentTermManager']);
+            Route::post('tariff', [ManagerController::class, 'assignCarsToTariffManager']);
+            Route::get('statuses/client', [ManagerController::class, 'getCarsCurrentStatusesFromClientManager']);
+        });
+
+        Route::prefix('park')->group(function () {
+            Route::get('', [ManagerController::class, 'getParkManager']);
+            Route::get('key', [ManagerController::class, 'getParkKeyManager']);
+            Route::post('select', [ManagerController::class, 'selectParkForSuperManager']);
+            Route::get('inventory-lists', [ManagerController::class, 'getParkInventoryListsManager']);
+            Route::put('inventory-list', [ManagerController::class, 'changeParkInventoryListItemManager']);
+            Route::post('inventory-list', [ManagerController::class, 'createParkInventoryListItemManager']);
+            Route::delete('inventory-list', [ManagerController::class, 'deleteParkInventoryListItemManager']);
+        });
+
+        Route::prefix('parks')->group(function () {
+            Route::post('rent-terms', [ManagerController::class, 'createOrUpdateRentTermManager']);
+            Route::put('', [ManagerController::class, 'updateParkInfoManager']);
+            Route::post('division', [ManagerController::class, 'createParkDivisionManager']);
+            Route::post('tariff', [ManagerController::class, 'createTariffManager']);
+            Route::put('tariff', [ManagerController::class, 'updateTariffManager']);
+            Route::put('division', [ManagerController::class, 'updateParkDivisionManager']);
+            Route::get('data', [ManagerController::class, 'getParksInitDataSuperManager']);
+        });
+
+        Route::post('statuses/client', [ManagerController::class, 'pushStatusesFromParkClientManager']);
+        Route::get('statuses', [ManagerController::class, 'getParkStatusesForCarsManager']);
+        Route::put('status', [ManagerController::class, 'changeParkStatusManager']);
+        Route::put('auth/data', [ManagerController::class, 'pushAuthDataManager']);
+        Route::get('bookings', [ManagerController::class, 'getParkBookingsManager']);
+        Route::delete('schema', [ManagerController::class, 'deleteSchemaManager']);
+        Route::post('test', [ManagerController::class, 'test']);
+        Route::post('applications', [ManagerController::class, 'getParkApplicationsManager']);
+        Route::post('notification', [ManagerController::class, 'createNotificationManager']);
+        Route::get('notifications', [ManagerController::class, 'getNotificationsManager']);
+        Route::put('notification', [ManagerController::class, 'updateNotificationManager']);
+        Route::post('application', [ManagerController::class, 'createApplicationManager']);
+        Route::post('application/comment', [ManagerController::class, 'createApplicationCommentManager']);
+        Route::put('application', [ManagerController::class, 'updateApplicationManager']);
+        Route::post('application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
+
+    });
 });

@@ -20,5 +20,6 @@ enum ApplicationLogType: int
     case Stage = 2;
     case Content = 3;
     case Notification = 4;
+    case Comment = 5;
 
 }

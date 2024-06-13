@@ -459,13 +459,19 @@ export const BookingKanban = () => {
               key={column}
               className="min-h-full p-1 bg-white border-2 min-w-48 border-pale rounded-xl "
             >
-              <div className="h-16 mb-4 text-center border-b-2 border-pale">
+              <div className="relative h-16 mb-4 text-center border-b-2 border-pale">
                 {getApplicationStageDisplayName(column)}
                 {column === ApplicationStage.New && (
                   <Button onClick={() => setShowModal(true)} className="h-8">
                     Создать
                   </Button>
                 )}
+                <div className="absolute top-0 right-0 px-2 py-0 text-sm rounded-lg bg-lightgrey">
+                  {
+                    sortedApplications.filter((x) => x.current_stage === column)
+                      .length
+                  }
+                </div>
               </div>
               <Droppable droppableId={column} key={column}>
                 {(provided) => (

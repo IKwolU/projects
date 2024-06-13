@@ -82,6 +82,9 @@ class KanbanController extends Controller
                     "new_content" => $request->new_content
                 ];
         }
+        if ($request->type === ApplicationLogType::Comment->value) {
+            $logItem->content = $request->comment;
+    }
         if ($request->type === ApplicationLogType::Notification->value) {
             if (!$request->date) {
                 return response()->json(['error' => 'Не указана дата']);

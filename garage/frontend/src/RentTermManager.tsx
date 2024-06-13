@@ -237,16 +237,7 @@ export const RentTermManager = () => {
         ...newRentTerm,
         schemas: [...newRentTerm.schemas.filter((schema) => schema.id !== id)],
       });
-      setPark({
-        ...park,
-        rent_terms: [
-          ...rentTerms!.filter((rentTerm) => rentTerm.id !== selectedId),
-          new Rent_terms({
-            ...selected,
-            schemas: [...selected.schemas, new Schemas(newSchema)],
-          }),
-        ],
-      });
+      getPark();
     }
   };
 

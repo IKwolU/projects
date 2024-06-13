@@ -96,10 +96,10 @@ function App() {
       )}
       {(!user || user.user_type === UserType.Driver) && (
         <div className="max-w-sm p-4 sm:px-2 xl:px-0 mx-auto sm:max-w-[800px] lg:max-w-[1208px]">
-          <div className="flex items-center justify-end h-10 mb-2 sm:items-end sm:h-auto">
+          <div className="flex items-center justify-end h-4 mb-[5px] sm:items-end sm:h-auto">
             <FontAwesomeIcon
               icon={faLocationDot}
-              className="h-4 mr-2 sm:h-5 text-gray mb-0.5"
+              className="h-[7px] sm:mr-2 mr-[2px] sm:h-5 text-gray mb-0.5"
             />
             <CityPicker />
           </div>
@@ -142,8 +142,11 @@ const Menu = ({ user }: { user: User }) => (
   <div className="flex items-start justify-between w-full  sm:mx-0 sm:mb-2 sm:w-full sm:space-x-8 sm:max-w-[800px]  sm:justify-between  lg:max-w-[1208px]">
     <Link to="/" className="">
       <div className="flex flex-col md:flex-row md:items-end">
-        <div className="mr-6 text-2xl font-bold sm:text-3xl"> BeeBeep </div>{" "}
-        <div className="font-regular sm:text-lg">cервис аренды автомобилей</div>
+        <div className="mr-6 text-[21px] sm:py-2 py-[5px] font-bold sm:text-3xl">
+          {" "}
+          BeeBeep{" "}
+        </div>{" "}
+        {/* <div className="font-regular sm:text-lg">cервис аренды автомобилей</div> */}
       </div>
       {/* <img className="h-5 sm:h-7" src={logo} alt="logo" /> */}
     </Link>
@@ -163,10 +166,13 @@ const Menu = ({ user }: { user: User }) => (
       </Link>
     )} */}
     {user && (
-      <div className="absolute m-0 space-x-0 top-5 sm:relative">
+      <div className="absolute m-0 space-x-0 sm:top-5 top-3 sm:relative">
         <Popover>
           <PopoverTrigger asChild>
-            <FontAwesomeIcon icon={faBars} className="mt-2 cursor-pointer" />
+            <FontAwesomeIcon
+              icon={faBars}
+              className="mt-0 cursor-pointer sm:mt-2"
+            />
           </PopoverTrigger>
           <PopoverContent className="w-64 mx-4 space-y-1 rounded-xl">
             <Link
@@ -235,13 +241,16 @@ const Menu = ({ user }: { user: User }) => (
         className="absolute top-0 flex items-center mt-2 sm:relative hover:text-gray"
         to="login/driver"
       >
-        <Button variant="outline" className="w-[105px] shrink-0">
+        <Button
+          variant="outline"
+          className="sm:w-[105px] w-20 shrink-0 rounded-[5px] sm:rounded-xl sm:h-12 h-[23px]"
+        >
           <div className="flex items-center justify-center p-0 ">
             <FontAwesomeIcon
               icon={faArrowRightToBracket}
-              className="h-4 mr-2 cursor-pointer sm:h-5"
+              className="h-[11px]  sm:mr-2 mr-[5px] cursor-pointer sm:h-5"
             />
-            <span className=" sm:text-base">Войти</span>
+            <span className=" sm:text-base text-[10px]">Войти</span>
           </div>
         </Button>
       </Link>

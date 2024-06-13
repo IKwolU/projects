@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Cars3, Schemas3 } from "./api-client";
-import MoscMetro from "./assets/Moscow_Metro.svg";
 import {
   formatRoubles,
   getFuelTypeDisplayName,
@@ -13,24 +12,19 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
-import SliderImages from "@/components/ui/slider-images";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { LoginAndBook } from "./LoginAndBook";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@radix-ui/react-collapsible";
 
 export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
   const currentSchemas: Schemas3[] = car.rent_term!.schemas!.sort(
     (a: any, b: any) => a.daily_amount! - b.daily_amount!
   );
   const [isBookOpen, setIsBookOpen] = useState(false);
+  const [openedStationsId, setOpenedStationsId] = useState<number>(-1);
 
   return (
     <>
@@ -55,97 +49,109 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
         >
           <div>
             <div className="flex">
-              <div className="flex w-full">
-                <img
-                  src={car!.images![0]}
-                  className={`w-1/3 rounded-2xl max-h-20 object-cover`}
-                  alt=""
-                />
-                <div className="relative flex flex-col w-2/3 px-2">
-                  <div className="flex justify-between">
-                    <h4>Парк {car.park_name}</h4>
-                    {car.cars_count! > 1 && (
-                      <h2 className="absolute right-0 px-3 py-[2px] mb-0 font-medium text-center rounded-full shadow -top-2 bg-grey bg-opacity-80">
-                        {car.cars_count} авто
-                      </h2>
-                    )}
+              <div className="relative w-full">
+                <div className="relative w-full">
+                  <div className="absolute z-50 px-2 py-0 mx-[7px] my-1 text-[13px] font-medium text-black bg-white shadow bg-opacity-90 rounded-2xl ">
+                    Парк &laquo;{car.park_name}&raquo;
                   </div>
+                  <img
+                    src={car!.images![0]}
+                    className={`w-full rounded-[8px]   h-[calc((100vw-68px)/2)] object-cover`}
+                    alt=""
+                  />
+                  {/* {car.cars_count! > 1 && (
+                    <h2 className="absolute px-2 py-0 mb-0 font-medium text-center text-black bg-white rounded-full shadow left-1 bottom-1 ">
+                      {car.cars_count} авто
+                    </h2>
+                  )} */}
+                </div>
 
-                  <div className="mb-1 text-lg md:text-xl">
-                    <h4 className="m-0">
-                      {`${car.brand} ${car.model}`}{" "}
-                      <span className="font-normal">{car.year_produced}</span>
+                <div className="relative flex flex-col w-full px-0 pt-2">
+                  <div className="w-full mb-1 text-lg md:text-xl">
+                    <h4 className="m-0 text-2xl">
+                      {`${car.brand} ${car.model}`}
                     </h4>
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-2">
+                      <span className="text-sm w-fit text-zinc-400">
+                        {car.year_produced}
+                      </span>
+                      <div className="flex items-center">
+                        <div className="w-[3px] h-[3px] rounded-full bg-zinc-400"></div>
+                      </div>
                       <div className="text-sm w-fit text-zinc-400">
                         {getTransmissionDisplayName(car.transmission_type)}
                       </div>
                       <div className="flex items-center">
-                        <div className="w-1 h-1 rounded-full bg-zinc-400"></div>
+                        <div className="w-[3px] h-[3px] rounded-full bg-zinc-400"></div>
                       </div>
                       <div className="text-sm w-fit text-zinc-400">
                         {getFuelTypeDisplayName(car.fuel_type)}
                       </div>
                     </div>
                     {car.variants![0].metro && (
-                      <Collapsible
-                        className="p-0 m-0"
+                      <div
+                        className="flex p-0 m-0 space-x-2"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <CollapsibleTrigger className="relative flex items-center gap-1 p-0 mb-0 text-sm text-left">
+                        <div className="flex items-center gap-1 text-sm">
                           {car.variants![0].color_metro!.map((x) => (
-                            <span
+                            <div
                               style={{ backgroundColor: x }}
                               key={x}
                               className="w-[5px] h-[5px] rounded-full"
-                            ></span>
+                            ></div>
                           ))}
-                          <span
-                            style={{ color: `${car.variants![0].color_metro}` }}
-                          >
-                            {car.variants![0].metro}
-                          </span>
+                          <span>{car.variants![0].metro}</span>
+                        </div>
+                        <div className="relative text-sm underline text-nowrap">
                           {car.variants!.length > 1 && (
-                            <FontAwesomeIcon
-                              icon={faChevronDown}
-                              className="absolute top-0 -right-5"
-                            />
-                          )}
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="text-sm ">
-                          {car.variants!.map((variant, i) => (
-                            <div key={i}>
-                              {!!i && variant.metro && (
-                                <div
-                                  className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
-                                  key={variant.metro}
-                                >
-                                  {car.variants![0].color_metro!.map((x) => (
-                                    <span
-                                      style={{ backgroundColor: x }}
-                                      key={x}
-                                      className="w-[5px] h-[5px] rounded-full"
-                                    ></span>
-                                  ))}
-                                  <span>{variant.metro}</span>
-                                </div>
-                              )}
+                            <div onClick={() => setOpenedStationsId(car.id!)}>
+                              + еще {car.variants!.length - 1} станций{" "}
                             </div>
-                          ))}
-                        </CollapsibleContent>
-                      </Collapsible>
+                          )}
+                          {openedStationsId === car.id && (
+                            <div className="">
+                              <div
+                                className="fixed top-0 left-0 z-[51] w-full h-full "
+                                onClick={() => {
+                                  setOpenedStationsId(-1);
+                                }}
+                              ></div>
+                              <div className="absolute right-0 z-[51] w-40 p-2 bg-white shadow-xl top-5 rounded-xl">
+                                {car.variants!.map((variant, i) => (
+                                  <div key={i}>
+                                    {!!i && variant.metro && (
+                                      <div
+                                        className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
+                                        key={variant.metro}
+                                      >
+                                        {variant.color_metro!.map((x) => (
+                                          <span
+                                            style={{ backgroundColor: x }}
+                                            key={x}
+                                            className="w-[5px] h-[5px] rounded-full"
+                                          ></span>
+                                        ))}
+                                        <span>{variant.metro}</span>
+                                      </div>
+                                    )}
+                                    <FontAwesomeIcon
+                                      className="absolute ml-1 text-gray top-2 right-2"
+                                      icon={faXmark}
+                                      onClick={() => {
+                                        setOpenedStationsId(-1);
+                                      }}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
-              </div>
-              <div className="hidden md:block">
-                <SliderImages
-                  type="hover"
-                  openIsAffordable={false}
-                  classImages="h-52 sm:h-52 max-h-52"
-                  classPaginationImages=" sm:justify-between sm:w-full"
-                  images={car.images!}
-                />
               </div>
             </div>
             <div className="inset-x-0 flex justify-start w-full mx-auto mt-1 space-x-2">
@@ -155,15 +161,20 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                     key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
                     className=""
                   >
-                    {`${formatRoubles(currentSchema.daily_amount!)}`}
-                    <div className="text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
+                    <div className="text-2xl font-semibold ">{`${formatRoubles(
+                      currentSchema.daily_amount!
+                    )}`}</div>
+                    <div className="-mt-1 text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="flex flex-col justify-between flex-grow mt-2">
-              <div className="flex gap-2 mt-1 text-center">
-                <Button variant={"card"} className="w-full sm:max-w-[376px]">
+            <div className="flex flex-col justify-between flex-grow mt-0">
+              <div className="flex gap-[6px] mt-1 text-center">
+                <Button
+                  variant={"card"}
+                  className=" sm:max-w-[376px] w-2/5  h-[33px] rounded-[8px] text-sm font-semibold"
+                >
                   Подробнее
                 </Button>
                 <Button
@@ -172,13 +183,13 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                     setIsBookOpen(true);
                   }}
                   variant={"cardDefault"}
-                  className="w-full sm:max-w-[376px]"
+                  className="w-3/5 sm:max-w-[376px] h-[33px] rounded-[8px] text-sm font-semibold"
                 >
                   Забронировать
                 </Button>
               </div>
             </div>
-            <Separator className="my-5" />
+            <Separator className="my-[15px]" />
           </div>
         </DialogTrigger>
         <DialogContent

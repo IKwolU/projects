@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import PhoneInput from "@/components/ui/phone-input";
+import MetroJSON from "../../backend/public/assets/json/metro.json";
 
 import Confirmation from "@/components/ui/confirmation";
 import { CityPicker } from "./CityPicker";
@@ -157,10 +158,12 @@ export const DivisionManager = () => {
     (division) => division.id === selectedId
   ) as Divisions2;
 
-  const metro = park.metro_lines?.find(
+  let metro = park.metro_lines?.find(
     (x: Metro_lines) => x.city == city
-  ).stations;
-
+  )?.stations;
+  if (!metro && city === "Москва") {
+    metro = [...new Set(MetroJSON.lines.flatMap((x) => x.stations))];
+  }
   return (
     <>
       <div className="">Подразделения</div>
@@ -242,7 +245,7 @@ export const DivisionManager = () => {
               ></Input>
             </div>
           ))}
-          {!!metro.length && (
+          {!!metro?.length && (
             <div className="">
               <h4>Ближайшее метро: {selected?.metro}</h4>
 

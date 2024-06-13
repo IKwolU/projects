@@ -3003,6 +3003,13 @@
                                         "description": "Название города",
                                         "type": "string"
                                     },
+                                    "metros": {
+                                        "description": "Станции мето",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
                                     "commission": {
                                         "description": "Комиссия парка",
                                         "type": "number"
@@ -3752,6 +3759,23 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "metros": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "station": {
+                                                        "type": "string"
+                                                    },
+                                                    "colors": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
                                         "brands": {
                                             "type": "array",
                                             "items": {
@@ -7866,6 +7890,86 @@
                 }
             }
         },
+        "manager/application/comment": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Создание заявки",
+                "description": "Создание комментария\n\nМетод для создания комментария",
+                "operationId": "createApplicationCommentManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "id",
+                                        "type": "integer",
+                                        "nullable": false
+                                    },
+                                    "comment": {
+                                        "description": "комментарий",
+                                        "type": "sting",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка сервера"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "manager/application/log": {
             "post": {
                 "tags": [
@@ -8567,7 +8671,8 @@
                     "Create",
                     "Stage",
                     "Content",
-                    "Notification"
+                    "Notification",
+                    "Comment"
                 ]
             },
             "ApplicationStage": {

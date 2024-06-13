@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { CarDetails } from "./CarDetails";
 import SliderImages from "@/components/ui/slider-images";
-// import ChevoronLeft from "./assets/chevron-left.png";
 import ym from "react-yandex-metrika";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
@@ -96,6 +95,72 @@ export const Card = ({ car, open }: { car: Cars3; open: () => void }) => {
                     </div>
                   </div>
                 </div>
+                {/* <Separator className="my-2" />
+                <div className="flex space-x-2">
+                  <div className="text-sm text-zinc-400">Метро:</div>
+                  {car.variants![0].metro && (
+                    <div
+                      className="flex p-0 m-0 space-x-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-center gap-1 text-sm">
+                        {car.variants![0].color_metro!.map((x) => (
+                          <div
+                            style={{ backgroundColor: x }}
+                            key={x}
+                            className="w-[5px] h-[5px] rounded-full"
+                          ></div>
+                        ))}
+                        <span>{car.variants![0].metro}</span>
+                      </div>
+                      <div className="relative text-sm underline text-nowrap">
+                        {car.variants!.length > 1 && (
+                          <div onClick={() => setOpenedStationsId(car.id!)}>
+                            + еще {car.variants!.length - 1} станций{" "}
+                          </div>
+                        )}
+                        {openedStationsId === car.id && (
+                          <div className="">
+                            <div
+                              className="fixed top-0 left-0 z-[51] w-full h-full "
+                              onClick={() => {
+                                setOpenedStationsId(-1);
+                              }}
+                            ></div>
+                            <div className="absolute right-0 z-[51] w-40 p-2 bg-white shadow-xl top-5 rounded-xl">
+                              {car.variants!.map((variant, i) => (
+                                <div key={i}>
+                                  {!!i && variant.metro && (
+                                    <div
+                                      className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
+                                      key={variant.metro}
+                                    >
+                                      {variant.color_metro!.map((x) => (
+                                        <span
+                                          style={{ backgroundColor: x }}
+                                          key={x}
+                                          className="w-[5px] h-[5px] rounded-full"
+                                        ></span>
+                                      ))}
+                                      <span>{variant.metro}</span>
+                                    </div>
+                                  )}
+                                  <FontAwesomeIcon
+                                    className="absolute ml-1 text-gray top-2 right-2"
+                                    icon={faXmark}
+                                    onClick={() => {
+                                      setOpenedStationsId(-1);
+                                    }}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div> */}
                 <Separator className="my-2" />
                 {/* <div className="flex items-center justify-center mb-4 -mt-4 space-x-2">
                 <p className="text-base">Пробег</p>

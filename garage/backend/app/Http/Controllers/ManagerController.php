@@ -2430,6 +2430,64 @@ public function createApplicationManager(Request $request) {
     $kanban->createApplicationsLogItem($request);
     return response()->json(['id' => $applicationId]);
 }
+
+/**
+ * Создание комментария
+ *
+ * Метод для создания комментария
+ *
+ * @OA\post(
+ *     path="manager/application/comment",
+ *     operationId="createApplicationCommentManager",
+ *     summary="Создание заявки",
+ *     tags={"Manager"},
+ * @OA\RequestBody(
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="id",
+ *                 description="id",
+ *                 type="integer",nullable=false
+ *             ),@OA\Property(
+ *                 property="comment",
+ *                 description="комментарий",
+ *                 type="sting",nullable=false,
+ *              ))),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Успешно",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="id", type="integer")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function createApplicationCommentManager(Request $request) {
+    $user = Auth::guard('sanctum')->user();
+    $managerId = $user->manager->id;
+    $kanban = new KanbanController;
+    $request->merge([
+        'type'=>ApplicationLogType::Comment->value,
+        'manager_id' => $managerId,
+    ]);
+    return $kanban->createApplicationsLogItem($request);
+}
 /**
  * Изменение заявки
  *

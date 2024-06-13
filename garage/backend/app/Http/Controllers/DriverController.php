@@ -565,6 +565,12 @@ $divisionId=$car->division->id;
      *         response="200",
      *         description="Успешный ответ",
      *         @OA\JsonContent(
+      *         @OA\Property(property="metros", type="array",
+*             @OA\Items(
+*                 @OA\Property(property="station", type="string"),
+*                 @OA\Property(property="colors", type="array", @OA\Items(type="string")),
+*             )
+*         ),
      * @OA\Property(property="brands", type="array",
      * @OA\Items(
      *                             @OA\Property(property="name", type="string"),
@@ -592,12 +598,7 @@ $divisionId=$car->division->id;
      */
     public function getFinderFilterData()
     {
-        $cars = Car::with(['division' => function ($query) {
-            $query->select('id', 'park_id');
-        }])
-        ->orderBy('brand')
-        ->orderBy('model')
-        ->get(['id', 'brand', 'model', 'division_id']);
+        $cars = Car::with(['division.park', 'division.city'])->orderBy('brand')->orderBy('model')->get(['id', 'brand', 'model', 'division_id']);
 
         $brandList = $cars->groupBy('brand')->map(function ($group) {
             return [
@@ -606,22 +607,52 @@ $divisionId=$car->division->id;
             ];
         })->values()->all();
 
-        $parkList = $cars->pluck('division.park.park_name')->unique()->sort()->values()->all();
-        $avito_ids = $cars->pluck('division.park.avito_id', 'division.park.park_name')->all();
-        $avito_ids = [];
-        foreach ($cars as $car) {
-            if ($car->division && $car->division->park) {
-                $parkName = $car->division->park->park_name;
-                $avitoId = $car->division->park->avito_id;
 
+
+        $parkList = $cars->pluck('division.park.park_name')->unique()->sort()->values()->all();
+        $avito_ids = [];
+
+$metro = $cars->first()->division->city->metro;
+        if ($metro) {
+            $cityData = json_decode($cars->first()->division->city->metro)->lines;
+        $stationColors = [];
+        foreach ($cityData as $line) {
+            foreach ($line->stations as $station) {
+                if (!isset($stationColors[$station])) {
+                    $stationColors[$station] = [];
+                }
+                $stationColors[$station][] = $line->color;
+            }
+        }
+
+        }
+
+        $uniqueStations = [];
+        $metroList = [];
+
+        foreach ($cars as $car) {
+            $division = $car->division;
+            if ($division && $division->park && $division->city->metro) {
+                $parkName = $division->park->park_name;
+                $avitoId = $division->park->avito_id;
                 if (!array_key_exists($parkName, $avito_ids)) {
                     $avito_ids[$parkName] = ['park' => $parkName, 'avito_id' => $avitoId];
                 }
+                if ($metro) {
+                   $matchingStation = $division->metro;
+                if (array_key_exists($matchingStation, $stationColors) && !in_array($matchingStation, $uniqueStations)) {
+                    $colors = $stationColors[$matchingStation];
+                    $metroList[] = ["station" => $matchingStation, "colors" => array_unique($colors)];
+                    $uniqueStations[] = $matchingStation;
+                }
+                }
+
             }
         }
 
         $avito_ids = array_values($avito_ids);
-        return response()->json(['brands' => $brandList, 'parks' => $parkList, 'avito_ids' => $avito_ids]);
+
+        return response()->json(['brands' => $brandList, 'parks' => $parkList, 'avito_ids' => $avito_ids, 'metros' => $metroList]);
     }
 
     /**

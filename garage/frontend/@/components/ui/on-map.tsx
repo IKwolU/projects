@@ -189,16 +189,18 @@ const OnMap = ({ filters, close }: OnMapProps) => {
         </Map>
       </YMaps>
       {isFullScreen && (
-        <div className="fixed flex w-full h-0 mx-auto left-4 bottom-14">
-          <Button
-            onClick={() => close()}
-            className="w-24 h-10 bg-white shadow-md shadow-gray"
-          >
-            <div className="flex items-center mx-auto space-x-2 text-sm font-semibold">
-              <FontAwesomeIcon icon={faListUl} className="w-4 h-4 m-0" />{" "}
-              <span>Список</span>
-            </div>
-          </Button>
+        <div className="fixed flex w-screen h-0 mx-auto -ml-1 bottom-10">
+          <div className="max-w-[352px] sm:max-w-sm md:max-w-[1206px] mx-auto px-1 w-full">
+            <Button
+              onClick={() => close()}
+              className="sm:w-24 sm:h-10 w-[105px] h-[36px] bg-white shadow-md shadow-gray "
+            >
+              <div className="flex items-center mx-auto space-x-2 text-sm font-semibold">
+                <FontAwesomeIcon icon={faListUl} className="w-4 h-4 m-0" />{" "}
+                <span>Список</span>
+              </div>
+            </Button>
+          </div>
         </div>
       )}
       {isClicked && (

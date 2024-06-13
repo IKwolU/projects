@@ -44,6 +44,7 @@ class CarsController extends Controller
      *             @OA\Property(property="offset", type="integer", description="Смещение (начальная позиция) для выборки"),
      *             @OA\Property(property="limit", type="integer", description="Максимальное количество записей для выборки"),
      *             @OA\Property(property="city", type="string", description="Название города"),
+     *             @OA\Property(property="metros", type="array", description="Станции мето",@OA\Items(type="string")),
      *             @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *             @OA\Property(property="fuel_type", type="string", description="Тип топлива",ref="#/components/schemas/FuelType"),
      *             @OA\Property(property="transmission_type", type="string", description="Тип трансмиссии",ref="#/components/schemas/TransmissionType"),
@@ -166,6 +167,7 @@ class CarsController extends Controller
 
         $brand = $request->brand;
         $model = $request->model;
+        $metros = $request->metros;
         $parksName = $request->park_name;
         $carClassValues = $request->car_class ? $request->car_class : [];
         $translatedValues = [];
@@ -245,6 +247,11 @@ class CarsController extends Controller
         if ($carVin) {
             $carsQuery->where(function ($query) use ($carVin) {
                 $query->where('car_id', 'like', '%' . $carVin . '%');
+            });
+        }
+        if ($metros) {
+            $carsQuery->whereHas('division', function ($query) use ($metros) {
+                $query->whereIn('metro', $metros);
             });
         }
         if (count($carClass) > 0) {

@@ -16,6 +16,7 @@ import {
   Cars3,
   FuelType,
   IBrands,
+  Metros,
   Schemas,
   Schemas2,
   TransmissionType,
@@ -49,11 +50,9 @@ import { cityAtom } from "./atoms";
 import { Badge } from "@/components/ui/badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowLeft,
   faArrowRightArrowLeft,
   faCheck,
   faChevronDown,
-  faListUl,
   faMagnifyingGlass,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -65,6 +64,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { CardV2 } from "./CardV2";
 import { MobileFilters } from "./MobileFilters";
+import { CarBrandFilter } from "./CarBrandFilter";
 const DEFAULT_COMMISSION_PERCENTAGE = 0;
 
 type CarFilter = {
@@ -82,6 +82,7 @@ type CarFilter = {
   carVin: string | null;
   onMap: boolean;
   notStackList: string[] | undefined;
+  metros: string[];
 };
 
 enum ActiveFilter {
@@ -113,7 +114,8 @@ export const Finder = () => {
     schema: null,
     carVin: null,
     onMap: false,
-    notStackList: undefined,
+    notStackList: ["division_id"],
+    metros: [],
   });
 
   const [cars, setCars] = useState<Cars3[]>([]);
@@ -130,6 +132,7 @@ export const Finder = () => {
 
   const location = useLocation();
   const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
+  const [metros, setMetros] = useState<Metros[]>([]);
   const randomTest = useRef(Math.floor(Math.random() * 2));
 
   const city = useRecoilValue(cityAtom);
@@ -140,6 +143,7 @@ export const Finder = () => {
       setBrands(data.brands!);
       setParksName(data.parks!);
       setAvitoIds(data.avito_ids!);
+      setMetros(data.metros!);
     };
 
     getFinderFilterData();
@@ -196,6 +200,7 @@ export const Finder = () => {
           schemas: filters.schema || undefined,
           car_vin: filters.carVin || undefined,
           not_stack_list: ["division_id"],
+          metros: filters.metros,
         })
       );
 
@@ -227,7 +232,8 @@ export const Finder = () => {
       schema: null,
       carVin: null,
       onMap: false,
-      notStackList: undefined,
+      notStackList: ["division_id"],
+      metros: [],
     });
   };
 
@@ -278,16 +284,18 @@ export const Finder = () => {
     <>
       {isFiltersOpened && (
         <MobileFilters
+          parksName={parksName}
           brands={brands}
           close={() => setIsFiltersOpened(false)}
           count={cars.length}
           filters={filters}
           clean={() => filtersClean()}
           result={(result) => setFilters(result)}
+          metros={metros}
         />
       )}
       {!filters.onMap && (
-        <div className="fixed w-full h-0 z-[51] max-w-[352px] mx-auto bottom-14 flex justify-start sm:hidden">
+        <div className="fixed w-full h-0 z-[51] max-w-[352px] mx-auto bottom-10 flex justify-start sm:hidden">
           <Button
             onClick={() => {
               setFilters({
@@ -295,7 +303,7 @@ export const Finder = () => {
                 onMap: !filters.onMap,
               });
             }}
-            className="w-24 h-10 pl-2 bg-white shadow-md shadow-gray"
+            className="sm:w-24 sm:h-10 pl-2 bg-white w-[105px] h-[36px] shadow-md shadow-gray"
           >
             <div className="flex items-center justify-start w-full mx-auto space-x-0 text-sm font-semibold">
               <FontAwesomeIcon icon={faMap} className="h-4 mr-2" />
@@ -304,218 +312,92 @@ export const Finder = () => {
           </Button>
         </div>
       )}
-      <div className="absolute w-full h-0 max-w-[352px] mx-auto top-12  flex justify-end sm:hidden">
-        <Dialog>
-          <DialogTrigger asChild>
-            <div
-              className={`absolute right-0 flex items-center justify-between w-2/3 p-2 space-x-1 top-5 h-7 ${
-                filters.brands.length ? "" : "bg-grey"
-              }  rounded-xl`}
-            >
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className={`h-3 text-gray ${
-                  filters.brands.length ? "hidden" : ""
-                }`}
-              />
-              <div className="flex w-full space-x-1 overflow-hidden">
-                {!!filters.brands.length &&
-                  filters.brands.map((brand, i) => {
-                    const isLastModelInBrand =
-                      brands
-                        .find((x: any) => x.name === brand)
-                        ?.models.filter((x) => filters.models.includes(x))
-                        .length < 2;
-
-                    return (
-                      <div
-                        className="flex items-center px-1 space-x-1 text-sm rounded-xl text-nowrap flex-nowrap"
-                        key={brand + i}
-                      >
-                        {filters.models.map((model) => (
-                          <div
-                            className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
-                            key={model}
-                          >
-                            {brand} {model}
-                            <FontAwesomeIcon
-                              className="ml-1 text-gray"
-                              icon={faXmark}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setFilters({
-                                  ...filters,
-                                  models: [
-                                    ...filters.models.filter(
-                                      (x) => x !== model
-                                    ),
-                                  ],
-                                  brands: isLastModelInBrand
-                                    ? [
-                                        ...filters.brands.filter(
-                                          (x) => x !== brand
-                                        ),
-                                      ]
-                                    : [...filters.brands],
-                                });
-                              }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  })}
-                {!filters.brands.length && (
-                  <div className="px-2 text-gray">Введите модель</div>
-                )}
-              </div>
-              <img
-                src={filtersIcon}
-                alt=""
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsFiltersOpened(true);
-                }}
-              />
-            </div>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[1208px]">
-            <div className="flex space-x-2 flex-nowrap">
-              <input
-                className="w-full px-2 py-2 border border-gray rounded-xl focus-visible:outline-none"
-                type="text"
-                placeholder="Введите модель"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="grid items-start content-start justify-start h-full grid-cols-1 py-4 pb-16 pr-1 overflow-y-auto sm:pr-0 sm:grid-cols-3 ">
+      <div className="absolute left-0 flex justify-end w-full h-0 px-4 mx-auto top-8 sm:hidden">
+        <div className="max-w-[352px] mx-auto h-0 mt-1 w-full flex justify-end">
+          <CarBrandFilter
+            brands={brands}
+            filters={filters}
+            result={(filters) => setFilters(filters)}
+            trigger={
               <div
-                className="w-full p-1 text-xl font-semibold text-black cursor-pointer "
-                onClick={() => {
-                  setFilters({
-                    ...filters,
-                    brands: [],
-                    models: [],
-                  });
-                  setSearchTerm("");
-                }}
+                className={` right-0 flex items-center justify-between w-2/3 p-2 space-x-1 top-6 mt-[6px] h-[24px] ${
+                  filters.brands.length ? "" : "bg-grey"
+                }  rounded-xl`}
               >
-                Все модели
-              </div>
-              {filteredBrands.map((x: IBrands) => {
-                const title = x.name!;
-                const isActive = filters.brands.some((b) => b === title);
-                return (
-                  <span
-                    className={`cursor-pointer text-xl font-semibold text-black md:pr-12 ${
-                      isActive ? "" : ""
-                    }`}
-                    key={title}
-                  >
-                    <span
-                      // onClick={() =>
-                      //   setFilters({
-                      //     ...filters,
-                      //     brands: isActive
-                      //       ? filters.brands.filter((b) => b !== title)
-                      //       : [...filters.brands, title],
-                      //   })
-                      // }
-                      className={`p-1 font-semibold justify-between flex ${
-                        isActive ? "" : ""
-                      }`}
-                    >
-                      {title}
-                      {/* {isActive && (
-                                <FontAwesomeIcon
-                                  icon={faCheck}
-                                  className="cursor-pointer"
-                                />
-                              )} */}
-                    </span>{" "}
-                    {x.models!.map((model) => {
-                      const isActiveModel = filters.models.some(
-                        (b) => b === model
-                      );
-                      const isActiveBrand = filters.brands.some(
-                        (b) => b === x.name
-                      );
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className={`h-3 text-gray ${
+                    filters.brands.length ? "hidden" : ""
+                  }`}
+                />
+                <div className="flex w-full space-x-1 overflow-hidden">
+                  {!!filters.brands.length &&
+                    filters.brands.map((brand, i) => {
+                      const isLastModelInBrand =
+                        brands
+                          .find((x: any) => x.name === brand)
+                          ?.models.filter((x: string) =>
+                            filters.models.includes(x)
+                          ).length < 2;
+
                       return (
-                        <span
-                          className={`cursor-pointer text-xl py-1 text-black  ${
-                            isActiveModel ? "" : ""
-                          }`}
-                          key={model}
-                          onClick={() =>
-                            setFilters({
-                              ...filters,
-                              models: isActiveModel
-                                ? filters.models.filter((b) => b !== model)
-                                : [...filters.models, model],
-                              brands: isActiveBrand
-                                ? [...filters.brands]
-                                : [...filters.brands, x.name!],
-                            })
-                          }
+                        <div
+                          className="flex items-center px-1 space-x-1 text-sm rounded-xl text-nowrap flex-nowrap"
+                          key={brand + i}
                         >
-                          <span
-                            className={`w-full font-normal text-gray px-1 flex gap-x-40 justify-between items-center ${
-                              isActiveModel ? "" : ""
-                            }`}
-                          >
-                            {model}
+                          {filters.models.map((model) => (
                             <div
-                              className={`${
-                                isActiveModel
-                                  ? "bg-yellow"
-                                  : "border border-gray"
-                              } w-6 h-6  p-1 flex items-center justify-center rounded-lg`}
+                              className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                              key={model}
                             >
-                              {isActiveModel && (
-                                <FontAwesomeIcon
-                                  icon={faCheck}
-                                  className="cursor-pointer"
-                                />
-                              )}
+                              {brand} {model}
+                              <FontAwesomeIcon
+                                className="ml-1 text-gray"
+                                icon={faXmark}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setFilters({
+                                    ...filters,
+                                    models: [
+                                      ...filters.models.filter(
+                                        (x) => x !== model
+                                      ),
+                                    ],
+                                    brands: isLastModelInBrand
+                                      ? [
+                                          ...filters.brands.filter(
+                                            (x) => x !== brand
+                                          ),
+                                        ]
+                                      : [...filters.brands],
+                                  });
+                                }}
+                              />
                             </div>
-                          </span>
-                        </span>
+                          ))}
+                        </div>
                       );
                     })}
-                    <Separator className="mt-1 bg-pale" />
-                  </span>
-                );
-              })}
-            </div>
-
-            <DialogFooter>
-              <DialogClose asChild>
-                <div className="">
-                  <div className="fixed top-0 left-0 flex justify-center w-12">
-                    <div className="max-w-[800px] w-full flex justify-center px-4 py-3 space-x-2">
-                      <FontAwesomeIcon
-                        icon={faArrowLeft}
-                        className="h-5 text-gray"
-                      />
-                    </div>
-                  </div>
-                  <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                    <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
-                      <div className="sm:max-w-[250px] w-full">
-                        <Button>Выбрать</Button>
-                      </div>
-                    </div>
-                  </div>
+                  {!filters.brands.length && (
+                    <div className="px-2 text-gray">Введите модель</div>
+                  )}
                 </div>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+                <img
+                  src={filtersIcon}
+                  alt=""
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFiltersOpened(true);
+                  }}
+                />
+              </div>
+            }
+          />
+        </div>
       </div>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
-      <div className={`${overflow && "pt-10"}`}>
-        <div className="flex my-2 space-x-1">
+      <div className={`${overflow && "pt-10 "}`}>
+        <div className="flex my-2 space-x-1 ">
           <div
             onClick={() =>
               setFilters({
@@ -523,19 +405,21 @@ export const Finder = () => {
                 carClass: [],
               })
             }
-            className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
+            className={`cursor-pointer w-24 flex flex-col h-10  sm:h-full items-center bg-grey rounded-xl ${
               // isActive ? "shadow border-2 border-gray" : ""
-              filters.carClass.length === 0 ? "bg-white shadow" : "bg-grey"
+              filters.carClass.length === 0
+                ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
+                : "bg-grey"
             }`}
           >
             <img
               alt=""
-              className="w-12 rounded-xl"
+              className="object-contain w-auto h-10 sm:w-full sm:h-14 rounded-xl"
               style={{ margin: "-4px" }}
               src={allClasses}
             />
             <span
-              className="pb-2 text-[10px] sm:text-base text-black"
+              className="pb-2  text-[8px] sm:text-base text-black"
               style={{ margin: "-8px" }}
             >
               Все тарифы
@@ -563,17 +447,19 @@ export const Finder = () => {
                 key={carClass}
                 className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
                   // isActive ? "shadow border-2 border-gray" : ""
-                  isActive ? "bg-white shadow" : "bg-grey"
+                  isActive
+                    ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
+                    : "bg-grey"
                 }`}
               >
                 <img
                   alt=""
-                  className="w-12 rounded-xl"
+                  className="object-contain w-auto h-10 sm:w-full sm:h-14 rounded-xl"
                   style={{ margin: "-4px" }}
                   src={img}
                 />
                 <span
-                  className="pb-2 text-black text-[10px] sm:text-base"
+                  className="pb-2  text-[8px] sm:text-base text-black"
                   style={{ margin: "-8px" }}
                 >
                   {title}
@@ -990,7 +876,7 @@ export const Finder = () => {
             />
           </div>
         </div>
-        <div className="flex my-2 mb-4 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide">
+        <div className=" sm:my-2 my-[5px] sm:mb-4 space-x-1 overflow-scroll overflow-x-auto scrollbar-hide hidden sm:flex">
           {activeFilter === ActiveFilter.Sorting &&
             ["asc", "desc"].map((sorting, i) => (
               <Badge
@@ -1112,7 +998,7 @@ export const Finder = () => {
         </div> */}
         {/* <Button variant="outline">Сбросить фильтры</Button> */}
         <div
-          className="h-full mb-4"
+          className="h-full sm:mb-4"
           onClick={() => {
             !filters.onMap &&
               setFilters({

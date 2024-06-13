@@ -269,7 +269,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
 
   return (
     <>
-      <div className="fixed -top-20 left-0 z-[51] pt-20 w-full h-full bg-lightgrey mt-8">
+      <div className="fixed -top-8 left-0 z-[51] pt-10 w-screen h-full bg-lightgrey mt-8">
         {(idOpenAndCreateNotification || idOpenConfirmed) && (
           <div
             className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-50 "
@@ -823,6 +823,11 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                               ? log.manager!.user!.name
                               : applicationDetails!.user?.phone}
                             <div>создал заявку</div>
+                          </div>
+                        )}
+                        {log.type === ApplicationLogType.Comment && (
+                          <div className="flex gap-2 flex-nowrap">
+                            <div>{content}</div>
                           </div>
                         )}
                       </div>

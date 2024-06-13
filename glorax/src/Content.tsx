@@ -284,6 +284,60 @@ function Content() {
           <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-lightpink bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
+      {/* {questionId === 0 && (
+        <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center">
+          <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center">
+            <div
+              style={{ backgroundImage: "url:/img/storysBG.svg" }}
+              className="w-full h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:max-h-[600px]"
+            >
+              <h3 className="mb-6 font-semibold">С чего начать путешествие?</h3>
+              <div className="space-y-20">
+                <p>
+                  Вы находитесь в стартовой точке иммерсивного маршрута. Это
+                  означает, что вы будете воспринимать информацию и историю
+                  особым образом — буквально погружаясь в неё с помощью
+                  аудиосопровождения.
+                </p>
+                <p>
+                  Вас ждет атмосфера невыдуманных историй. А от вашего выбора и
+                  действий зависит, как будет развиваться история и каким
+                  окажется финал.
+                </p>
+              </div>
+            </div>
+
+            <div
+              style={{ backgroundImage: "url:/img/storysBG.svg" }}
+              className="w-full relative h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:max-h-[600px]"
+            >
+              <button
+                onClick={() => setQuestionId(-1)}
+                className="absolute right-2 top-2"
+              >
+                x
+              </button>
+              <h3 className="mb-6 font-semibold">
+                Как работает платформа и зачем она нужна?
+              </h3>
+              <div className="space-y-6">
+                <p>
+                  Платформа представляет собой интерактивный аудиогид, который
+                  помогает пользователям погружаться в историю местности через
+                  аудиовизуальные элементы и иммерсивные маршруты. Она
+                  необходима для уникального знакомства с историей и культурой,
+                  позволяя самостоятельно исследовать интересные места и
+                  узнавать о событиях прошлого.
+                </p>
+                <p>
+                  Глоракс (GloraX) — компания, создающая и развивающая проекты в
+                  сфере недвижимости.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
         <FontAwesomeIcon
           onClick={() => handleQuestionOpen()}

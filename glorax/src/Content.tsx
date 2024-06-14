@@ -13,6 +13,9 @@ import {
 import logo from "../public/img/logoGlorax.png";
 import choice1 from "../public/img//choice-img-1.png";
 import choice2 from "../public/img//choice-img-2.png";
+import closeIcon from "../public/img/close_icon.svg";
+import iconButton from "../public/img/Icon_Button.svg";
+import halpFace from "../public/img/face.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,6 +37,7 @@ function Content() {
   const [bigTextOpened, setBigTextOpened] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [storisId, setStorisId] = useState(1);
 
   const handleAudioTimeUpdate = () => {
     setAudioTime(currentTime);
@@ -82,23 +86,54 @@ function Content() {
   //   (x) => x.id === currentNav
   // );
 
+  const handleClickQuestion = (number: number) => {
+    if (number === 1) {
+      setStorisId(number);
+    } else {
+      setQuestionId(number);
+    }
+  };
+
+  const handleStorisClose = () => {
+    setStorisId(1);
+    setQuestionId(-1);
+    setQuestionsClicked(!questionsClicked);
+  };
+
+  useEffect(() => {
+    if (storisId > 0 && storisId < 2) {
+      setTimeout(() => {
+        questionId === 0 && setStorisId(storisId + 1);
+      }, 15000);
+      setQuestionsClicked(false);
+    }
+  }, [storisId]);
+
   return (
     <>
       {helpers.map((x, i) => (
         <>
           {!x.closed && x.time < currentTime && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
-              <div className="p-4 pb-2 space-y-1 bg-lightpink rounded w-[300px] h-auto flex flex-col shadow-sm border-brown hover:border-brown border hover:border">
-                <div className="flex flex-col items-center py-2 mx-auto space-y-2 w-fit">
-                  <h3 className="text-lg font-bold">{x.title}</h3>
-                  <p className="py-2 text-lg text-center">{x.text}</p>
-                  <div className="flex justify-start w-full">
-                    <img
-                      onClick={() => handleClosedHelper(i)}
-                      src="/img/glorax_halp_arrow.svg"
-                      alt=""
-                      className="cursor-pointer"
-                    />
+              <div className="   max-w-[350px] h-auto flex flex-col  border border-brown rounded-[25px] ">
+                <div
+                  className="flex items-center justify-center pt-8 pb-12 -mb-6 bg-top bg-no-repeat bg-contain rounded-t-3xl bg-lightbrown"
+                  style={{ backgroundImage: "url(../public/img/bg-face.svg)" }}
+                >
+                  <img src={halpFace} alt="" className="w-40" />
+                </div>
+                <div className="flex flex-col items-center w-full p-4 py-2 pb-2 mx-auto space-y-2 text-black bg-white border border-white outline-none rounded-3xl">
+                  <h3 className="text-[24px] ">{x.title}</h3>
+                  <p className="py-2 text-[20px] text-center">{x.text}</p>
+                  <div className="py-5">
+                    <div className="flex justify-start p-2 rounded-full bg-blue w-fit ">
+                      <img
+                        onClick={() => handleClosedHelper(i)}
+                        src={iconButton}
+                        alt=""
+                        className="cursor-pointer"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -269,7 +304,7 @@ function Content() {
             ].map(({ question, answer }, i) => (
               <div className="">
                 <p
-                  onClick={() => setQuestionId(i)}
+                  onClick={() => handleClickQuestion(i)}
                   className="p-1 uppercase transition-colors rounded cursor-pointer hover:text-blue text-brown "
                 >
                   {question}
@@ -284,60 +319,99 @@ function Content() {
           <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-lightpink bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
-      {/* {questionId === 0 && (
-        <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center">
-          <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center">
+      {questionId === 0 && (
+        <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center sm:rounded-lg">
+          <div className="flex relative items-center justify-center space-x-0 bg-opacity-25  bg-lightpink w-full h-full sm:max-w-96 sm:rounded-lg  sm:max-h-[700px] overflow-hidden ">
             <div
-              style={{ backgroundImage: "url:/img/storysBG.svg" }}
-              className="w-full h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:max-h-[600px]"
+              onClick={() => setStorisId(storisId + 1)}
+              className={`absolute flex flex-col justify-between top-0 pt-14 pb-8 left-0 w-full h-full px-6  bg-brown text-lightpink sm:max-w-96 transition-transform sm:rounded sm:max-h-[700px] ${
+                storisId === 1
+                  ? "translate-x-0"
+                  : storisId == 2
+                  ? "-translate-x-full"
+                  : "translate-x-full"
+              }`}
             >
-              <h3 className="mb-6 font-semibold">С чего начать путешествие?</h3>
-              <div className="space-y-20">
-                <p>
-                  Вы находитесь в стартовой точке иммерсивного маршрута. Это
-                  означает, что вы будете воспринимать информацию и историю
-                  особым образом — буквально погружаясь в неё с помощью
-                  аудиосопровождения.
-                </p>
-                <p>
-                  Вас ждет атмосфера невыдуманных историй. А от вашего выбора и
-                  действий зависит, как будет развиваться история и каким
-                  окажется финал.
-                </p>
+              <div className="">
+                <h3 className="mb-6 font-semibold">
+                  С чего начать путешествие?
+                </h3>
+                <div className="space-y-20">
+                  <p>
+                    Вы находитесь в стартовой точке иммерсивного маршрута. Это
+                    означает, что вы будете воспринимать информацию и историю
+                    особым образом — буквально погружаясь в неё с помощью
+                    аудиосопровождения.
+                  </p>
+                  <p>
+                    Вас ждет атмосфера невыдуманных историй. А от вашего выбора
+                    и действий зависит, как будет развиваться история и каким
+                    окажется финал.
+                  </p>
+                </div>
               </div>
+              <button
+                className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
+                onClick={() => setStorisId(storisId + 1)}
+              >
+                <img src={iconButton} alt="" className="w-10" />
+                Как работает платформа
+              </button>
             </div>
 
             <div
-              style={{ backgroundImage: "url:/img/storysBG.svg" }}
-              className="w-full relative h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:max-h-[600px]"
+              style={{
+                backgroundImage: "url(../public/img/storysBG.svg)",
+                backgroundSize: "100px",
+              }}
+              className={`absolute flex justify-between flex-col top-0 left-0 pb-8 bg-no-repeat bg-right-bottom  w-full h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:rounded transition-transform sm:max-h-[700px] ${
+                storisId === 2 ? "translate-x-0" : "translate-x-full"
+              }`}
             >
-              <button
-                onClick={() => setQuestionId(-1)}
-                className="absolute right-2 top-2"
-              >
-                x
-              </button>
-              <h3 className="mb-6 font-semibold">
-                Как работает платформа и зачем она нужна?
-              </h3>
-              <div className="space-y-6">
-                <p>
-                  Платформа представляет собой интерактивный аудиогид, который
-                  помогает пользователям погружаться в историю местности через
-                  аудиовизуальные элементы и иммерсивные маршруты. Она
-                  необходима для уникального знакомства с историей и культурой,
-                  позволяя самостоятельно исследовать интересные места и
-                  узнавать о событиях прошлого.
-                </p>
-                <p>
-                  Глоракс (GloraX) — компания, создающая и развивающая проекты в
-                  сфере недвижимости.
-                </p>
+              <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-6 h-full">
+                <FontAwesomeIcon
+                  onClick={() => setStorisId(storisId - 1)}
+                  icon={faAnglesRight}
+                  className={`   rotate-180 h-4 text-lightpink`}
+                />
               </div>
+              <img
+                src={closeIcon}
+                alt=""
+                onClick={() => handleStorisClose()}
+                className="absolute w-10 cursor-pointer right-2 top-2"
+              />
+
+              <div className="">
+                <h3 className="mb-6 font-semibold">
+                  Как работает платформа и зачем она нужна?
+                </h3>
+                <div className="space-y-6">
+                  <p>
+                    Платформа представляет собой интерактивный аудиогид, который
+                    помогает пользователям погружаться в историю местности через
+                    аудиовизуальные элементы и иммерсивные маршруты. Она
+                    необходима для уникального знакомства с историей и
+                    культурой, позволяя самостоятельно исследовать интересные
+                    места и узнавать о событиях прошлого.
+                  </p>
+                  <p>
+                    Глоракс (GloraX) — компания, создающая и развивающая проекты
+                    в сфере недвижимости.
+                  </p>
+                </div>
+              </div>
+              <button
+                className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
+                onClick={() => handleStorisClose()}
+              >
+                <img src={iconButton} alt="" className="w-10" />
+                Начать путешествие
+              </button>
             </div>
           </div>
         </div>
-      )} */}
+      )}
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
         <FontAwesomeIcon
           onClick={() => handleQuestionOpen()}

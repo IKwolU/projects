@@ -6,6 +6,7 @@ import {
   Body34,
   Body42,
   Body45,
+  Body46,
   Body47,
   BookingStatus,
   Logs,
@@ -17,6 +18,7 @@ import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import {
   getApplicationFieldDisplayName,
+  getApplicationLogTypeDisplayName,
   getApplicationStageDisplayName,
   getCancelationSourceDisplayName,
 } from "@/lib/utils";
@@ -29,11 +31,16 @@ import Confirmation from "@/components/ui/confirmation";
 import countryList from "../../backend/public/assets/json/countries.json";
 import carsList from "../../backend/public/assets/json/carsValid.json";
 import {
+  faAngleLeft,
+  faArrowLeft,
+  faArrowRightArrowLeft,
+  faCheck,
   faCircleCheck,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import ListSelect from "./ListSelect";
 import ArrayStringSelect from "./ArrayStringSelect";
+import { Value } from "@radix-ui/react-select";
 
 interface Details {
   id: number;
@@ -82,6 +89,12 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
   const [idOpenConfirmed, setIdOpenConfirmed] = useState<number | null>(null);
   const [unbookReason, setUnbookReason] = useState("");
   const [commentReason, setCommentReason] = useState("");
+  const [comment, setComment] = useState("");
+  const [filterTypeLogs, setFilterTypeLogs] = useState<ApplicationLogType[]>(
+    []
+  );
+  const [isStartedCreateNotification, setIsStartedCreateNotification] =
+    useState(false);
 
   const updateIntervalInSeconds = 60;
 
@@ -147,6 +160,14 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     );
   };
 
+  const createComment = async () => {
+    await client.createApplicationCommentManager(
+      new Body46({ comment: comment, id: id })
+    );
+    setComment("");
+    getApplicationLogs();
+  };
+
   const changeApplicationData = async (
     id: number,
     item: string,
@@ -173,6 +194,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
         last_update_time: undefined,
       })
     );
+    window.scrollTo(0, 0);
     setApplicationsLogs(data.logs!);
   };
 
@@ -305,7 +327,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                   }
                   placeholder={
                     newNotification.date &&
-                    format(newNotification.date, "dd.MM.yyyy HH:mm")
+                    format(new Date(newNotification.date), "dd.MM.yyyy HH:mm")
                   }
                 />
                 {idOpenAndCreateNotification && (
@@ -408,8 +430,8 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
             </div>
           </div>
         )}
-        <div className="flex gap-2 p-2 max-w-[1208px] m-auto">
-          <div className="w-1/2 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[800px] bg-white">
+        <div className="flex gap-2 p-2 max-w-[calc(100vw-20px)] m-auto">
+          <div className="w-1/3 p-4 overflow-x-auto border-2 border-pale rounded-xl h-[calc(100vh-90px)] bg-white min-w-[550px]">
             <div className="flex justify-between mb-2">
               <div className="font-semibold">
                 Заявка №{applicationDetails!.id}
@@ -514,7 +536,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         placeholder={
                           applicationDetails!.planned_arrival &&
                           format(
-                            applicationDetails!.planned_arrival,
+                            new Date(applicationDetails!.planned_arrival),
                             "dd.MM.yyyy HH:mm"
                           )
                         }
@@ -759,9 +781,46 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-between w-1/2 pt-2 bg-white border-2 border-pale rounded-xl">
-            <div className="text-xl text-center ">История изменений</div>
-            <div className="overflow-x-auto h-[700px] p-4">
+          <div className="flex flex-col justify-between w-2/3 pt-2 bg-white border-2 border-pale rounded-xl">
+            <div className="text-xl text-center ">
+              История изменений
+              <div className="flex p-2 space-x-1">
+                {Object.keys(ApplicationLogType).map((item: any) => {
+                  const selectedItem = filterTypeLogs.includes(item);
+
+                  return (
+                    <div
+                      onClick={() =>
+                        selectedItem
+                          ? setFilterTypeLogs([
+                              ...filterTypeLogs.filter((x) => x !== item),
+                            ])
+                          : setFilterTypeLogs([...filterTypeLogs, item])
+                      }
+                      className="flex items-center justify-between p-1 space-x-1 text-xs border-2 cursor-pointer border-pale rounded-xl"
+                      key={item}
+                    >
+                      <div className="text-nowrap">
+                        {getApplicationLogTypeDisplayName(item)}
+                      </div>
+                      <div
+                        className={`${
+                          selectedItem ? "bg-yellow" : "border border-gray"
+                        } w-4 h-4  p-1 flex items-center justify-center rounded`}
+                      >
+                        {selectedItem && (
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            className="cursor-pointer"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="overflow-x-auto h-[calc(100vh-300px)] p-4 ">
               {applicationLogs!.map((log, i) => {
                 const content = JSON.parse(log.content);
                 return (
@@ -772,9 +831,12 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                   >
                     {log.type !== ApplicationLogType.Notification && (
                       <div className="flex items-center space-x-2 text-sm">
-                        <div className="">
-                          <div className="text-nowrap ">
-                            {format(log.created_at!, "dd.MM.yyyy HH:mm")}
+                        <div className="flex items-center space-x-2">
+                          <div className="w-24 text-xs text-nowrap">
+                            {format(
+                              new Date(log.created_at!),
+                              "dd.MM.yyyy HH:mm"
+                            )}
                           </div>
                           {log.type !== ApplicationLogType.Create && (
                             <div className="">
@@ -786,7 +848,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         </div>
                         {log.type === ApplicationLogType.Stage && (
                           <div className="inline space-x-2">
-                            изменен этап с{" "}
+                            Изменен этап с{" "}
                             <span className="font-semibold">
                               {getApplicationStageDisplayName(
                                 content.old_stage!
@@ -802,7 +864,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         )}
                         {log.type === ApplicationLogType.Content && (
                           <div className="inline space-x-2">
-                            <span>Изменено поле</span>
+                            <span className="text-sm">Изменено поле</span>
                             <span className="font-semibold">
                               {getApplicationFieldDisplayName(content.column)}
                             </span>
@@ -826,8 +888,9 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                           </div>
                         )}
                         {log.type === ApplicationLogType.Comment && (
-                          <div className="flex gap-2 flex-nowrap">
-                            <div>{content}</div>
+                          <div className="flex items-center gap-2 flex-nowrap">
+                            <div className="font-semibold">Коментарий:</div>{" "}
+                            <div className="">{content.comment}</div>
                           </div>
                         )}
                       </div>
@@ -839,7 +902,10 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         } rounded`}
                       >
                         <div className="absolute top-0 right-0 p-1 text-xs ">
-                          {format(log.updated_at!, "dd.MM.yyyy HH:mm")}
+                          {format(
+                            new Date(log.updated_at!),
+                            "dd.MM.yyyy HH:mm"
+                          )}
                         </div>
                         <div
                           className={`border-r-2 p-2 flex flex-col w-32 justify-center items-center ${
@@ -859,7 +925,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                             />
                           )}
                           <div className="text-sm">
-                            {format(content.date, "dd.MM.yyyy HH:mm")}
+                            {format(new Date(content.date), "dd.MM.yyyy HH:mm")}
                           </div>
                         </div>
                         <div className="">
@@ -891,62 +957,117 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         </div>
                       </div>
                     )}
-                    <Separator />
+                    <Separator className="my-1 bg-pale" />
                   </div>
                 );
               })}
             </div>
+            <Button
+              variant={"default"}
+              className="m-2 text-base w-fit"
+              onClick={() => setIsStartedCreateNotification(true)}
+            >
+              Создать напоминание
+            </Button>
+            <div className="flex items-center gap-2 p-2 border-t border-pale">
+              <Input
+                onKeyDown={(e) => e.key === "Enter" && createComment()}
+                onChange={(e) => setComment(e.target.value)}
+                type="text"
+                value={comment}
+                placeholder="Введите комментарий"
+                className="m-0"
+              />
+              <FontAwesomeIcon
+                onClick={() => createComment()}
+                icon={faPenToSquare}
+                className={`h-6 transition-colors cursor-pointer   active:text-yellow ${
+                  applicationDetails!.citizenship === citizenship
+                    ? "text-pale"
+                    : "text-black"
+                }`}
+              />
+            </div>
           </div>
         </div>
-        <div className="max-w-[1208px]  mx-auto p-2  ">
-          <div className="flex items-center justify-between p-2 space-x-2 bg-white border-2 border-pale rounded-xl">
-            {" "}
-            <span>Создать напоминание:</span>{" "}
-            <Input
-              className="m-0 w-44"
-              type="datetime-local"
-              value={
-                newNotification.date ? newNotification.date : String(new Date())
-              }
-              onChange={(e) =>
-                setNewNotification({ ...newNotification, date: e.target.value })
-              }
-              placeholder={
-                newNotification.date &&
-                format(newNotification.date, "dd.MM.yyyy HH:mm")
-              }
-            />
-            <Input
-              className="m-0 w-96"
-              type="text"
-              value={newNotification.message ? newNotification.message : ""}
-              onChange={(e) =>
-                setNewNotification({
-                  ...newNotification,
-                  message: e.target.value,
-                })
-              }
-              placeholder="Коментарий"
-            />
-            {newNotification.date && newNotification.message && (
-              <Button onClick={createNotification} variant={"manager"}>
-                Создать
-              </Button>
-            )}
-            {(!newNotification.date || !newNotification.message) && (
-              <Button disabled variant={"manager"}>
-                Создать
-              </Button>
-            )}
+        {isStartedCreateNotification && (
+          <div
+            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full p-2 mx-auto bg-black bg-opacity-50"
+            onClick={(e) =>
+              e.target === e.currentTarget &&
+              setIsStartedCreateNotification(false)
+            }
+          >
+            <div className="flex flex-col items-center gap-2 justify-between p-2  bg-white border-2 border-pale rounded-xl max-w-[1208px]">
+              <div className="flex items-center w-full space-x-2">
+                <span className="text-nowrap">Создать напоминание:</span>
+                <Input
+                  className="w-full m-0"
+                  type="datetime-local"
+                  value={
+                    newNotification.date
+                      ? newNotification.date
+                      : String(new Date())
+                  }
+                  onChange={(e) =>
+                    setNewNotification({
+                      ...newNotification,
+                      date: e.target.value,
+                    })
+                  }
+                  placeholder={
+                    newNotification.date &&
+                    format(new Date(newNotification.date), "dd.MM.yyyy HH:mm")
+                  }
+                />
+              </div>
+              <Input
+                className="w-full m-0"
+                type="text"
+                value={newNotification.message ? newNotification.message : ""}
+                onChange={(e) =>
+                  setNewNotification({
+                    ...newNotification,
+                    message: e.target.value,
+                  })
+                }
+                placeholder="Коментарий"
+              />
+              <div className="flex w-full space-x-2">
+                <Button
+                  onClick={() => setIsStartedCreateNotification(false)}
+                  variant={"reject"}
+                  className="w-1/2 text-black"
+                >
+                  Отмена
+                </Button>
+                {newNotification.date && newNotification.message && (
+                  <Button
+                    className="w-1/2"
+                    onClick={() => {
+                      createNotification();
+                      setIsStartedCreateNotification(false);
+                    }}
+                    variant={"manager"}
+                  >
+                    Создать
+                  </Button>
+                )}
+                {(!newNotification.date || !newNotification.message) && (
+                  <Button className="w-1/2" disabled variant={"manager"}>
+                    Создать
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-        <Button
+        )}
+
+        <FontAwesomeIcon
           onClick={close}
-          variant={"reject"}
-          className="fixed w-24 text-black top-10 left-2"
-        >
-          Назад
-        </Button>
+          icon={faArrowLeft}
+          className="fixed top-0 transition-colors cursor-pointer text-pale h-14 left-2 hover:text-black"
+        />
       </div>
     </>
   );

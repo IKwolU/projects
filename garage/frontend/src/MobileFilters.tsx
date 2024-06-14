@@ -196,7 +196,7 @@ export const MobileFilters = ({
                   <h3 className="text-sm">Модели</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
-                <div className="flex w-full space-x-1 overflow-hidden">
+                <div className="flex w-full space-x-2 overflow-hidden">
                   {!!filters.brands.length &&
                     filters.brands.map((brand, i) => {
                       const isLastModelInBrand =
@@ -208,7 +208,7 @@ export const MobileFilters = ({
 
                       return (
                         <div
-                          className="flex items-center px-1 space-x-1 text-sm rounded-xl text-nowrap flex-nowrap"
+                          className="flex items-center px-1 space-x-2 text-sm rounded-xl text-nowrap flex-nowrap"
                           key={brand + i}
                         >
                           {filters.models.map((model) => (
@@ -260,7 +260,7 @@ export const MobileFilters = ({
                   <h3 className="text-sm">Расположение</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
-                <div className="flex w-full space-x-1 overflow-hidden">
+                <div className="flex w-full space-x-2 overflow-hidden">
                   {!!filters.metros.length &&
                     filters.metros.map((metro) => (
                       <div
@@ -413,7 +413,7 @@ export const MobileFilters = ({
                   <h3 className="text-sm">Автопарк</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
-                <div className="flex w-full space-x-1 overflow-hidden">
+                <div className="flex w-full space-x-2 overflow-hidden">
                   {!!filters.parksName.length &&
                     filters.parksName.map((park) => (
                       <div
@@ -616,7 +616,8 @@ export const MobileFilters = ({
           variant="default"
           onClick={() => close()}
         >
-          Смотреть {count} объявления
+          Смотреть {count} объявление
+          {/* {getWordForNumber(count, ["объявление", "объявления", "объявлений"])} */}
         </Button>
       </div>
     </>

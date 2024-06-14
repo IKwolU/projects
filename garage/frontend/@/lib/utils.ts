@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import {
+  ApplicationLogType,
   ApplicationStage,
   CancellationSources,
   CarClass,
@@ -136,6 +137,30 @@ export const getApplicationStageDisplayName = (stage: ApplicationStage) => {
     [ApplicationStage.NotRealized]: "Не реализовано",
   };
   return stages[stage];
+};
+
+export const getApplicationLogTypeDisplayName = (type: ApplicationLogType) => {
+  const types = {
+    [ApplicationLogType.Comment]: "Комментарий",
+    [ApplicationLogType.Content]: "Изменение инфо",
+    [ApplicationLogType.Create]: "Создание",
+    [ApplicationLogType.Notification]: "Уведомление",
+    [ApplicationLogType.Stage]: "Статус",
+  };
+  return types[type];
+};
+
+export const getWordForNumber = (number: number, wordVariants: string[]) => {
+  number = Math.abs(number);
+  if (Number.isInteger(number)) {
+    const option = [2, 0, 1, 1, 1, 2];
+    return wordVariants[
+      number % 100 > 4 && number % 100 < 20
+        ? 2
+        : option[number % 10 < 5 ? number % 10 : 5]
+    ];
+  }
+  return wordVariants[1];
 };
 
 export const getApplicationFieldDisplayName = (field: string) => {

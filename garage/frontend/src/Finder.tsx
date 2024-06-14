@@ -347,7 +347,7 @@ export const Finder = () => {
                         >
                           {filters.models.map((model) => (
                             <div
-                              className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                              className="flex items-center px-1  text-gray space-x-2 text-[12px] bg-grey rounded-xl text-nowrap flex-nowrap"
                               key={model}
                             >
                               {brand} {model}

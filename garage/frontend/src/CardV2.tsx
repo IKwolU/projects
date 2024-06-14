@@ -106,7 +106,12 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                         <div className="relative text-sm underline text-nowrap">
                           {car.variants!.length > 1 && (
                             <div onClick={() => setOpenedStationsId(car.id!)}>
-                              + еще {car.variants!.length - 1} станций{" "}
+                              + еще {car.variants!.length - 1} станция
+                              {/* {getWordForNumber(car.variants!.length - 1, [
+                                "станция",
+                                "станции",
+                                "станций",
+                              ])} */}
                             </div>
                           )}
                           {openedStationsId === car.id && (
@@ -117,26 +122,26 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                                   setOpenedStationsId(-1);
                                 }}
                               ></div>
-                              <div className="absolute right-0 z-[51] w-40 p-2 bg-white shadow-xl top-5 rounded-xl">
+                              <div className="absolute right-0 z-[51] w-[155px] p-2 bg-white shadow-xl top-5 rounded-xl">
                                 {car.variants!.map((variant, i) => (
                                   <div key={i}>
                                     {!!i && variant.metro && (
                                       <div
-                                        className="flex items-center gap-1 p-0 mb-0 text-sm text-left"
+                                        className="flex items-center gap-1 p-0 mb-0 text-sm text-left text-wrap"
                                         key={variant.metro}
                                       >
                                         {variant.color_metro!.map((x) => (
                                           <span
                                             style={{ backgroundColor: x }}
                                             key={x}
-                                            className="w-[5px] h-[5px] rounded-full"
+                                            className="w-[5px] h-[5px] min-w-[5px] rounded-full"
                                           ></span>
                                         ))}
                                         <span>{variant.metro}</span>
                                       </div>
                                     )}
                                     <FontAwesomeIcon
-                                      className="absolute ml-1 text-gray top-2 right-2"
+                                      className="absolute ml-1 text-gray top-2 right-2 text-wrap"
                                       icon={faXmark}
                                       onClick={() => {
                                         setOpenedStationsId(-1);

@@ -118,7 +118,7 @@ function Content() {
               <div className="   max-w-[350px] h-auto flex flex-col  border border-brown rounded-[25px] ">
                 <div
                   className="flex items-center justify-center pt-8 pb-12 -mb-6 bg-top bg-no-repeat bg-contain rounded-t-3xl bg-lightbrown"
-                  style={{ backgroundImage: "url(../public/img/bg-face.svg)" }}
+                  style={{ backgroundImage: "url(/img/bg-face.svg)" }}
                 >
                   <img src={halpFace} alt="" className="w-40" />
                 </div>

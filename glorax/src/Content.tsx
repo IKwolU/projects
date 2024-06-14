@@ -164,7 +164,7 @@ function Content() {
             <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
             <div className="py-2"></div>
             <img
-              src="./img/helpimage.png"
+              src="./img/newMap.jpg"
               alt=""
               className="object-contain w-full h-40"
             />*/}
@@ -322,9 +322,15 @@ function Content() {
       {questionId === 0 && (
         <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center sm:rounded-lg">
           <div className="flex relative items-center justify-center space-x-0 bg-opacity-25  bg-lightpink w-full h-full sm:max-w-96 sm:rounded-lg  sm:max-h-[700px] overflow-hidden ">
+            <img
+              src={closeIcon}
+              alt=""
+              onClick={() => handleStorisClose()}
+              className="absolute z-50 w-10 cursor-pointer right-2 top-2"
+            />
             <div
               onClick={() => setStorisId(storisId + 1)}
-              className={`absolute flex flex-col justify-between top-0 pt-14 pb-8 left-0 w-full h-full px-6  bg-brown text-lightpink sm:max-w-96 transition-transform sm:rounded sm:max-h-[700px] ${
+              className={`absolute  flex  bg-no-repeat flex-col justify-between top-0 pt-14 pb-8 left-0 w-full h-full   bg-brown text-lightpink sm:max-w-96 transition-transform sm:rounded sm:max-h-[700px] ${
                 storisId === 1
                   ? "translate-x-0"
                   : storisId == 2
@@ -332,82 +338,95 @@ function Content() {
                   : "translate-x-full"
               }`}
             >
-              <div className="">
-                <h3 className="mb-6 font-semibold">
-                  С чего начать путешествие?
-                </h3>
-                <div className="space-y-20">
-                  <p>
-                    Вы находитесь в стартовой точке иммерсивного маршрута. Это
-                    означает, что вы будете воспринимать информацию и историю
-                    особым образом — буквально погружаясь в неё с помощью
-                    аудиосопровождения.
-                  </p>
-                  <p>
-                    Вас ждет атмосфера невыдуманных историй. А от вашего выбора
-                    и действий зависит, как будет развиваться история и каким
-                    окажется финал.
-                  </p>
+              <div className="relative flex flex-col justify-between h-full px-6">
+                <div
+                  className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10"
+                  style={{
+                    backgroundImage: "url(./img/storisBG-1.svg)",
+                    backgroundPositionX: "-120px",
+                    backgroundPositionY: "250px",
+                    backgroundSize: "650px",
+                    transform: "scale(-1, 1)",
+                  }}
+                ></div>
+                <div className="">
+                  <h3 className="mb-6 font-semibold">
+                    С чего начать путешествие?
+                  </h3>
+                  <div className="space-y-10">
+                    <p>
+                      Вы находитесь в стартовой точке иммерсивного маршрута. Это
+                      означает, что вы будете воспринимать информацию и историю
+                      особым образом — буквально погружаясь в неё с помощью
+                      аудиосопровождения.
+                    </p>
+                    <p>
+                      Вас ждет атмосфера невыдуманных историй. А от вашего
+                      выбора и действий зависит, как будет развиваться история и
+                      каким окажется финал.
+                    </p>
+                  </div>{" "}
                 </div>
+                <button
+                  className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
+                  onClick={() => setStorisId(storisId + 1)}
+                >
+                  <img src={iconButton} alt="" className="w-10" />
+                  Как работает платформа
+                </button>
               </div>
-              <button
-                className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
-                onClick={() => setStorisId(storisId + 1)}
-              >
-                <img src={iconButton} alt="" className="w-10" />
-                Как работает платформа
-              </button>
             </div>
 
             <div
-              style={{
-                backgroundImage: "url(../public/img/storysBG.svg)",
-                backgroundSize: "100px",
-              }}
-              className={`absolute flex justify-between flex-col top-0 left-0 pb-8 bg-no-repeat bg-right-bottom  w-full h-full px-6 py-12 bg-brown text-lightpink sm:max-w-96 sm:rounded transition-transform sm:max-h-[700px] ${
+              className={`absolute flex justify-between flex-col top-0 left-0  bg-no-repeat bg-right-bottom  w-full h-full  pt-12 bg-brown text-lightpink sm:max-w-96 sm:rounded transition-transform sm:max-h-[700px] ${
                 storisId === 2 ? "translate-x-0" : "translate-x-full"
               }`}
             >
-              <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-6 h-full">
+              {/* <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-6 h-full">
                 <FontAwesomeIcon
                   onClick={() => setStorisId(storisId - 1)}
                   icon={faAnglesRight}
-                  className={`   rotate-180 h-4 text-lightpink`}
+                  className={`z-50   rotate-180 h-4 text-lightpink`}
                 />
-              </div>
-              <img
-                src={closeIcon}
-                alt=""
-                onClick={() => handleStorisClose()}
-                className="absolute w-10 cursor-pointer right-2 top-2"
-              />
+              </div> */}
+              <div className="relative flex flex-col items-start justify-between h-full px-6">
+                <div
+                  className="absolute top-0 left-0 w-full h-full bg-no-repeat"
+                  style={{
+                    backgroundImage: "url(./img/storisBG-2.svg)",
+                    backgroundPositionX: "-120px",
+                    backgroundPositionY: "345px",
+                    backgroundSize: "550px",
+                    transform: "scale(-1, 1)",
+                  }}
+                ></div>
 
-              <div className="">
-                <h3 className="mb-6 font-semibold">
-                  Как работает платформа и зачем она нужна?
-                </h3>
-                <div className="space-y-6">
-                  <p>
-                    Платформа представляет собой интерактивный аудиогид, который
-                    помогает пользователям погружаться в историю местности через
-                    аудиовизуальные элементы и иммерсивные маршруты. Она
-                    необходима для уникального знакомства с историей и
-                    культурой, позволяя самостоятельно исследовать интересные
-                    места и узнавать о событиях прошлого.
-                  </p>
-                  <p>
-                    Глоракс (GloraX) — компания, создающая и развивающая проекты
-                    в сфере недвижимости.
-                  </p>
+                <div className="">
+                  <h3 className="mb-6 font-semibold">
+                    Как работает платформа и зачем она нужна?
+                  </h3>
+                  <div className="space-y-6">
+                    <p>
+                      Платформа представляет собой интерактивный аудиогид,
+                      который помогает пользователям погружаться в историю
+                      местности через аудиовизуальные элементы и иммерсивные
+                      маршруты. Она необходима для уникального знакомства с
+                      историей и культурой, позволяя самостоятельно исследовать
+                      интересные места и узнавать о событиях прошлого.
+                    </p>
+                    <p>
+                      Глоракс (GloraX) — компания, создающая и развивающая
+                      проекты в сфере недвижимости.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className="z-50 flex items-center justify-start gap-4 p-2 mb-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
+                  onClick={() => setStorisId(storisId - 1)}
+                >
+                  <img src={iconButton} alt="" className="w-10 rotate-180" />
                 </div>
               </div>
-              <button
-                className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
-                onClick={() => handleStorisClose()}
-              >
-                <img src={iconButton} alt="" className="w-10" />
-                Начать путешествие
-              </button>
             </div>
           </div>
         </div>
@@ -583,11 +602,11 @@ function Content() {
                     <div className="py-2"></div>
                     <img
                       onClick={() => setIsMapClicked(!isMapClicked)}
-                      src="./img/helpimage.png"
+                      src="./img/newMap.jpg"
                       alt=""
                       className="object-contain w-full h-40"
                     />
-                    <div className="absolute right-5 bottom-[140px] sm:bottom-[145px]">
+                    <div className="absolute right-6 bottom-[140px] sm:bottom-[145px]">
                       <FontAwesomeIcon
                         icon={faMagnifyingGlassPlus}
                         className="z-10 h-5 text-brown"
@@ -625,7 +644,7 @@ function Content() {
           onClick={() => setIsMapClicked(!isMapClicked)}
         >
           <img
-            src="./img/helpimage.png"
+            src="./img/newMap.jpg"
             alt=""
             className="object-contain w-full h-auto"
           />

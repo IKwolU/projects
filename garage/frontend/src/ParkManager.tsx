@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { BookingKanban } from "./BookingKanban";
 import ArrayStringSelect from "./ArrayStringSelect";
+import { BookingNotifications } from "./BookingNotifications";
 
 type MainMenuItem = {
   name: string;
@@ -100,6 +101,7 @@ export const ParkManager = () => {
               { name: "Статусы", path: "/statuses" },
               { name: "Бронь", path: "/bookings" },
               { name: "Заявки", path: "/kanban" },
+              { name: "Напоминания", path: "/notifications" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="flex ">
                 <Link
@@ -141,6 +143,7 @@ export const ParkManager = () => {
         <Route path={`/statuses`} element={<StatusesManager />} />
         <Route path={`/bookings`} element={<BookingManager />} />
         <Route path={`/kanban`} element={<BookingKanban />} />
+        <Route path={`/notifications`} element={<BookingNotifications />} />
       </Routes>
     </>
   );

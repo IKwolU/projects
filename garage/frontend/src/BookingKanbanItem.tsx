@@ -285,6 +285,10 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
     }
   };
 
+  const filteredApplicationLogs = applicationLogs?.filter((log: Logs) =>
+    filterTypeLogs.length ? filterTypeLogs.includes(log.type! as any) : true
+  );
+
   if (!applicationLogs) {
     return <></>;
   }
@@ -821,13 +825,17 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
               </div>
             </div>
             <div className="overflow-x-auto h-[calc(100vh-300px)] p-4 ">
-              {applicationLogs!.map((log, i) => {
+              {filteredApplicationLogs?.map((log, i) => {
                 const content = JSON.parse(log.content);
                 return (
                   <div
                     className=""
                     key={log.id}
-                    ref={applicationLogs.length === i + 1 ? lastElement : null}
+                    ref={
+                      filteredApplicationLogs?.length === i + 1
+                        ? lastElement
+                        : null
+                    }
                   >
                     {log.type !== ApplicationLogType.Notification && (
                       <div className="flex items-center space-x-2 text-sm">

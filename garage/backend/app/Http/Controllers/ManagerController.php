@@ -2789,6 +2789,56 @@ public function getNotificationsManager(Request $request) {
         ->get();
     return response()->json(['notifications' => $notifications], 200);
 }
+
+/**
+ * Получение всех уведомлений
+ *
+ * Метод для получения всех уведомлений
+ *
+ * @OA\Get(
+ *     path="manager/notifications/all",
+ *     operationId="getAllNotificationsManager",
+ *     summary="Получение всех уведомлений",
+ *     tags={"Manager"},
+*     @OA\Response(
+ *         response=200,
+ *         description="Success",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="notifications", type="array",
+ *                 @OA\Items(
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="application_id", type="integer"),
+ *                     @OA\Property(property="content", type="string"),
+ *                     @OA\Property(property="created_at", type="string")
+ *                 )
+ *             ))),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Неверный запрос",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Ошибка сервера",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Ошибка сервера")
+ *         )
+ *     )
+ * )
+ *
+ * @param \Illuminate\Http\Request $request Объект запроса с данными для привязки автомобилей к сроку аренды
+ * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
+ */
+public function getAllNotificationsManager(Request $request) {
+    $user = Auth::guard('sanctum')->user();
+    $notifications = ApplicationLogs::where('type', ApplicationLogType::Notification->value)
+        ->whereHas('application.division', function ($query) use ($user) {
+            $query->where('park_id', $user->manager->park_id);
+        })->get();
+    return response()->json(['notifications' => $notifications], 200);
+}
 /**
  * Создание уведомлений
  *

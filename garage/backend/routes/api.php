@@ -100,6 +100,7 @@ Route::prefix('manager')->group(function () {
         Route::post('applications', [ManagerController::class, 'getParkApplicationsManager']);
         Route::post('notification', [ManagerController::class, 'createNotificationManager']);
         Route::get('notifications', [ManagerController::class, 'getNotificationsManager']);
+        Route::get('notifications/all', [ManagerController::class, 'getAllNotificationsManager']);
         Route::put('notification', [ManagerController::class, 'updateNotificationManager']);
         Route::post('application', [ManagerController::class, 'createApplicationManager']);
         Route::post('application/comment', [ManagerController::class, 'createApplicationCommentManager']);

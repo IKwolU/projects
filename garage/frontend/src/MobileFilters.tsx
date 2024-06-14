@@ -213,12 +213,12 @@ export const MobileFilters = ({
                         >
                           {filters.models.map((model) => (
                             <div
-                              className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                              className="flex items-center px-1 pl-[6px] text-gray space-x-2 text-[12px] bg-grey rounded-xl text-nowrap flex-nowrap"
                               key={model}
                             >
                               {brand} {model}
                               <FontAwesomeIcon
-                                className="ml-1 text-gray"
+                                className="h-3 ml-1 text-gray"
                                 icon={faXmark}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -264,12 +264,12 @@ export const MobileFilters = ({
                   {!!filters.metros.length &&
                     filters.metros.map((metro) => (
                       <div
-                        className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                        className="flex items-center px-1 pl-[6px] text-gray space-x-2 text-[12px] bg-grey rounded-xl text-nowrap flex-nowrap"
                         key={metro}
                       >
                         {metro}
                         <FontAwesomeIcon
-                          className="ml-1 text-gray"
+                          className="h-3 ml-1 text-gray"
                           icon={faXmark}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -417,12 +417,12 @@ export const MobileFilters = ({
                   {!!filters.parksName.length &&
                     filters.parksName.map((park) => (
                       <div
-                        className="flex items-center px-1 space-x-2 text-sm bg-pale rounded-xl text-nowrap flex-nowrap"
+                        className="flex items-center px-1 pl-[6px] text-gray space-x-2 text-[12px] bg-grey rounded-xl text-nowrap flex-nowrap"
                         key={park}
                       >
                         {park}
                         <FontAwesomeIcon
-                          className="ml-1 text-gray"
+                          className="h-3 ml-1 text-gray"
                           icon={faXmark}
                           onClick={(e) => {
                             e.stopPropagation();

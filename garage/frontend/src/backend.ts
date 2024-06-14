@@ -1,6 +1,6 @@
 import { Client } from "./api-client";
-const client = new Client("http://127.0.0.1:8000/api", {
-  // const client = new Client("https://api.beebeep.ru/api", {
+// const client = new Client("http://127.0.0.1:8000/api", {
+const client = new Client("https://api.beebeep.ru/api", {
   fetch: async (url, options) => {
     try {
       const token = localStorage.getItem("token");

@@ -31,16 +31,13 @@ import Confirmation from "@/components/ui/confirmation";
 import countryList from "../../backend/public/assets/json/countries.json";
 import carsList from "../../backend/public/assets/json/carsValid.json";
 import {
-  faAngleLeft,
   faArrowLeft,
-  faArrowRightArrowLeft,
   faCheck,
   faCircleCheck,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import ListSelect from "./ListSelect";
 import ArrayStringSelect from "./ArrayStringSelect";
-import { Value } from "@radix-ui/react-select";
 
 interface Details {
   id: number;
@@ -53,7 +50,6 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
   const [updatedCount, setUpdatedCount] = useState(0);
   const lastElement = useRef<HTMLDivElement>(null);
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
-
   const applicationDetails = applications.find((x) => x.id === id)!;
 
   const [plannedArrival, setPlannedArrival] = useState(
@@ -347,7 +343,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         message: e.target.value,
                       })
                     }
-                    placeholder="Коментарий"
+                    placeholder="комментарий"
                   />
                 )}
               </div>
@@ -397,7 +393,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                     />
                     <Input
                       type="text"
-                      placeholder="Коментарий"
+                      placeholder="комментарий"
                       onChange={(e) => setCommentReason(e.target.value)}
                     />
                   </div>
@@ -897,7 +893,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                         )}
                         {log.type === ApplicationLogType.Comment && (
                           <div className="flex items-center gap-2 flex-nowrap">
-                            <div className="font-semibold">Коментарий:</div>{" "}
+                            <div className="font-semibold">Комментарий:</div>{" "}
                             <div className="">{content.comment}</div>
                           </div>
                         )}
@@ -1039,7 +1035,7 @@ export const BookingKanbanItem = ({ id, close }: Details) => {
                     message: e.target.value,
                   })
                 }
-                placeholder="Коментарий"
+                placeholder="комментарий"
               />
               <div className="flex w-full space-x-2">
                 <Button

@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2, Parks3, UserRole, Body51 } from "./api-client";
-import { parkAtom, userAtom } from "./atoms";
+import {
+  UserType,
+  IPark2,
+  Parks3,
+  UserRole,
+  Body51,
+  Body42,
+} from "./api-client";
+import { applicationsAtom, parkAtom, parkListsAtom, userAtom } from "./atoms";
 import { client } from "./backend";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import { DivisionManager } from "./DivisionManager";
 import { RentTermManager } from "./RentTermManager";
 import { TariffManager } from "./TariffManager";
@@ -26,12 +33,20 @@ type MainMenuItem = {
 export const ParkManager = () => {
   const [user] = useRecoilState(userAtom);
   const [park, setPark] = useRecoilState(parkAtom);
+  const [, setApplications] = useRecoilState(applicationsAtom);
+  const [, setParkLists] = useRecoilState(parkListsAtom);
+
   const [parksInitData, setParksInitData] = useState<Parks3[] | undefined>();
 
   const LogoutHandler = () => {
     client.logout();
     localStorage.clear();
     window.location.href = "/";
+  };
+
+  const getParkLists = async () => {
+    const data = await client.getParkInventoryListsManager();
+    setParkLists(data.lists!);
   };
 
   const getPark = async () => {
@@ -47,9 +62,18 @@ export const ParkManager = () => {
     }
   };
 
+  const getApplications = async () => {
+    const data = await client.getParkApplicationsManager(
+      new Body42({ last_update_time: undefined })
+    );
+    setApplications(data.applications!);
+  };
+
   useEffect(() => {
     if (user.user_type === UserType.Manager && !park) {
       getPark();
+      getApplications();
+      getParkLists();
     }
   }, []);
 
@@ -104,12 +128,18 @@ export const ParkManager = () => {
               { name: "Напоминания", path: "/notifications" },
             ].map(({ name, path }: MainMenuItem, i) => (
               <div key={`menu_${i}`} className="flex ">
-                <Link
-                  className="flex items-center text-xl font-semibold hover:text-yellow"
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-black transition-colors flex items-center"
+                      : "text-gray transition-colors flex items-center"
+                  }
                   to={path}
                 >
-                  {name}
-                </Link>
+                  <span className="text-lg font-semibold transition-colors hover:text-yellow">
+                    {name}
+                  </span>
+                </NavLink>
               </div>
             ))}
           </div>

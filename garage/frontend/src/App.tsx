@@ -99,7 +99,7 @@ function App() {
           <div className="flex items-center justify-end h-4 mb-[5px] sm:items-end sm:h-auto">
             <FontAwesomeIcon
               icon={faLocationDot}
-              className="h-[7px] sm:mr-2 mr-[2px] sm:h-5 text-gray mb-0.5"
+              className="h-[14px] sm:mr-2 mr-1 sm:h-5 text-gray mb-0.5"
             />
             <CityPicker />
           </div>

@@ -198,7 +198,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
                   </div>
                 ))}
               </div>
-              <div className="fixed bottom-0 left-0 w-full px-2 z-[53] bg-white shadow-xl lg:py-4 lg:rounded-xl lg:relative border-t border-grey">
+              <div className="fixed lg:relative bottom-0 left-0 w-full px-2 z-[53] sm:z-10 bg-white shadow-xl lg:py-4 lg:rounded-xl lg:relative border-t border-grey">
                 {/* <h3 className="hidden lg:block">
                   Выберите стоимость и схему дней
                 </h3>

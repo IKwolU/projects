@@ -161,9 +161,13 @@ export const DivisionManager = () => {
   let metro = park.metro_lines?.find(
     (x: Metro_lines) => x.city == city
   )?.stations;
-  if (!metro && city === "Москва") {
-    metro = [...new Set(MetroJSON.lines.flatMap((x) => x.stations))];
+
+  if (!metro) {
+    const cityMetro = MetroJSON.metro.filter((x) => x.City === city)[0];
+    cityMetro &&
+      (metro = [...new Set(cityMetro.lines.flatMap((x) => x.stations))]);
   }
+
   return (
     <>
       <div className="">Подразделения</div>

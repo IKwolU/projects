@@ -21318,6 +21318,9 @@ export class Notifications2 implements INotifications2 {
     application_id?: number;
     content?: string;
     created_at?: string;
+    updated_at?: string;
+    manager?: Manager2;
+    application?: Application2;
 
     [key: string]: any;
 
@@ -21340,6 +21343,9 @@ export class Notifications2 implements INotifications2 {
             this.application_id = _data["application_id"];
             this.content = _data["content"];
             this.created_at = _data["created_at"];
+            this.updated_at = _data["updated_at"];
+            this.manager = _data["manager"] ? Manager2.fromJS(_data["manager"]) : <any>undefined;
+            this.application = _data["application"] ? Application2.fromJS(_data["application"]) : <any>undefined;
         }
     }
 
@@ -21360,6 +21366,9 @@ export class Notifications2 implements INotifications2 {
         data["application_id"] = this.application_id;
         data["content"] = this.content;
         data["created_at"] = this.created_at;
+        data["updated_at"] = this.updated_at;
+        data["manager"] = this.manager ? this.manager.toJSON() : <any>undefined;
+        data["application"] = this.application ? this.application.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -21369,6 +21378,9 @@ export interface INotifications2 {
     application_id?: number;
     content?: string;
     created_at?: string;
+    updated_at?: string;
+    manager?: Manager2;
+    application?: Application2;
 
     [key: string]: any;
 }
@@ -23709,7 +23721,7 @@ export class Division2 implements IDivision2 {
     name?: string;
     phone?: string;
     city?: City;
-    manager?: Manager2;
+    manager?: Manager3;
 
     [key: string]: any;
 
@@ -23733,7 +23745,7 @@ export class Division2 implements IDivision2 {
             this.name = _data["name"];
             this.phone = _data["phone"];
             this.city = _data["city"] ? City.fromJS(_data["city"]) : <any>undefined;
-            this.manager = _data["manager"] ? Manager2.fromJS(_data["manager"]) : <any>undefined;
+            this.manager = _data["manager"] ? Manager3.fromJS(_data["manager"]) : <any>undefined;
         }
     }
 
@@ -23766,7 +23778,7 @@ export interface IDivision2 {
     name?: string;
     phone?: string;
     city?: City;
-    manager?: Manager2;
+    manager?: Manager3;
 
     [key: string]: any;
 }
@@ -23875,6 +23887,118 @@ export interface IManager {
     id?: number;
     user_id?: number;
     user?: User4;
+
+    [key: string]: any;
+}
+
+export class Manager2 implements IManager2 {
+    id?: number;
+    user_id?: number;
+    user?: User5;
+
+    [key: string]: any;
+
+    constructor(data?: IManager2) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.user_id = _data["user_id"];
+            this.user = _data["user"] ? User5.fromJS(_data["user"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Manager2 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Manager2();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["user_id"] = this.user_id;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IManager2 {
+    id?: number;
+    user_id?: number;
+    user?: User5;
+
+    [key: string]: any;
+}
+
+export class Application2 implements IApplication2 {
+    id?: number;
+    user_id?: number;
+    user?: User6;
+
+    [key: string]: any;
+
+    constructor(data?: IApplication2) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.user_id = _data["user_id"];
+            this.user = _data["user"] ? User6.fromJS(_data["user"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Application2 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Application2();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["user_id"] = this.user_id;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IApplication2 {
+    id?: number;
+    user_id?: number;
+    user?: User6;
 
     [key: string]: any;
 }
@@ -25173,14 +25297,14 @@ export interface ICity {
     [key: string]: any;
 }
 
-export class Manager2 implements IManager2 {
+export class Manager3 implements IManager3 {
     id?: number;
     user_id?: number;
-    user?: User5;
+    user?: User7;
 
     [key: string]: any;
 
-    constructor(data?: IManager2) {
+    constructor(data?: IManager3) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -25197,13 +25321,13 @@ export class Manager2 implements IManager2 {
             }
             this.id = _data["id"];
             this.user_id = _data["user_id"];
-            this.user = _data["user"] ? User5.fromJS(_data["user"]) : <any>undefined;
+            this.user = _data["user"] ? User7.fromJS(_data["user"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): Manager2 {
+    static fromJS(data: any): Manager3 {
         data = typeof data === 'object' ? data : {};
-        let result = new Manager2();
+        let result = new Manager3();
         result.init(data);
         return result;
     }
@@ -25221,10 +25345,10 @@ export class Manager2 implements IManager2 {
     }
 }
 
-export interface IManager2 {
+export interface IManager3 {
     id?: number;
     user_id?: number;
-    user?: User5;
+    user?: User7;
 
     [key: string]: any;
 }
@@ -25277,6 +25401,110 @@ export class User4 implements IUser4 {
 export interface IUser4 {
     id?: number;
     name?: string;
+
+    [key: string]: any;
+}
+
+export class User5 implements IUser5 {
+    id?: number;
+    name?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IUser5) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): User5 {
+        data = typeof data === 'object' ? data : {};
+        let result = new User5();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IUser5 {
+    id?: number;
+    name?: string;
+
+    [key: string]: any;
+}
+
+export class User6 implements IUser6 {
+    id?: number;
+    phone?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IUser6) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.phone = _data["phone"];
+        }
+    }
+
+    static fromJS(data: any): User6 {
+        data = typeof data === 'object' ? data : {};
+        let result = new User6();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["phone"] = this.phone;
+        return data;
+    }
+}
+
+export interface IUser6 {
+    id?: number;
+    phone?: string;
 
     [key: string]: any;
 }
@@ -25977,7 +26205,7 @@ export interface ICity2 {
     [key: string]: any;
 }
 
-export class User5 implements IUser5 {
+export class User7 implements IUser7 {
     id?: number;
     user_status?: number;
     phone?: string;
@@ -25986,7 +26214,7 @@ export class User5 implements IUser5 {
 
     [key: string]: any;
 
-    constructor(data?: IUser5) {
+    constructor(data?: IUser7) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -26009,9 +26237,9 @@ export class User5 implements IUser5 {
         }
     }
 
-    static fromJS(data: any): User5 {
+    static fromJS(data: any): User7 {
         data = typeof data === 'object' ? data : {};
-        let result = new User5();
+        let result = new User7();
         result.init(data);
         return result;
     }
@@ -26031,7 +26259,7 @@ export class User5 implements IUser5 {
     }
 }
 
-export interface IUser5 {
+export interface IUser7 {
     id?: number;
     user_status?: number;
     phone?: string;

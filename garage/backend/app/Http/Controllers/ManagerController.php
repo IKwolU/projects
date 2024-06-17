@@ -2800,18 +2800,35 @@ public function getNotificationsManager(Request $request) {
  *     operationId="getAllNotificationsManager",
  *     summary="Получение всех уведомлений",
  *     tags={"Manager"},
-*     @OA\Response(
- *         response=200,
- *         description="Success",
- *         @OA\JsonContent(
- *             @OA\Property(property="notifications", type="array",
- *                 @OA\Items(
- *                     @OA\Property(property="id", type="integer"),
- *                     @OA\Property(property="application_id", type="integer"),
- *                     @OA\Property(property="content", type="string"),
- *                     @OA\Property(property="created_at", type="string")
- *                 )
- *             ))),
+*@OA\Response(
+*    response=200,
+*    description="Success",
+*    @OA\JsonContent(
+*@OA\Property(property="notifications", type="array",
+*            @OA\Items(
+*                @OA\Property(property="id", type="integer"),
+*                @OA\Property(property="application_id", type="integer"),
+*                @OA\Property(property="content", type="string"),
+*                @OA\Property(property="created_at", type="string"),
+*                @OA\Property(property="updated_at", type="string"),
+*                @OA\Property(property="manager", type="object",
+*                    @OA\Property(property="id", type="integer"),
+*                    @OA\Property(property="user_id", type="integer"),
+*                    @OA\Property(property="user", type="object",
+*                        @OA\Property(property="id", type="integer"),
+*                        @OA\Property(property="name", type="string")
+*                    )
+*                ),
+*                @OA\Property(property="application", type="object",
+*                    @OA\Property(property="id", type="integer"),
+*                    @OA\Property(property="user_id", type="integer"),
+*                    @OA\Property(property="user", type="object",
+*                        @OA\Property(property="id", type="integer"),
+*                        @OA\Property(property="phone", type="string")
+*                    )
+*                )
+*            )
+*        ))),
  *     @OA\Response(
  *         response=400,
  *         description="Неверный запрос",
@@ -2834,9 +2851,19 @@ public function getNotificationsManager(Request $request) {
 public function getAllNotificationsManager(Request $request) {
     $user = Auth::guard('sanctum')->user();
     $notifications = ApplicationLogs::where('type', ApplicationLogType::Notification->value)
-        ->whereHas('application.division', function ($query) use ($user) {
-            $query->where('park_id', $user->manager->park_id);
-        })->get();
+    ->whereHas('application.division', function ($query) use ($user) {
+        $query->where('park_id', $user->manager->park_id);
+    })
+    ->with(['manager' => function ($query) {
+        $query->select('id', 'user_id');
+    }, 'manager.user' => function ($query) {
+        $query->select('id', 'name');
+    }, 'application' => function ($query) {
+        $query->select('id', 'user_id');
+    }, 'application.user' => function ($query) {
+        $query->select('id', 'phone');
+    }])
+    ->get();
     return response()->json(['notifications' => $notifications], 200);
 }
 /**

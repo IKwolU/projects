@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BookingKanbanItem } from "./BookingKanbanItem";
 import { useRecoilState } from "recoil";
-import { applicationsAtom, parkAtom, parkListsAtom } from "./atoms";
+import { applicationsAtom, parkAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { BookingKanbanCreatingTask } from "./BookingKanbanCreatingTask";
@@ -32,7 +32,6 @@ interface Details {
 
 export const BookingKanban = () => {
   const [applications, setApplications] = useRecoilState(applicationsAtom);
-  const [, setParkLists] = useRecoilState(parkListsAtom);
   const [showModal, setShowModal] = useState(false);
   const [updatedCount, setUpdatedCount] = useState(0);
   const [notifications, setNotifications] = useState<Notifications[]>([]);
@@ -64,11 +63,6 @@ export const BookingKanban = () => {
   );
 
   const updateIntervalInSeconds = 60;
-
-  const getParkLists = async () => {
-    const data = await client.getParkInventoryListsManager();
-    setParkLists(data.lists!);
-  };
 
   const getApplications = async () => {
     const data = await client.getParkApplicationsManager(
@@ -102,9 +96,7 @@ export const BookingKanban = () => {
   };
 
   useEffect(() => {
-    getApplications();
     getNotification();
-    getParkLists();
   }, []);
 
   useEffect(() => {
@@ -344,7 +336,7 @@ export const BookingKanban = () => {
                         message: e.target.value,
                       })
                     }
-                    placeholder="Коментарий"
+                    placeholder="Комментарий"
                   />
                 )}
               </div>
@@ -398,7 +390,7 @@ export const BookingKanban = () => {
                   />
                   <Input
                     type="text"
-                    placeholder="Коментарий"
+                    placeholder="комментарий"
                     onChange={(e) => setCommentReason(e.target.value)}
                   />
                 </div>

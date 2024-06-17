@@ -56,7 +56,7 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                   </div>
                   <img
                     src={car!.images![0]}
-                    className={`w-full rounded-[8px]   h-[calc((100vw-68px)/2)] object-cover`}
+                    className={`w-full rounded-[8px]   h-[calc((100vw-32px)/2.44)] object-cover`}
                     alt=""
                   />
                   {/* {car.cars_count! > 1 && (

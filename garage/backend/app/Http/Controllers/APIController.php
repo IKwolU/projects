@@ -960,7 +960,6 @@ class APIController extends Controller
                     }
                 },
             ],
-            'cars.*.year_produced' => 'required|nullable|integer',
             'cars.*.id' => 'required|string|max:20|unique:cars,car_id',
             'cars.*.images' => 'array',
         ]);

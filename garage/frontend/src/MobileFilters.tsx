@@ -12,6 +12,7 @@ import {
   getFuelTypeDisplayName,
   getTransmissionDisplayName,
 } from "@/lib/utils";
+import BackArrow from "./assets/BackArrow.svg";
 
 import { Badge } from "@/components/ui/badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -96,32 +97,28 @@ export const MobileFilters = ({
       >
         <div className=" w-full max-w-[352px] mx-auto  i grid grid-cols-3 font-normal items-center h-10 text-nowrap  whitespace-nowrap rounded-xl text-base font-regular  transition-colors focus:outline-none ">
           <img
-            src={Xclose}
+            src={BackArrow}
             alt=""
-            className="h-[11px] text-gray"
+            className="h-auto min-w-5 text-gray"
             onClick={() => close()}
           />
           <div className="text-base font-semibold text-center">Фильтры</div>
-          <div
-            className="text-end text-gray text-[11px]"
-            onClick={() => clean()}
-          >
+          <div className="text-xs text-end text-gray" onClick={() => clean()}>
             Сбросить
           </div>
         </div>
         <Separator className="my-2 bg-pale" />
         <div className="my-2 space-x-2 overflow-scroll overflow-x-auto sm:flex scrollbar-hide">
-          <h3 className="text-sm">Тип аренды</h3>
+          <h3 className="text-lg">Тип аренды</h3>
           <div className="flex gap-[6px]">
-            {" "}
             {[undefined, false, true].map((buyoutPossible, i) => (
               <Badge
                 key={`Buyout${i}`}
                 className={`${
                   filters.buyoutPossible === buyoutPossible
-                    ? "bg-white shadow border p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                    : "p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                } cursor-pointer`}
+                    ? "bg-white shadow border "
+                    : ""
+                } cursor-pointer p-[7px] w-[74px] flex justify-center rounded-[10px] h-[34px] border-pale text-[14px]`}
                 onClick={() => {
                   result({
                     ...filters,
@@ -139,16 +136,14 @@ export const MobileFilters = ({
             ))}
           </div>
           <Separator className="my-2 bg-pale" />
-          <h3 className="text-sm">Цена</h3>
+          <h3 className="text-lg">Цена</h3>
           <div className="space-y-2">
             {["asc", "desc"].map((sorting, i) => (
               <Badge
                 key={`sorting ${i}`}
                 className={` ${
-                  filters.sorting === sorting
-                    ? "bg-white shadow border p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                    : "p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                } cursor-pointer w-60`}
+                  filters.sorting === sorting ? "bg-white shadow border " : ""
+                } cursor-pointer w-60 p-[7px]  flex justify-center rounded-[10px] h-[34px] border-pale text-[14px]`}
                 onClick={() =>
                   result({
                     ...filters,
@@ -165,16 +160,14 @@ export const MobileFilters = ({
             ))}
           </div>
           <Separator className="my-2 bg-pale" />
-          <h3 className="text-sm">График аренды</h3>
+          <h3 className="text-lg">График аренды</h3>
           <div className="flex gap-[6px]">
             {[null, ...staticSchemas].map((schema, i) => (
               <Badge
                 key={`schema ${i}`}
                 className={`${
-                  filters.schema === schema
-                    ? "bg-white shadow border p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                    : "p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                } cursor-pointer`}
+                  filters.schema === schema ? "bg-white shadow border " : ""
+                } cursor-pointer p-[7px] w-[74px] flex justify-center rounded-[10px] h-[34px] border-pale text-[14px]`}
                 onClick={() => {
                   return result({
                     ...filters,
@@ -193,7 +186,7 @@ export const MobileFilters = ({
             trigger={
               <div className="">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm">Модели</h3>
+                  <h3 className="text-lg">Модели</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
                 <div className="flex w-full space-x-2 overflow-hidden">
@@ -257,7 +250,7 @@ export const MobileFilters = ({
             <DialogTrigger asChild>
               <div className="">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm">Расположение</h3>
+                  <h3 className="text-lg">Расположение</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
                 <div className="flex w-full space-x-2 overflow-hidden">
@@ -289,12 +282,12 @@ export const MobileFilters = ({
             <DialogContent className="sm:max-w-[1208px]" ishiddenclose>
               <div className="absolute left-0 w-full h-0 top-3">
                 <div className="mx-auto text-base font-semibold text-center w-fit">
-                  Расположение - станции метро
+                  Станции метро
                 </div>
               </div>
               <div className="flex space-x-2 flex-nowrap">
                 <input
-                  className="w-full px-2 py-2 border border-gray rounded-xl focus-visible:outline-none"
+                  className="w-full px-2 py-[5px] border border-pale rounded-[7px] focus-visible:outline-none"
                   type="text"
                   placeholder="Введите станцию"
                   value={searchMetroTerm}
@@ -385,16 +378,16 @@ export const MobileFilters = ({
                     <div className="absolute top-0 left-0 flex justify-center w-12">
                       <div className="max-w-[800px] w-full flex justify-center px-4 py-4 space-x-2">
                         <img
-                          src={Xclose}
+                          src={BackArrow}
                           alt=""
-                          className="h-[11px] text-gray"
+                          className="h-auto min-w-5 text-gray"
                         />
                       </div>
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-full">
                       <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-10px_-5px_20px_10px] shadow-white px-4 py-4 space-x-2">
                         <div className="sm:max-w-[250px] w-full">
-                          <Button className="h-[42px] text-[18px] font-semibold ">
+                          <Button className="h-[42px] text-lg font-semibold ">
                             Применить
                           </Button>
                         </div>
@@ -410,7 +403,7 @@ export const MobileFilters = ({
             <DialogTrigger asChild>
               <div className="">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm">Автопарк</h3>
+                  <h3 className="text-lg">Автопарк</h3>
                   <img src={Shewron} alt="" className="h-[15px] px-2" />
                 </div>
                 <div className="flex w-full space-x-2 overflow-hidden">
@@ -447,7 +440,7 @@ export const MobileFilters = ({
               </div>
               <div className="">
                 <input
-                  className="w-full px-2 py-2 border border-gray rounded-xl focus-visible:outline-none"
+                  className="w-full px-2 py-[5px] border border-pale rounded-[7px] focus-visible:outline-none"
                   type="text"
                   placeholder="Поиск автопарка"
                   value={searchParkTerm}
@@ -531,16 +524,16 @@ export const MobileFilters = ({
                     <div className="absolute top-0 left-0 flex justify-center w-12">
                       <div className="max-w-[800px] w-full flex justify-center px-4 py-4 space-x-2">
                         <img
-                          src={Xclose}
+                          src={BackArrow}
                           alt=""
-                          className="h-[11px] text-gray"
+                          className="h-auto min-w-5 text-gray"
                         />
                       </div>
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-full">
                       <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-10px_-5px_20px_10px] shadow-white px-4 py-4 space-x-2">
                         <div className="sm:max-w-[250px] w-full">
-                          <Button className="h-[42px] text-[18px] font-semibold">
+                          <Button className="h-[42px] text-lg font-semibold">
                             Применить
                           </Button>
                         </div>
@@ -552,7 +545,7 @@ export const MobileFilters = ({
             </DialogContent>
           </Dialog>
           <Separator className="my-2 bg-pale" />
-          <h3 className="text-sm">Тип топлива</h3>
+          <h3 className="text-lg">Тип топлива</h3>
           <div className="flex flex-wrap gap-[6px]">
             {[
               null,
@@ -564,10 +557,8 @@ export const MobileFilters = ({
               <Badge
                 key={`fuelType ${i}`}
                 className={`${
-                  filters.fuelType === fuelType
-                    ? "bg-white shadow border p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                    : "p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                } cursor-pointer`}
+                  filters.fuelType === fuelType ? "bg-white shadow border " : ""
+                } cursor-pointer  p-[7px] w-[74px] flex justify-center rounded-[10px] h-[34px] border-pale text-[14px]`}
                 onClick={() => {
                   return result({
                     ...filters,
@@ -580,7 +571,7 @@ export const MobileFilters = ({
             ))}
           </div>
           <Separator className="my-2 bg-pale" />
-          <h3 className="text-sm">Трансмиссия</h3>
+          <h3 className="text-lg">Трансмиссия</h3>
           <div className="flex flex-wrap gap-[6px]">
             {[null, TransmissionType.Automatic, TransmissionType.Mechanics].map(
               (transmissionType, i) => (
@@ -588,9 +579,9 @@ export const MobileFilters = ({
                   key={`transmissionType ${i}`}
                   className={`${
                     filters.transmissionType === transmissionType
-                      ? "bg-white shadow border p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                      : "p-[7px] w-[74px] flex justify-center rounded-[8px] h-[27px] border-pale text-sm"
-                  } cursor-pointer`}
+                      ? "bg-white shadow border "
+                      : ""
+                  } cursor-pointer p-[7px] w-[74px] flex justify-center rounded-[10px] h-[34px] border-pale text-[14px]`}
                   onClick={() => {
                     return result({
                       ...filters,
@@ -612,7 +603,7 @@ export const MobileFilters = ({
       </div>
       <div className="fixed z-[52] left-0 bottom-0 px-4 py-4 w-full flex items-center justify-center  bg-white shadow-[-10px_-5px_20px_10px] shadow-white">
         <Button
-          className="w-full h-[42px] text-[18px] font-semibold"
+          className="w-full h-[42px] text-lg font-semibold"
           variant="default"
           onClick={() => close()}
         >

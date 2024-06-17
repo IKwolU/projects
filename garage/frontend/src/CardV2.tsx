@@ -51,7 +51,7 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
             <div className="flex">
               <div className="relative w-full">
                 <div className="relative w-full">
-                  <div className="absolute z-50 px-2 py-0 mx-[7px] my-1 text-[13px] font-medium text-black bg-white shadow bg-opacity-90 rounded-2xl ">
+                  <div className="absolute z-50 px-2 py-[2px] mx-[7px] my-1 text-xs font-semibold  text-black bg-white shadow bg-opacity-90 rounded-2xl ">
                     Парк &laquo;{car.park_name}&raquo;
                   </div>
                   <img
@@ -68,23 +68,23 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
 
                 <div className="relative flex flex-col w-full px-0 pt-2">
                   <div className="w-full mb-1 text-lg md:text-xl">
-                    <h4 className="m-0 text-2xl">
+                    <h4 className="m-0 text-[23px] font-bold">
                       {`${car.brand} ${car.model}`}
                     </h4>
                     <div className="flex space-x-2">
-                      <span className="text-sm w-fit text-zinc-400">
+                      <span className="text-xs w-fit text-zinc-400">
                         {car.year_produced}
                       </span>
                       <div className="flex items-center">
                         <div className="w-[3px] h-[3px] rounded-full bg-zinc-400"></div>
                       </div>
-                      <div className="text-sm w-fit text-zinc-400">
+                      <div className="text-xs w-fit text-zinc-400">
                         {getTransmissionDisplayName(car.transmission_type)}
                       </div>
                       <div className="flex items-center">
                         <div className="w-[3px] h-[3px] rounded-full bg-zinc-400"></div>
                       </div>
-                      <div className="text-sm w-fit text-zinc-400">
+                      <div className="text-xs w-fit text-zinc-400">
                         {getFuelTypeDisplayName(car.fuel_type)}
                       </div>
                     </div>
@@ -93,7 +93,7 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                         className="flex p-0 m-0 space-x-2"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="flex items-center gap-1 text-sm">
+                        <div className="flex items-center gap-1 text-[13px]">
                           {car.variants![0].color_metro!.map((x) => (
                             <div
                               style={{ backgroundColor: x }}
@@ -103,7 +103,7 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                           ))}
                           <span>{car.variants![0].metro}</span>
                         </div>
-                        <div className="relative text-sm underline text-nowrap">
+                        <div className="relative text-[13px] underline text-nowrap">
                           {car.variants!.length > 1 && (
                             <div onClick={() => setOpenedStationsId(car.id!)}>
                               + еще {car.variants!.length - 1} станция
@@ -159,14 +159,14 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                 </div>
               </div>
             </div>
-            <div className="inset-x-0 flex justify-start w-full mx-auto mt-1 space-x-2">
+            <div className="inset-x-0 flex justify-start w-full mx-auto mt-0 space-x-2">
               <div className="flex flex-wrap gap-4">
                 {currentSchemas?.map((currentSchema, i) => (
                   <div
                     key={`${currentSchema.working_days}/${currentSchema.non_working_days}${i}`}
                     className=""
                   >
-                    <div className="text-2xl font-semibold ">{`${formatRoubles(
+                    <div className="text-[22px] font-semibold ">{`${formatRoubles(
                       currentSchema.daily_amount!
                     )}`}</div>
                     <div className="-mt-1 text-xs font-medium text-zinc-400">{`${currentSchema.working_days} раб. / ${currentSchema.non_working_days} вых.`}</div>
@@ -175,10 +175,10 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
               </div>
             </div>
             <div className="flex flex-col justify-between flex-grow mt-0">
-              <div className="flex gap-[6px] mt-1 text-center">
+              <div className="flex gap-3 mt-1 text-center">
                 <Button
                   variant={"card"}
-                  className=" sm:max-w-[376px] w-2/5  h-[33px] rounded-[8px] text-sm font-semibold"
+                  className=" sm:max-w-[376px] w-2/5  h-[40px] rounded-[8px] text-[14px] font-bold"
                 >
                   Подробнее
                 </Button>
@@ -188,7 +188,7 @@ export const CardV2 = ({ car, open }: { car: Cars3; open: () => void }) => {
                     setIsBookOpen(true);
                   }}
                   variant={"cardDefault"}
-                  className="w-3/5 sm:max-w-[376px] h-[33px] rounded-[8px] text-sm font-semibold"
+                  className="w-3/5 sm:max-w-[376px] h-[40px] rounded-[8px] text-[14px] font-bold"
                 >
                   Забронировать
                 </Button>

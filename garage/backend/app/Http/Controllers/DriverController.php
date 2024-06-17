@@ -598,7 +598,7 @@ $divisionId=$car->division->id;
      */
     public function getFinderFilterData()
     {
-        $cars = Car::with(['division.park', 'division.city'])->orderBy('brand')->orderBy('model')->get(['id', 'brand', 'model', 'division_id']);
+        $cars = Car::where('division_id',"!=",null)->with(['division.park', 'division.city'])->orderBy('brand')->orderBy('model')->get(['id', 'brand', 'model', 'division_id']);
 
         $brandList = $cars->groupBy('brand')->map(function ($group) {
             return [
@@ -612,7 +612,7 @@ $divisionId=$car->division->id;
         $parkList = $cars->pluck('division.park.park_name')->unique()->sort()->values()->all();
         $avito_ids = [];
 
-$metro = $cars->first()->division->city->metro;
+        $metro = $cars->first()->division->city->metro;
         if ($metro) {
             $cityData = json_decode($cars->first()->division->city->metro)->lines;
         $stationColors = [];

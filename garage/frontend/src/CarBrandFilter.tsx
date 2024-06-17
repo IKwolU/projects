@@ -65,14 +65,14 @@ export const CarBrandFilter = ({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[1208px]" ishiddenclose>
         <div className="absolute left-0 w-full h-0 top-3">
-          <div className="mx-auto text-base font-semibold text-center w-fit">
-            Поиск модели
+          <div className="mx-auto text-lg font-bold text-center w-fit">
+            Модели
           </div>
         </div>
 
         <div className="flex space-x-2 flex-nowrap">
           <input
-            className="w-full px-2 py-2 border border-gray rounded-xl focus-visible:outline-none"
+            className="w-full px-2 py-[5px] border border-pale rounded-[7px] focus-visible:outline-none"
             type="text"
             placeholder="Введите модель"
             value={searchTerm}
@@ -80,7 +80,7 @@ export const CarBrandFilter = ({
           />
         </div>
         <div className="grid items-start content-start justify-start h-full grid-cols-1 py-4 pb-32 pr-1 overflow-y-auto sm:pr-0 sm:grid-cols-3 ">
-          <div
+          {/* <div
             className="w-full p-1 text-base font-semibold text-black cursor-pointer "
             onClick={() => {
               result({
@@ -92,7 +92,7 @@ export const CarBrandFilter = ({
             }}
           >
             Все модели
-          </div>
+          </div> */}
           {filteredBrands.map((x: IBrands) => {
             const title = x.name!;
             const isActive = filters.brands.some((b) => b === title);
@@ -103,7 +103,7 @@ export const CarBrandFilter = ({
                 }`}
                 key={title}
               >
-                <span className={`p-1 font-semibold justify-between flex`}>
+                <span className={`p-1 font-bold text-lg justify-between flex`}>
                   {title}
                 </span>
                 {x.models!.map((model) => {
@@ -164,11 +164,9 @@ export const CarBrandFilter = ({
                 </div>
               </div>
               <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                <div className="max-w-[800px] w-full flex justify-center bg-white border-t  border-pale px-4 py-4 space-x-2">
+                <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-0px_-5px_15px_1px] shadow-pale px-4 py-4 space-x-2">
                   <div className="sm:max-w-[250px] w-full ">
-                    <Button className="text-[18px] font-semibold">
-                      Выбрать
-                    </Button>
+                    <Button className="text-lg font-semibold">Выбрать</Button>
                   </div>
                 </div>
               </div>

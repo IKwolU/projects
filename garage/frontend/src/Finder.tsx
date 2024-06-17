@@ -312,7 +312,7 @@ export const Finder = () => {
           </Button>
         </div>
       )}
-      <div className="absolute left-0 flex justify-end w-full h-0 px-4 mx-auto top-8 sm:hidden">
+      <div className="absolute left-0 flex justify-end w-full h-0 px-4 mx-auto top-9 sm:hidden">
         <div className="max-w-[352px] mx-auto h-0 mt-1 w-full flex justify-end">
           <CarBrandFilter
             brands={brands}
@@ -320,9 +320,9 @@ export const Finder = () => {
             result={(filters) => setFilters(filters)}
             trigger={
               <div
-                className={` right-0 flex items-center justify-between w-2/3 p-2 space-x-1 top-6 mt-[6px] h-[24px] ${
+                className={` right-0 flex items-center justify-between w-2/3 p-2 space-x-1 top-6 mt-[6px] h-[28px] ${
                   filters.brands.length ? "" : "bg-grey"
-                }  rounded-xl`}
+                }  rounded-[7px]`}
               >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
@@ -397,7 +397,7 @@ export const Finder = () => {
       </div>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
       <div className={`${overflow && "pt-10 "}`}>
-        <div className="flex my-2 space-x-1 ">
+        <div className="flex justify-between my-2 space-x-1">
           <div
             onClick={() =>
               setFilters({
@@ -405,7 +405,7 @@ export const Finder = () => {
                 carClass: [],
               })
             }
-            className={`cursor-pointer w-24 flex flex-col h-10  sm:h-full items-center bg-grey rounded-xl ${
+            className={`cursor-pointer min-w-[72px] flex flex-col h-[52px]  sm:h-full items-center bg-grey rounded-xl ${
               // isActive ? "shadow border-2 border-gray" : ""
               filters.carClass.length === 0
                 ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
@@ -414,14 +414,10 @@ export const Finder = () => {
           >
             <img
               alt=""
-              className="object-contain w-auto h-10 sm:w-full sm:h-14 rounded-xl"
-              style={{ margin: "-4px" }}
+              className="object-contain w-auto -mt-[9px] h-14 sm:w-full sm:h-14 rounded-xl"
               src={allClasses}
             />
-            <span
-              className="pb-2  text-[8px] sm:text-base text-black"
-              style={{ margin: "-8px" }}
-            >
+            <span className="pb-2 -mt-4 text-xs font-semibold text-black sm:text-base">
               Все тарифы
             </span>
           </div>
@@ -445,7 +441,7 @@ export const Finder = () => {
                   })
                 }
                 key={carClass}
-                className={`cursor-pointer w-24 flex flex-col items-center bg-grey rounded-xl ${
+                className={`cursor-pointer w-[62px] flex flex-col items-center bg-grey rounded-xl ${
                   // isActive ? "shadow border-2 border-gray" : ""
                   isActive
                     ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
@@ -454,12 +450,12 @@ export const Finder = () => {
               >
                 <img
                   alt=""
-                  className="object-contain w-auto h-10 sm:w-full sm:h-14 rounded-xl"
+                  className="object-contain w-auto h-12 sm:w-full sm:h-14 rounded-xl"
                   style={{ margin: "-4px" }}
                   src={img}
                 />
                 <span
-                  className="pb-2  text-[8px] sm:text-base text-black"
+                  className="pb-2 text-xs font-semibold text-black sm:text-base"
                   style={{ margin: "-8px" }}
                 >
                   {title}

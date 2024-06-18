@@ -385,9 +385,9 @@ export const MobileFilters = ({
                       </div>
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                      <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-10px_-5px_20px_10px] shadow-white px-4 py-4 space-x-2">
+                      <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-0px_-5px_15px_1px] shadow-pale px-4 py-4 space-x-2">
                         <div className="sm:max-w-[250px] w-full">
-                          <Button className="h-[42px] text-lg font-semibold ">
+                          <Button className="h-[46px] text-lg font-semibold ">
                             Применить
                           </Button>
                         </div>
@@ -531,9 +531,9 @@ export const MobileFilters = ({
                       </div>
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-full">
-                      <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-10px_-5px_20px_10px] shadow-white px-4 py-4 space-x-2">
+                      <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-0px_-5px_15px_1px] shadow-pale px-4 py-4 space-x-2">
                         <div className="sm:max-w-[250px] w-full">
-                          <Button className="h-[42px] text-lg font-semibold">
+                          <Button className="h-[46px] text-lg font-semibold">
                             Применить
                           </Button>
                         </div>
@@ -601,9 +601,9 @@ export const MobileFilters = ({
           </div>
         </div>
       </div>
-      <div className="fixed z-[52] left-0 bottom-0 px-4 py-4 w-full flex items-center justify-center  bg-white shadow-[-10px_-5px_20px_10px] shadow-white">
+      <div className="fixed z-[52] left-0 bottom-0 px-4 py-4 w-full flex items-center justify-center  bg-white shadow-[-0px_-5px_15px_1px] shadow-pale">
         <Button
-          className="w-full h-[42px] text-lg font-semibold"
+          className="w-full h-[46px] text-lg font-semibold"
           variant="default"
           onClick={() => close()}
         >

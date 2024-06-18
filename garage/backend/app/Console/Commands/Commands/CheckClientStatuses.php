@@ -48,12 +48,12 @@ class CheckClientStatuses extends Command
             $parks = Park::whereNotNull('url')->get();
             foreach ($parks as $park) {
                 $clientCars = [];
-    $response = $this->getCarsFromParkClient($park->id);
-    if ($response && $response->status() === 200) {
-        $clientCars = json_decode($response->body());
-    } else {
-        continue;
-    }
+                $response = $this->getCarsFromParkClient($park->id);
+                if ($response && $response->status() === 200) {
+                    $clientCars = json_decode($response->body());
+                } else {
+                    continue;
+                }
 
                 $statuses = Status::where('park_id', $park->id)->select('status_value', 'custom_status_name', 'id')->get();
                 $cars = Car::where('park_id', $park->id)->get();
@@ -119,19 +119,19 @@ class CheckClientStatuses extends Command
     }
 
     private function getCarsFromParkClient($parkId)
-{
-    try {
-        $park = Park::where('id', $parkId)->select('url', 'login_1c', 'password_1c')->first();
-        $url = $park->url . '/hs/Car/v1/Get';
-        $manager = Manager::where('park_id', $parkId)->first();
-        if ($manager) {
-            $username = $park->login_1c;
-            $password = $park->password_1c;
-            $response = Http::withoutVerifying()->withBasicAuth($username, $password)->get($url);
-            return $response;
+    {
+        try {
+            $park = Park::where('id', $parkId)->select('url', 'login_1c', 'password_1c')->first();
+            $url = $park->url . '/hs/Car/v1/Get';
+            $manager = Manager::where('park_id', $parkId)->first();
+            if ($manager) {
+                $username = $park->login_1c;
+                $password = $park->password_1c;
+                $response = Http::withoutVerifying()->withBasicAuth($username, $password)->get($url);
+                return $response;
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching cars from park client: ' . $e->getMessage());
         }
-    } catch (\Exception $e) {
-        Log::error('Error fetching cars from park client: ' . $e->getMessage());
     }
-}
 }

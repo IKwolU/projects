@@ -397,7 +397,7 @@ export const Finder = () => {
       </div>
       {/* <div onClick={() => navigate("login/driver")} className="fixed top-5 right-5">Войти</div> */}
       <div className={`${overflow && "pt-10 "}`}>
-        <div className="flex justify-between my-2 space-x-1">
+        <div className="flex justify-between my-2 space-x-1 sm:justify-start">
           <div
             onClick={() =>
               setFilters({
@@ -405,7 +405,7 @@ export const Finder = () => {
                 carClass: [],
               })
             }
-            className={`cursor-pointer min-w-[72px] flex flex-col h-[52px]  sm:h-full items-center bg-grey rounded-xl ${
+            className={`cursor-pointer min-w-[72px] sm:min-w-1 flex flex-col h-[52px] sm:w-24  sm:h-full items-center bg-grey rounded-xl ${
               // isActive ? "shadow border-2 border-gray" : ""
               filters.carClass.length === 0
                 ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
@@ -417,7 +417,7 @@ export const Finder = () => {
               className="object-contain w-auto -mt-[9px] h-14 sm:w-full sm:h-14 rounded-xl"
               src={allClasses}
             />
-            <span className="pb-2 -mt-4 text-xs font-semibold text-black sm:text-base">
+            <span className="pb-2 sm:pb-1 -mt-4 text-xs font-semibold text-black sm:-mt-[10px] sm:font-normal sm:text-base">
               Все тарифы
             </span>
           </div>
@@ -441,7 +441,7 @@ export const Finder = () => {
                   })
                 }
                 key={carClass}
-                className={`cursor-pointer w-[62px] flex flex-col items-center bg-grey rounded-xl ${
+                className={`cursor-pointer w-[62px] sm:w-24 flex flex-col items-center bg-grey rounded-xl ${
                   // isActive ? "shadow border-2 border-gray" : ""
                   isActive
                     ? "border border-pale bg-white sm:border-none sm:shadow sm:shadow-pale"
@@ -455,7 +455,7 @@ export const Finder = () => {
                   src={img}
                 />
                 <span
-                  className="pb-2 text-xs font-semibold text-black sm:text-base"
+                  className="pb-2 text-xs font-semibold text-black sm:font-normal sm:text-base"
                   style={{ margin: "-8px" }}
                 >
                   {title}

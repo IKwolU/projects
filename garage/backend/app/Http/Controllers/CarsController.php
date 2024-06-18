@@ -338,11 +338,11 @@ class CarsController extends Controller
         $carsQuery->selectRaw("{$selectColumns}, COUNT(*) as cars_count")
         ->where('rent_term_id', '!=', null)
         ->where('status', 1)
-        ->whereExists(function ($query) {
+        ->whereExists(function ($query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('divisions')
                 ->whereColumn('cars.division_id', 'divisions.id')
-                ->where('city_id', 1);
+                ->where('city_id', $cityId);
         })
         ->groupBy($stackList)
         ->orderByRaw('(select MIN(schemas.daily_amount) from `schemas` where `schemas`.`rent_term_id` = `cars`.`rent_term_id` order by `schemas`.`daily_amount` asc limit 1) asc');

@@ -166,7 +166,9 @@ export const CarBrandFilter = ({
               <div className="fixed bottom-0 left-0 flex justify-center w-full">
                 <div className="max-w-[800px] w-full flex justify-center bg-white shadow-[-0px_-5px_15px_1px] shadow-pale px-4 py-4 space-x-2">
                   <div className="sm:max-w-[250px] w-full ">
-                    <Button className="text-lg font-semibold">Выбрать</Button>
+                    <Button className="text-lg font-semibold h-[46px]">
+                      Выбрать
+                    </Button>
                   </div>
                 </div>
               </div>

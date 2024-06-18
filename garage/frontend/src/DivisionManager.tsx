@@ -88,7 +88,7 @@ export const DivisionManager = () => {
       await client.updateParkDivisionManager(
         new Body30({
           id: selected.id,
-          city: newDivision.city || undefined,
+          city: city || undefined,
           address: newDivision.address || undefined,
           coords: newDivision.coords || undefined,
           metro: newDivision.metro || undefined,

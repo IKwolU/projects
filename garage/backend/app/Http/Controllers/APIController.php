@@ -401,6 +401,9 @@ class APIController extends Controller
         if ($request->address) {
             $division->address = $request->address;
         }
+        if ($request->city) {
+            $division->city_id = City::where('name',$request->city)->first()->id;
+        }
         if ($request->metro) {
             $division->metro = $request->metro;
         }

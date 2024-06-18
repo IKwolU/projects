@@ -245,8 +245,8 @@ class ManagerController extends Controller
             }
 
             $divisionsByCity[$city][] = $division;
-            $division->city = $city;
             unset($division->city, $division->park_id, $division->city_id);
+            $division->city = $city;
         }
 
         foreach ($divisionsByCity as $city => $divisions) {
@@ -979,6 +979,7 @@ class ManagerController extends Controller
      *             @OA\Property(property="address", type="string", description="Адрес подразделения"),
      *             @OA\Property(property="metro", type="string", description="Название ближайшего метро" ),
      *             @OA\Property(property="name", type="string", description="Название подразделения"),
+     *             @OA\Property(property="city", type="string", description="город"),
      *             @OA\Property(property="phone", type="string", description="Телефон парка"),
      *             @OA\Property(property="timezone_difference", type="integer", description="Часовой пояс, разница во времени с +0"),
      *             @OA\Property(

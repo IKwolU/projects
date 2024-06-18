@@ -30,12 +30,14 @@ use App\Models\Referral;
 use App\Models\Schema;
 use App\Models\Status;
 use App\Rules\WorkingHoursRule;
+use App\Services\TelegramService;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /**
  * @OA\Info(
@@ -64,6 +66,7 @@ class APIController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="url", type="string", description="URL парка"),
      *             @OA\Property(property="commission", type="number", description="Комиссия"),
+     *             @OA\Property(property="telegram", type="string", description="телеграмм id"),
      *             @OA\Property(property="park_name", type="string", description="Название парка"),
      *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
@@ -114,6 +117,7 @@ class APIController extends Controller
             'commission' => 'numeric',
             'park_name' => 'string',
             'about' => 'string',
+            'telegram' => 'string',
             'avito_id' => 'string',
             'self_employed_discount' => 'integer',
             'booking_window' => 'integer',
@@ -135,6 +139,9 @@ class APIController extends Controller
         }
         if ($request->avito_id) {
             $park->avito_id = $request->avito_id;
+        }
+        if ($request->telegram) {
+            $park->telegram_id = $request->telegram;
         }
         if ($request->about) {
             $park->about = $request->about;
@@ -1822,9 +1829,9 @@ if (isset($carData['division_name_info'])) {
 
     public function notifyParkOnBookingStatusChanged($booking_id, $is_booked, $schema=null, $count=null, $fromDriver=null, $reason=null)
     {
-if (env('APP_ENV') === 'production') {
+        if (env('APP_ENV') === 'production') {
 
- $repeat = false;
+        $repeat = false;
         $booking = Booking::with('car','car.status', 'driver.user', 'car.division.park', 'car.division.city')
             ->find($booking_id);
 
@@ -1833,19 +1840,11 @@ if (env('APP_ENV') === 'production') {
             $user = $booking->driver->user;
             $park = $car->division->park;
             $apiKey = $park->API_key;
+            $telegramId=$park->telegram_id;
             $schema= Schema::find($booking->schema_id);
             $CarStatus = Status::where('park_id', $car->park_id)->where('status_value', $car->status)->first();
             $customStatusName = $CarStatus->custom_status_name;
             $token = $park->status_api_tocken;
-
-        if($is_booked){Http::get('https://sms.ru/sms/send', [
-            'api_id' => 'AFA267B8-9272-4CEB-CE8B-7EE807275EA9',
-            'to' => $user->phone,
-            'msg' => 'Спасибо! Вы забронировали: '. $car->brand.' '. $car->model. '. Ваша ссылка на бронирование: '.
-            'https://beebeep.ru/bookings',
-            'json' => 1
-        ]);}
-
 
             $message = $is_booked ?
                 'Новое бронирование №: ' . $booking->id  . "\n":
@@ -1865,6 +1864,23 @@ if (env('APP_ENV') === 'production') {
                 $submessege = $fromDriver ? 'Отменена водителем' : 'Отменена менеджером';
                 $message .= "\n" . $submessege;
             }
+
+            if ($telegramId && $is_booked) {
+                $telegramService = new TelegramService;
+                try {
+                $telegramService->SendMassageToTG($telegramId, $message);
+            } catch (TelegramResponseException $e) {
+                Log::error('Telegram API Error: ' . $e->getMessage());
+            }
+            }
+
+                if($is_booked){Http::get('https://sms.ru/sms/send', [
+                    'api_id' => 'AFA267B8-9272-4CEB-CE8B-7EE807275EA9',
+                    'to' => $user->phone,
+                    'msg' => 'Спасибо! Вы забронировали: '. $car->brand.' '. $car->model. '. Ваша ссылка на бронирование: '.
+                    'https://beebeep.ru/bookings',
+                    'json' => 1
+                ]);}
 
             if ($park->email) {
                 try {
@@ -1893,7 +1909,7 @@ if (env('APP_ENV') === 'production') {
                         $repeat=true;
                     }
                 }
-            if (!$count) {
+            if (!$count && $is_booked) {
 
                 $secondUrl = 'https://api.ttcontrol.naughtysoft.ru/api/vehicle/status/notify';
 

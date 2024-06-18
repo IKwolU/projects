@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Park extends Model
 {
     use HasFactory;
-    protected $fillable = ['API_key', 'url', 'comission', 'park_name', 'about', 'working_hours'];
+    protected $fillable = ['API_key', 'url', 'comission', 'telegram_id', 'park_name', 'about', 'working_hours'];
 
     public function divisions()
     {

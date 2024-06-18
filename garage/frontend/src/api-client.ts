@@ -4236,6 +4236,8 @@ export class Body implements IBody {
     url?: string;
     /** Комиссия */
     commission?: number;
+    /** телеграмм id */
+    telegram?: string;
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
@@ -4266,6 +4268,7 @@ export class Body implements IBody {
             }
             this.url = _data["url"];
             this.commission = _data["commission"];
+            this.telegram = _data["telegram"];
             this.park_name = _data["park_name"];
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
@@ -4289,6 +4292,7 @@ export class Body implements IBody {
         }
         data["url"] = this.url;
         data["commission"] = this.commission;
+        data["telegram"] = this.telegram;
         data["park_name"] = this.park_name;
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
@@ -4303,6 +4307,8 @@ export interface IBody {
     url?: string;
     /** Комиссия */
     commission?: number;
+    /** телеграмм id */
+    telegram?: string;
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
@@ -6014,6 +6020,8 @@ export class Body24 implements IBody24 {
     url?: string;
     /** Комиссия */
     commission?: number;
+    /** телеграмм id */
+    telegram?: string;
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
@@ -6044,6 +6052,7 @@ export class Body24 implements IBody24 {
             }
             this.url = _data["url"];
             this.commission = _data["commission"];
+            this.telegram = _data["telegram"];
             this.park_name = _data["park_name"];
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
@@ -6067,6 +6076,7 @@ export class Body24 implements IBody24 {
         }
         data["url"] = this.url;
         data["commission"] = this.commission;
+        data["telegram"] = this.telegram;
         data["park_name"] = this.park_name;
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
@@ -6081,6 +6091,8 @@ export interface IBody24 {
     url?: string;
     /** Комиссия */
     commission?: number;
+    /** телеграмм id */
+    telegram?: string;
     /** Название парка */
     park_name?: string;
     /** Срок на который можно забронировать авто, в часах */
@@ -6520,6 +6532,8 @@ export class Body31 implements IBody31 {
     metro?: string;
     /** Название подразделения */
     name?: string;
+    /** город */
+    city?: string;
     /** Телефон парка */
     phone?: string;
     /** Часовой пояс, разница во времени с +0 */
@@ -6549,6 +6563,7 @@ export class Body31 implements IBody31 {
             this.address = _data["address"];
             this.metro = _data["metro"];
             this.name = _data["name"];
+            this.city = _data["city"];
             this.phone = _data["phone"];
             this.timezone_difference = _data["timezone_difference"];
             if (Array.isArray(_data["working_hours"])) {
@@ -6577,6 +6592,7 @@ export class Body31 implements IBody31 {
         data["address"] = this.address;
         data["metro"] = this.metro;
         data["name"] = this.name;
+        data["city"] = this.city;
         data["phone"] = this.phone;
         data["timezone_difference"] = this.timezone_difference;
         if (Array.isArray(this.working_hours)) {
@@ -6599,6 +6615,8 @@ export interface IBody31 {
     metro?: string;
     /** Название подразделения */
     name?: string;
+    /** город */
+    city?: string;
     /** Телефон парка */
     phone?: string;
     /** Часовой пояс, разница во времени с +0 */
@@ -20751,6 +20769,8 @@ export class Park2 implements IPark2 {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** telegram id */
+    telegram_id?: string;
     /** Дата создания парка */
     created_at?: string;
     /** Последнее обновление инфо парка */
@@ -20790,6 +20810,7 @@ export class Park2 implements IPark2 {
             this.park_name = _data["park_name"];
             this.about = _data["about"];
             this.avito_id = _data["avito_id"];
+            this.telegram_id = _data["telegram_id"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
             this.self_employed_discount = _data["self_employed_discount"];
@@ -20837,6 +20858,7 @@ export class Park2 implements IPark2 {
         data["park_name"] = this.park_name;
         data["about"] = this.about;
         data["avito_id"] = this.avito_id;
+        data["telegram_id"] = this.telegram_id;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
         data["self_employed_discount"] = this.self_employed_discount;
@@ -20880,6 +20902,8 @@ export interface IPark2 {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** telegram id */
+    telegram_id?: string;
     /** Дата создания парка */
     created_at?: string;
     /** Последнее обновление инфо парка */

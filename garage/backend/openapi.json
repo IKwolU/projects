@@ -28,6 +28,10 @@
                                         "description": "Комиссия",
                                         "type": "number"
                                     },
+                                    "telegram": {
+                                        "description": "телеграмм id",
+                                        "type": "string"
+                                    },
                                     "park_name": {
                                         "description": "Название парка",
                                         "type": "string"
@@ -4023,6 +4027,10 @@
                                                         "description": "id avito",
                                                         "type": "string"
                                                     },
+                                                    "telegram_id": {
+                                                        "description": "telegram id",
+                                                        "type": "string"
+                                                    },
                                                     "created_at": {
                                                         "description": "Дата создания парка",
                                                         "type": "string"
@@ -4493,6 +4501,10 @@
                                     "commission": {
                                         "description": "Комиссия",
                                         "type": "number"
+                                    },
+                                    "telegram": {
+                                        "description": "телеграмм id",
+                                        "type": "string"
                                     },
                                     "park_name": {
                                         "description": "Название парка",
@@ -5392,6 +5404,10 @@
                                     },
                                     "name": {
                                         "description": "Название подразделения",
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "description": "город",
                                         "type": "string"
                                     },
                                     "phone": {

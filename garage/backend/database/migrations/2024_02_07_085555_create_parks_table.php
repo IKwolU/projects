@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('park_name');
             $table->integer('self_employed_discount');
             $table->text('about');
+            $table->text('telegram_id');
             $table->timestamps();
         });
     }

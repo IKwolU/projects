@@ -26,6 +26,7 @@ export const InfoManager = () => {
           url: parkData.park?.url || "",
           self_employed_discount: parkData.park?.self_employed_discount || 0,
           avito_id: parkData.park?.avito_id || "",
+          telegram_id: parkData.park?.telegram_id || "",
         });
       };
 
@@ -150,6 +151,22 @@ export const InfoManager = () => {
                 className="w-48 m-0 border-2 border-pale rounded-xl"
                 onChange={(e) =>
                   setParkInfo([{ ...parkInfo[0], avito_id: e.target.value }])
+                }
+                type="number"
+                placeholder="Введите новое значение"
+              ></Input>
+            </div>
+          </div>
+          <div className="">
+            <h4>Id telegram:</h4>
+            <div className="flex items-center space-x-2">
+              <p className="p-2 bg-white border-2 border-pale rounded-xl max-w-1/2">
+                {park.telegram ? park.telegram : "Не указано"}
+              </p>
+              <Input
+                className="w-48 m-0 border-2 border-pale rounded-xl"
+                onChange={(e) =>
+                  setParkInfo([{ ...parkInfo[0], telegram: e.target.value }])
                 }
                 type="number"
                 placeholder="Введите новое значение"

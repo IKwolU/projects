@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
-import content from "./assets/content.json";
+import contentData from "./assets/content.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAnglesRight,
@@ -20,13 +20,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilState } from "recoil";
-import { contentIdAtom, currentTimeAtom, navigationTimeAtom } from "./atoms";
+import {
+  isContentShowedAtom,
+  currentTimeAtom,
+  navigationTimeAtom,
+  titleContentAtom,
+} from "./atoms";
 
 function Content() {
-  const [contentId] = useRecoilState(contentIdAtom);
+  const [isContentShowed] = useRecoilState(isContentShowedAtom);
+  const [titleContent, setTitleContent] = useRecoilState(titleContentAtom);
   const [isContentShow, setIsContentShow] = useState(true);
   const [, setAudioTime] = useState(0);
-  const [currentTime] = useRecoilState(currentTimeAtom);
+  const [currentTime, setCurrentTime] = useRecoilState(currentTimeAtom);
   const [, setCurrentNav] = useRecoilState(navigationTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [questionId, setQuestionId] = useState<number>(-1);
@@ -38,6 +44,10 @@ function Content() {
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [storisId, setStorisId] = useState(1);
+
+  const content = contentData.find((x) => x.title === titleContent);
+
+  const [helpers, setHelpers] = useState(content!.helpers);
 
   const handleAudioTimeUpdate = () => {
     setAudioTime(currentTime);
@@ -62,9 +72,15 @@ function Content() {
       current && null;
     },
   };
+  console.log(currentTime);
 
   useEffect(() => {
-    if (!isSideAutoClosed && currentTime > content[0].help_time) {
+    setHelpers(content!.helpers);
+    setCurrentTime(0);
+  }, [titleContent]);
+
+  useEffect(() => {
+    if (!isSideAutoClosed && currentTime > content!.help_time) {
       setIsHelpShowed(true);
       setIsContentShow(false);
       setIsSideAutoClosed(true);
@@ -76,10 +92,10 @@ function Content() {
     setQuestionsClicked(!questionsClicked);
   };
 
-  const helpers = content[0].helpers;
-
   const handleClosedHelper = (i: number) => {
-    helpers[i].closed = true;
+    const updatedHelpers = [...helpers];
+    updatedHelpers[i].closed = true;
+    setHelpers(updatedHelpers);
   };
 
   // const currentNavigationData = content[0].nav_variants.find(
@@ -109,24 +125,28 @@ function Content() {
     }
   }, [storisId]);
 
+  if (!content) {
+    return <></>;
+  }
+
   return (
     <>
       {helpers.map((x, i) => (
         <>
           {!x.closed && x.time < currentTime && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
-              <div className="   max-w-[350px] h-auto flex flex-col  border border-brown rounded-[25px] ">
+              <div className="   max-w-[244px] h-auto flex flex-col  border border-brown rounded-[36px] ">
                 <div
-                  className="flex items-center justify-center pt-8 pb-12 -mb-6 bg-top bg-no-repeat bg-contain rounded-t-3xl bg-lightbrown"
+                  className="flex items-center justify-center pt-8 pb-16 -mb-10 bg-top bg-no-repeat bg-contain rounded-t-[35px] bg-lightbrown"
                   style={{ backgroundImage: "url(/img/bg-face.svg)" }}
                 >
-                  <img src={halpFace} alt="" className="w-40" />
+                  <img src={halpFace} alt="" className="w-28" />
                 </div>
-                <div className="flex flex-col items-center w-full p-4 py-2 pb-2 mx-auto space-y-2 text-black bg-white border border-white outline-none rounded-3xl">
-                  <h3 className="text-[24px] ">{x.title}</h3>
-                  <p className="py-2 text-[20px] text-center">{x.text}</p>
-                  <div className="py-5">
-                    <div className="flex justify-start p-2 rounded-full bg-blue w-fit ">
+                <div className="flex flex-col items-center w-full px-2 py-1 pb-2 mx-auto space-y-2 text-black bg-white border border-white outline-none rounded-[35px]">
+                  <h3 className="text-[20px] pt-1">{x.title}</h3>
+                  <p className=" text-[16px] text-center">{x.text}</p>
+                  <div className="py-3">
+                    <div className="flex justify-start p-1 rounded-full bg-blue w-fit h-11 ">
                       <img
                         onClick={() => handleClosedHelper(i)}
                         src={iconButton}
@@ -170,7 +190,7 @@ function Content() {
             />*/}
             <div className="font-bold text-center">Ваш вариант истории:</div>
             <div className="flex items-center justify-center py-4 my-4 space-x-9">
-              {content[0].nav_variants
+              {content.nav_variants
                 .filter((y) => y.selection_icon)
                 .map((y) => (
                   <div className="" key={y.id}>
@@ -229,7 +249,11 @@ function Content() {
               <div key={x}>
                 <div
                   className="mb-2  p-0.5 px-2  hover:text-blue  hover:opacity-70  border-none rounded-[5px]  cursor-pointer transition-colors "
-                  onClick={() => x === "Инструкции" && handleQuestionOpen()}
+                  onClick={() =>
+                    x === "Инструкции"
+                      ? handleQuestionOpen()
+                      : setTitleContent(x)
+                  }
                 >
                   {x}
                 </div>
@@ -448,196 +472,196 @@ function Content() {
       <div className="fixed top-0 left-0 z-50 flex w-[80vw] h-10 bg-brown bg-opacity-30"></div>
       <div className="fixed top-0 right-0 z-50 flex w-10 h-[80vh] bg-brown bg-opacity-30"></div>
       <div className="fixed top-0 left-0 z-50 flex w-10 h-[80vh] bg-brown bg-opacity-30"></div> */}
-      {content.map((x, i: number) => (
-        <CustomSheet
-          key={`sheet${i}`}
-          isOpen={contentId === i ? true : false}
-          content={
-            <div
-              className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-pink text-UBlack ${
-                contentId === i
-                  ? `${
-                      isContentShow
-                        ? "translate-x-0"
-                        : "translate-x-[300px] sm:translate-x-[340px]"
-                    } translate-x-0`
-                  : "translate-x-full"
-              }`}
-            >
-              <div className="overflow-y-auto">
-                <div className="flex items-center justify-between h-12 mt-2 ml-4">
-                  <p className="m-0 -mt-2 uppercase text-brown">{x.title}</p>
-                  <img
-                    src={logo}
-                    alt=""
-                    className="object-contain h-10 pl-4 "
-                  />
-                </div>
-                <div className="px-4 mb-4 text-base font-semibold whitespace-pre-line text-brown">
-                  {x.description_title}
-                </div>
-                <div className="px-4 mb-4 text-base whitespace-pre-line">
-                  {x.description}
-                </div>
-                <div className="relative w-full mb-4 rounded-3xl">
-                  <CustomAudioPlayer
-                    onPlay={() => handleAudioTimeUpdate}
-                    active={contentId === i ? true : false}
-                    src={x.source}
-                  />
-                  {timeToChoose && (
-                    <div
-                      className="absolute top-0 w-full h-full bg-black bg-no-repeat bg-cover bg-opacity-90 ring-0 rounded-3xl"
-                      // style={{ backgroundImage: `url(${bg})` }}
-                    >
-                      <div className="flex items-center justify-between h-full p-4 space-x-3">
-                        <div className="flex flex-col items-center justify-center h-full space-y-2">
-                          <p
-                            className="text-sm "
-                            style={{ color: `${x.choice[0].color}` }}
-                          >
-                            {x.choice[0].text}
-                          </p>
-                          <img
-                            src={choice1}
-                            className="object-contain w-auto h-12"
-                            alt=""
-                          />
-                        </div>
-                        <div
-                          className="flex flex-col items-center justify-center h-full space-y-2"
-                          key={`choice_${i}`}
+      <CustomSheet
+        isOpen={isContentShowed}
+        content={
+          <div
+            className={`fixed flex flex-row-reverse top-0 right-0 z-50 h-full sm:w-[380px] w-[340px] transform transition-all ease-in-out bg-pink text-UBlack ${
+              isContentShowed
+                ? `${
+                    isContentShow
+                      ? "translate-x-0"
+                      : "translate-x-[300px] sm:translate-x-[340px]"
+                  } translate-x-0`
+                : "translate-x-full"
+            }`}
+          >
+            <div className="overflow-y-auto">
+              <div className="flex items-start justify-between h-12 mt-3 ml-4">
+                <p className="m-0 -mt-2 uppercase text-brown">
+                  {content.title}
+                </p>
+                <img
+                  src={logo}
+                  alt=""
+                  className="object-contain h-10 pl-4 -mt-4 "
+                />
+              </div>
+              <div className="px-4 mb-4 text-base font-semibold whitespace-pre-line text-brown">
+                {content.description_title}
+              </div>
+              <div className="px-4 mb-4 text-base whitespace-pre-line">
+                {content.description}
+              </div>
+              <div className="relative w-full mb-4 rounded-3xl">
+                <CustomAudioPlayer
+                  onPlay={() => handleAudioTimeUpdate}
+                  active={isContentShowed}
+                  src={content.source}
+                />
+                {timeToChoose && (
+                  <div
+                    className="absolute top-0 w-full h-full bg-black bg-no-repeat bg-cover bg-opacity-90 ring-0 rounded-3xl"
+                    // style={{ backgroundImage: `url(${bg})` }}
+                  >
+                    <div className="flex items-center justify-between h-full p-4 space-x-3">
+                      <div className="flex flex-col items-center justify-center h-full space-y-2">
+                        <p
+                          className="text-sm "
+                          style={{ color: `${content.choice[0].color}` }}
                         >
-                          <p
-                            className="text-sm"
-                            style={{ color: `${x.choice[1].color}` }}
-                          >
-                            {x.choice[1].text}
-                          </p>
-                          <img
-                            src={choice2}
-                            className="object-contain w-auto h-12"
-                            alt=""
-                          />
-                        </div>
+                          {content.choice[0].text}
+                        </p>
+                        <img
+                          src={choice1}
+                          className="object-contain w-auto h-12"
+                          alt=""
+                        />
                       </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="text-xl font-bold ">
-                  {/* Знаете ли вы что: */}
-                </div>
-                <div className="relative">
-                  <Slider {...settings}>
-                    {x.facts.map((fact, n) => (
                       <div
-                        className={`flex relative flex-col pb-2 items-center justify-center w-full 
-                        } pt-6 space-y-2 overflow-y-hidden  scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide `}
-                        key={`choice_${i}`}
+                        className="flex flex-col items-center justify-center h-full space-y-2"
+                        key={`choice_${1}`}
                       >
-                        {fact.image && (
-                          <img
-                            src={fact.image}
-                            className="object-cover object-center w-full mx-auto h-96 "
-                            alt=""
-                          />
-                        )}
-                        <div
-                          className={`px-4 ${
-                            bigTextOpened && activeSlide === n
-                              ? "h-full"
-                              : "max-h-[60px]"
-                          }`}
+                        <p
+                          className="text-sm"
+                          style={{ color: `${content.choice[1].color}` }}
                         >
-                          {fact.type === "text" && (
-                            <h4 className="h-4 px-0 pb-3 mt-8 mb-4 text-sm font-semibold sm:px-4 text-brown">
-                              {fact.title}
-                            </h4>
-                          )}
-                          {fact.type === "text" && (
-                            <p
-                              className={`${
-                                fact.image ? "" : ""
-                              } px-0 pb-0  text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
-                            >
-                              {fact.text}
-                            </p>
-                          )}
-                          {fact.type === "link" && (
-                            <a
-                              target="_blank"
-                              href={fact.text}
-                              className="block w-full h-24 px-2 pt-6 text-sm sm:px-4 "
-                            >
-                              {fact.title}
-                            </a>
-                          )}
-                        </div>
+                          {content.choice[1].text}
+                        </p>
+                        <img
+                          src={choice2}
+                          className="object-contain w-auto h-12"
+                          alt=""
+                        />
                       </div>
-                    ))}
-                  </Slider>
-
-                  <div className="relative flex flex-col w-full h-auto p-4 mt-10 space-y-1 rounded bg-pink">
-                    <div className="flex flex-col items-center gap-2 mx-auto w-fit">
-                      <p>Продолжительность маршрута:</p>
-                      <div className="flex justify-between mb-2 space-x-6">
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon
-                            icon={faClock}
-                            className={`h-4 transition-transform  text-brown`}
-                          />{" "}
-                          <p> 7мин</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon
-                            icon={faPersonWalking}
-                            className={`h-4 transition-transform  text-brown`}
-                          />{" "}
-                          <p> 650м</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
-                    <div className="py-2"></div>
-                    <img
-                      onClick={() => setIsMapClicked(!isMapClicked)}
-                      src="./img/newMap.jpg"
-                      alt=""
-                      className="object-contain w-full h-40"
-                    />
-                    <div className="absolute right-6 bottom-[140px] sm:bottom-[145px]">
-                      <FontAwesomeIcon
-                        icon={faMagnifyingGlassPlus}
-                        className="z-10 h-5 text-brown"
-                      />
                     </div>
                   </div>
-                  {/* <div className="absolute left-0 w-full h-8 -mb-4 bottom-5 from-transparent bg-gradient-to-b to-brown "></div> */}
-                  <FontAwesomeIcon
-                    onClick={() => setBigTextOpened(!bigTextOpened)}
-                    icon={faAnglesRight}
-                    className={`h-7 transition-transform text-white absolute sm:bottom-[275px] bottom-[275px] py-2 left-[46%] ${
-                      bigTextOpened ? "-rotate-90" : "rotate-90"
-                    }`}
-                  />
-                </div>
+                )}
               </div>
-              <div
-                onClick={() => setIsContentShow(!isContentShow)}
-                className="flex items-center justify-center h-full px-2 text-black rounded-lg cursor-pointer bg-lightbrown"
-              >
+
+              <div className="text-xl font-bold ">
+                {/* Знаете ли вы что: */}
+              </div>
+              <div className="relative">
+                <Slider {...settings}>
+                  {content.facts.map((fact, n) => (
+                    <div
+                      className={`flex relative flex-col pb-2 items-center justify-center w-full 
+                        } pt-6 space-y-2 overflow-y-hidden  scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide `}
+                      key={`choice_${1}`}
+                    >
+                      {fact.image && (
+                        <img
+                          src={fact.image}
+                          className="object-cover object-center w-full mx-auto h-96 "
+                          alt=""
+                        />
+                      )}
+                      <div
+                        className={`px-4 ${
+                          bigTextOpened && activeSlide === n
+                            ? "h-full"
+                            : "max-h-[60px]"
+                        }`}
+                      >
+                        {fact.type === "text" && (
+                          <h4 className="h-4 px-0 pb-3 mt-8 mb-4 text-sm font-semibold sm:px-4 text-brown">
+                            {fact.title}
+                          </h4>
+                        )}
+                        {fact.type === "text" && (
+                          <p
+                            className={`${
+                              fact.image ? "" : ""
+                            } px-0 pb-0  text-sm sm:px-4 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide`}
+                          >
+                            {fact.text}
+                          </p>
+                        )}
+                        {fact.type === "link" && (
+                          <a
+                            target="_blank"
+                            href={fact.text}
+                            className="block w-full h-24 px-2 pt-6 text-sm sm:px-4 "
+                          >
+                            {fact.title}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </Slider>
+
+                <div className="relative flex flex-col w-full h-auto p-4 mt-10 space-y-1 rounded bg-pink">
+                  <div className="flex flex-col items-center gap-2 mx-auto w-fit">
+                    <p>Продолжительность маршрута:</p>
+                    <div className="flex justify-between mb-2 space-x-6">
+                      <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          className={`h-4 transition-transform  text-brown`}
+                        />{" "}
+                        <p> 7мин</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon
+                          icon={faPersonWalking}
+                          className={`h-4 transition-transform  text-brown`}
+                        />{" "}
+                        <p> 650м</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-[1px] w-[80%] bg-white rounded mx-auto"></div>
+                  <div className="py-2"></div>
+                  <img
+                    onClick={() => setIsMapClicked(!isMapClicked)}
+                    src="./img/newMap.jpg"
+                    alt=""
+                    className="object-contain w-full h-40"
+                  />
+                  <div className="absolute right-6 bottom-[140px] sm:bottom-[145px]">
+                    <FontAwesomeIcon
+                      icon={faMagnifyingGlassPlus}
+                      className="z-10 h-5 text-brown"
+                    />
+                  </div>
+                </div>
+                {/* <div className="absolute left-0 w-full h-8 -mb-4 bottom-5 from-transparent bg-gradient-to-b to-brown "></div> */}
                 <FontAwesomeIcon
+                  onClick={() => setBigTextOpened(!bigTextOpened)}
                   icon={faAnglesRight}
-                  className={`h-7 transition-transform text-brown ${
-                    isContentShow ? "" : "rotate-180"
+                  className={`h-7 transition-transform text-white absolute sm:bottom-[275px] bottom-[275px] py-2 left-[46%] ${
+                    bigTextOpened ? "-rotate-90" : "rotate-90"
                   }`}
                 />
               </div>
             </div>
-          }
-        />
-      ))}
+            <div
+              onClick={() => setIsContentShow(!isContentShow)}
+              className="flex items-center justify-center h-full px-2 text-black rounded-lg cursor-pointer bg-lightbrown"
+            >
+              <FontAwesomeIcon
+                icon={faAnglesRight}
+                className={`h-7 transition-transform text-brown ${
+                  isContentShow ? "" : "rotate-180"
+                }`}
+              />
+            </div>
+          </div>
+        }
+      />
+
       {isMapClicked && (
         <div
           className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"

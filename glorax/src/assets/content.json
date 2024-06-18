@@ -3,7 +3,4453 @@
     "position": [0, -5, 0],
     "rotate": 0,
     "source": "/audio/123.mp3",
-    "title": "дом Башкирова",
+    "title": "Дом Башкирова",
+    "description_title": "Драма на Оке",
+    "description": "Дом Башкирова — историческая мельница, обрастающая рассказами о драматических событиях. В прошлом, когда здесь еще был рабочий городок, одна из работниц развлекала себя и своих коллег рассказами о дочери купца Башкирова, погрязшей в тайной романтике, трагически завершившейся... в реке. Но какова же правда в этой истории?",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Отлично! Нажимайте далее, и мы продолжаем путь!",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Позади половина пути! Герои ждут вас, не теряйте ни минуты!",
+        "closed": false
+      },
+      {
+        "time": 354,
+        "title": "Уже на месте?",
+        "text": "Итак, заключительная часть истории! Готовы двигаться дальше? ",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [0.3, -7, -7.7],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Дом Бугрова",
+    "description_title": "Драма на Оке",
+    "description": "На Всероссийской промышленной и художественной выставке 1896 года мукомольный комплекс Николая Бугрова был отмечен высшей наградой. В том же году Бугров получил право поставлять хлеб для русской армии — наличие собственной флотилии в этом случае оказалось весьма кстати.",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Вы уже здесь! Нас ждет увлекательный маршрут.",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Финальная часть нашей истории! Это было незабываемо, не так ли?",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [3, -6, -7.5],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Дом Дягтерёва",
+    "description_title": "Драма на Оке",
+    "description": "Маркел Дегтярёв вёл торговлю не только мукой и хлебом, но и нефтью. Кризис вызванный Первой Мировой войной заставил владельца приостановить работу мельницы по причине убыточности. Как только Дегтярёвская мельница перестала работать, власти города объявили владельцу ультиматум: или предприятие возобновляет работу, или оно будет национализировано. Дегтярёву ничего не оставалось как подчиниться приказу.",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "А вот и вы! Не будем терять ни минуты. В путь!",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Впереди ещё столько всего! Готовы продолжить?",
+        "closed": false
+      },
+      {
+        "time": 354,
+        "title": "Уже на месте?",
+        "text": "За спиной половина пути! Держим темп!",
+        "closed": false
+      },
+      {
+        "time": 420,
+        "title": "Уже на месте?",
+        "text": "Вот уже и финишная прямая. Спасибо за компанию!",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [0.2, -7, -3.7],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Дом Балакирева",
+    "description_title": "Драма на Оке",
+    "description": "После кончины императора Александра III в 1894 году Балакирев подал в отставку с поста руководителя Придворной капеллы в том числе и потому что не жаловал престолонаследника Николая II и это было взаимно. Однако у него остался неравнодушный покровитель при дворе – вдовствующая императрица Мария Федоровна. Она принимала участие в судьбе композитора, отвечала на его просьбы. Так она выделила денег для отправки на лечение в Европу больных туберкулезом племянниц Балакирева.",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Готовы отправиться в путь? Вперед за новыми впечатлениями!",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Впереди ещё много интересного! Продолжим идти!",
+        "closed": false
+      },
+      {
+        "time": 354,
+        "title": "Уже на месте?",
+        "text": "Позади половина пути! Готовы продолжить?",
+        "closed": false
+      },
+      {
+        "time": 420,
+        "title": "Уже на месте?",
+        "text": "Вот и финишная прямая. Жаль, что время летит так быстро!",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [2.5, -6, 4.5],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Дом Килевейна",
+    "description_title": "Драма на Оке",
+    "description": "Роберт Яковлевич участвовал в реставрации собора Благовещения Пресвятой Богородицы Благовещенского монастыря, по проекту мастера построили мельницу Матвея Башкирова — она была одной из лучших в Поволжьею, а также он одобрил устройство электрической железной дороги, на основе опыта других городов",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Здесь начинается наш маршрут! Готовы?",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Позади половина пути. Вперед, к новым открытиям!",
+        "closed": false
+      },
+      {
+        "time": 354,
+        "title": "Уже на месте?",
+        "text": "Заключительная часть нашего путешествия. Надеюсь, вам понравилось!",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [-2, -1, 4.9],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Благовещенские башни",
+    "description_title": "Драма на Оке",
+    "description": "Архитектурная концепция высоток разрабатывалась столичным бюро «Остоженка» с учетом существующей исторической застройки. Ступенчатые фасады башен отражают поступательное развитие района на протяжении нескольких столетий выступавшего культурным и экономическим центром города.",
+    "background_image": "/card-bg-1.png",
+    "start_time": 23,
+    "end_time": 300,
+    "choice__time": 100,
+    "help_time": 40,
+    "close_time": 43,
+    "helpers": [
+      {
+        "time": 121,
+        "title": "Уже на месте?",
+        "text": "Приготовьтесь! Маршрут будет увлекательным.",
+        "closed": false
+      },
+      {
+        "time": 203,
+        "title": "Уже на месте?",
+        "text": "Финишная прямая. Увидимся на новом маршруте!",
+        "closed": false
+      }
+    ],
+    "nav_variants": [
+      {
+        "id": 1,
+        "file": "/models/test14-newnavi.gltf",
+        "selection_time": 23,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.95, -4.3, 4.5],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-5.1, -6.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 2,
+        "file": "/models/LefttNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/heart.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [1.0, -4.0, -1.6],
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      },
+      {
+        "id": 3,
+        "file": "/models/RightNavi.gltf",
+        "selection_time": 40,
+        "selection_icon": "/img/coins.png",
+        "nav_position": [0, -4.0, 0],
+        "point_position": [-4.0, -4.0, 11.5],
+        "point_rotate": [0, 155, 0],
+        "start_point_position": [-4.95, -4.3, 4.5],
+        "start_point_file": "pointyellowglorax.gltf"
+      }
+    ],
+    "arrow_time": [
+      { "time": 12, "positionY": 0 },
+      { "time": 13, "positionY": 0 },
+      { "time": 14, "positionY": 0 },
+      { "time": 15, "positionY": 0 },
+      { "time": 16, "positionY": 0 },
+      { "time": 17, "positionY": 0 },
+      { "time": 18, "positionY": 0 },
+      { "time": 19, "positionY": 0 },
+      { "time": 20, "positionY": 0 },
+      { "time": 21, "positionY": 0 },
+      { "time": 22, "positionY": 0 },
+      { "time": 23, "positionY": 0 },
+      { "time": 24, "positionY": 0 },
+      { "time": 25, "positionY": 0 },
+      { "time": 26, "positionY": 0 }
+    ],
+    "navigation_time": [
+      {
+        "time_start": 43,
+        "time_end": 60,
+        "file": "/models/navi-bashkirova.gltf"
+      }
+    ],
+    "choice": [
+      {
+        "image": "/choice-img-1.png",
+        "text": "Крадет статуэтку:",
+        "target": "",
+        "color": "#8DC3F1"
+      },
+      {
+        "image": "/choice-img-2.png",
+        "text": "Получает деньги:",
+        "target": "",
+        "color": "#F8EEC0"
+      }
+    ],
+    "navigation": [
+      {
+        "time_start": 5.5,
+        "time_end": 400,
+        "position": [-2.95, -4.3, -5.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 6.5,
+        "time_end": 400,
+        "position": [-3.1, -4.3, -5.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 7.5,
+        "time_end": 400,
+        "position": [-3.26, -4.3, -4.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 8.5,
+        "time_end": 400,
+        "position": [-3.42, -4.3, -4.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 9.5,
+        "time_end": 400,
+        "position": [-3.58, -4.3, -3.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 10.5,
+        "time_end": 400,
+        "position": [-3.74, -4.3, -3.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 11.5,
+        "time_end": 400,
+        "position": [-3.9, -4.3, -2.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 12.5,
+        "time_end": 400,
+        "position": [-4.06, -4.3, -2.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 13.5,
+        "time_end": 400,
+        "position": [-4.22, -4.3, -1.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 14.5,
+        "time_end": 400,
+        "position": [-4.38, -4.3, -1.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 15.5,
+        "time_end": 400,
+        "position": [-4.54, -4.3, -0.7],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 16.5,
+        "time_end": 400,
+        "position": [-4.7, -4.3, -0.2],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 17.5,
+        "time_end": 400,
+        "position": [-4.86, -4.3, 0.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 18.5,
+        "time_end": 400,
+        "position": [-5.02, -4.3, 0.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 19.5,
+        "time_end": 400,
+        "position": [-5.18, -4.3, 1.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 20.5,
+        "time_end": 400,
+        "position": [-5.34, -4.3, 1.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 21.5,
+        "time_end": 400,
+        "position": [-5.5, -4.3, 2.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 22.5,
+        "time_end": 400,
+        "position": [-5.66, -4.3, 2.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 23.5,
+        "time_end": 400,
+        "position": [-5.82, -4.3, 3.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 24.5,
+        "time_end": 400,
+        "position": [-5.98, -4.3, 3.8],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 25.5,
+        "time_end": 400,
+        "position": [-6.14, -4.3, 4.3],
+        "rotate": [0, -20, 0]
+      },
+      {
+        "time_start": 26.5,
+        "time_end": 400,
+        "position": [-5.55, -4.3, 4.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 27.5,
+        "time_end": 400,
+        "position": [-5.0, -4.3, 4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 28.5,
+        "time_end": 400,
+        "position": [-4.84, -4.3, 4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 29.5,
+        "time_end": 400,
+        "position": [-4.68, -4.3, 3.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 30.5,
+        "time_end": 400,
+        "position": [-4.52, -4.3, 3.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 31.5,
+        "time_end": 400,
+        "position": [-4.36, -4.3, 2.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 32.5,
+        "time_end": 400,
+        "position": [-4.2, -4.3, 2.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 33.5,
+        "time_end": 400,
+        "position": [-4.04, -4.3, 1.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 34.5,
+        "time_end": 400,
+        "position": [-3.88, -4.3, 1.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 35.5,
+        "time_end": 400,
+        "position": [-3.72, -4.3, 0.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 36.5,
+        "time_end": 400,
+        "position": [-3.56, -4.3, 0.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 37.5,
+        "time_end": 400,
+        "position": [-3.4, -4.3, -0.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 38.5,
+        "time_end": 400,
+        "position": [-3.24, -4.3, -0.8],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 39.5,
+        "time_end": 400,
+        "position": [-3.08, -4.3, -1.3],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 40.5,
+        "time_end": 400,
+        "position": [-2.87, -4.3, -1.95],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 41.5,
+        "time_end": 400,
+        "position": [-2.68, -4.3, -2.5],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 42.5,
+        "time_end": 400,
+        "position": [-2.28, -4.29, -2.35],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 43.5,
+        "time_end": 400,
+        "position": [-1.88, -4.28, -2.2],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 44.5,
+        "time_end": 400,
+        "position": [-1.48, -4.27, -2.05],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 45.5,
+        "time_end": 400,
+        "position": [-1.08, -4.26, -1.9],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 46.5,
+        "time_end": 400,
+        "position": [-0.68, -4.14, -1.75],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 47.5,
+        "time_end": 400,
+        "position": [-0.28, -4.13, -1.6],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 48.5,
+        "time_end": 400,
+        "position": [0.12, -4.12, -1.45],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 49.5,
+        "time_end": 400,
+        "position": [0.52, -4.11, -1.3],
+        "rotate": [0, 70, 0]
+      },
+      {
+        "time_start": 50.5,
+        "time_end": 400,
+        "position": [0.92, -4.1, -1.53],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 51.5,
+        "time_end": 400,
+        "position": [1.05, -4.1, -1.9],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 52.5,
+        "time_end": 400,
+        "position": [1.18, -4.1, -2.27],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 53.5,
+        "time_end": 400,
+        "position": [1.37, -4.1, -2.64],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 54.5,
+        "time_end": 400,
+        "position": [1.6, -4.1, -3.01],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 55.5,
+        "time_end": 400,
+        "position": [1.93, -4.1, -3.38],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 56.5,
+        "time_end": 400,
+        "position": [2.2, -4.1, -3.75],
+        "rotate": [0, 150, 0]
+      },
+      {
+        "time_start": 57.5,
+        "time_end": 400,
+        "position": [2.4, -4.0, -4.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 58.5,
+        "time_end": 400,
+        "position": [2.55, -3.96, -4.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 59.5,
+        "time_end": 400,
+        "position": [2.7, -3.82, -5.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 60.5,
+        "time_end": 400,
+        "position": [2.85, -3.78, -5.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 61.5,
+        "time_end": 400,
+        "position": [3.0, -3.84, -6.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 62.5,
+        "time_end": 400,
+        "position": [3.15, -3.8, -6.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 63.5,
+        "time_end": 400,
+        "position": [3.3, -3.76, -7.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 64.5,
+        "time_end": 400,
+        "position": [3.45, -3.82, -7.7],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 65.5,
+        "time_end": 400,
+        "position": [3.6, -3.8, -8.2],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 66.5,
+        "time_end": 400,
+        "position": [3.85, -3.8, -8.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 67.5,
+        "time_end": 400,
+        "position": [4.2, -3.7, -9.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 68.5,
+        "time_end": 400,
+        "position": [4.55, -3.6, -9.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 69.5,
+        "time_end": 400,
+        "position": [4.9, -3.5, -10.2],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 70.5,
+        "time_end": 400,
+        "position": [5.25, -3.4, -10.7],
+        "rotate": [0, 140, 0]
+      },
+      {
+        "time_start": 71.5,
+        "time_end": 400,
+        "position": [6.2, -3.0, -10.2],
+        "rotate": [0, 50, 0]
+      },
+      {
+        "time_start": 72.5,
+        "time_end": 400,
+        "position": [6.9, -2.6, -9.5],
+        "rotate": [0, 30, 0]
+      },
+      {
+        "time_start": 73.5,
+        "time_end": 400,
+        "position": [7.2, -2.6, -8.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 74.5,
+        "time_end": 400,
+        "position": [6.95, -2.63, -8.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 75.5,
+        "time_end": 400,
+        "position": [6.7, -2.66, -7.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 76.5,
+        "time_end": 400,
+        "position": [6.45, -2.69, -7.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 77.5,
+        "time_end": 400,
+        "position": [6.2, -2.76, -6.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 78.5,
+        "time_end": 400,
+        "position": [5.95, -2.82, -6.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 79.5,
+        "time_end": 400,
+        "position": [5.7, -2.88, -5.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 80.5,
+        "time_end": 400,
+        "position": [5.45, -2.95, -5.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 81.5,
+        "time_end": 400,
+        "position": [5.2, -3.05, -4.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 82.5,
+        "time_end": 400,
+        "position": [4.95, -3.1, -4.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 83.5,
+        "time_end": 400,
+        "position": [4.7, -3.2, -3.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 84.5,
+        "time_end": 400,
+        "position": [4.45, -3.2, -3.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 85.5,
+        "time_end": 400,
+        "position": [4.2, -3.2, -2.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 86.5,
+        "time_end": 400,
+        "position": [3.95, -3.25, -2.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 87.5,
+        "time_end": 400,
+        "position": [3.7, -3.3, -1.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 88.5,
+        "time_end": 400,
+        "position": [3.45, -3.3, -1.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 89.5,
+        "time_end": 400,
+        "position": [3.2, -3.3, -0.8],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 90.5,
+        "time_end": 400,
+        "position": [2.95, -3.4, -0.3],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 91.5,
+        "time_end": 400,
+        "position": [2.7, -3.45, 0.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 92.5,
+        "time_end": 400,
+        "position": [2.45, -3.48, 0.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 93.5,
+        "time_end": 400,
+        "position": [2.2, -3.52, 1.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 94.5,
+        "time_end": 400,
+        "position": [1.95, -3.55, 1.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 95.5,
+        "time_end": 400,
+        "position": [1.7, -3.57, 2.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 96.5,
+        "time_end": 400,
+        "position": [1.45, -3.62, 2.7],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 97.5,
+        "time_end": 400,
+        "position": [1.2, -3.65, 3.2],
+        "rotate": [0, -28, 0]
+      },
+      {
+        "time_start": 98.5,
+        "time_end": 400,
+        "position": [0.95, -3.68, 3.7],
+        "rotate": [0, -120, 0]
+      },
+      {
+        "time_start": 99.5,
+        "time_end": 400,
+        "position": [0.5, -3.7, 3.4],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 101.5,
+        "time_end": 400,
+        "position": [0.0, -3.8, 3.25],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 102.5,
+        "time_end": 400,
+        "position": [-0.5, -3.9, 3.1],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 103.5,
+        "time_end": 400,
+        "position": [-1.0, -4.0, 2.95],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 104.5,
+        "time_end": 400,
+        "position": [-1.5, -4.1, 2.8],
+        "rotate": [0, -110, 0]
+      },
+      {
+        "time_start": 105.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.65],
+        "rotate": [0, 160, 0]
+      },
+      {
+        "time_start": 106.5,
+        "time_end": 400,
+        "position": [-2.0, -4.2, 2.05],
+        "rotate": [0, 160, 0]
+      }
+    ],
+    "facts": [
+      {
+        "image": "/img/g_f_1_1.jpg",
+        "title": "Матвей Башкиров",
+        "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_1_2.jpg",
+        "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+        "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+        "type": "link"
+      },
+      {
+        "image": "/img/libken.jpg",
+        "title": "Первый фильм студии",
+        "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+        "type": "text"
+      },
+      {
+        "image": "/img/g_f_2_1.jpg",
+        "title": "Григорий Либкен",
+        "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "position": [3, -5, -10.0],
+    "rotate": 0,
+    "source": "/audio/123.mp3",
+    "title": "Иммерсивный маршрут",
     "description_title": "Драма на Оке",
     "description": "Дом Башкирова —  историческая мельница, обрастающая рассказами о драматических событиях. В прошлом, когда здесь еще был рабочий городок, одна из работниц развлекала себя и своих коллег рассказами о дочери купца Башкирова, погрязшей в тайной романтике, трагически завершившейся... в реке. Но какова же правда в этой истории?",
     "background_image": "/card-bg-1.png",

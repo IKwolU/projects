@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
-const contentIdAtom = atom<number>({
-  key: "contentIdAtom",
-  default: -1,
+const isContentShowedAtom = atom<boolean>({
+  key: "isContentShowedAtom",
+  default: false,
 });
 const currentTimeAtom = atom<number>({
   key: "currentTimeAtom",
@@ -12,4 +12,13 @@ const navigationTimeAtom = atom<number>({
   key: "navigationTimeAtom",
   default: 1,
 });
-export { contentIdAtom, currentTimeAtom, navigationTimeAtom };
+const titleContentAtom = atom<string>({
+  key: "titleContentAtom",
+  default: "Дом Башкирова",
+});
+export {
+  isContentShowedAtom,
+  currentTimeAtom,
+  navigationTimeAtom,
+  titleContentAtom,
+};

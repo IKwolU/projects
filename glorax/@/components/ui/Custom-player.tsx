@@ -5,7 +5,7 @@ import {
   faArrowRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRecoilState } from "recoil";
-import { currentTimeAtom } from "../../../src/atoms";
+import { currentTimeAtom, titleContentAtom } from "../../../src/atoms";
 type CustomAudioPlayerProps = {
   src: string;
   active: boolean;
@@ -24,6 +24,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
   const [nextClicked, setNextClicked] = useState<boolean>(false);
   const [backClicked, setBackClicked] = useState<boolean>(false);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
+  const [titleContent] = useRecoilState(titleContentAtom);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -40,6 +41,11 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
       };
     }
   }, [isSeeking]);
+
+  useEffect(() => {
+    audioRef.current?.pause();
+    audioRef.current!.currentTime = 0;
+  }, [titleContent]);
 
   useEffect(() => {
     if (isPlaying) {

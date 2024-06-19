@@ -131,7 +131,7 @@ export const Finder = () => {
     null
   );
   const [offset, setOffset] = useState(0);
-  const limit = 50;
+  const limit = 30;
   const location = useLocation();
   const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
   const [metros, setMetros] = useState<Metros[]>([]);
@@ -1032,7 +1032,7 @@ export const Finder = () => {
             } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
             dataLength={cars.length}
             next={() => getCars()}
-            hasMore={false}
+            hasMore={true}
             loader={<></>}
             endMessage={<></>}
           >

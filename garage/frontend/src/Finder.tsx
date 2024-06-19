@@ -7,6 +7,7 @@ import filtersIcon from "./assets/filters_icon.svg";
 import business from "./assets/car_icons/business.png";
 import { useEffect, useRef, useState } from "react";
 import OnMap from "@/components/ui/on-map";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useLocation } from "react-router-dom";
 import {
   Avito_ids,
@@ -129,7 +130,8 @@ export const Finder = () => {
   const [scrollToElement, setScrollToElement] = useState<HTMLElement | null>(
     null
   );
-
+  const [offset, setOffset] = useState(0);
+  const limit = 50;
   const location = useLocation();
   const [avitoIds, setAvitoIds] = useState<Avito_ids[]>([]);
   const [metros, setMetros] = useState<Metros[]>([]);
@@ -179,37 +181,40 @@ export const Finder = () => {
     }
   }, [avitoIds]);
 
+  const getCars = async () => {
+    const data = await client.searchCars(
+      new Body15({
+        brand: filters.brands,
+        model: filters.models,
+        park_name: filters.parksName,
+        city,
+        fuel_type: filters.fuelType || undefined,
+        transmission_type: filters.transmissionType || undefined,
+        car_class: filters.carClass,
+        limit: limit,
+        offset: offset,
+        sorting: filters.sorting,
+        commission:
+          filters.commission !== null ? filters.commission : undefined,
+        self_employed: filters.selfEmployed,
+        is_buyout_possible: filters.buyoutPossible,
+        schemas: filters.schema || undefined,
+        car_vin: filters.carVin || undefined,
+        not_stack_list: ["division_id"],
+        metros: filters.metros,
+      })
+    );
+
+    offset ? setCars([...cars, ...data.cars!]) : setCars(data.cars!);
+
+    if (filters.brands.length > 0) {
+      sessionStorage.clear();
+    }
+
+    setOffset(offset + limit);
+  };
+
   useEffect(() => {
-    const getCars = async () => {
-      const data = await client.searchCars(
-        new Body15({
-          brand: filters.brands,
-          model: filters.models,
-          park_name: filters.parksName,
-          city,
-          fuel_type: filters.fuelType || undefined,
-          transmission_type: filters.transmissionType || undefined,
-          car_class: filters.carClass,
-          limit: 1000,
-          offset: 0,
-          sorting: filters.sorting,
-          commission:
-            filters.commission !== null ? filters.commission : undefined,
-          self_employed: filters.selfEmployed,
-          is_buyout_possible: filters.buyoutPossible,
-          schemas: filters.schema || undefined,
-          car_vin: filters.carVin || undefined,
-          not_stack_list: ["division_id"],
-          metros: filters.metros,
-        })
-      );
-
-      setCars(data.cars!);
-      if (filters.brands.length > 0) {
-        sessionStorage.clear();
-      }
-    };
-
     getCars();
   }, [filters, city]);
 
@@ -1026,25 +1031,35 @@ export const Finder = () => {
               overflow ? "overflow-y-hidden h-[500px]" : ""
             } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
           >
-            {cars.map((car) => (
-              <div className="" id={String(car.id)} key={car.id}>
-                {!randomTest.current && (
-                  <div className="sm:hidden">
-                    <CardV2
-                      car={car}
+            <InfiniteScroll
+              dataLength={cars.length}
+              next={() => getCars()}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
+              endMessage={<p>No more items to load</p>}
+            >
+              {cars.map((car) => (
+                <div className="" id={String(car.id)} key={car.id}>
+                  {!randomTest.current && (
+                    <div className="sm:hidden">
+                      <CardV2
+                        car={car}
+                        open={() => handleOpenModal(String(car.id))}
+                      />
+                    </div>
+                  )}
+
+                  <div
+                    className={`${!randomTest.current && "sm:block hidden"}`}
+                  >
+                    <Card
                       open={() => handleOpenModal(String(car.id))}
+                      car={car}
                     />
                   </div>
-                )}
-
-                <div className={`${!randomTest.current && "sm:block hidden"}`}>
-                  <Card
-                    open={() => handleOpenModal(String(car.id))}
-                    car={car}
-                  />
                 </div>
-              </div>
-            ))}
+              ))}
+            </InfiniteScroll>
           </div>
         )}
       </div>

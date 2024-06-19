@@ -215,7 +215,9 @@ export const Finder = () => {
   };
 
   useEffect(() => {
-    getCars();
+    if (!filters.onMap) {
+      getCars();
+    }
   }, [filters, city]);
 
   // const debouncedCommission = useDebouncedCallback((value) => {
@@ -1015,15 +1017,17 @@ export const Finder = () => {
               });
           }}
         >
-          <OnMap
-            filters={filters}
-            close={() =>
-              setFilters({
-                ...filters,
-                onMap: false,
-              })
-            }
-          />
+          {filters.onMap && (
+            <OnMap
+              filters={filters}
+              close={() =>
+                setFilters({
+                  ...filters,
+                  onMap: false,
+                })
+              }
+            />
+          )}
         </div>
         {!filters.onMap && (
           <InfiniteScroll

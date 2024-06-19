@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/dialog";
 import { CarBrandFilter } from "./CarBrandFilter";
 import Shewron from "./assets/shewron.svg";
-import Xclose from "./assets/Xclose.svg";
 
 type CarFilter = {
   brands: string[];

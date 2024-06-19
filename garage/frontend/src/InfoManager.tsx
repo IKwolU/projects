@@ -104,7 +104,7 @@ export const InfoManager = () => {
           </div>
         </div>
         <Separator />
-        <div className="flex justify-between my-4 space-x-12 ">
+        <div className="flex justify-between my-4 space-x-10 ">
           <div className="">
             <h4>Комиссия парка:</h4>
             <div className="flex items-center space-x-2">
@@ -129,7 +129,7 @@ export const InfoManager = () => {
                   {park.booking_window} часа
                 </p>
                 <Input
-                  className="w-48 m-0 border-2 border-pale rounded-xl"
+                  className="m-0 border-2 w-44 border-pale rounded-xl"
                   onChange={(e) =>
                     setParkInfo([
                       { ...parkInfo[0], booking_window: e.target.value },
@@ -148,7 +148,7 @@ export const InfoManager = () => {
                 {park.avito_id ? park.avito_id : "Не указано"}
               </p>
               <Input
-                className="w-48 m-0 border-2 border-pale rounded-xl"
+                className="m-0 border-2 w-44 border-pale rounded-xl"
                 onChange={(e) =>
                   setParkInfo([{ ...parkInfo[0], avito_id: e.target.value }])
                 }
@@ -164,7 +164,7 @@ export const InfoManager = () => {
                 {park.telegram ? park.telegram : "Не указано"}
               </p>
               <Input
-                className="w-48 m-0 border-2 border-pale rounded-xl"
+                className="m-0 border-2 w-44 border-pale rounded-xl"
                 onChange={(e) =>
                   setParkInfo([{ ...parkInfo[0], telegram: e.target.value }])
                 }

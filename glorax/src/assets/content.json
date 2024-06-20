@@ -2347,7 +2347,7 @@
       },
       {
         "id": 3,
-        "file": "/models/3_Balakirev.gltf",
+        "file": "/models/balak3new.gltf",
         "selection_time": 201,
         "end_time": 300,
         "selection_icon": "/img/coins.png",
@@ -2360,12 +2360,12 @@
       },
       {
         "id": 4,
-        "file": "/models/4_Balakirev.gltf",
+        "file": "/models/balak4new.gltf",
         "selection_time": 301,
         "end_time": 400,
         "selection_icon": "/img/coins.png",
         "nav_position": [0, -4.0, 0],
-        "point_position": [-3.5, -4.0, 11.0],
+        "point_position": [-2.7, -4.0, 9.4],
         "point_file": "arrowyellowglorax.gltf",
         "point_rotate": [0, -30, 0],
         "start_point_position": [5.35, -3.4, -11.4],
@@ -2373,15 +2373,15 @@
       },
       {
         "id": 5,
-        "file": "/models/5_Balakirev.gltf",
+        "file": "/models/balak5new.gltf",
         "selection_time": 401,
         "end_time": 500,
         "selection_icon": "/img/coins.png",
         "nav_position": [0, -4.0, 0],
-        "point_position": [-2.4, -4.4, 1.65],
+        "point_position": [-2.85, -4.2, 1.85],
         "point_file": "location-point.gltf",
         "point_rotate": [0, 60, 0],
-        "start_point_position": [-4.5, -4.0, 11.3],
+        "start_point_position": [-2.7, -4.0, 9.4],
         "start_point_file": "pointyellowglorax.gltf"
       }
     ],

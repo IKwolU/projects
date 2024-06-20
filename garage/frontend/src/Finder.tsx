@@ -181,7 +181,7 @@ export const Finder = () => {
     }
   }, [avitoIds]);
 
-  const getCars = async () => {
+  const getCars = async (dataOffset = offset) => {
     const data = await client.searchCars(
       new Body15({
         brand: filters.brands,
@@ -192,7 +192,7 @@ export const Finder = () => {
         transmission_type: filters.transmissionType || undefined,
         car_class: filters.carClass,
         limit: limit,
-        offset: offset,
+        offset: dataOffset,
         sorting: filters.sorting,
         commission:
           filters.commission !== null ? filters.commission : undefined,
@@ -205,7 +205,7 @@ export const Finder = () => {
       })
     );
 
-    offset ? setCars([...cars, ...data.cars!]) : setCars(data.cars!);
+    dataOffset ? setCars([...cars, ...data.cars!]) : setCars(data.cars!);
 
     if (filters.brands.length > 0) {
       sessionStorage.clear();
@@ -216,7 +216,7 @@ export const Finder = () => {
 
   useEffect(() => {
     if (!filters.onMap) {
-      getCars();
+      getCars(0);
     }
   }, [filters, city]);
 

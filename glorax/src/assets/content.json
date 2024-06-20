@@ -38,13 +38,13 @@
         "file": "/models/1.gltf",
         "selection_time": 23,
         "end_time": 200,
-        "selection_icon": null,
+        "selection_icon": "''",
         "nav_position": [0, -4.0, 0],
         "point_position": [-4.95, -4.3, 4.5],
         "point_file": "arrowyellowglorax.gltf",
         "point_rotate": [0, 160, 0],
-        "start_point_position": [-5.1, -6.3, 4.5],
-        "start_point_file": "pointyellowglorax.gltf"
+        "start_point_position": [-2.5, -4.3, -6.8],
+        "start_point_file": "location-point.gltf"
       },
       {
         "id": 2,
@@ -798,7 +798,7 @@
         "point_file": "arrowyellowglorax.gltf",
         "point_rotate": [0, -30, 0],
         "start_point_position": [-0.8, -4.3, -8.3],
-        "start_point_file": "pointyellowglorax.gltf"
+        "start_point_file": "location-point.gltf"
       },
       {
         "id": 2,
@@ -1529,13 +1529,26 @@
     "nav_variants": [
       {
         "id": 0,
-        "file": "/models/0_Degtiarjov.gltf",
+        "file": "/models/degt0.gltf",
         "selection_time": 23,
         "end_time": 100,
         "selection_icon": null,
         "nav_position": [0, -4.0, 0],
-        "point_position": [0.2, -4.3, -13.3],
+        "point_position": [-2.5, -4.3, -2.45],
         "point_file": "arrowyellowglorax.gltf",
+        "point_rotate": [0, 160, 0],
+        "start_point_position": [4.35, -3.5, -10.1],
+        "start_point_file": "location-point.gltf"
+      },
+      {
+        "id": 1,
+        "file": "/models/1_Degtiarjov.gltf",
+        "selection_time": 101,
+        "end_time": 200,
+        "selection_icon": null,
+        "nav_position": [0, -4.0, 0],
+        "point_position": [0.2, -4.3, -13.3],
+        "point_file": "location-point.gltf",
         "point_rotate": [0, -30, 0],
         "start_point_position": [-2.5, -4.3, -2.75],
         "start_point_file": "pointyellowglorax.gltf"
@@ -1543,7 +1556,7 @@
       {
         "id": 2,
         "file": "/models/2_Degtiarjov.gltf",
-        "selection_time": 101,
+        "selection_time": 201,
         "end_time": 300,
         "selection_icon": "/img/heart.png",
         "nav_position": [0, -4.0, 0],
@@ -1568,12 +1581,12 @@
       },
       {
         "id": 4,
-        "file": "/models/4_Degtiarjov.gltf",
+        "file": "/models/degt4.gltf",
         "selection_time": 401,
         "end_time": 500,
         "selection_icon": "/img/coins.png",
         "nav_position": [0, -4.0, 0],
-        "point_position": [-2.4, -4.4, 1.65],
+        "point_position": [-2.4, -4.25, 1.65],
         "point_file": "location-point.gltf",
         "point_rotate": [0, 60, 0],
         "start_point_position": [-3.9, -4.1, 11.6],
@@ -2304,7 +2317,7 @@
         "point_file": "arrowyellowglorax.gltf",
         "point_rotate": [0, -20, 0],
         "start_point_position": [-2.8, -4.3, -6.2],
-        "start_point_file": "pointyellowglorax.gltf"
+        "start_point_file": "location-point.gltf"
       },
       {
         "id": 2,
@@ -3077,7 +3090,7 @@
         "point_file": "arrowyellowglorax.gltf",
         "point_rotate": [0, -30, 0],
         "start_point_position": [3.9, -3.3, -0.5],
-        "start_point_file": "pointyellowglorax.gltf"
+        "start_point_file": "location-point.gltf"
       },
       {
         "id": 2,
@@ -3815,7 +3828,7 @@
         "selection_icon": null,
         "nav_position": [0, -4.0, 0],
         "point_position": [-6.8, -4.0, 10.6],
-        "point_file": "arrowyellowglorax.gltf",
+        "point_file": "location-point.gltf",
         "point_rotate": [0, 160, 0],
         "start_point_position": [0.3, -3.3, 4.2],
         "start_point_file": "pointyellowglorax.gltf"
@@ -4549,7 +4562,7 @@
         "selection_icon": null,
         "nav_position": [0, -4.0, 0],
         "point_position": [-4.95, -4.3, 4.5],
-        "point_file": "arrowyellowglorax.gltf",
+        "point_file": "location-point.gltf",
         "point_rotate": [0, 160, 0],
         "start_point_position": [-5.1, -6.3, 4.5],
         "start_point_file": "pointyellowglorax.gltf"

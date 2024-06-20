@@ -138,7 +138,7 @@ function CanvasComponent() {
   }
 
   const currentNavigationData = content!.nav_variants.find(
-    (x) => x.id === currentNav
+    (x) => x.selection_time < currentTime && x.end_time > currentTime
   );
 
   if (!content) {
@@ -228,50 +228,43 @@ function CanvasComponent() {
           rotate={[0, 0, 0]}
           isOpacity={false}
         />
-        {/* <OBJModel
-          scale={[10, 10, 10]}
-          file="/models/location-point.gltf"
-          texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-          position={[-2.4, -4.4, 1.65]}
-          opacity={0.93}
-          rotate={[0, 60, 0]}
-          isOpacity={false}
-        /> */}
-        {currentTime > content.start_time && currentTime < content.end_time && (
-          <>
-            {
+        {currentTime > content.start_time &&
+          currentTime < content.end_time &&
+          currentNavigationData && (
+            <>
+              {
+                <OBJModel
+                  file={currentNavigationData!.file}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={currentNavigationData!.nav_position}
+                  scale={[1, 1, 1]}
+                  opacity={0.8}
+                  rotate={[0, 0, 0]}
+                  isOpacity={true}
+                />
+              }
               <OBJModel
-                file={currentNavigationData!.file}
+                file={`/models/${currentNavigationData!.start_point_file}`}
                 texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                position={currentNavigationData!.nav_position}
-                scale={[1, 1, 1]}
-                opacity={0.8}
-                rotate={[0, 0, 0]}
-                isOpacity={true}
-              />
-            }
-            <OBJModel
-              file={`/models/${currentNavigationData!.start_point_file}`}
-              texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-              position={currentNavigationData!.start_point_position}
-              scale={[5, 5, 5]}
-              opacity={0.8}
-              rotate={currentNavigationData!.point_rotate}
-              isOpacity={true}
-            />
-            {currentTime > currentNavigationData!.selection_time && (
-              <OBJModel
-                file="/models/arrowyellowglorax.gltf"
-                texture={ColorToTexture(new THREE.Color(65, 105, 225))}
-                position={currentNavigationData!.point_position}
+                position={currentNavigationData!.start_point_position}
                 scale={[5, 5, 5]}
                 opacity={0.8}
                 rotate={currentNavigationData!.point_rotate}
                 isOpacity={true}
               />
-            )}
-          </>
-        )}
+              {currentTime > currentNavigationData!.selection_time && (
+                <OBJModel
+                  file={`/models/${currentNavigationData!.point_file}`}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={currentNavigationData!.point_position}
+                  scale={[5, 5, 5]}
+                  opacity={0.8}
+                  rotate={currentNavigationData!.point_rotate}
+                  isOpacity={true}
+                />
+              )}
+            </>
+          )}
         <meshStandardMaterial map={glassTexture} />
 
         <React.Fragment>

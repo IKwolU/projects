@@ -72,7 +72,6 @@ function Content() {
       current && null;
     },
   };
-  console.log(currentTime);
 
   useEffect(() => {
     setHelpers(content!.helpers);
@@ -161,10 +160,10 @@ function Content() {
           )}
         </>
       ))}
-      {isHelpShowed && (
+      {/* {isHelpShowed && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown">
           <div className="p-4 space-y-1 bg-lightpink rounded-xl w-[300px] h-auto flex flex-col shadow-sm border-brown border">
-            {/* <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
+           <div className="flex flex-col items-center mx-auto space-y-2 w-fit">
               <p>Давайте начнем двигаться:</p>
               <div className="flex items-center space-x-4">
                 <FontAwesomeIcon
@@ -187,7 +186,7 @@ function Content() {
               src="./img/newMap.jpg"
               alt=""
               className="object-contain w-full h-40"
-            />*/}
+            />
             <div className="font-bold text-center">Ваш вариант истории:</div>
             <div className="flex items-center justify-center py-4 my-4 space-x-9">
               {content.nav_variants
@@ -214,7 +213,7 @@ function Content() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
       <div
         onClick={() => menuOpenSet(!menuOpen)}
         className="fixed top-2 left-2 z-[50] flex w-16 px-1 sm:px-2 bg-opacity-40 justify-center items-center"

@@ -1,0 +1,199 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v4.0.44",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [0, 1]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "navinavi.005",
+      "rotation": [0, 0.9807447791099548, 0, 0.19529439508914948],
+      "scale": [22.831003189086914, 22.830997467041016, 22.831003189086914],
+      "translation": [
+        -2.995659351348877, -0.21650701761245728, 1.6156152486801147
+      ]
+    },
+    {
+      "mesh": 1,
+      "name": "navinavi.001",
+      "rotation": [0, -0.8527541756629944, 0, 0.5223124623298645],
+      "scale": [22.83100128173828, 22.830997467041016, 22.83100128173828],
+      "translation": [
+        -4.331494331359863, -0.21650701761245728, 2.6169323921203613
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Material.144",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [0.00045407674042508006, 0, 0.8000315427780151, 1],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.5
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Material.146",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [0.00045407674042508006, 0, 0.8000315427780151, 1],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.5
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Curve.112",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "name": "Curve.113",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 300,
+      "max": [
+        0.04603022709488869, 0.0012054538819938898, 0.0012736143544316292
+      ],
+      "min": [
+        -0.004767537582665682, -0.0012054393300786614, -0.014197880402207375
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 300,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 300,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 588,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 300,
+      "max": [0.08199704438447952, 0.0010004659416154027, 0.01345911342650652],
+      "min": [
+        -0.06013534218072891, -0.0012054527178406715, -0.019152382388710976
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 300,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 300,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5123,
+      "count": 588,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 3600,
+      "byteOffset": 0,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3600,
+      "byteOffset": 3600,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2400,
+      "byteOffset": 7200,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1176,
+      "byteOffset": 9600,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3600,
+      "byteOffset": 10776,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 3600,
+      "byteOffset": 14376,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 2400,
+      "byteOffset": 17976,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1176,
+      "byteOffset": 20376,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 21552,
+      "uri": "3_kilevein.bin"
+    }
+  ]
+}

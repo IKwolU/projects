@@ -74,6 +74,7 @@ export const CarsManager = () => {
     "old_status_id",
     "created_at",
     "updated_at",
+    "division_name_info",
   ];
 
   const filterBySearchTerm = (car: Cars4) => {

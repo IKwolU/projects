@@ -48,6 +48,7 @@ export const CarDetails = ({ car }: { car: Cars3 }) => {
         });
       });
     }
+    window.scrollTo(0, 0);
   }, []);
 
   // временно удаляем проверку на верификацию!!!

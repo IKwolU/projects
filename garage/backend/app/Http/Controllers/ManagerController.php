@@ -2114,7 +2114,7 @@ foreach ($bookings as $booking) {
         // .!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
         set_time_limit(300);
         // ,!!!!!!!!!!!!!!! ЯТЪ!!!!!!!!!!!!!
-        Log::info('getCarsCurrentStatusesFromClientManager started');
+        Log::info('getCarsCurrentStatusesFromClientManager started'.Auth::guard('sanctum')->user()->id);
         $clientCars = json_decode($this->getCarsFromParkClient($request->park_id));
         $statuses = Status::where('park_id', $request->park_id)->select('status_value', 'custom_status_name','id')->get();
         $cars = Car::where('park_id', $request->park_id)->get();

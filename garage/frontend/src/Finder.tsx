@@ -1030,36 +1030,40 @@ export const Finder = () => {
           )}
         </div>
         {!filters.onMap && (
-          <InfiniteScroll
-            className={`grid content-center grid-cols-1 ${
-              overflow ? "overflow-y-hidden h-[500px]" : ""
-            } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
-            dataLength={cars.length}
-            next={() => getCars()}
-            hasMore={true}
-            loader={<></>}
-            endMessage={<></>}
-          >
-            {cars.map((car) => (
-              <div className="" id={String(car.id)} key={car.id}>
-                {!randomTest.current && (
-                  <div className="sm:hidden">
-                    <CardV2
-                      car={car}
+          <div className={`${overflow ? "overflow-y-hidden h-[500px]" : ""}`}>
+            <InfiniteScroll
+              className={`grid content-center grid-cols-1 ${
+                overflow ? "overflow-y-hidden h-[500px]" : ""
+              } md:gap-4 md:grid-cols-2 lg:grid-cols-3`}
+              dataLength={cars.length}
+              next={() => getCars()}
+              hasMore={true}
+              loader={<></>}
+              endMessage={<></>}
+            >
+              {cars.map((car) => (
+                <div className="" id={String(car.id)} key={car.id}>
+                  {!randomTest.current && (
+                    <div className="sm:hidden">
+                      <CardV2
+                        car={car}
+                        open={() => handleOpenModal(String(car.id))}
+                      />
+                    </div>
+                  )}
+
+                  <div
+                    className={`${!randomTest.current && "sm:block hidden"}`}
+                  >
+                    <Card
                       open={() => handleOpenModal(String(car.id))}
+                      car={car}
                     />
                   </div>
-                )}
-
-                <div className={`${!randomTest.current && "sm:block hidden"}`}>
-                  <Card
-                    open={() => handleOpenModal(String(car.id))}
-                    car={car}
-                  />
                 </div>
-              </div>
-            ))}
-          </InfiniteScroll>
+              ))}
+            </InfiniteScroll>
+          </div>
         )}
       </div>
     </>

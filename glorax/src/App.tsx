@@ -12,7 +12,9 @@ function App() {
         // style={{ fontFamily: "Graphik-Regular" }}
       >
         <div className="w-screen h-screen">
-          <CanvasComponent />
+          <div className="absolute text-black top-20 left-20">TESTING graphik</div>
+          
+          {/* <CanvasComponent /> */}
         </div>
         <Content />
       </div>

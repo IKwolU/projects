@@ -67,7 +67,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        stolzl: ["Graphik-Regular", "sans-serif"],
+        stolzl: ["stolzl", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

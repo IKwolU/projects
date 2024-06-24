@@ -204,9 +204,9 @@ const OnMap = ({ filters, close }: OnMapProps) => {
         </div>
       )}
       {isClicked && (
-        <div className="fixed top-0 left-0 z-[50] flex justify-center w-full h-full bg-black lg:top-20 lg:bg-inherit bg-opacity-95">
+        <div className="fixed top-0 left-0 z-[50] flex justify-center w-full h-full bg-black lg:top-28 lg:bg-inherit bg-opacity-95">
           <div className=" flex flex-wrap items-start justify-center w-full h-full gap-2 bg-lightgrey lg:max-w-[1212px] max-w-[858px] scrollbar-hide lg:px-1 p-4 lg:pt-10 px-auto overflow-y-auto pb-16 lg:pb-0">
-            <div className="fixed hidden lg:block left-0 w-full top-20 z-[53] pt-3 pb-1 bg-lightgrey ">
+            <div className="fixed hidden lg:block left-0 w-full top-28 z-[53] pt-3 pb-1 bg-lightgrey ">
               <div
                 className="flex items-center w-full mx-auto max-w-[1208px] cursor-pointer"
                 onClick={() => setIsClicked(false)}

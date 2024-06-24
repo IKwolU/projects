@@ -1867,11 +1867,9 @@ if (isset($carData['division_name_info'])) {
 
             if ($telegramId && $is_booked) {
                 $telegramService = new TelegramService;
-                try {
+
                 $telegramService->SendMassageToTG($telegramId, $message);
-            } catch (TelegramResponseException $e) {
-                Log::error('Telegram API Error: ' . $e->getMessage());
-            }
+
             }
 
                 if($is_booked){Http::get('https://sms.ru/sms/send', [

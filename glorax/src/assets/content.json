@@ -10,6 +10,7 @@
     "start_time": 23,
     "end_time": 500,
     "choice__time": 100,
+    "map_img": "newMap.jpg",
     "help_time": 40,
     "close_time": 43,
     "helpers": [
@@ -770,6 +771,7 @@
     "start_time": 23,
     "end_time": 600,
     "choice__time": 100,
+    "map_img": "bugrovsidemap.png",
     "help_time": 40,
     "close_time": 43,
     "helpers": [
@@ -1511,6 +1513,7 @@
     "start_time": 23,
     "end_time": 700,
     "choice__time": 100,
+    "map_img": "degtyarevsidemap.png",
     "help_time": 40,
     "close_time": 43,
     "helpers": [
@@ -2290,6 +2293,7 @@
     "start_time": 23,
     "end_time": 600,
     "choice__time": 100,
+    "map_img": "balakirevsidemap.png",
     "help_time": 40,
     "close_time": 43,
     "helpers": [
@@ -3069,6 +3073,7 @@
     "start_time": 23,
     "end_time": 700,
     "choice__time": 100,
+    "map_img": "kilevejnsidemap.png",
     "help_time": 40,
     "close_time": 43,
     "helpers": [
@@ -3829,6 +3834,7 @@
     "start_time": 23,
     "end_time": 600,
     "choice__time": 100,
+    "map_img": "towersidemap.png",
     "help_time": 40,
     "close_time": 43,
     "helpers": [

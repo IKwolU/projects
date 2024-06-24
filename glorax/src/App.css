@@ -2,14 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Graphik-Regular";
+  src: url("../src/fonts/Graphik-Regular.eot");
+  src: local("☺️"), url("../src/fonts/Graphik-Regular.woff") format("woff"),
+    url("../src/fonts/Graphik-Regular.ttf") format("truetype"),
+    url("../src/fonts/Graphik-Regular.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "stolzlBold";
+  font-style: normal;
+  font-weight: 900; /* Bold */
+  font-display: swap;
+  src: url(./public/fonts/STOLZL_BOLD.OTF) format("OTF");
+}
+@font-face {
+  font-family: "stolzlBook";
+  font-style: normal;
+  font-weight: 500; /* Book */
+  src: url(./public/fonts/STOLZL_BOOK.OTF) format("OTF");
+}
+@font-face {
+  font-family: "stolzlLight";
+  font-style: normal;
+  font-weight: 300; /* Light */
+  src: url(./public/fonts/STOLZL_LIGHT.OTF) format("OTF");
+}
+@font-face {
+  font-family: "stolzl";
+  font-style: normal;
+  font-weight: 400; /* Regular */
+  src: url(./public/fonts/STOLZL_REGULAR.OTF) format("OTF");
+}
+@font-face {
+  font-family: "stolzlMedium";
+  font-style: normal;
+  font-weight: 500; /* Medium */
+  src: url(./public/fonts/STOLZL_MEDIUM.OTF) format("OTF");
+}
+@font-face {
+  font-family: "stolzlThin";
+  font-style: normal;
+  font-weight: 100; /* Thin */
+  src: url(./public/fonts/STOLZL_THIN.OTF) format("OTF");
+}
 
+@layer base {
+  html {
+    font-family: "stolzl";
+  }
+}
 #root {
+  font-family: "stolzl";
   margin: 0;
   padding: 0;
   flex-grow: 1;
 }
-
-
 
 .logo {
   height: 6em;

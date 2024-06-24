@@ -8,6 +8,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./@/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./src/fonts/*.{OTF}",
   ],
   theme: {
     container: {
@@ -66,8 +67,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-        mont: ["Montserrat", "sans-serif"],
+        stolzl: ["Graphik-Regular", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

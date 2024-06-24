@@ -1,5 +1,14 @@
+@font-face {
+  font-family: "Graphik-Regular";
+  src: url("../src/fonts/Graphik-Regular.eot");
+  src: local("☺️"), url("../src/fonts/Graphik-Regular.woff") format("woff"),
+    url("../src/fonts/Graphik-Regular.ttf") format("truetype"),
+    url("../src/fonts/Graphik-Regular.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

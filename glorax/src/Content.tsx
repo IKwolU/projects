@@ -623,7 +623,7 @@ function Content() {
                   <div className="py-2"></div>
                   <img
                     onClick={() => setIsMapClicked(!isMapClicked)}
-                    src="./img/newMap.jpg"
+                    src={`./img/${content.map_img}`}
                     alt=""
                     className="object-contain w-full h-40"
                   />
@@ -665,7 +665,7 @@ function Content() {
           onClick={() => setIsMapClicked(!isMapClicked)}
         >
           <img
-            src="./img/newMap.jpg"
+            src={`./img/${content.map_img}`}
             alt=""
             className="object-contain w-full h-auto"
           />

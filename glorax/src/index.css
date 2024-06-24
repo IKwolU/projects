@@ -3,17 +3,18 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Graphik-Regular";
-  src: url("../src/fonts/Graphik-Regular.eot");
-  src: local("☺️"), url("../src/fonts/Graphik-Regular.woff") format("woff"),
-    url("../src/fonts/Graphik-Regular.ttf") format("truetype"),
-    url("../src/fonts/Graphik-Regular.svg") format("svg");
+  font-family: "STOLZL_BOLD"; 
+  src: local("☺️"), url("../src/fonts/STOLZL_BOLD.OTF") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
+.testfont { 
+  font-family: "STOLZL_BOLD";
+}
+
 :root {
-  font-family: "Graphik-Regular";
+  font-family: "STOLZL_BOLD";
   line-height: 1.5;
   font-weight: 400;
 

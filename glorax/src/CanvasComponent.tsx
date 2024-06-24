@@ -17,7 +17,6 @@ import { useRecoilState } from "recoil";
 import {
   isContentShowedAtom,
   currentTimeAtom,
-  navigationTimeAtom,
   titleContentAtom,
 } from "./atoms";
 
@@ -38,7 +37,6 @@ function CanvasComponent() {
   const controlsRef = useRef<any>();
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
-  const [currentNav] = useRecoilState(navigationTimeAtom);
   const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
   const [titleContent] = useRecoilState(titleContentAtom);
   const content = contentData.find((x) => x.title === titleContent);

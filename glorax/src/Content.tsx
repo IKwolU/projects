@@ -23,7 +23,6 @@ import { useRecoilState } from "recoil";
 import {
   isContentShowedAtom,
   currentTimeAtom,
-  navigationTimeAtom,
   titleContentAtom,
 } from "./atoms";
 
@@ -33,12 +32,11 @@ function Content() {
   const [isContentShow, setIsContentShow] = useState(true);
   const [, setAudioTime] = useState(0);
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeAtom);
-  const [, setCurrentNav] = useRecoilState(navigationTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [questionId, setQuestionId] = useState<number>(-1);
   const [timeToChoose] = useState(false);
   const [menuOpen, menuOpenSet] = useState(false);
-  const [isHelpShowed, setIsHelpShowed] = useState(false);
+  const [, setIsHelpShowed] = useState(false);
   const [isMapClicked, setIsMapClicked] = useState(false);
   const [bigTextOpened, setBigTextOpened] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);

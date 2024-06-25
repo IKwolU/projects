@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CustomAudioPlayer from "@/components/ui/Custom-player";
 import CustomSheet from "@/components/ui/Custom-sheet";
 import contentData from "./assets/content.json";
+import storisJSON from "./assets/storis.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAnglesRight,
@@ -13,7 +14,6 @@ import {
 import logo from "../public/img/logoGlorax.png";
 import choice1 from "../public/img//choice-img-1.png";
 import choice2 from "../public/img//choice-img-2.png";
-import closeIcon from "../public/img/close_icon.svg";
 import iconButton from "../public/img/Icon_Button.svg";
 import halpFace from "../public/img/face.png";
 import Slider from "react-slick";
@@ -25,6 +25,7 @@ import {
   currentTimeAtom,
   titleContentAtom,
 } from "./atoms";
+import Storis from "./Storis";
 
 function Content() {
   const [isContentShowed] = useRecoilState(isContentShowedAtom);
@@ -33,7 +34,7 @@ function Content() {
   const [, setAudioTime] = useState(0);
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
-  const [questionId, setQuestionId] = useState<number>(-1);
+  const [question, setQuestion] = useState<string>("");
   const [timeToChoose] = useState(false);
   const [menuOpen, menuOpenSet] = useState(false);
   const [, setIsHelpShowed] = useState(false);
@@ -41,7 +42,7 @@ function Content() {
   const [bigTextOpened, setBigTextOpened] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [storisId, setStorisId] = useState(1);
+  const [isStorisShowed, setIsStorisShowed] = useState(false);
 
   const content = contentData.find((x) => x.title === titleContent);
 
@@ -85,7 +86,7 @@ function Content() {
   }, [currentTime]);
 
   const handleQuestionOpen = () => {
-    setQuestionId(-1);
+    setQuestion("");
     setQuestionsClicked(!questionsClicked);
   };
 
@@ -98,29 +99,6 @@ function Content() {
   // const currentNavigationData = content[0].nav_variants.find(
   //   (x) => x.id === currentNav
   // );
-
-  const handleClickQuestion = (number: number) => {
-    if (number === 1) {
-      setStorisId(number);
-    } else {
-      setQuestionId(number);
-    }
-  };
-
-  const handleStorisClose = () => {
-    setStorisId(1);
-    setQuestionId(-1);
-    setQuestionsClicked(!questionsClicked);
-  };
-
-  useEffect(() => {
-    if (storisId > 0 && storisId < 2) {
-      setTimeout(() => {
-        questionId === 0 && setStorisId(storisId + 1);
-      }, 15000);
-      setQuestionsClicked(false);
-    }
-  }, [storisId]);
 
   if (!content) {
     return <></>;
@@ -248,7 +226,7 @@ function Content() {
                   className="mb-2  p-0.5 px-2  hover:text-blue  hover:opacity-70  border-none rounded-[5px]  cursor-pointer transition-colors "
                   onClick={() =>
                     x === "Инструкции"
-                      ? handleQuestionOpen()
+                      ? setQuestionsClicked(true)
                       : setTitleContent(x)
                   }
                 >
@@ -278,61 +256,18 @@ function Content() {
           </div>
           <div className="bottom-0 z-10 h-4 -mb-4 w-[280px] sm:w-[350px] from-transparent bg-gradient-to-t to-lightpink rounded-t-3xl"></div>
           <div className=" relative pb-4 px-6 py-4 space-y-2 overflow-y-auto bg-lightpink max-h-[70%] w-[280px] sm:w-[350px] rounded-[5px] opacity-95 scrollbar-thin scrollbar-thumb-brown scrollbar-track-lightbrown scrollbar-thumb-rounded-full scrollbar-hide">
-            {[
-              {
-                question: "С чего начать (путешествие/приключение/изучение)?",
-                answer: "1234",
-              },
-              {
-                question: "Как вернуться назад?",
-                answer: "1234",
-              },
-              {
-                question: "Можно ли изменить маршрут?",
-                answer: "1234",
-              },
-              {
-                question: "Сколько по времени займет маршрут/аудио?",
-                answer: "1234",
-              },
-              {
-                question: "Можно ли пройти путь заново?",
-                answer: "1234",
-              },
-              {
-                question:
-                  "Есть ли ограничения по времени для прохождения маршрута?",
-                answer: "1234",
-              },
-              {
-                question: "Что такое иммерсивный маршрут?",
-                answer: "1234",
-              },
-              {
-                question: "Могу ли вернуться к маршруту позже?",
-                answer: "1234",
-              },
-              {
-                question:
-                  "Как я могу обратиться за технической поддержкой или сообщить об ошибке?",
-                answer: "1234",
-              },
-              {
-                question:
-                  "Какие дополнительные функции и возможности доступны на маршрутах?",
-                answer: "1234",
-              },
-            ].map(({ question, answer }, i) => (
+            {storisJSON.questions.map(({ question }, i) => (
               <div className="">
                 <p
-                  onClick={() => handleClickQuestion(i)}
+                  onClick={() => {
+                    setQuestion(question);
+                    setIsStorisShowed(true);
+                  }}
                   className="p-1 uppercase transition-colors rounded cursor-pointer hover:text-blue text-brown "
                 >
                   {question}
                 </p>
-                {questionId === i && (
-                  <p className="pl-2 text-sm text-brown">{answer}</p>
-                )}
+
                 <div className={`${i !== 9 && "h-px bg-brown my-2"}`}></div>
               </div>
             ))}
@@ -340,118 +275,10 @@ function Content() {
           <div className="bottom-0 z-10 h-4 -mt-4 w-[280px] sm:w-[350px] from-lightpink bg-gradient-to-t to-transparent rounded-b-2xl"></div>
         </div>
       )}
-      {questionId === 0 && (
-        <div className="fixed top-0 left-0 w-screen h-screen z-[55] bg-lightpink bg-opacity-25 space-x-2 flex justify-center items-center sm:rounded-lg">
-          <div className="flex relative items-center justify-center space-x-0 bg-opacity-25  bg-lightpink w-full h-full sm:max-w-96 sm:rounded-lg  sm:max-h-[700px] overflow-hidden ">
-            <img
-              src={closeIcon}
-              alt=""
-              onClick={() => handleStorisClose()}
-              className="absolute z-50 w-10 cursor-pointer right-2 top-2"
-            />
-            <div
-              onClick={() => setStorisId(storisId + 1)}
-              className={`absolute  flex  bg-no-repeat flex-col justify-between top-0 pt-14 pb-8 left-0 w-full h-full   bg-brown text-lightpink sm:max-w-96 transition-transform sm:rounded sm:max-h-[700px] ${
-                storisId === 1
-                  ? "translate-x-0"
-                  : storisId == 2
-                  ? "-translate-x-full"
-                  : "translate-x-full"
-              }`}
-            >
-              <div className="relative flex flex-col justify-between h-full px-6">
-                <div
-                  className="absolute top-0 left-0 w-full h-full bg-no-repeat -z-10"
-                  style={{
-                    backgroundImage: "url(./img/storisBG-1.svg)",
-                    backgroundPositionX: "-120px",
-                    backgroundPositionY: "250px",
-                    backgroundSize: "650px",
-                    transform: "scale(-1, 1)",
-                  }}
-                ></div>
-                <div className="">
-                  <h3 className="mb-6 font-semibold">
-                    С чего начать путешествие?
-                  </h3>
-                  <div className="space-y-10">
-                    <p>
-                      Вы находитесь в стартовой точке иммерсивного маршрута. Это
-                      означает, что вы будете воспринимать информацию и историю
-                      особым образом — буквально погружаясь в неё с помощью
-                      аудиосопровождения.
-                    </p>
-                    <p>
-                      Вас ждет атмосфера невыдуманных историй. А от вашего
-                      выбора и действий зависит, как будет развиваться история и
-                      каким окажется финал.
-                    </p>
-                  </div>{" "}
-                </div>
-                <button
-                  className="flex items-center justify-start gap-4 p-2 pr-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
-                  onClick={() => setStorisId(storisId + 1)}
-                >
-                  <img src={iconButton} alt="" className="w-10" />
-                  Как работает платформа
-                </button>
-              </div>
-            </div>
-
-            <div
-              className={`absolute flex justify-between flex-col top-0 left-0  bg-no-repeat bg-right-bottom  w-full h-full  pt-12 bg-brown text-lightpink sm:max-w-96 sm:rounded transition-transform sm:max-h-[700px] ${
-                storisId === 2 ? "translate-x-0" : "translate-x-full"
-              }`}
-            >
-              {/* <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-6 h-full">
-                <FontAwesomeIcon
-                  onClick={() => setStorisId(storisId - 1)}
-                  icon={faAnglesRight}
-                  className={`z-50   rotate-180 h-4 text-lightpink`}
-                />
-              </div> */}
-              <div className="relative flex flex-col items-start justify-between h-full px-6">
-                <div
-                  className="absolute top-0 left-0 w-full h-full bg-no-repeat"
-                  style={{
-                    backgroundImage: "url(./img/storisBG-2.svg)",
-                    backgroundPositionX: "-120px",
-                    backgroundPositionY: "345px",
-                    backgroundSize: "550px",
-                    transform: "scale(-1, 1)",
-                  }}
-                ></div>
-
-                <div className="">
-                  <h3 className="mb-6 font-semibold">
-                    Как работает платформа и зачем она нужна?
-                  </h3>
-                  <div className="space-y-6">
-                    <p>
-                      Платформа представляет собой интерактивный аудиогид,
-                      который помогает пользователям погружаться в историю
-                      местности через аудиовизуальные элементы и иммерсивные
-                      маршруты. Она необходима для уникального знакомства с
-                      историей и культурой, позволяя самостоятельно исследовать
-                      интересные места и узнавать о событиях прошлого.
-                    </p>
-                    <p>
-                      Глоракс (GloraX) — компания, создающая и развивающая
-                      проекты в сфере недвижимости.
-                    </p>
-                  </div>
-                </div>
-                <div
-                  className="z-50 flex items-center justify-start gap-4 p-2 mb-6 text-sm uppercase border-none rounded-full w-fit bg-blue"
-                  onClick={() => setStorisId(storisId - 1)}
-                >
-                  <img src={iconButton} alt="" className="w-10 rotate-180" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {isStorisShowed && (
+        <Storis close={() => setIsStorisShowed(false)} question={question} />
       )}
+
       {/* <div className="fixed z-[51] flex w-full left-4 bottom-6 md:bottom-1 ">
         <FontAwesomeIcon
           onClick={() => handleQuestionOpen()}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2, Body } from "./api-client";
+import { UserType, IPark2, Body, Yandex_keys } from "./api-client";
 import { parkAtom, userAtom } from "./atoms";
 import { client } from "./backend";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ export const InfoManager = () => {
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
   const [parkKey, setParkKey] = useState<string>();
   const [isKeyShowed, setIsKeyShowed] = useState(false);
+  const [yandexKeys, setYandexKeys] = useState<Yandex_keys[] | undefined>();
 
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
@@ -28,6 +29,7 @@ export const InfoManager = () => {
           avito_id: parkData.park?.avito_id || "",
           telegram_id: parkData.park?.telegram_id || "",
         });
+        setYandexKeys(parkData.park.yandex_keys);
       };
 
       getPark();
@@ -40,6 +42,7 @@ export const InfoManager = () => {
         new Body({
           ...parkInfo![0],
           self_employed_discount: 0,
+          yandex_keys: yandexKeys !== park.yandex_keys ? yandexKeys : undefined,
         })
       );
 
@@ -58,6 +61,13 @@ export const InfoManager = () => {
     }
     setIsKeyShowed(!isKeyShowed);
   };
+
+  const handleAddYaKeys = () => {
+    yandexKeys
+      ? setYandexKeys([...yandexKeys, new Yandex_keys()])
+      : setYandexKeys([new Yandex_keys()]);
+  };
+  console.log(yandexKeys);
 
   if (!parkInfo) {
     return <></>;
@@ -173,6 +183,45 @@ export const InfoManager = () => {
               ></Input>
             </div>
           </div>
+        </div>
+        <Separator />
+        <div className="flex items-center my-2 space-x-6">
+          <div className="">Ключи кабинета яндекса:</div>
+          <Button className="w-44" onClick={handleAddYaKeys}>
+            Добавить кабинет
+          </Button>
+        </div>
+        <div className="mb-4 space-y-4">
+          <div className="flex justify-between space-x-6 text-sm">
+            <div className="w-full">X-Api-Key/API-ключ:</div>
+            <div className="w-full">X-Client-ID/ID клиента:</div>
+            <div className="w-full">park id/ID парка:</div>
+          </div>
+          {yandexKeys?.map(({ X_Api_Key, X_Client_ID, park_id }, i) => (
+            <div key={"ya_keys" + i} className="flex justify-between space-x-6">
+              <Input
+                onChange={(e) => {}}
+                type="text"
+                value={X_Api_Key}
+                className="w-full m-0 border-2 border-pale rounded-xl"
+                placeholder={X_Api_Key}
+              />
+              <Input
+                onChange={(e) => {}}
+                type="text"
+                value={X_Client_ID}
+                className="w-full m-0 border-2 border-pale rounded-xl"
+                placeholder={X_Client_ID}
+              />
+              <Input
+                onChange={(e) => {}}
+                type="text"
+                value={park_id}
+                className="w-full m-0 border-2 border-pale rounded-xl"
+                placeholder={park_id}
+              />
+            </div>
+          ))}
         </div>
         <Separator />
         <div className="my-4">

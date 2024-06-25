@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Park extends Model
 {
     use HasFactory;
-    protected $fillable = ['API_key', 'url', 'comission', 'telegram_id', 'park_name', 'about', 'working_hours'];
+    protected $fillable = ['API_key', 'url', "yandex_keys", 'comission', 'telegram_id', 'park_name', 'about', 'working_hours'];
 
     public function divisions()
     {
@@ -29,5 +29,9 @@ class Park extends Model
     public function managers()
     {
         return $this->hasMany(Manager::class);
+    }
+    public function bookings()
+    {
+        return $this->hasManyThrough(Booking::class, Car::class);
     }
 }

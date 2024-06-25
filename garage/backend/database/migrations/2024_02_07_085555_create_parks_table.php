@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('self_employed_discount');
             $table->text('about');
             $table->text('telegram_id');
+            $table->json('yandex_keys');
             $table->timestamps();
         });
     }

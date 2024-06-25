@@ -71,6 +71,29 @@ class APIController extends Controller
      *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
      *             @OA\Property(property="avito_id", type="string", description="id avito"),
+ * @OA\Property(
+ *     property="yandex_keys",
+ *     type="array",
+ *     description="ключи от кабинетов Яндекса",
+ *     @OA\Items(
+ *         type="object",
+ *         @OA\Property(
+ *             property="park_id",
+ *             type="string",
+ *             description="идентификатор парка в Яндекс-кабинете"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Api_Key",
+ *             type="string",
+ *             description="API ключ для доступа к Яндекс API"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Client_ID",
+ *             type="string",
+ *             description="идентификатор клиента для доступа к Яндекс API"
+ *         )
+ *     )
+ * ),
      *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(
@@ -121,6 +144,10 @@ class APIController extends Controller
             'avito_id' => 'string',
             'self_employed_discount' => 'integer',
             'booking_window' => 'integer',
+            'yandex_keys' => 'array',
+            'yandex_keys.*.park_id' => 'required|string',
+            'yandex_keys.*.X_Api_Key' => 'required|string',
+            'yandex_keys.*.X_Client_ID' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);
@@ -139,6 +166,9 @@ class APIController extends Controller
         }
         if ($request->avito_id) {
             $park->avito_id = $request->avito_id;
+        }
+        if ($request->yandex_keys) {
+            $park->yandex_keys = json_encode($request->yandex_keys);
         }
         if ($request->telegram) {
             $park->telegram_id = $request->telegram;

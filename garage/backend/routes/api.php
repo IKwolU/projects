@@ -9,6 +9,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use PHPUnit\Framework\Attributes\Group;
@@ -106,6 +107,5 @@ Route::prefix('manager')->group(function () {
         Route::post('application/comment', [ManagerController::class, 'createApplicationCommentManager']);
         Route::put('application', [ManagerController::class, 'updateApplicationManager']);
         Route::post('application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
-
     });
 });

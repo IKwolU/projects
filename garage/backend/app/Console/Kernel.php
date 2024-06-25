@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:check-booking-timers')->everyMinute();
         $schedule->command('app:check-client-statuses')->everyFiveMinutes();
+        $schedule->command('app:check-yandex-drivers')->daily();
     }
 
     /**

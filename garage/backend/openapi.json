@@ -48,6 +48,27 @@
                                         "description": "id avito",
                                         "type": "string"
                                     },
+                                    "yandex_keys": {
+                                        "description": "ключи от кабинетов Яндекса",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "park_id": {
+                                                    "description": "идентификатор парка в Яндекс-кабинете",
+                                                    "type": "string"
+                                                },
+                                                "X_Api_Key": {
+                                                    "description": "API ключ для доступа к Яндекс API",
+                                                    "type": "string"
+                                                },
+                                                "X_Client_ID": {
+                                                    "description": "идентификатор клиента для доступа к Яндекс API",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
                                     "self_employed_discount": {
                                         "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",
                                         "type": "integer"
@@ -4039,6 +4060,27 @@
                                                         "description": "Последнее обновление инфо парка",
                                                         "type": "string"
                                                     },
+                                                    "yandex_keys": {
+                                                        "description": "ключи от кабинетов Яндекса",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "park_id": {
+                                                                    "description": "идентификатор парка в Яндекс-кабинете",
+                                                                    "type": "string"
+                                                                },
+                                                                "X_Api_Key": {
+                                                                    "description": "API ключ для доступа к Яндекс API",
+                                                                    "type": "string"
+                                                                },
+                                                                "X_Client_ID": {
+                                                                    "description": "идентификатор клиента для доступа к Яндекс API",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
                                                     "self_employed_discount": {
                                                         "description": "Скидка парка для самозанятых",
                                                         "type": "number"
@@ -4521,6 +4563,27 @@
                                     "avito_id": {
                                         "description": "id avito",
                                         "type": "string"
+                                    },
+                                    "yandex_keys": {
+                                        "description": "ключи от кабинетов Яндекса",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "park_id": {
+                                                    "description": "идентификатор парка в Яндекс-кабинете",
+                                                    "type": "string"
+                                                },
+                                                "X_Api_Key": {
+                                                    "description": "API ключ для доступа к Яндекс API",
+                                                    "type": "string"
+                                                },
+                                                "X_Client_ID": {
+                                                    "description": "идентификатор клиента для доступа к Яндекс API",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     },
                                     "self_employed_discount": {
                                         "description": "Скидка от парка при работе с самозанятыми(не обязателньое поле)",

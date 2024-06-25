@@ -28,4 +28,8 @@ class Booking extends Model
     {
         return $this->belongsTo(Schema::class);
     }
+    public function user()
+    {
+        return $this->hasOneThrough(User::class, Driver::class, 'id', 'id', 'driver_id', 'user_id');
+    }
 }

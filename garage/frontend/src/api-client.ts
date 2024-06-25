@@ -4246,6 +4246,8 @@ export class Body implements IBody {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys[];
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -4273,6 +4275,11 @@ export class Body implements IBody {
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
             this.avito_id = _data["avito_id"];
+            if (Array.isArray(_data["yandex_keys"])) {
+                this.yandex_keys = [] as any;
+                for (let item of _data["yandex_keys"])
+                    this.yandex_keys!.push(Yandex_keys.fromJS(item));
+            }
             this.self_employed_discount = _data["self_employed_discount"];
         }
     }
@@ -4297,6 +4304,11 @@ export class Body implements IBody {
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
         data["avito_id"] = this.avito_id;
+        if (Array.isArray(this.yandex_keys)) {
+            data["yandex_keys"] = [];
+            for (let item of this.yandex_keys)
+                data["yandex_keys"].push(item.toJSON());
+        }
         data["self_employed_discount"] = this.self_employed_discount;
         return data;
     }
@@ -4317,6 +4329,8 @@ export interface IBody {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys[];
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -6030,6 +6044,8 @@ export class Body24 implements IBody24 {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys2[];
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -6057,6 +6073,11 @@ export class Body24 implements IBody24 {
             this.booking_window = _data["booking_window"];
             this.about = _data["about"];
             this.avito_id = _data["avito_id"];
+            if (Array.isArray(_data["yandex_keys"])) {
+                this.yandex_keys = [] as any;
+                for (let item of _data["yandex_keys"])
+                    this.yandex_keys!.push(Yandex_keys2.fromJS(item));
+            }
             this.self_employed_discount = _data["self_employed_discount"];
         }
     }
@@ -6081,6 +6102,11 @@ export class Body24 implements IBody24 {
         data["booking_window"] = this.booking_window;
         data["about"] = this.about;
         data["avito_id"] = this.avito_id;
+        if (Array.isArray(this.yandex_keys)) {
+            data["yandex_keys"] = [];
+            for (let item of this.yandex_keys)
+                data["yandex_keys"].push(item.toJSON());
+        }
         data["self_employed_discount"] = this.self_employed_discount;
         return data;
     }
@@ -6101,6 +6127,8 @@ export interface IBody24 {
     about?: string;
     /** id avito */
     avito_id?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys2[];
     /** Скидка от парка при работе с самозанятыми(не обязателньое поле) */
     self_employed_discount?: number;
 
@@ -19191,6 +19219,68 @@ export interface IAnonymous226 {
     [key: string]: any;
 }
 
+export class Yandex_keys implements IYandex_keys {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IYandex_keys) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.park_id = _data["park_id"];
+            this.x_Api_Key = _data["X_Api_Key"];
+            this.x_Client_ID = _data["X_Client_ID"];
+        }
+    }
+
+    static fromJS(data: any): Yandex_keys {
+        data = typeof data === 'object' ? data : {};
+        let result = new Yandex_keys();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["park_id"] = this.park_id;
+        data["X_Api_Key"] = this.x_Api_Key;
+        data["X_Client_ID"] = this.x_Client_ID;
+        return data;
+    }
+}
+
+export interface IYandex_keys {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
+
+    [key: string]: any;
+}
+
 export class Working_hours implements IWorking_hours {
     day?: DayOfWeek;
     /** Время начала работы */
@@ -19605,6 +19695,68 @@ export interface ISchemas2 {
     non_working_days?: number;
     /** Количество рабочих дней */
     working_days?: number;
+
+    [key: string]: any;
+}
+
+export class Yandex_keys2 implements IYandex_keys2 {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IYandex_keys2) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.park_id = _data["park_id"];
+            this.x_Api_Key = _data["X_Api_Key"];
+            this.x_Client_ID = _data["X_Client_ID"];
+        }
+    }
+
+    static fromJS(data: any): Yandex_keys2 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Yandex_keys2();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["park_id"] = this.park_id;
+        data["X_Api_Key"] = this.x_Api_Key;
+        data["X_Client_ID"] = this.x_Client_ID;
+        return data;
+    }
+}
+
+export interface IYandex_keys2 {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
 
     [key: string]: any;
 }
@@ -20775,6 +20927,8 @@ export class Park2 implements IPark2 {
     created_at?: string;
     /** Последнее обновление инфо парка */
     updated_at?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys3[];
     /** Скидка парка для самозанятых */
     self_employed_discount?: number;
     /** Список автомобилей в отделении */
@@ -20813,6 +20967,11 @@ export class Park2 implements IPark2 {
             this.telegram_id = _data["telegram_id"];
             this.created_at = _data["created_at"];
             this.updated_at = _data["updated_at"];
+            if (Array.isArray(_data["yandex_keys"])) {
+                this.yandex_keys = [] as any;
+                for (let item of _data["yandex_keys"])
+                    this.yandex_keys!.push(Yandex_keys3.fromJS(item));
+            }
             this.self_employed_discount = _data["self_employed_discount"];
             if (Array.isArray(_data["cars"])) {
                 this.cars = [] as any;
@@ -20861,6 +21020,11 @@ export class Park2 implements IPark2 {
         data["telegram_id"] = this.telegram_id;
         data["created_at"] = this.created_at;
         data["updated_at"] = this.updated_at;
+        if (Array.isArray(this.yandex_keys)) {
+            data["yandex_keys"] = [];
+            for (let item of this.yandex_keys)
+                data["yandex_keys"].push(item.toJSON());
+        }
         data["self_employed_discount"] = this.self_employed_discount;
         if (Array.isArray(this.cars)) {
             data["cars"] = [];
@@ -20908,6 +21072,8 @@ export interface IPark2 {
     created_at?: string;
     /** Последнее обновление инфо парка */
     updated_at?: string;
+    /** ключи от кабинетов Яндекса */
+    yandex_keys?: Yandex_keys3[];
     /** Скидка парка для самозанятых */
     self_employed_discount?: number;
     /** Список автомобилей в отделении */
@@ -22793,6 +22959,68 @@ export class Metro_lines implements IMetro_lines {
 export interface IMetro_lines {
     city?: string;
     stations?: string[];
+
+    [key: string]: any;
+}
+
+export class Yandex_keys3 implements IYandex_keys3 {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IYandex_keys3) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.park_id = _data["park_id"];
+            this.x_Api_Key = _data["X_Api_Key"];
+            this.x_Client_ID = _data["X_Client_ID"];
+        }
+    }
+
+    static fromJS(data: any): Yandex_keys3 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Yandex_keys3();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["park_id"] = this.park_id;
+        data["X_Api_Key"] = this.x_Api_Key;
+        data["X_Client_ID"] = this.x_Client_ID;
+        return data;
+    }
+}
+
+export interface IYandex_keys3 {
+    /** идентификатор парка в Яндекс-кабинете */
+    park_id?: string;
+    /** API ключ для доступа к Яндекс API */
+    x_Api_Key?: string;
+    /** идентификатор клиента для доступа к Яндекс API */
+    x_Client_ID?: string;
 
     [key: string]: any;
 }

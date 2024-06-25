@@ -77,6 +77,29 @@ class ManagerController extends Controller
      *                     @OA\Property(property="telegram_id", type="string", description="telegram id"),
      *                     @OA\Property(property="created_at", type="string", description="Дата создания парка"),
      *                     @OA\Property(property="updated_at", type="string", description="Последнее обновление инфо парка"),
+       * @OA\Property(
+ *     property="yandex_keys",
+ *     type="array",
+ *     description="ключи от кабинетов Яндекса",
+ *     @OA\Items(
+ *         type="object",
+ *         @OA\Property(
+ *             property="park_id",
+ *             type="string",
+ *             description="идентификатор парка в Яндекс-кабинете"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Api_Key",
+ *             type="string",
+ *             description="API ключ для доступа к Яндекс API"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Client_ID",
+ *             type="string",
+ *             description="идентификатор клиента для доступа к Яндекс API"
+ *         )
+ *     )
+ * ),
      *                     @OA\Property(property="self_employed_discount", type="number", description="Скидка парка для самозанятых"),
      *                             @OA\Property(
      *                                 property="cars",
@@ -235,6 +258,7 @@ class ManagerController extends Controller
         unset($park->API_key,$park->password_1c,$park->login_1c,$park->status_api_tocken);
 
         $park->metro_lines = [];
+        $park->yandex_keys = json_decode($park->yandex_keys);
         $divisionsByCity = [];
         foreach ($park->divisions as $division) {
             $division->working_hours = json_decode($division->working_hours);
@@ -349,6 +373,29 @@ class ManagerController extends Controller
      *             @OA\Property(property="booking_window", type="number", description="Срок на который можно забронировать авто, в часах"),
      *             @OA\Property(property="about", type="string", description="Описание парка"),
      *             @OA\Property(property="avito_id", type="string", description="id avito"),
+     *  * @OA\Property(
+ *     property="yandex_keys",
+ *     type="array",
+ *     description="ключи от кабинетов Яндекса",
+ *     @OA\Items(
+ *         type="object",
+ *         @OA\Property(
+ *             property="park_id",
+ *             type="string",
+ *             description="идентификатор парка в Яндекс-кабинете"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Api_Key",
+ *             type="string",
+ *             description="API ключ для доступа к Яндекс API"
+ *         ),
+ *         @OA\Property(
+ *             property="X_Client_ID",
+ *             type="string",
+ *             description="идентификатор клиента для доступа к Яндекс API"
+ *         )
+ *     )
+ * ),
      *             @OA\Property(property="self_employed_discount", type="integer", description="Скидка от парка при работе с самозанятыми(не обязателньое поле)"),
      *     )),
      *     @OA\Response(
@@ -3319,4 +3366,5 @@ if ($user->role_id !== UserRole::Admin->value) {
             $kanban->createApplicationsLogItem($request);
         }
     }
+
 }

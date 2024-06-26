@@ -8,7 +8,9 @@
     "paths": {
         "parks": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление информации о парке",
                 "description": "Обновление информации о парке\n\nЭтот метод позволяет обновлять информацию о парке.",
                 "operationId": "updateParkInfo",
@@ -154,7 +156,9 @@
         },
         "/parks/division": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление подразделения парка",
                 "description": "Обновление подразделения парка\n\nЭтот метод позволяет обновлять подразделение в парке.",
                 "operationId": "updateParkDivision",
@@ -325,7 +329,9 @@
                 ]
             },
             "post": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Создание подразделения парка",
                 "description": "Создание подразделения парка\n\nЭтот метод позволяет создавать подразделение в парке.",
                 "operationId": "createParkDivision",
@@ -489,7 +495,9 @@
         },
         "/parks/tariff": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление требований к кандидатам",
                 "description": "Обновление требований к кандидатам\n\nЭтот метод позволяет обновлять тарифы авто с критериями блокерами для парков.",
                 "operationId": "updateTariff",
@@ -622,7 +630,9 @@
                 ]
             },
             "post": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Требования к кандидатам",
                 "description": "Требования к кандидатам\n\nЭтот метод позволяет создавать новые тарифы авто с критериями блокерами для парков. В одном городе для парка может быть толкьо один тариф заданного класса.",
                 "operationId": "createTariff",
@@ -777,7 +787,9 @@
         },
         "/parks/rent-terms": {
             "post": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Создание или обновление условий аренды",
                 "description": "Создание или обновление условий аренды\n\nЭтот метод позволяет создавать новые или обновлять существующие условия аренды для парков.",
                 "operationId": "createOrUpdateRentTerm",
@@ -954,7 +966,9 @@
         },
         "/cars": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление информации о машине",
                 "description": "Обновление информации о машине",
                 "operationId": "updateCar",
@@ -1109,7 +1123,9 @@
                 ]
             },
             "post": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Добавить несколько автомобилей, все добавленные автомобили будут доступны к бронированию сразу после привязки к ним Условий бронирования (метод: /cars/rent-term). Выполнение метода возможно только после выполнения методов: обновление информации о парке, создание подразделения, создание тарифа. Статус допуска в бронированию по умолчанию будет 'допущено'",
                 "description": "Добавить несколько автомобилей",
                 "operationId": "pushCars",
@@ -1264,7 +1280,9 @@
         },
         "/cars/rent-term": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление условия аренды для автомобиля",
                 "description": "Обновление условия аренды для автомобиля\n\nЭтот метод позволяет обновлять условие аренды для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "updateCarRentTerm",
@@ -1386,7 +1404,9 @@
         },
         "/cars/status": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление статуса допуска к бронированию",
                 "description": "Обновление статуса допуска к бронированию автомобиля",
                 "operationId": "updateCarStatus",
@@ -1509,7 +1529,9 @@
         },
         "/cars/booking": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление статуса брони автомобиля",
                 "description": "Обновление статуса брони автомобиля\n\nЭтот метод позволяет обновлять статус брони для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "updateCarBookingStatus",
@@ -1630,7 +1652,9 @@
         },
         "/cars/booking/replace": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Замена забронированного авто",
                 "description": "Замена забронированного авто\n\nЭтот метод позволяет заменить один автообиль на другой в рамках текущей брони по VIN-номеру.",
                 "operationId": "BookReplace",
@@ -1748,7 +1772,9 @@
         },
         "/cars/booking/prolongation": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Пролонгация брони автомобиля",
                 "description": "Пролонгация брони\n\nЭтот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "BookProlongation",
@@ -1866,7 +1892,9 @@
         },
         "/URL_АДРЕС_ПАРКА/cars/outbound/status": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Изменить статус бронирования автомобиля, ОТ МОЕГО ГАРАЖА",
                 "description": "Изменить статус бронирования автомобиля\n\nЭтот метод используется для передачи данных ОТ МОЕГО ГАРАЖА.",
                 "operationId": "notifyParkOnBookingStatusChanged",
@@ -1935,7 +1963,9 @@
         },
         "admin/parks": {
             "get": {
-                "tags": ["Admin"],
+                "tags": [
+                    "Admin"
+                ],
                 "summary": "Показать список парков",
                 "description": "Показать список парков",
                 "operationId": "getParks",
@@ -1989,7 +2019,9 @@
         },
         "admin/park": {
             "get": {
-                "tags": ["Admin"],
+                "tags": [
+                    "Admin"
+                ],
                 "summary": "Показать данные парка",
                 "description": "Показать данные парка",
                 "operationId": "getParkWithDetails",
@@ -2291,7 +2323,9 @@
                 }
             },
             "post": {
-                "tags": ["Admin"],
+                "tags": [
+                    "Admin"
+                ],
                 "summary": "Создать парк",
                 "description": "Создать парк",
                 "operationId": "createPark",
@@ -2365,7 +2399,9 @@
         },
         "admin/users": {
             "get": {
-                "tags": ["Admin"],
+                "tags": [
+                    "Admin"
+                ],
                 "summary": "Показать список парков",
                 "description": "Показать список парков",
                 "operationId": "getUsers",
@@ -2445,7 +2481,9 @@
         },
         "/user": {
             "get": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Получение данных пользователя (аутентифицированный запрос)",
                 "description": "Получение данных пользователя (аутентифицированный запрос)",
                 "operationId": "GetUser",
@@ -2726,7 +2764,9 @@
                 ]
             },
             "delete": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Удаление пользователя и связанных записей",
                 "description": "Удаление пользователя и связанных записей",
                 "operationId": "DeleteUser",
@@ -2773,7 +2813,9 @@
         },
         "/user/login": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Аутентификация пользователя или регистрация нового",
                 "description": "Аутентификация пользователя или регистрация нового",
                 "operationId": "loginOrRegister",
@@ -2851,7 +2893,9 @@
         },
         "/user/logout": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Выход пользователя из системы",
                 "description": "Выход пользователя из системы",
                 "operationId": "logout",
@@ -2898,7 +2942,9 @@
         },
         "/user/code": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Создание и отправка проверочного кода на указанный номер телефона",
                 "description": "Создание и отправка проверочного кода на указанный номер телефона",
                 "operationId": "CreateAndSendCode",
@@ -2958,7 +3004,9 @@
         },
         "/cars/search": {
             "post": {
-                "tags": ["Cars"],
+                "tags": [
+                    "Cars"
+                ],
                 "summary": "Получение списка автомобилей с учетом фильтров (аутентифицированный запрос)",
                 "description": "Получение списка автомобилей с учетом фильтров (аутентифицированный запрос)",
                 "operationId": "SearchCars",
@@ -3285,7 +3333,9 @@
         },
         "/driver/upload-file": {
             "post": {
-                "tags": ["Files"],
+                "tags": [
+                    "Files"
+                ],
                 "summary": "Загрузить файл",
                 "description": "Загрузить файл и связать его с документами водителя аутентифицированного пользователя",
                 "operationId": "uploadFile",
@@ -3352,7 +3402,9 @@
         },
         "/auth/cars/booking": {
             "post": {
-                "tags": ["Cars"],
+                "tags": [
+                    "Cars"
+                ],
                 "summary": "Бронирование автомобиля",
                 "description": "Бронирование автомобиля",
                 "operationId": "Book",
@@ -3586,7 +3638,9 @@
         },
         "/auth/cars/cancel-booking": {
             "post": {
-                "tags": ["Cars"],
+                "tags": [
+                    "Cars"
+                ],
                 "summary": "Отмена бронирования автомобиля (аутентифицированный запрос)",
                 "description": "Отмена бронирования автомобиля (аутентифицированный запрос)",
                 "operationId": "cancelBooking",
@@ -3717,7 +3771,9 @@
         },
         "/cars/app-data": {
             "post": {
-                "tags": ["Cars"],
+                "tags": [
+                    "Cars"
+                ],
                 "summary": "Показать список брендов",
                 "description": "Показать список брендов",
                 "operationId": "getFinderFilterData",
@@ -3809,7 +3865,9 @@
         },
         "/driver/booking/check": {
             "post": {
-                "tags": ["Driver"],
+                "tags": [
+                    "Driver"
+                ],
                 "summary": "Проверить активную бронь",
                 "description": "Проверить активную бронь",
                 "operationId": "checkActiveBookingDriver",
@@ -3867,7 +3925,9 @@
         },
         "/driver/application": {
             "post": {
-                "tags": ["Driver"],
+                "tags": [
+                    "Driver"
+                ],
                 "summary": "Создать заявку в канбан",
                 "description": "Создать заявку в канбан",
                 "operationId": "createApplicationDriver",
@@ -3929,7 +3989,9 @@
         },
         "manager/park": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Показать парк",
                 "description": "Показать список парков",
                 "operationId": "getParkManager",
@@ -4013,6 +4075,23 @@
                                                                 },
                                                                 "x_Client_ID": {
                                                                     "description": "идентификатор клиента для доступа к Яндекс API",
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "bookings": {
+                                                        "description": "Подтвержденные бронирования",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "идентификатор брони",
+                                                                    "type": "string"
+                                                                },
+                                                                "hire_confirmed": {
+                                                                    "description": "Подтверждение найма",
                                                                     "type": "string"
                                                                 }
                                                             },
@@ -4419,7 +4498,9 @@
         },
         "manager/park/key": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Показать ключ",
                 "description": "Показать ключ",
                 "operationId": "getParkKeyManager",
@@ -4460,7 +4541,9 @@
         },
         "manager/parks": {
             "put": {
-                "tags": ["API"],
+                "tags": [
+                    "API"
+                ],
                 "summary": "Обновление информации о парке",
                 "description": "Обновление информации о парке\n\nЭтот метод позволяет обновлять информацию о парке.",
                 "operationId": "updateParkInfoManager",
@@ -4606,7 +4689,9 @@
         },
         "/manager/cars": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление информации о машине",
                 "description": "Обновление информации о машине",
                 "operationId": "updateCarManager",
@@ -4729,7 +4814,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Добавить несколько автомобилей, все добавленные автомобили будут доступны к бронированию сразу после привязки к ним Условий бронирования (метод: /cars/rent-term). Выполнение метода возможно только после выполнения методов: обновление информации о парке, создание подразделения, создание тарифа. Статус допуска в бронированию по умолчанию будет 'допущено'",
                 "description": "Добавить несколько автомобилей",
                 "operationId": "pushCarsManager",
@@ -4876,7 +4963,9 @@
         },
         "/manager/cars/rent-term": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление условия аренды для автомобиля",
                 "description": "Обновление условия аренды для автомобиля\n\nЭтот метод позволяет обновлять условие аренды для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "updateCarRentTermManager",
@@ -4991,7 +5080,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Привязка группе автомобилей rent_term",
                 "description": "Привязка группе автомобилей rent_term\n\nМетод для привязки группе автомобилей к сроку аренды rent_term_id",
                 "operationId": "assignCarsToRentTermManager",
@@ -5070,7 +5161,9 @@
         },
         "/manager/cars/status": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление статуса допуска к бронированию",
                 "description": "Обновление статуса допуска к бронированию автомобиля",
                 "operationId": "updateCarStatusManager",
@@ -5187,7 +5280,9 @@
         },
         "/manager/parks/rent-terms": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание или обновление условий аренды",
                 "description": "Создание или обновление условий аренды\n\nЭтот метод позволяет создавать новые или обновлять существующие условия аренды для парков.",
                 "operationId": "createOrUpdateRentTermManager",
@@ -5359,7 +5454,9 @@
         },
         "/manager/parks/division": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление подразделения парка",
                 "description": "Обновление подразделения парка\n\nЭтот метод позволяет обновлять подразделение в парке.",
                 "operationId": "updateParkDivisionManager",
@@ -5529,7 +5626,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание подразделения парка",
                 "description": "Создание подразделения парка\n\nЭтот метод позволяет создавать подразделение в парке.",
                 "operationId": "createParkDivisionManager",
@@ -5688,7 +5787,9 @@
         },
         "/manager/parks/tariff": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление требований к кандидатам",
                 "description": "Обновление требований к кандидатам\n\nЭтот метод позволяет обновлять тарифы авто с критериями блокерами для парков.",
                 "operationId": "updateTariffManager",
@@ -5816,7 +5917,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Требования к кандидатам",
                 "description": "Требования к кандидатам\n\nЭтот метод позволяет создавать новые тарифы авто с критериями блокерами для парков. В одном городе для парка может быть толкьо один тариф заданного класса.",
                 "operationId": "createTariffManager",
@@ -5971,7 +6074,9 @@
         },
         "/manager/cars/booking": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Обновление статуса брони автомобиля",
                 "description": "Обновление статуса брони автомобиля\n\nЭтот метод позволяет обновлять статус брони для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "updateCarBookingStatusManager",
@@ -6092,7 +6197,9 @@
         },
         "/manager/cars/booking/prolongation": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Пролонгация брони автомобиля",
                 "description": "Пролонгация брони\n\nЭтот метод позволяет продлить время бронирования для конкретного автомобиля по его VIN-номеру.",
                 "operationId": "BookProlongationManager",
@@ -6205,7 +6312,9 @@
         },
         "/manager/cars/booking/replace": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Замена забронированного авто",
                 "description": "Замена забронированного авто\n\nЭтот метод позволяет заменить один автообиль на другой в рамках текущей брони по VIN-номеру.",
                 "operationId": "BookReplaceManager",
@@ -6318,7 +6427,9 @@
         },
         "/manager/cars/client": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Добавление автомобилей из базы клиента",
                 "description": "Добавление автомобилей из базы клиента\n\nЭтот метод позволяет добавить автомобили из базы клиента",
                 "operationId": "pushCarsFromParkClientManager",
@@ -6375,7 +6486,9 @@
         },
         "/manager/statuses/client": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Добавление статусов автомобилей из базы клиента",
                 "description": "Добавление статусов автомобилей из базы клиента\n\nЭтот метод позволяет добавить автомобили из базы клиента",
                 "operationId": "pushStatusesFromParkClientManager",
@@ -6432,7 +6545,9 @@
         },
         "/manager/statuses": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение статусов автомобилей парка",
                 "description": "Получение статусов автомобилей парка\n\nЭтот метод позволяет получить статусы автомобилей парка",
                 "operationId": "getParkStatusesManager",
@@ -6503,7 +6618,9 @@
         },
         "/manager/status": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение статуса автомобиля парка",
                 "description": "Изменение статуса автомобиля парка\n\nЭтот метод позволяет изменить статус автомобиля парка",
                 "operationId": "changeParkStatusManager",
@@ -6579,7 +6696,9 @@
         },
         "/manager/auth/data": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение логина и пароля менеджера для связи с клиентом",
                 "description": "Изменение логина и пароля менеджера для связи с клиентом\n\nЭтот метод позволяет изменить логин и пароль менеджера для связи с клиентом",
                 "operationId": "pushAuthDataManager",
@@ -6655,7 +6774,9 @@
         },
         "/manager/cars/photos": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Добавление фотографий автомобилям",
                 "description": "Добавление фотографий автомобилям\n\nМетод для добавления фотографий к массиву автомобилей",
                 "operationId": "pushPhotosToCarsManager",
@@ -6737,7 +6858,9 @@
         },
         "/manager/cars/division": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Привязка группе автомобилей division_id",
                 "description": "Привязка группе автомобилей division_id\n\nМетод для привязки группе автомобилей division_id",
                 "operationId": "assignCarsToDivisionManager",
@@ -6816,7 +6939,9 @@
         },
         "/manager/cars/tariff": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Привязка группе автомобилей тарифа",
                 "description": "Привязка группе автомобилей тарифа\n\nМетод для привязки группе автомобилей к тарифа",
                 "operationId": "assignCarsToTariffManager",
@@ -6895,7 +7020,9 @@
         },
         "/manager/schema": {
             "delete": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Удаление схемы",
                 "description": "Удаление схемы",
                 "operationId": "deleteSchemaManager",
@@ -6967,7 +7094,9 @@
         },
         "/manager/bookings": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение активных бронирований",
                 "description": "Получение активных бронирований\n\nМетод для получения активных бронирований",
                 "operationId": "getParkBookingsManager",
@@ -7305,7 +7434,9 @@
         },
         "/manager/cars/statuses/client": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Проверка статусов клиента",
                 "description": "Проверка статусов клиента\n\nМетод для проверки статусов клиента",
                 "operationId": "getCarsCurrentStatusesFromClientManager",
@@ -7362,7 +7493,9 @@
         },
         "manager/applications": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение заявок",
                 "description": "Получение заявок\n\nМетод для получения списка заявок",
                 "operationId": "getParkApplicationsManager",
@@ -7636,7 +7769,9 @@
         },
         "manager/application": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение заявки",
                 "description": "Изменение заявки\n\nМетод для изменения заявки",
                 "operationId": "updateApplicationManager",
@@ -7737,7 +7872,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание заявки",
                 "description": "Создание заявки\n\nМетод для создания заявки",
                 "operationId": "createApplicationManager",
@@ -7851,7 +7988,9 @@
         },
         "manager/application/comment": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание заявки",
                 "description": "Создание комментария\n\nМетод для создания комментария",
                 "operationId": "createApplicationCommentManager",
@@ -7929,7 +8068,9 @@
         },
         "manager/application/log": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение логов заявки",
                 "description": "Получение логов заявки\n\nМетод для получения логов заввки",
                 "operationId": "getParkApplicationsLogItemsManager",
@@ -8066,7 +8207,9 @@
         },
         "manager/notifications": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение уведомлений",
                 "description": "Получение уведомлений\n\nМетод для получения уведомлений",
                 "operationId": "getNotificationsManager",
@@ -8140,7 +8283,9 @@
         },
         "manager/notifications/all": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение всех уведомлений",
                 "description": "Получение всех уведомлений\n\nМетод для получения всех уведомлений",
                 "operationId": "getAllNotificationsManager",
@@ -8261,7 +8406,9 @@
         },
         "manager/notification": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение уведомлений",
                 "description": "Изменение уведомлений\n\nМетод для изменение уведомлений",
                 "operationId": "updateNotificationManager",
@@ -8333,7 +8480,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание уведомлений",
                 "description": "Создание уведомлений\n\nМетод для создания уведомлений",
                 "operationId": "createNotificationManager",
@@ -8416,7 +8565,9 @@
         },
         "/manager/park/inventory-lists": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение списков инвентаря парка",
                 "description": "Получение списков инвентаря парка\n\nМетод для получения списков инвентаря парка",
                 "operationId": "getParkInventoryListsManager",
@@ -8467,7 +8618,9 @@
         },
         "/manager/park/inventory-list": {
             "put": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение элемента списка инвентаря парка",
                 "description": "Изменение элемента списка инвентаря парка\n\nМетод для изменения элемента списка инвентаря парка",
                 "operationId": "changeParkInventoryListItemManager",
@@ -8507,7 +8660,9 @@
                 }
             },
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Создание элемента списка инвентаря парка",
                 "description": "Создание элемента списка инвентаря парка\n\nМетод для создания элемента списка инвентаря парка",
                 "operationId": "createParkInventoryListItemManager",
@@ -8547,7 +8702,9 @@
                 }
             },
             "delete": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Удаление элемента списка инвентаря парка",
                 "description": "Удаление элемента списка инвентаря парка\n\nМетод для удаления элемента списка инвентаря парка",
                 "operationId": "deleteParkInventoryListItemManager",
@@ -8607,7 +8764,9 @@
         },
         "/manager/park/select": {
             "post": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Изменение парка для этого менеджера",
                 "description": "Выбор парка\nИзменение парка для этого менеджера",
                 "operationId": "selectParkForSuperManager",
@@ -8667,7 +8826,9 @@
         },
         "/manager/parks/data": {
             "get": {
-                "tags": ["Manager"],
+                "tags": [
+                    "Manager"
+                ],
                 "summary": "Получение данных парков",
                 "description": "Данные парков\nПолучение данных парков",
                 "operationId": "getParksInitDataSuperManager",
@@ -8763,17 +8924,31 @@
             "CancellationSources": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Driver", "Manager", "System"]
+                "enum": [
+                    "Driver",
+                    "Manager",
+                    "System"
+                ]
             },
             "CarClass": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Economy", "Comfort", "ComfortPlus", "Business"]
+                "enum": [
+                    "Economy",
+                    "Comfort",
+                    "ComfortPlus",
+                    "Business"
+                ]
             },
             "CarStatus": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["AvailableForBooking", "Hidden", "Booked", "Rented"]
+                "enum": [
+                    "AvailableForBooking",
+                    "Hidden",
+                    "Booked",
+                    "Rented"
+                ]
             },
             "DayOfWeek": {
                 "description": "The unique identifier of a product in our catalog",
@@ -8802,7 +8977,12 @@
             "FuelType": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Gasoline", "Methane", "Propane", "Electric"]
+                "enum": [
+                    "Gasoline",
+                    "Methane",
+                    "Propane",
+                    "Electric"
+                ]
             },
             "ParkInventoryTypes": {
                 "description": "The unique identifier of a product in our catalog",
@@ -8816,27 +8996,46 @@
             "ReferralStatus": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["NoInvited", "Invited", "Approved"]
+                "enum": [
+                    "NoInvited",
+                    "Invited",
+                    "Approved"
+                ]
             },
             "TransmissionType": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Mechanics", "Automatic"]
+                "enum": [
+                    "Mechanics",
+                    "Automatic"
+                ]
             },
             "UserRole": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Admin", "Driver", "Manager"]
+                "enum": [
+                    "Admin",
+                    "Driver",
+                    "Manager"
+                ]
             },
             "UserStatus": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["DocumentsNotUploaded", "Verification", "Verified"]
+                "enum": [
+                    "DocumentsNotUploaded",
+                    "Verification",
+                    "Verified"
+                ]
             },
             "UserType": {
                 "description": "The unique identifier of a product in our catalog",
                 "type": "string",
-                "enum": ["Driver", "Manager", "Admin"]
+                "enum": [
+                    "Driver",
+                    "Manager",
+                    "Admin"
+                ]
             }
         }
     }

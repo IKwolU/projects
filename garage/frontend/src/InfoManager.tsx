@@ -108,7 +108,9 @@ export const InfoManager = () => {
       <h3 className="">Инфо парка {park.park_name}</h3>
       <div className="">
         <div className="flex items-center justify-between space-x-2">
-          <div className=""></div>
+          <div className="">
+            Подтверждено водителей: {park.bookings?.length}
+          </div>
 
           <Button className="w-1/3" onClick={handleKeyShow}>
             {isKeyShowed ? "Скрыть ключ" : "Показать ключ"}

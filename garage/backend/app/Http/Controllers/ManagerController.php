@@ -100,6 +100,24 @@ class ManagerController extends Controller
  *         )
  *     )
  * ),
+   * @OA\Property(
+ *     property="bookings",
+ *     type="array",
+ *     description="Подтвержденные бронирования",
+ *     @OA\Items(
+ *         type="object",
+ *         @OA\Property(
+ *             property="id",
+ *             type="string",
+ *             description="идентификатор брони"
+ *         ),
+ *         @OA\Property(
+ *             property="hire_confirmed",
+ *             type="string",
+ *             description="Подтверждение найма"
+ *         )
+ *     )
+ * ),
      *                     @OA\Property(property="self_employed_discount", type="number", description="Скидка парка для самозанятых"),
      *                             @OA\Property(
      *                                 property="cars",
@@ -253,7 +271,9 @@ class ManagerController extends Controller
     public function getParkManager(Request $request)
     {
 
-        $park = Park::where('id', $request->park_id)->with('divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'cars', 'divisions.cars.booking')->first();
+        $park = Park::where('id', $request->park_id)->with(['divisions', 'divisions.city', 'rent_terms', 'tariffs', 'tariffs.city', 'rent_terms.schemas', 'cars', 'divisions.cars.booking','bookings'=> function ($query) {
+            $query->select('bookings.id', 'bookings.hire_confirmed')->whereNotNull('bookings.hire_confirmed');
+        }])->first();
 
         unset($park->API_key,$park->password_1c,$park->login_1c,$park->status_api_tocken);
 

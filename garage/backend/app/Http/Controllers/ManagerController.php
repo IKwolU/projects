@@ -89,12 +89,12 @@ class ManagerController extends Controller
  *             description="идентификатор парка в Яндекс-кабинете"
  *         ),
  *         @OA\Property(
- *             property="X_Api_Key",
+ *             property="x_Api_Key",
  *             type="string",
  *             description="API ключ для доступа к Яндекс API"
  *         ),
  *         @OA\Property(
- *             property="X_Client_ID",
+ *             property="x_Client_ID",
  *             type="string",
  *             description="идентификатор клиента для доступа к Яндекс API"
  *         )
@@ -385,12 +385,12 @@ class ManagerController extends Controller
  *             description="идентификатор парка в Яндекс-кабинете"
  *         ),
  *         @OA\Property(
- *             property="X_Api_Key",
+ *             property="x_Api_Key",
  *             type="string",
  *             description="API ключ для доступа к Яндекс API"
  *         ),
  *         @OA\Property(
- *             property="X_Client_ID",
+ *             property="x_Client_ID",
  *             type="string",
  *             description="идентификатор клиента для доступа к Яндекс API"
  *         )

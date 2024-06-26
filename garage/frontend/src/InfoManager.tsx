@@ -13,7 +13,14 @@ export const InfoManager = () => {
   const [parkInfo, setParkInfo] = useState<IPark2 | undefined>();
   const [parkKey, setParkKey] = useState<string>();
   const [isKeyShowed, setIsKeyShowed] = useState(false);
-  const [yandexKeys, setYandexKeys] = useState<Yandex_keys[] | undefined>();
+  const [yandexKeys, setYandexKeys] = useState([
+    {
+      id: 0 as number,
+      x_Api_Key: undefined as undefined | string,
+      x_Client_ID: undefined as undefined | string,
+      park_id: undefined as undefined | string,
+    },
+  ]);
 
   useEffect(() => {
     if (user.user_type === UserType.Manager) {
@@ -29,7 +36,14 @@ export const InfoManager = () => {
           avito_id: parkData.park?.avito_id || "",
           telegram_id: parkData.park?.telegram_id || "",
         });
-        setYandexKeys(parkData.park.yandex_keys);
+        setYandexKeys(
+          parkData.park.yandex_keys.map((x: Yandex_keys, i: number) => ({
+            id: i,
+            x_Api_Key: x.x_Api_Key,
+            x_Client_ID: x.x_Client_ID,
+            park_id: x.park_id,
+          }))
+        );
       };
 
       getPark();
@@ -38,14 +52,15 @@ export const InfoManager = () => {
 
   const updateParkInfo = async () => {
     {
+      const yaKeys = yandexKeys.map((x) => new Yandex_keys({ ...x }));
+      console.log(yaKeys);
       await client.updateParkInfoManager(
         new Body({
           ...parkInfo![0],
           self_employed_discount: 0,
-          yandex_keys: yandexKeys !== park.yandex_keys ? yandexKeys : undefined,
+          yandex_keys: yaKeys,
         })
       );
-
       setPark({ ...park, ...parkInfo![0] });
     }
   };
@@ -63,11 +78,26 @@ export const InfoManager = () => {
   };
 
   const handleAddYaKeys = () => {
-    yandexKeys
-      ? setYandexKeys([...yandexKeys, new Yandex_keys()])
-      : setYandexKeys([new Yandex_keys()]);
+    setYandexKeys([
+      ...yandexKeys,
+      {
+        id: yandexKeys.length || 0,
+        x_Api_Key: undefined,
+        x_Client_ID: undefined,
+        park_id: undefined,
+      },
+    ]);
   };
-  console.log(yandexKeys);
+
+  const updateYandexKey = (index: number, field: string, value: string) => {
+    const updatedKeys = yandexKeys.map((key, i) => {
+      if (i === index) {
+        return { ...key, [field]: value };
+      }
+      return key;
+    });
+    setYandexKeys(updatedKeys);
+  };
 
   if (!parkInfo) {
     return <></>;
@@ -197,24 +227,33 @@ export const InfoManager = () => {
             <div className="w-full">X-Client-ID/ID клиента:</div>
             <div className="w-full">park id/ID парка:</div>
           </div>
-          {yandexKeys?.map(({ X_Api_Key, X_Client_ID, park_id }, i) => (
-            <div key={"ya_keys" + i} className="flex justify-between space-x-6">
+          {yandexKeys?.map(({ x_Api_Key, x_Client_ID, park_id, id }, index) => (
+            <div
+              key={"ya_keys_" + id}
+              className="flex justify-between space-x-6"
+            >
               <Input
-                onChange={(e) => {}}
+                onChange={(e) =>
+                  updateYandexKey(index, "x_Api_Key", e.target.value)
+                }
                 type="text"
-                value={X_Api_Key}
+                value={x_Api_Key}
                 className="w-full m-0 border-2 border-pale rounded-xl"
-                placeholder={X_Api_Key}
+                placeholder={x_Api_Key}
               />
               <Input
-                onChange={(e) => {}}
+                onChange={(e) =>
+                  updateYandexKey(index, "x_Client_ID", e.target.value)
+                }
                 type="text"
-                value={X_Client_ID}
+                value={x_Client_ID}
                 className="w-full m-0 border-2 border-pale rounded-xl"
-                placeholder={X_Client_ID}
+                placeholder={x_Client_ID}
               />
               <Input
-                onChange={(e) => {}}
+                onChange={(e) =>
+                  updateYandexKey(index, "park_id", e.target.value)
+                }
                 type="text"
                 value={park_id}
                 className="w-full m-0 border-2 border-pale rounded-xl"

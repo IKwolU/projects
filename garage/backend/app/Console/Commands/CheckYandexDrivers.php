@@ -83,8 +83,8 @@ class CheckYandexDrivers extends Command
     private function getYandexDriverByPhone($yandexKeys)
     {
         $url = 'https://fleet-api.taxi.yandex.net/v1/parks/driver-profiles/list';
-        $clientId = $yandexKeys->X_Client_ID;
-        $apiKey = $yandexKeys->X_Api_Key;
+        $clientId = $yandexKeys->x_Client_ID;
+        $apiKey = $yandexKeys->x_Api_Key;
         $yaParkId = $yandexKeys->park_id;
         $headers = [
             'X-Client-ID' => $clientId,

@@ -18,6 +18,7 @@ import {
   isContentShowedAtom,
   currentTimeAtom,
   titleContentAtom,
+  loadedTexturesAtom,
 } from "./atoms";
 
 interface OBJModelProps {
@@ -37,7 +38,8 @@ function CanvasComponent() {
   const controlsRef = useRef<any>();
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const [currentTime] = useRecoilState(currentTimeAtom);
-  const [loadedTextures, setLoadedTextures] = useState<string[]>([]);
+  const [loadedTextures, setLoadedTextures] =
+    useRecoilState(loadedTexturesAtom);
   const [titleContent] = useRecoilState(titleContentAtom);
   const content = contentData.find((x) => x.title === titleContent);
 

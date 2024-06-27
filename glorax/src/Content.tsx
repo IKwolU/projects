@@ -24,6 +24,7 @@ import {
   isContentShowedAtom,
   currentTimeAtom,
   titleContentAtom,
+  loadedTexturesAtom,
 } from "./atoms";
 import Storis from "./Storis";
 
@@ -31,7 +32,6 @@ function Content() {
   const [isContentShowed] = useRecoilState(isContentShowedAtom);
   const [titleContent, setTitleContent] = useRecoilState(titleContentAtom);
   const [isContentShow, setIsContentShow] = useState(true);
-  const [, setAudioTime] = useState(0);
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [question, setQuestion] = useState<string>("");
@@ -43,14 +43,20 @@ function Content() {
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isStorisShowed, setIsStorisShowed] = useState(false);
+  const [loadedTextures] = useRecoilState(loadedTexturesAtom);
+  const [showCount, setShowCount] = useState(0);
 
   const content = contentData.find((x) => x.title === titleContent);
 
   const [helpers, setHelpers] = useState(content!.helpers);
 
-  const handleAudioTimeUpdate = () => {
-    setAudioTime(currentTime);
-  };
+  useEffect(() => {
+    if (loadedTextures.length > 1 && !showCount) {
+      setQuestion("О НАШЕЙ ПЛАТФОРМЕ");
+      setIsStorisShowed(true);
+      setShowCount(showCount + 1);
+    }
+  }, [loadedTextures]);
 
   // useEffect(() => {
   //   if (currentTime === content[0].choice__time) {
@@ -107,7 +113,7 @@ function Content() {
   return (
     <>
       {helpers.map((x, i) => (
-        <>
+        <div key={"helper" + i}>
           {!x.closed && x.time < currentTime && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
               <div className="   max-w-[244px] h-auto flex flex-col  border border-brown rounded-[36px] ">
@@ -134,7 +140,7 @@ function Content() {
               </div>
             </div>
           )}
-        </>
+        </div>
       ))}
       {/* {isHelpShowed && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown">
@@ -329,7 +335,6 @@ function Content() {
               </div>
               <div className="relative w-full mb-4 rounded-3xl">
                 <CustomAudioPlayer
-                  onPlay={() => handleAudioTimeUpdate}
                   active={isContentShowed}
                   src={content.source}
                 />

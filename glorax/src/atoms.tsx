@@ -16,9 +16,14 @@ const titleContentAtom = atom<string>({
   key: "titleContentAtom",
   default: "Дом Башкирова",
 });
+const loadedTexturesAtom = atom<string[]>({
+  key: "loadedTexturesAtom",
+  default: [],
+});
 export {
   isContentShowedAtom,
   currentTimeAtom,
   navigationTimeAtom,
   titleContentAtom,
+  loadedTexturesAtom,
 };

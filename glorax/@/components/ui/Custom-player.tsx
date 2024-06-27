@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, ChangeEvent } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRotateForward,
@@ -9,13 +9,9 @@ import { currentTimeAtom, titleContentAtom } from "../../../src/atoms";
 type CustomAudioPlayerProps = {
   src: string;
   active: boolean;
-  onPlay: () => void;
 };
 
-const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
-  src,
-  onPlay,
-}) => {
+const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [, setCurrentTime] = useRecoilState(currentTimeAtom);
@@ -25,6 +21,8 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
   const [backClicked, setBackClicked] = useState<boolean>(false);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [titleContent] = useRecoilState(titleContentAtom);
+  const [oldTitle, setOldTitle] = useState(titleContent);
+  const [audioLoaded, setAudioLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -43,9 +41,20 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
   }, [isSeeking]);
 
   useEffect(() => {
-    audioRef.current?.pause();
-    audioRef.current!.currentTime = 0;
+    if (titleContent !== oldTitle && audioRef.current) {
+      setAudioLoaded(false);
+      setOldTitle(titleContent);
+    }
   }, [titleContent]);
+
+  useEffect(() => {
+    if (audioLoaded && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setProgress(0);
+      setIsPlaying(false);
+    }
+  }, [audioLoaded]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -54,16 +63,6 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
       audioRef.current?.pause();
     }
   }, [isPlaying]);
-
-  const handlePlayPause = () => {
-    setIsPlaying((prevIsPlaying) => {
-      const newIsPlaying = !prevIsPlaying;
-      if (newIsPlaying) {
-        onPlay();
-      }
-      return newIsPlaying;
-    });
-  };
 
   const handleSeekStart = () => {
     setIsSeeking(true);
@@ -92,6 +91,10 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
     }, 1000);
   };
 
+  const handleAudioLoaded = () => {
+    setAudioLoaded(true);
+  };
+
   const handleSeekEnd = (e: any) => {
     if (audioRef.current) {
       const seekTime =
@@ -103,12 +106,11 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
     }
   };
 
-  const handleSeek = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = (value: string) => {
     if (isSeeking) {
-      const seekTime =
-        (parseInt(e.target.value) / 100) * audioRef.current!.duration;
+      const seekTime = (parseInt(value) / 100) * audioRef.current!.duration;
       setCurrentTime(seekTime);
-      setProgress(parseInt(e.target.value));
+      setProgress(parseInt(value));
     }
   };
 
@@ -116,13 +118,15 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
     <div className="custom-audio-player">
       <div className="hidden">
         <audio
+          key={src}
           ref={audioRef}
           src={src}
           controls
-          // onLoadedMetadata={() => setDuration(audioRef.current!.duration)}
+          onLoadedData={handleAudioLoaded}
           className="hidden w-full h-auto appearance-none"
         ></audio>
       </div>
+
       <div className="px-4 pt-4 pb-3 rounded-3xl">
         <div className="flex">
           <input
@@ -134,30 +138,33 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
             onTouchStart={handleSeekStart}
             onMouseUp={handleSeekEnd}
             onTouchEnd={handleSeekEnd}
-            onChange={handleSeek}
+            onChange={(e) => handleSeek(e.target.value)}
             className=" h-[2px] rounded appearance-none bg-brown w-[90%] mx-auto mb-2"
           />
         </div>
-        <div className="flex items-center justify-between w-full text-[10px]">
-          <span className="">
-            {audioRef.current
-              ? `${String(
-                  Math.floor(audioRef.current.currentTime / 60)
-                ).padStart(2, "0")}:${String(
-                  Math.floor(audioRef.current.currentTime % 60)
-                ).padStart(2, "0")}`
-              : "00:00"}
-          </span>
-          <span className="">
-            {audioRef.current
-              ? `${String(Math.floor(audioRef.current.duration / 60)).padStart(
-                  2,
-                  "0"
-                )}:${String(
-                  Math.floor(audioRef.current.duration % 60)
-                ).padStart(2, "0")}`
-              : "00:00"}
-          </span>
+        <div className="flex items-center h-[15px] justify-between w-full text-[10px]">
+          {audioLoaded && (
+            <>
+              <span className="">
+                {audioRef.current
+                  ? `${String(
+                      Math.floor(audioRef.current.currentTime / 60)
+                    ).padStart(2, "0")}:${String(
+                      Math.floor(audioRef.current.currentTime % 60)
+                    ).padStart(2, "0")}`
+                  : "00:00"}
+              </span>
+              <span className="">
+                {audioRef.current
+                  ? `${String(
+                      Math.floor(audioRef.current.duration / 60)
+                    ).padStart(2, "0")}:${String(
+                      Math.floor(audioRef.current.duration % 60)
+                    ).padStart(2, "0")}`
+                  : "00:00"}
+              </span>
+            </>
+          )}
         </div>
         <div className="flex justify-between w-[50%] -mt-2 mx-auto items-center">
           <div className="relative ">
@@ -175,7 +182,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
             )}
           </div>
           <button
-            onClick={handlePlayPause}
+            onClick={() => setIsPlaying(!isPlaying)}
             className="relative m-0 border-none focus:outline-none hover:border-none hover:outline-none focus:border-none"
           >
             {isPlaying ? (
@@ -217,6 +224,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
           </div>
         </div>
       </div>
+
       {/* <p>
         Current Time: {currentTime.toFixed(2)} seconds (
         {duration ? ((currentTime / duration) * 100).toFixed(2) : 0}%)

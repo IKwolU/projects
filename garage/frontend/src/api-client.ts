@@ -21164,6 +21164,7 @@ export class Bookings implements IBookings {
     car_id?: number;
     driver_id?: number;
     booked_at?: string;
+    hire_confirmed?: boolean;
     end_date?: string;
     park_id?: number;
     cancellation_source?: CancellationSources;
@@ -21197,6 +21198,7 @@ export class Bookings implements IBookings {
             this.car_id = _data["car_id"];
             this.driver_id = _data["driver_id"];
             this.booked_at = _data["booked_at"];
+            this.hire_confirmed = _data["hire_confirmed"];
             this.end_date = _data["end_date"];
             this.park_id = _data["park_id"];
             this.cancellation_source = _data["cancellation_source"];
@@ -21228,6 +21230,7 @@ export class Bookings implements IBookings {
         data["car_id"] = this.car_id;
         data["driver_id"] = this.driver_id;
         data["booked_at"] = this.booked_at;
+        data["hire_confirmed"] = this.hire_confirmed;
         data["end_date"] = this.end_date;
         data["park_id"] = this.park_id;
         data["cancellation_source"] = this.cancellation_source;
@@ -21248,6 +21251,7 @@ export interface IBookings {
     car_id?: number;
     driver_id?: number;
     booked_at?: string;
+    hire_confirmed?: boolean;
     end_date?: string;
     park_id?: number;
     cancellation_source?: CancellationSources;

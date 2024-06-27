@@ -145,9 +145,9 @@ class APIController extends Controller
             'self_employed_discount' => 'integer',
             'booking_window' => 'integer',
             'yandex_keys' => 'array',
-            'yandex_keys.*.park_id' => 'required|string',
-            'yandex_keys.*.x_Api_Key' => 'required|string',
-            'yandex_keys.*.x_Client_ID' => 'required|string',
+            'yandex_keys.*.park_id' => 'required_if:yandex_keys,array|string',
+            'yandex_keys.*.x_Api_Key' => 'required_if:yandex_keys,array|string',
+            'yandex_keys.*.x_Client_ID' => 'required_if:yandex_keys,array|string',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => 'Ошибка валидации', 'errors' => $validator->errors()], 400);

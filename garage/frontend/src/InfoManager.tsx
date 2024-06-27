@@ -225,8 +225,8 @@ export const InfoManager = () => {
         </div>
         <div className="mb-4 space-y-4">
           <div className="flex justify-between space-x-6 text-sm">
-            <div className="w-full">X-Api-Key/API-ключ:</div>
             <div className="w-full">X-Client-ID/ID клиента:</div>
+            <div className="w-full">X-Api-Key/API-ключ:</div>
             <div className="w-full">park id/ID парка:</div>
           </div>
           {yandexKeys?.map(({ x_Api_Key, x_Client_ID, park_id, id }, index) => (
@@ -236,21 +236,21 @@ export const InfoManager = () => {
             >
               <Input
                 onChange={(e) =>
-                  updateYandexKey(index, "x_Api_Key", e.target.value)
-                }
-                type="text"
-                value={x_Api_Key}
-                className="w-full m-0 border-2 border-pale rounded-xl"
-                placeholder={x_Api_Key}
-              />
-              <Input
-                onChange={(e) =>
                   updateYandexKey(index, "x_Client_ID", e.target.value)
                 }
                 type="text"
                 value={x_Client_ID}
                 className="w-full m-0 border-2 border-pale rounded-xl"
                 placeholder={x_Client_ID}
+              />
+              <Input
+                onChange={(e) =>
+                  updateYandexKey(index, "x_Api_Key", e.target.value)
+                }
+                type="text"
+                value={x_Api_Key}
+                className="w-full m-0 border-2 border-pale rounded-xl"
+                placeholder={x_Api_Key}
               />
               <Input
                 onChange={(e) =>

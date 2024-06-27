@@ -2016,6 +2016,7 @@ public function deleteSchemaManager(Request $request) {
  *                 @OA\Property(property="car_id", type="integer"),
  *                 @OA\Property(property="driver_id", type="integer"),
  *                 @OA\Property(property="booked_at", type="string"),
+ *                 @OA\Property(property="hire_confirmed", type="boolean"),
  *                 @OA\Property(property="end_date", type="string"),
  *                 @OA\Property(property="park_id", type="integer"),
  *                 @OA\Property(property="cancellation_source", type="string",ref="#/components/schemas/CancellationSources"),

@@ -283,16 +283,16 @@ export const BookingManager = () => {
     return true;
   };
 
-  const filteredBookings = bookings?.filter(
-    (x) =>
-      filterByDate(x.booked_at!) &&
-      filterByStatus(x.status!, x.cancellation_source) &&
-      x.car!.division!.city!.name === city &&
-      filterByDivision(x.car!.division!.id!) &&
-      filterByModel(x.car!.brand!, x.car!.model!) &&
-      filterByLicensePlate(x.car!.license_plate!) &&
-      filterByPhone(x.driver!.user!.phone!) &&
-      filterByReason(x.cancellation_reason!)
+  const filteredBookings = bookings?.filter((x) =>
+    filterByDate(x.booked_at!) && filters.status === "hired"
+      ? x.hire_confirmed
+      : filterByStatus(x.status!, x.cancellation_source) &&
+        x.car!.division!.city!.name === city &&
+        filterByDivision(x.car!.division!.id!) &&
+        filterByModel(x.car!.brand!, x.car!.model!) &&
+        filterByLicensePlate(x.car!.license_plate!) &&
+        filterByPhone(x.driver!.user!.phone!) &&
+        filterByReason(x.cancellation_reason!)
   );
 
   if (!bookings) {
@@ -512,6 +512,12 @@ export const BookingManager = () => {
               >
                 Активно
               </SelectItem>
+              <SelectItem
+                className="mb-1 border rounded-xl border-zinc-300 "
+                value="hired"
+              >
+                Взял авто
+              </SelectItem>
               {Object.values(CancellationSources)!.map(
                 (source: CancellationSources, i: number) => (
                   <SelectItem
@@ -643,21 +649,28 @@ export const BookingManager = () => {
                         {format(booking.booked_at!, "HH:mm")}
                       </TableItem>
                       <TableItem>{booking.id}</TableItem>
-                      <TableItem
-                        className={`${
-                          bookingStatusForManager(
+                      {!booking.hire_confirmed && (
+                        <TableItem
+                          className={`${
+                            bookingStatusForManager(
+                              booking.status!,
+                              booking.cancellation_source
+                            ) === "Активно"
+                              ? "text-green-800"
+                              : "text-zinc-500"
+                          }`}
+                        >
+                          {bookingStatusForManager(
                             booking.status!,
                             booking.cancellation_source
-                          ) === "Активно"
-                            ? "text-green-800"
-                            : "text-zinc-500"
-                        }`}
-                      >
-                        {bookingStatusForManager(
-                          booking.status!,
-                          booking.cancellation_source
-                        )}
-                      </TableItem>
+                          )}
+                        </TableItem>
+                      )}
+                      {booking.hire_confirmed && (
+                        <TableItem className="font-semibold text-green-700">
+                          Взял авто
+                        </TableItem>
+                      )}
                       <TableItem>{booking.car!.division!.city!.name}</TableItem>
                       <TableItem>{booking.car!.division!.name}</TableItem>
                       <TableItem>

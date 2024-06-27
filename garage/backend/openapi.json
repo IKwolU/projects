@@ -7129,6 +7129,9 @@
                                                     "booked_at": {
                                                         "type": "string"
                                                     },
+                                                    "hire_confirmed": {
+                                                        "type": "boolean"
+                                                    },
                                                     "end_date": {
                                                         "type": "string"
                                                     },

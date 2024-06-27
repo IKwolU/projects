@@ -48,33 +48,36 @@ class CheckYandexDrivers extends Command
             }
 
             foreach ($park->yandex_keys as $keys) {
-                $response = $this->getYandexDriverByPhone($keys);
+                try {
+                    $response = $this->getYandexDriverByPhone($keys);
 
-                // Получаем все телефоны водителей в одном массиве
-                $phones = collect($response["driver_profiles"])
-                    ->pluck('driver_profile.phones')
-                    ->flatten();
+                    // Получаем все телефоны водителей в одном массиве
+                    $phones = collect($response["driver_profiles"])
+                        ->pluck('driver_profile.phones')
+                        ->flatten();
 
-                // Фильтруем бронирования, которые нужно подтвердить
-                $bookingsToConfirm = $park->bookings->groupBy('driver_id')->map(function ($bookings) {
-                    return $bookings->sortByDesc('created_at')->first();
-                })->filter(function ($booking) use ($phones) {
-                    return $phones->contains($booking->user->phone);
-                });
-                // Проверяем каждое бронирование для подтверждения
-                foreach ($bookingsToConfirm as $booking) {
-                    if ($booking->hire_confirmed !== null) {
-                        $matchingDriver = collect($response["driver_profiles"])
-                            ->first(function ($item) use ($booking) {
-                                return collect($item["driver_profile"]["phones"])
-                                    ->contains($booking->user->phone);
-                            });
-
-                        if ($matchingDriver && $booking->created_at < $matchingDriver["driver_profile"]["hire_date"]) {
-                            $booking->hire_confirmed = true;
-                            $booking->save();
+                    // Фильтруем бронирования, которые нужно подтвердить
+                    $bookingsToConfirm = $park->bookings->groupBy('driver_id')->map(function ($bookings) {
+                        return $bookings->sortByDesc('created_at')->first();
+                    })->filter(function ($booking) use ($phones) {
+                        return $phones->contains($booking->user->phone);
+                    });
+                    // Проверяем каждое бронирование для подтверждения
+                    foreach ($bookingsToConfirm as $booking) {
+                        if ($booking->hire_confirmed === null) {
+                            $matchingDriver = collect($response["driver_profiles"])
+                                ->first(function ($item) use ($booking) {
+                                    return collect($item["driver_profile"]["phones"])
+                                        ->contains($booking->user->phone);
+                                });
+                            if ($matchingDriver && $booking->created_at < $matchingDriver["driver_profile"]["hire_date"]) {
+                                $booking->hire_confirmed = true;
+                                $booking->save();
+                            }
                         }
                     }
+                } catch (\Exception $e) {
+                    Log::error('Парк ' . $park->id . ' Произошла ошибка получения Яндекс Апи: ' . $e->getMessage());
                 }
             }
         }
@@ -114,7 +117,6 @@ class CheckYandexDrivers extends Command
         try {
             $response = Http::withHeaders($headers)->post($url, $data);
         } catch (\Exception $e) {
-            // Обработка ошибки при отправке email
             Log::error('Парк ' . $yaParkId . ' Произошла ошибка получения Яндекс Апи: ' . $e->getMessage());
         }
 

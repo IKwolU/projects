@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { UserType, IPark2, Parks3, UserRole, Body51, User } from "./api-client";
-import { parkAtom, parkListsAtom } from "./atoms";
+import { UserType, Parks3, Body51, User } from "./api-client";
+import { parkAtom } from "./atoms";
 import { client } from "./backend";
 import Confirmation from "@/components/ui/confirmation";
 import ArrayStringSelect from "./ArrayStringSelect";

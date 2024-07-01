@@ -9,6 +9,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CarsController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\SuperManagerController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
@@ -74,7 +75,6 @@ Route::prefix('manager')->group(function () {
         Route::prefix('park')->group(function () {
             Route::get('', [ManagerController::class, 'getParkManager']);
             Route::get('key', [ManagerController::class, 'getParkKeyManager']);
-            Route::post('select', [ManagerController::class, 'selectParkForSuperManager']);
             Route::get('inventory-lists', [ManagerController::class, 'getParkInventoryListsManager']);
             Route::put('inventory-list', [ManagerController::class, 'changeParkInventoryListItemManager']);
             Route::post('inventory-list', [ManagerController::class, 'createParkInventoryListItemManager']);
@@ -107,5 +107,15 @@ Route::prefix('manager')->group(function () {
         Route::post('application/comment', [ManagerController::class, 'createApplicationCommentManager']);
         Route::put('application', [ManagerController::class, 'updateApplicationManager']);
         Route::post('application/log', [ManagerController::class, 'getParkApplicationsLogItemsManager']);
+
+        Route::middleware(['check.super.manager'])->group(function () {
+            Route::prefix('super')->group(function () {
+                Route::prefix('park')->group(function () {
+                    Route::post('select', [SuperManagerController::class, 'selectParkForSuperManager']);
+                    Route::post('block', [SuperManagerController::class, 'blockParkSuperManager']);
+                    Route::post('unblock', [SuperManagerController::class, 'unblockParkSuperManager']);
+                });
+            });
+        });
     });
 });

@@ -24,6 +24,8 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { BookingKanban } from "./BookingKanban";
 import ArrayStringSelect from "./ArrayStringSelect";
 import { BookingNotifications } from "./BookingNotifications";
+import { Button } from "@/components/ui/button";
+import { ParkSuperManager } from "./ParkSuperManager";
 
 type MainMenuItem = {
   name: string;
@@ -35,8 +37,6 @@ export const ParkManager = () => {
   const [park, setPark] = useRecoilState(parkAtom);
   const [, setApplications] = useRecoilState(applicationsAtom);
   const [, setParkLists] = useRecoilState(parkListsAtom);
-
-  const [parksInitData, setParksInitData] = useState<Parks3[] | undefined>();
 
   const LogoutHandler = () => {
     client.logout();
@@ -52,14 +52,6 @@ export const ParkManager = () => {
   const getPark = async () => {
     const parkData: IPark2 = await client.getParkManager();
     setPark(parkData.park);
-
-    if (user.user_role === UserRole.Admin) {
-      const getParksInitData = async () => {
-        const data = await client.getParksInitDataSuperManager();
-        setParksInitData(data.parks);
-      };
-      getParksInitData();
-    }
   };
 
   const getApplications = async () => {
@@ -77,16 +69,6 @@ export const ParkManager = () => {
     }
   }, []);
 
-  const selectPark = async (value: string) => {
-    await client.selectParkForSuperManager(
-      new Body51({
-        id: parksInitData?.find((x) => x.park_name === value)!.id,
-      })
-    );
-    getPark();
-    window.location.href = "/";
-  };
-
   if (user.user_type !== UserType.Manager) {
     return <></>;
   }
@@ -96,18 +78,15 @@ export const ParkManager = () => {
 
   return (
     <>
-      <div className="flex justify-end h-full mt-4">
-        {parksInitData && (
-          <div className="absolute z-10 top-2 right-2">
-            <div className="w-44">
-              <ArrayStringSelect
-                list={parksInitData.map((x) => x.park_name!)}
-                onChange={(value) => selectPark(value)}
-                resultValue={park.park_name!}
-              />
-            </div>{" "}
-          </div>
-        )}
+      <div className="flex justify-between h-full mt-4">
+        <div className="absolute z-10 top-2 ">
+          {!!park.is_blocked && (
+            <div className="text-xl font-bold underline text-red">
+              Объявления не показаны! Обратитесь к администратору
+            </div>
+          )}
+        </div>
+        {user.user_role === UserRole.Admin && <ParkSuperManager user={user} />}
 
         <div className="flex justify-between w-full space-x-4 cursor-pointer sm:mx-0 sm:w-full sm:space-x-8 sm:max-w-[800px] sm:justify-between lg:max-w-[1208px]">
           <div className="flex flex-col items-center text-sm font-black tracking-widest sm:text-xl max-w-10">

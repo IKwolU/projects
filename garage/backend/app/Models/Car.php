@@ -15,6 +15,10 @@ class Car extends Model
     {
         return $this->belongsTo(Division::class);
     }
+    public function park()
+    {
+        return $this->hasOneThrough(Division::class, Park::class);
+    }
     public function tariff()
     {
         return $this->belongsTo(Tariff::class);

@@ -4012,31 +4012,26 @@ export class Client {
     }
 
     /**
-     * Изменение парка для этого менеджера
-     * @param body (optional) 
+     * Получение данных парков
      * @return Успешно
      */
-    selectParkForSuperManager(body: Body53 | undefined): Promise<Anonymous223> {
-        let url_ = this.baseUrl + "/manager/park/select";
+    getParksInitDataSuperManager(): Promise<Anonymous223> {
+        let url_ = this.baseUrl + "/manager/parks/data";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: RequestInit = {
-            body: content_,
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processSelectParkForSuperManager(_response);
+            return this.processGetParksInitDataSuperManager(_response);
         });
     }
 
-    protected processSelectParkForSuperManager(response: Response): Promise<Anonymous223> {
+    protected processGetParksInitDataSuperManager(response: Response): Promise<Anonymous223> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -4062,26 +4057,31 @@ export class Client {
     }
 
     /**
-     * Получение данных парков
+     * Изменение парка для этого менеджера
+     * @param body (optional) 
      * @return Успешно
      */
-    getParksInitDataSuperManager(): Promise<Anonymous225> {
-        let url_ = this.baseUrl + "/manager/parks/data";
+    selectParkForSuperManager(body: Body53 | undefined): Promise<Anonymous225> {
+        let url_ = this.baseUrl + "/manager/super/park/select";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetParksInitDataSuperManager(_response);
+            return this.processSelectParkForSuperManager(_response);
         });
     }
 
-    protected processGetParksInitDataSuperManager(response: Response): Promise<Anonymous225> {
+    protected processSelectParkForSuperManager(response: Response): Promise<Anonymous225> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -4104,6 +4104,96 @@ export class Client {
             });
         }
         return Promise.resolve<Anonymous225>(null as any);
+    }
+
+    /**
+     * Блокирование парка
+     * @return Успешно
+     */
+    blockParkSuperManager(): Promise<Anonymous227> {
+        let url_ = this.baseUrl + "/manager/super/park/block";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processBlockParkSuperManager(_response);
+        });
+    }
+
+    protected processBlockParkSuperManager(response: Response): Promise<Anonymous227> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous227.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = Anonymous228.fromJS(resultData404);
+            return throwException("\u042d\u043b\u0435\u043c\u0435\u043d\u0442 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous227>(null as any);
+    }
+
+    /**
+     * Разблокирование парка
+     * @return Успешно
+     */
+    unblockParkSuperManager(): Promise<Anonymous229> {
+        let url_ = this.baseUrl + "/manager/super/park/unblock";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUnblockParkSuperManager(_response);
+        });
+    }
+
+    protected processUnblockParkSuperManager(response: Response): Promise<Anonymous229> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Anonymous229.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = Anonymous230.fromJS(resultData404);
+            return throwException("\u042d\u043b\u0435\u043c\u0435\u043d\u0442 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d", status, _responseText, _headers, result404);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Anonymous229>(null as any);
     }
 }
 
@@ -19008,8 +19098,7 @@ export interface IAnonymous222 {
 }
 
 export class Anonymous223 implements IAnonymous223 {
-    success?: boolean;
-    message?: string;
+    parks?: Parks3[];
 
     [key: string]: any;
 
@@ -19028,8 +19117,11 @@ export class Anonymous223 implements IAnonymous223 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.success = _data["success"];
-            this.message = _data["message"];
+            if (Array.isArray(_data["parks"])) {
+                this.parks = [] as any;
+                for (let item of _data["parks"])
+                    this.parks!.push(Parks3.fromJS(item));
+            }
         }
     }
 
@@ -19046,15 +19138,17 @@ export class Anonymous223 implements IAnonymous223 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["success"] = this.success;
-        data["message"] = this.message;
+        if (Array.isArray(this.parks)) {
+            data["parks"] = [];
+            for (let item of this.parks)
+                data["parks"].push(item.toJSON());
+        }
         return data;
     }
 }
 
 export interface IAnonymous223 {
-    success?: boolean;
-    message?: string;
+    parks?: Parks3[];
 
     [key: string]: any;
 }
@@ -19112,7 +19206,8 @@ export interface IAnonymous224 {
 }
 
 export class Anonymous225 implements IAnonymous225 {
-    parks?: Parks3[];
+    success?: boolean;
+    message?: string;
 
     [key: string]: any;
 
@@ -19131,11 +19226,8 @@ export class Anonymous225 implements IAnonymous225 {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            if (Array.isArray(_data["parks"])) {
-                this.parks = [] as any;
-                for (let item of _data["parks"])
-                    this.parks!.push(Parks3.fromJS(item));
-            }
+            this.success = _data["success"];
+            this.message = _data["message"];
         }
     }
 
@@ -19152,17 +19244,15 @@ export class Anonymous225 implements IAnonymous225 {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        if (Array.isArray(this.parks)) {
-            data["parks"] = [];
-            for (let item of this.parks)
-                data["parks"].push(item.toJSON());
-        }
+        data["success"] = this.success;
+        data["message"] = this.message;
         return data;
     }
 }
 
 export interface IAnonymous225 {
-    parks?: Parks3[];
+    success?: boolean;
+    message?: string;
 
     [key: string]: any;
 }
@@ -19213,6 +19303,214 @@ export class Anonymous226 implements IAnonymous226 {
 }
 
 export interface IAnonymous226 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous227 implements IAnonymous227 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous227) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous227 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous227();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous227 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous228 implements IAnonymous228 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous228) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous228 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous228();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous228 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous229 implements IAnonymous229 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous229) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous229 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous229();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous229 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+}
+
+export class Anonymous230 implements IAnonymous230 {
+    success?: boolean;
+    message?: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAnonymous230) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.success = _data["success"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): Anonymous230 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous230();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["success"] = this.success;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface IAnonymous230 {
     success?: boolean;
     message?: string;
 
@@ -20912,6 +21210,8 @@ export class Park2 implements IPark2 {
     commission?: number;
     /** ключ */
     api_key?: string;
+    /** Парк заблокирован */
+    is_blocked?: boolean;
     metro_lines?: Metro_lines;
     /** Время брони парка */
     booking_window?: number;
@@ -20961,6 +21261,7 @@ export class Park2 implements IPark2 {
             this.url = _data["url"];
             this.commission = _data["commission"];
             this.api_key = _data["api_key"];
+            this.is_blocked = _data["is_blocked"];
             this.metro_lines = _data["metro_lines"] ? Metro_lines.fromJS(_data["metro_lines"]) : <any>undefined;
             this.booking_window = _data["booking_window"];
             this.park_name = _data["park_name"];
@@ -21019,6 +21320,7 @@ export class Park2 implements IPark2 {
         data["url"] = this.url;
         data["commission"] = this.commission;
         data["api_key"] = this.api_key;
+        data["is_blocked"] = this.is_blocked;
         data["metro_lines"] = this.metro_lines ? this.metro_lines.toJSON() : <any>undefined;
         data["booking_window"] = this.booking_window;
         data["park_name"] = this.park_name;
@@ -21069,6 +21371,8 @@ export interface IPark2 {
     commission?: number;
     /** ключ */
     api_key?: string;
+    /** Парк заблокирован */
+    is_blocked?: boolean;
     metro_lines?: Metro_lines;
     /** Время брони парка */
     booking_window?: number;

@@ -58,6 +58,7 @@ class ManagerController extends Controller
      *                     @OA\Property(property="url", type="string", description="Endpoint парка для ответа"),
      *                     @OA\Property(property="commission", type="number", description="Комиссия парка"),
      *                     @OA\Property(property="api_key", type="string", description="ключ"),
+     *                     @OA\Property(property="is_blocked", type="boolean", description="Парк заблокирован"),
        * @OA\Property(
  *     property="metro_lines",
  *     type="object",
@@ -3222,54 +3223,7 @@ public function deleteParkInventoryListItemManager(Request $request)
     }
 }
 
-/**
- * Выбор парка
- * Изменение парка для этого менеджера
- *
- * @OA\Post(
- *     path="/manager/park/select",
- *     operationId="selectParkForSuperManager",
- *     summary="Изменение парка для этого менеджера",
- *     tags={"Manager"},
- *     @OA\RequestBody(
- *         @OA\JsonContent(
- *             @OA\Property(property="id", type="integer")
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Успешно",
- *         @OA\JsonContent(
- *             @OA\Property(property="success", type="boolean"),
- *             @OA\Property(property="message", type="string")
- *         )
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="Элемент не найден",
- *         @OA\JsonContent(
- *             @OA\Property(property="success", type="boolean"),
- *             @OA\Property(property="message", type="string")
- *         )
- *     )
- * )
- *
- * @param \Illuminate\Http\Request $request Объект запроса с данными для удаления элемента списка инвентаря
- * @return \Illuminate\Http\JsonResponse JSON-ответ с результатом операции
- */
-public function selectParkForSuperManager(Request $request)
-{
-    $user = Auth::guard('sanctum')->user();
-    $manager = $user->manager;
 
-if ($user->role_id !== UserRole::Admin->value) {
-    return response()->json(['success' => false], 401);
-    }
-$manager->park_id = $request->id;
-$manager->save();
-return response()->json(['success' => true], 200);
-
-}
 /**
  * Данные парков
  * Получение данных парков

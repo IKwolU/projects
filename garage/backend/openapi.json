@@ -4018,6 +4018,10 @@
                                                         "description": "ключ",
                                                         "type": "string"
                                                     },
+                                                    "is_blocked": {
+                                                        "description": "Парк заблокирован",
+                                                        "type": "boolean"
+                                                    },
                                                     "metro_lines": {
                                                         "properties": {
                                                             "city": {
@@ -8765,7 +8769,63 @@
                 }
             }
         },
-        "/manager/park/select": {
+        "/manager/parks/data": {
+            "get": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Получение данных парков",
+                "description": "Данные парков\nПолучение данных парков",
+                "operationId": "getParksInitDataSuperManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "parks": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "park_name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Элемент не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/super/park/select": {
             "post": {
                 "tags": [
                     "Manager"
@@ -8827,14 +8887,14 @@
                 }
             }
         },
-        "/manager/parks/data": {
-            "get": {
+        "/manager/super/park/block": {
+            "post": {
                 "tags": [
                     "Manager"
                 ],
-                "summary": "Получение данных парков",
-                "description": "Данные парков\nПолучение данных парков",
-                "operationId": "getParksInitDataSuperManager",
+                "summary": "Блокирование парка",
+                "description": "Блокирование парка",
+                "operationId": "blockParkSuperManager",
                 "responses": {
                     "200": {
                         "description": "Успешно",
@@ -8842,19 +8902,59 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "parks": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer"
-                                                    },
-                                                    "park_name": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Элемент не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/manager/super/park/unblock": {
+            "post": {
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Разблокирование парка",
+                "description": "Разблокирование парка",
+                "operationId": "unblockParkSuperManager",
+                "responses": {
+                    "200": {
+                        "description": "Успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"

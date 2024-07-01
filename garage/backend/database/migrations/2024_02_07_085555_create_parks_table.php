@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('about');
             $table->text('telegram_id');
             $table->json('yandex_keys');
+            $table->boolean('is_blocked');
             $table->timestamps();
         });
     }

@@ -186,6 +186,8 @@ class CarsController extends Controller
         $carsQuery = Car::query()->where('rent_term_id', '!=', null)->where('status', CarStatus::AvailableForBooking->value)
             ->whereHas('division', function ($query) use ($cityId) {
                 $query->where('city_id', $cityId);
+            })->whereHas('division.park', function ($query)  {
+                $query->where('is_blocked',0);
             });
 
         // отключена проверка по спецификации!

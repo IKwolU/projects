@@ -114,7 +114,7 @@ function Content() {
     <>
       {helpers.map((x, i) => (
         <div key={"helper" + i}>
-          {!x.closed && x.time < currentTime && (
+          {!x.closed && x.time < currentTime && x.time + 10 > currentTime && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
               <div className="   max-w-[244px] h-auto flex flex-col  border border-brown rounded-[36px] ">
                 <div
@@ -440,14 +440,14 @@ function Content() {
                           icon={faClock}
                           className={`h-4 transition-transform  text-brown`}
                         />{" "}
-                        <p> 7мин</p>
+                        <p> {content.map_timing}</p>
                       </div>
                       <div className="flex items-center space-x-2">
                         <FontAwesomeIcon
                           icon={faPersonWalking}
                           className={`h-4 transition-transform  text-brown`}
                         />{" "}
-                        <p> 650м</p>
+                        <p> {content.map_length}</p>
                       </div>
                     </div>
                   </div>

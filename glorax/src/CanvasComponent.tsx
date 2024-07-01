@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
@@ -228,6 +228,41 @@ function CanvasComponent() {
           rotate={[0, 0, 0]}
           isOpacity={false}
         />
+        {currentTime < content.start_time &&
+          currentTime > 0 &&
+          content.nav_variants.map((x, i) => (
+            <Fragment key={"nav" + i}>
+              <>
+                <OBJModel
+                  file={x!.file}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={x!.nav_position}
+                  scale={[1, 1, 1]}
+                  opacity={0.8}
+                  rotate={[0, 0, 0]}
+                  isOpacity={true}
+                />
+                <OBJModel
+                  file={`/models/${x!.start_point_file}`}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={x!.start_point_position}
+                  scale={[5, 5, 5]}
+                  opacity={0.8}
+                  rotate={x!.point_rotate}
+                  isOpacity={true}
+                />
+                <OBJModel
+                  file={`/models/${x!.point_file}`}
+                  texture={ColorToTexture(new THREE.Color(65, 105, 225))}
+                  position={x!.point_position}
+                  scale={[5, 5, 5]}
+                  opacity={0.8}
+                  rotate={x!.point_rotate}
+                  isOpacity={true}
+                />
+              </>
+            </Fragment>
+          ))}
         {currentTime > content.start_time &&
           currentTime < content.end_time &&
           currentNavigationData && (

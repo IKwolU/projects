@@ -22,7 +22,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [titleContent] = useRecoilState(titleContentAtom);
   const [oldTitle, setOldTitle] = useState(titleContent);
-  const [audioLoaded, setAudioLoaded] = useState<boolean>(false);
+  const [audioLoaded, setAudioLoaded] = useState<boolean>(true);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -49,8 +49,6 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
 
   useEffect(() => {
     if (audioLoaded && audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
       setProgress(0);
       setIsPlaying(false);
     }
@@ -118,8 +116,7 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
     <div className="custom-audio-player">
       <div className="hidden">
         <audio
-          key={src}
-          ref={audioRef}
+          ref={audioLoaded ? audioRef : undefined}
           src={src}
           controls
           onLoadedData={handleAudioLoaded}
@@ -143,28 +140,25 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
           />
         </div>
         <div className="flex items-center h-[15px] justify-between w-full text-[10px]">
-          {audioLoaded && (
-            <>
-              <span className="">
-                {audioRef.current
-                  ? `${String(
-                      Math.floor(audioRef.current.currentTime / 60)
-                    ).padStart(2, "0")}:${String(
-                      Math.floor(audioRef.current.currentTime % 60)
-                    ).padStart(2, "0")}`
-                  : "00:00"}
-              </span>
-              <span className="">
-                {audioRef.current
-                  ? `${String(
-                      Math.floor(audioRef.current.duration / 60)
-                    ).padStart(2, "0")}:${String(
-                      Math.floor(audioRef.current.duration % 60)
-                    ).padStart(2, "0")}`
-                  : "00:00"}
-              </span>
-            </>
-          )}
+          <span className="">
+            {audioLoaded && audioRef.current
+              ? `${String(
+                  Math.floor(audioRef.current.currentTime / 60)
+                ).padStart(2, "0")}:${String(
+                  Math.floor(audioRef.current.currentTime % 60)
+                ).padStart(2, "0")}`
+              : "00:00"}
+          </span>
+          <span className="">
+            {audioLoaded && audioRef.current
+              ? `${String(Math.floor(audioRef.current.duration / 60)).padStart(
+                  2,
+                  "0"
+                )}:${String(
+                  Math.floor(audioRef.current.duration % 60)
+                ).padStart(2, "0")}`
+              : "00:00"}
+          </span>
         </div>
         <div className="flex justify-between w-[50%] -mt-2 mx-auto items-center">
           <div className="relative ">

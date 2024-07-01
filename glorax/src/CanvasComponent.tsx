@@ -19,6 +19,7 @@ import {
   currentTimeAtom,
   titleContentAtom,
   loadedTexturesAtom,
+  immersiveIdAtom,
 } from "./atoms";
 
 interface OBJModelProps {
@@ -42,6 +43,8 @@ function CanvasComponent() {
     useRecoilState(loadedTexturesAtom);
   const [titleContent] = useRecoilState(titleContentAtom);
   const content = contentData.find((x) => x.title === titleContent);
+  const isImmersive = titleContent === "Иммерсивный маршрут";
+  const [immersiveId] = useRecoilState(immersiveIdAtom);
 
   function OBJModel({
     file,
@@ -137,9 +140,11 @@ function CanvasComponent() {
     return texture;
   }
 
-  const currentNavigationData = content!.nav_variants.find(
-    (x) => x.selection_time < currentTime && x.end_time > currentTime
-  );
+  const currentNavigationData = isImmersive
+    ? content!.nav_variants.find((x) => x.id === immersiveId)
+    : content!.nav_variants.find(
+        (x) => x.selection_time < currentTime && x.end_time > currentTime
+      );
 
   if (!content) {
     return <></>;
@@ -228,7 +233,8 @@ function CanvasComponent() {
           rotate={[0, 0, 0]}
           isOpacity={false}
         />
-        {currentTime < content.start_time &&
+        {!isImmersive &&
+          currentTime < content.start_time &&
           currentTime > 0 &&
           content.nav_variants.map((x, i) => (
             <Fragment key={"nav" + i}>

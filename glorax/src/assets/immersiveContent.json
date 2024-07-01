@@ -1,0 +1,146 @@
+{
+  "position": [3, -5, -10.0],
+  "rotate": 0,
+  "source": "/audio/123.mp3",
+  "title": "Иммерсивный маршрут",
+  "description_title": "Драма на Оке",
+  "description": "Дом Башкирова —  историческая мельница, обрастающая рассказами о драматических событиях. В прошлом, когда здесь еще был рабочий городок, одна из работниц развлекала себя и своих коллег рассказами о дочери купца Башкирова, погрязшей в тайной романтике, трагически завершившейся... в реке. Но какова же правда в этой истории?",
+  "background_image": "/card-bg-1.png",
+  "start_time": 23,
+  "end_time": 300,
+  "choice__time": 100,
+  "help_time": 40,
+  "close_time": 43,
+  "helpers": [
+    {
+      "time": 121,
+      "title": "Уже на месте?",
+      "text": "Отлично! Нажимайте далее, и мы продолжаем путь!",
+      "closed": false
+    },
+    {
+      "time": 203,
+      "title": "Уже на месте?",
+      "text": "Позади половина пути! Герои ждут вас, не теряйте ни минуты!",
+      "closed": false
+    },
+    {
+      "time": 354,
+      "title": "Уже на месте?",
+      "text": "Итак, заключительная часть истории! Готовы двигаться дальше? ",
+      "closed": false
+    }
+  ],
+  "nav_variants": [
+    {
+      "id": 1,
+      "file": "/models/1.gltf",
+      "selection_time": 23,
+      "end_time": 200,
+      "selection_icon": null,
+      "nav_position": [0, -4.0, 0],
+      "point_position": [-4.95, -4.3, 4.5],
+      "point_file": "NEWpoint.gltf",
+      "point_rotate": [0, 160, 0],
+      "start_point_position": [-5.1, -6.3, 4.5],
+      "start_point_file": "pointyellowglorax.gltf"
+    },
+    {
+      "id": 2,
+      "file": "/models/2.gltf",
+      "selection_time": 200,
+      "end_time": 300,
+      "selection_icon": "/img/heart.png",
+      "nav_position": [0, -4.0, 0],
+      "point_position": [1.0, -4.0, -1.6],
+      "point_file": "arrowyellowglorax.gltf",
+      "point_rotate": [0, 160, 0],
+      "start_point_position": [-4.95, -4.3, 4.5],
+      "start_point_file": "pointyellowglorax.gltf"
+    },
+    {
+      "id": 3,
+      "file": "/models/3.gltf",
+      "selection_time": 300,
+      "end_time": 400,
+      "selection_icon": "/img/coins.png",
+      "nav_position": [0, -4.0, 0],
+      "point_position": [7.1, -2.5, -8.7],
+      "point_file": "arrowyellowglorax.gltf",
+      "point_rotate": [0, -25, 0],
+      "start_point_position": [1.2, -4.0, -1.6],
+      "start_point_file": "pointyellowglorax.gltf"
+    },
+    {
+      "id": 4,
+      "file": "/models/4.gltf",
+      "selection_time": 400,
+      "end_time": 500,
+      "selection_icon": "/img/coins.png",
+      "nav_position": [0, -4.0, 0],
+      "point_position": [-2.4, -4.4, 1.65],
+      "point_file": "NEWpoint.gltf",
+      "point_rotate": [0, -30, 0],
+      "start_point_position": [7.1, -2.5, -8.7],
+      "start_point_file": "pointyellowglorax.gltf"
+    }
+  ],
+  "arrow_time": [
+    { "time": 12, "positionY": 0 },
+    { "time": 13, "positionY": 0 },
+    { "time": 14, "positionY": 0 },
+    { "time": 15, "positionY": 0 },
+    { "time": 16, "positionY": 0 },
+    { "time": 17, "positionY": 0 },
+    { "time": 18, "positionY": 0 },
+    { "time": 19, "positionY": 0 },
+    { "time": 20, "positionY": 0 },
+    { "time": 21, "positionY": 0 },
+    { "time": 22, "positionY": 0 },
+    { "time": 23, "positionY": 0 },
+    { "time": 24, "positionY": 0 },
+    { "time": 25, "positionY": 0 },
+    { "time": 26, "positionY": 0 }
+  ],
+
+  "choice": [
+    {
+      "image": "/choice-img-1.png",
+      "text": "Крадет статуэтку:",
+      "target": "",
+      "color": "#8DC3F1"
+    },
+    {
+      "image": "/choice-img-2.png",
+      "text": "Получает деньги:",
+      "target": "",
+      "color": "#F8EEC0"
+    }
+  ],
+  "facts": [
+    {
+      "image": "/img/g_f_1_1.jpg",
+      "title": "Матвей Башкиров",
+      "text": "16 декабря 1913 года Матвей Емельянович Башкиров, почетный гражданин, обратился в полицейское управление Самары с просьбой о «воспрещении демонстрации картин, дающих повод к разнородным неблаговидным намёкам на род Башкировых».",
+      "type": "text"
+    },
+    {
+      "image": "/img/g_f_1_2.jpg",
+      "title": "Полная версия фильма  'Драма на Волге' 1913 года доступна по ссылке",
+      "text": "https://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDihttps://youtu.be/Yjz18rsE4p0?si=TxYSo0GAJCPi3WDi>",
+      "type": "link"
+    },
+    {
+      "image": "/img/libken.jpg",
+      "title": "Первый фильм студии",
+      "text": "“Драма на Волге” была снята на Ярославской кинофабрике Григория Либкена.",
+      "type": "text"
+    },
+    {
+      "image": "/img/g_f_2_1.jpg",
+      "title": "Григорий Либкен",
+      "text": "Заказчик и владелец кинокартины: известный ярославский колбасный фабрикант",
+      "type": "text"
+    }
+  ]
+}

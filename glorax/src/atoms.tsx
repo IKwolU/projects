@@ -12,6 +12,10 @@ const navigationTimeAtom = atom<number>({
   key: "navigationTimeAtom",
   default: 1,
 });
+const immersiveIdAtom = atom<number>({
+  key: "immersiveIdAtom",
+  default: 0,
+});
 const titleContentAtom = atom<string>({
   key: "titleContentAtom",
   default: "Дом Башкирова",
@@ -26,4 +30,5 @@ export {
   navigationTimeAtom,
   titleContentAtom,
   loadedTexturesAtom,
+  immersiveIdAtom,
 };

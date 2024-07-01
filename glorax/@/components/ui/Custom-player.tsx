@@ -8,20 +8,23 @@ import { useRecoilState } from "recoil";
 import { currentTimeAtom, titleContentAtom } from "../../../src/atoms";
 type CustomAudioPlayerProps = {
   src: string;
-  active: boolean;
+  ended: () => void;
 };
 
-const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
+const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({
+  src,
+  ended,
+}) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [, setCurrentTime] = useRecoilState(currentTimeAtom);
-  // const [duration, setDuration] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
   const [nextClicked, setNextClicked] = useState<boolean>(false);
   const [backClicked, setBackClicked] = useState<boolean>(false);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [titleContent] = useRecoilState(titleContentAtom);
   const [oldTitle, setOldTitle] = useState(titleContent);
+  const [oldSrc, setOldSrc] = useState(src);
   const [audioLoaded, setAudioLoaded] = useState<boolean>(true);
 
   useEffect(() => {
@@ -45,7 +48,14 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
       setAudioLoaded(false);
       setOldTitle(titleContent);
     }
-  }, [titleContent]);
+    if (titleContent === "Иммерсивный маршрут" && src !== oldSrc) {
+      console.log(src);
+      console.log(oldSrc);
+
+      setAudioLoaded(false);
+      setOldSrc(src);
+    }
+  }, [titleContent, src]);
 
   useEffect(() => {
     if (audioLoaded && audioRef.current) {
@@ -89,10 +99,6 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
     }, 1000);
   };
 
-  const handleAudioLoaded = () => {
-    setAudioLoaded(true);
-  };
-
   const handleSeekEnd = (e: any) => {
     if (audioRef.current) {
       const seekTime =
@@ -119,7 +125,16 @@ const CustomAudioPlayer: React.FC<CustomAudioPlayerProps> = ({ src }) => {
           ref={audioLoaded ? audioRef : undefined}
           src={src}
           controls
-          onLoadedData={handleAudioLoaded}
+          onLoadedData={() => setAudioLoaded(true)}
+          onTimeUpdate={() => {
+            if (
+              audioRef.current &&
+              audioRef.current.duration > 0 &&
+              audioRef.current.currentTime >= audioRef.current.duration
+            ) {
+              ended();
+            }
+          }}
           className="hidden w-full h-auto appearance-none"
         ></audio>
       </div>

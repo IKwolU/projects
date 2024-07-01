@@ -12,8 +12,6 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../public/img/logoGlorax.png";
-import choice1 from "../public/img//choice-img-1.png";
-import choice2 from "../public/img//choice-img-2.png";
 import iconButton from "../public/img/Icon_Button.svg";
 import halpFace from "../public/img/face.png";
 import Slider from "react-slick";
@@ -25,6 +23,7 @@ import {
   currentTimeAtom,
   titleContentAtom,
   loadedTexturesAtom,
+  immersiveIdAtom,
 } from "./atoms";
 import Storis from "./Storis";
 
@@ -35,19 +34,20 @@ function Content() {
   const [currentTime, setCurrentTime] = useRecoilState(currentTimeAtom);
   const [questionsClicked, setQuestionsClicked] = useState(false);
   const [question, setQuestion] = useState<string>("");
-  const [timeToChoose] = useState(false);
   const [menuOpen, menuOpenSet] = useState(false);
-  const [, setIsHelpShowed] = useState(false);
   const [isMapClicked, setIsMapClicked] = useState(false);
   const [bigTextOpened, setBigTextOpened] = useState(false);
   const [isSideAutoClosed, setIsSideAutoClosed] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isStorisShowed, setIsStorisShowed] = useState(false);
+  const [showChose, setShowChose] = useState(false);
   const [loadedTextures] = useRecoilState(loadedTexturesAtom);
   const [showCount, setShowCount] = useState(0);
 
-  const content = contentData.find((x) => x.title === titleContent);
+  const [immersiveId, setImmersiveId] = useRecoilState(immersiveIdAtom);
 
+  const content = contentData.find((x) => x.title === titleContent);
+  const isImmersive = titleContent === "Иммерсивный маршрут";
   const [helpers, setHelpers] = useState(content!.helpers);
 
   useEffect(() => {
@@ -85,7 +85,6 @@ function Content() {
 
   useEffect(() => {
     if (!isSideAutoClosed && currentTime > content!.help_time) {
-      setIsHelpShowed(true);
       setIsContentShow(false);
       setIsSideAutoClosed(true);
     }
@@ -106,12 +105,44 @@ function Content() {
   //   (x) => x.id === currentNav
   // );
 
+  const handleAudioEnd = () => {
+    setShowChose(true);
+  };
+
+  const handleChoseImmersiveVar = (id: number) => {
+    setImmersiveId(id);
+    setShowChose(false);
+  };
+
   if (!content) {
     return <></>;
   }
 
   return (
     <>
+      {showChose && (
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full text-brown ">
+          <div className="   max-w-[244px] h-auto flex flex-col  border border-brown rounded-[36px] ">
+            <div className="flex flex-col  items-center w-full px-4 py-2 pb-2 mx-auto space-y-2 text-black bg-white border border-white outline-none rounded-[35px]">
+              <div className="text-sm">Выберите свой вариант</div>
+              <div className="flex space-x-2">
+                {content
+                  .choice!.filter((y) => y.current_nav_id! === immersiveId)
+                  .map((x) => (
+                    <div className="" key={x.select_nav_id}>
+                      <img
+                        src={`/img/${x.image}`}
+                        alt=""
+                        className="w-20 h-auto transition-transform cursor-pointer hover:scale-110"
+                        onClick={() => handleChoseImmersiveVar(x.select_nav_id)}
+                      />
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {helpers.map((x, i) => (
         <div key={"helper" + i}>
           {!x.closed && x.time < currentTime && x.time + 10 > currentTime && (
@@ -200,11 +231,6 @@ function Content() {
         onClick={() => menuOpenSet(!menuOpen)}
         className="fixed top-2 left-2 z-[50] flex w-16 px-1 sm:px-2 bg-opacity-40 justify-center items-center"
       >
-        {/* <img
-          src="./img/menu.png"
-          alt=""
-          className="object-contain w-20 cursor-pointer "
-        /> */}
         <button className="w-20 px-3 py-1 m-1 text-[10px] text-white uppercase rounded-full bg-blue border-none focus:outline-none">
           Меню
         </button>
@@ -335,47 +361,16 @@ function Content() {
               </div>
               <div className="relative w-full mb-4 rounded-3xl">
                 <CustomAudioPlayer
-                  active={isContentShowed}
-                  src={content.source}
+                  ended={() => {
+                    isImmersive && handleAudioEnd();
+                  }}
+                  src={
+                    isImmersive
+                      ? content.audio_list!.find((x) => x.id === immersiveId)!
+                          .src
+                      : content.source
+                  }
                 />
-                {timeToChoose && (
-                  <div
-                    className="absolute top-0 w-full h-full bg-black bg-no-repeat bg-cover bg-opacity-90 ring-0 rounded-3xl"
-                    // style={{ backgroundImage: `url(${bg})` }}
-                  >
-                    <div className="flex items-center justify-between h-full p-4 space-x-3">
-                      <div className="flex flex-col items-center justify-center h-full space-y-2">
-                        <p
-                          className="text-sm "
-                          style={{ color: `${content.choice[0].color}` }}
-                        >
-                          {content.choice[0].text}
-                        </p>
-                        <img
-                          src={choice1}
-                          className="object-contain w-auto h-12"
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        className="flex flex-col items-center justify-center h-full space-y-2"
-                        key={`choice_${1}`}
-                      >
-                        <p
-                          className="text-sm"
-                          style={{ color: `${content.choice[1].color}` }}
-                        >
-                          {content.choice[1].text}
-                        </p>
-                        <img
-                          src={choice2}
-                          className="object-contain w-auto h-12"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
 
               <div className="text-xl font-bold ">
